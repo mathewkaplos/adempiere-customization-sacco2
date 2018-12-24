@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/adempiere/base/src/org/compiere/Adempiere.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.compiere.Adempiere"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="adempiere-customization-sacco"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DPropertyFile=&quot;E:\380_sacco\adempiere-master\ADempiere.properties&quot;&#13;&#10;-Xms1024m&#13;&#10;-Xmx4096m&#13;&#10;-Dorg.adempiere.server.embedded=true &#13;&#10;-DADEMPIERE_HOME=&quot;E:\380_sacco\adempiere-master&quot;"/>
+</launchConfiguration>
