@@ -33,7 +33,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181223L;
+	private static final long serialVersionUID = 20181226L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -41,6 +41,8 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
       super (ctx, s_loans_ID, trxName);
       /** if (s_loans_ID == 0)
         {
+			setapproval_done (false);
+// N
 			setinterest_recovery (null);
 // 1
 			setloanappdate (new Timestamp( System.currentTimeMillis() ));
@@ -48,7 +50,8 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 			setloaneffectdate (new Timestamp( System.currentTimeMillis() ));
 			setloanstatus (null);
 // PENDING
-			setnewloan (false);
+			setnewloan (true);
+// Y
 			setopen_repay_period (false);
 			setrepaymode (null);
 			sets_loanpurpose_ID (0);
@@ -217,6 +220,27 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
+	/** Set approval_done.
+		@param approval_done approval_done	  */
+	public void setapproval_done (boolean approval_done)
+	{
+		set_Value (COLUMNNAME_approval_done, Boolean.valueOf(approval_done));
+	}
+
+	/** Get approval_done.
+		@return approval_done	  */
+	public boolean isapproval_done () 
+	{
+		Object oo = get_Value(COLUMNNAME_approval_done);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Rejection Remarks.
 		@param approvalrejectionremarks Rejection Remarks	  */
 	public void setapprovalrejectionremarks (String approvalrejectionremarks)
@@ -284,6 +308,174 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Approve Appraisal.
+		@param btn_appraisal_approve Approve Appraisal	  */
+	public void setbtn_appraisal_approve (String btn_appraisal_approve)
+	{
+		set_Value (COLUMNNAME_btn_appraisal_approve, btn_appraisal_approve);
+	}
+
+	/** Get Approve Appraisal.
+		@return Approve Appraisal	  */
+	public String getbtn_appraisal_approve () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_appraisal_approve);
+	}
+
+	/** Set Reject Appraisal.
+		@param btn_appraisal_reject Reject Appraisal	  */
+	public void setbtn_appraisal_reject (String btn_appraisal_reject)
+	{
+		set_Value (COLUMNNAME_btn_appraisal_reject, btn_appraisal_reject);
+	}
+
+	/** Get Reject Appraisal.
+		@return Reject Appraisal	  */
+	public String getbtn_appraisal_reject () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_appraisal_reject);
+	}
+
+	/** Set Save Approval/Rejection.
+		@param btn_approve_reject_save Save Approval/Rejection	  */
+	public void setbtn_approve_reject_save (String btn_approve_reject_save)
+	{
+		set_Value (COLUMNNAME_btn_approve_reject_save, btn_approve_reject_save);
+	}
+
+	/** Get Save Approval/Rejection.
+		@return Save Approval/Rejection	  */
+	public String getbtn_approve_reject_save () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_approve_reject_save);
+	}
+
+	/** Set Pre-Print Cheques.
+		@param btn_preprint_cheque Pre-Print Cheques	  */
+	public void setbtn_preprint_cheque (String btn_preprint_cheque)
+	{
+		set_Value (COLUMNNAME_btn_preprint_cheque, btn_preprint_cheque);
+	}
+
+	/** Get Pre-Print Cheques.
+		@return Pre-Print Cheques	  */
+	public String getbtn_preprint_cheque () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_preprint_cheque);
+	}
+
+	/** Set Print Cheque.
+		@param btn_print_cheque Print Cheque	  */
+	public void setbtn_print_cheque (String btn_print_cheque)
+	{
+		set_Value (COLUMNNAME_btn_print_cheque, btn_print_cheque);
+	}
+
+	/** Get Print Cheque.
+		@return Print Cheque	  */
+	public String getbtn_print_cheque () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_print_cheque);
+	}
+
+	/** Set Reverse Status[Payment Mode].
+		@param btn_repaymode_reverse Reverse Status[Payment Mode]	  */
+	public void setbtn_repaymode_reverse (String btn_repaymode_reverse)
+	{
+		set_Value (COLUMNNAME_btn_repaymode_reverse, btn_repaymode_reverse);
+	}
+
+	/** Get Reverse Status[Payment Mode].
+		@return Reverse Status[Payment Mode]	  */
+	public String getbtn_repaymode_reverse () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_repaymode_reverse);
+	}
+
+	/** Set Save [Payment Mode].
+		@param btn_repaymode_save Save [Payment Mode]	  */
+	public void setbtn_repaymode_save (String btn_repaymode_save)
+	{
+		set_Value (COLUMNNAME_btn_repaymode_save, btn_repaymode_save);
+	}
+
+	/** Get Save [Payment Mode].
+		@return Save [Payment Mode]	  */
+	public String getbtn_repaymode_save () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_repaymode_save);
+	}
+
+	/** Set Reverse Status[Checque Collection].
+		@param btn_reverse_cheque_collection Reverse Status[Checque Collection]	  */
+	public void setbtn_reverse_cheque_collection (String btn_reverse_cheque_collection)
+	{
+		set_Value (COLUMNNAME_btn_reverse_cheque_collection, btn_reverse_cheque_collection);
+	}
+
+	/** Get Reverse Status[Checque Collection].
+		@return Reverse Status[Checque Collection]	  */
+	public String getbtn_reverse_cheque_collection () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_reverse_cheque_collection);
+	}
+
+	/** Set Revers Status[Cheque Writing].
+		@param btn_reverse_cheque_writing Revers Status[Cheque Writing]	  */
+	public void setbtn_reverse_cheque_writing (String btn_reverse_cheque_writing)
+	{
+		set_Value (COLUMNNAME_btn_reverse_cheque_writing, btn_reverse_cheque_writing);
+	}
+
+	/** Get Revers Status[Cheque Writing].
+		@return Revers Status[Cheque Writing]	  */
+	public String getbtn_reverse_cheque_writing () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_reverse_cheque_writing);
+	}
+
+	/** Set Save[Cheque Collection].
+		@param btn_save_cheque_collection Save[Cheque Collection]	  */
+	public void setbtn_save_cheque_collection (String btn_save_cheque_collection)
+	{
+		set_Value (COLUMNNAME_btn_save_cheque_collection, btn_save_cheque_collection);
+	}
+
+	/** Get Save[Cheque Collection].
+		@return Save[Cheque Collection]	  */
+	public String getbtn_save_cheque_collection () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_save_cheque_collection);
+	}
+
+	/** Set Save [Cheque Writing].
+		@param btn_save_cheque_writing Save [Cheque Writing]	  */
+	public void setbtn_save_cheque_writing (String btn_save_cheque_writing)
+	{
+		set_Value (COLUMNNAME_btn_save_cheque_writing, btn_save_cheque_writing);
+	}
+
+	/** Get Save [Cheque Writing].
+		@return Save [Cheque Writing]	  */
+	public String getbtn_save_cheque_writing () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_save_cheque_writing);
+	}
+
+	/** Set View Schedule.
+		@param btn_view_schedule View Schedule	  */
+	public void setbtn_view_schedule (String btn_view_schedule)
+	{
+		set_Value (COLUMNNAME_btn_view_schedule, btn_view_schedule);
+	}
+
+	/** Get View Schedule.
+		@return View Schedule	  */
+	public String getbtn_view_schedule () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_view_schedule);
+	}
+
 	/** Set calcfied.
 		@param calcfied calcfied	  */
 	public void setcalcfied (String calcfied)
@@ -313,6 +505,48 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set cheque_collection_done.
+		@param cheque_collection_done cheque_collection_done	  */
+	public void setcheque_collection_done (boolean cheque_collection_done)
+	{
+		set_Value (COLUMNNAME_cheque_collection_done, Boolean.valueOf(cheque_collection_done));
+	}
+
+	/** Get cheque_collection_done.
+		@return cheque_collection_done	  */
+	public boolean ischeque_collection_done () 
+	{
+		Object oo = get_Value(COLUMNNAME_cheque_collection_done);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set cheque_writing_done.
+		@param cheque_writing_done cheque_writing_done	  */
+	public void setcheque_writing_done (boolean cheque_writing_done)
+	{
+		set_Value (COLUMNNAME_cheque_writing_done, Boolean.valueOf(cheque_writing_done));
+	}
+
+	/** Get cheque_writing_done.
+		@return cheque_writing_done	  */
+	public boolean ischeque_writing_done () 
+	{
+		Object oo = get_Value(COLUMNNAME_cheque_writing_done);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Cheque Amount.
@@ -1121,6 +1355,27 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return (String)get_Value(COLUMNNAME_loanorigamount);
 	}
 
+	/** Set loanpaymode_done.
+		@param loanpaymode_done loanpaymode_done	  */
+	public void setloanpaymode_done (boolean loanpaymode_done)
+	{
+		set_Value (COLUMNNAME_loanpaymode_done, Boolean.valueOf(loanpaymode_done));
+	}
+
+	/** Get loanpaymode_done.
+		@return loanpaymode_done	  */
+	public boolean isloanpaymode_done () 
+	{
+		Object oo = get_Value(COLUMNNAME_loanpaymode_done);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Loan Penalty.
 		@param loanpenalty Loan Penalty	  */
 	public void setloanpenalty (BigDecimal loanpenalty)
@@ -1544,10 +1799,23 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
+	/** paymode AD_Reference_ID=1000016 */
+	public static final int PAYMODE_AD_Reference_ID=1000016;
+	/** Cash = 1 */
+	public static final String PAYMODE_Cash = "1";
+	/** Cheque = 2 */
+	public static final String PAYMODE_Cheque = "2";
+	/** Cash & Cheque = 3 */
+	public static final String PAYMODE_CashCheque = "3";
+	/** FOSA = 4 */
+	public static final String PAYMODE_FOSA = "4";
+	/** Error Detection = 5 */
+	public static final String PAYMODE_ErrorDetection = "5";
 	/** Set Pay Mode.
 		@param paymode Pay Mode	  */
 	public void setpaymode (String paymode)
 	{
+
 		set_Value (COLUMNNAME_paymode, paymode);
 	}
 

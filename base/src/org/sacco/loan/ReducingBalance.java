@@ -28,8 +28,6 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 			tempPaid = tempPaid.add(ls.getamountdue());
 			ls.setamountpaid(tempPaid);
 
-
-
 			ls.save();
 		}
 
@@ -49,9 +47,10 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 			ls.setsuminterest(total_interest);
 
 			ls.save();
-			
+
 			// loan balance
 			ls.setloanbalance(ls.getnewinterest().add(ls.getexpprincipal()));
+			ls.setopenning_loanbalance(ls.getmonthopeningbal().add(ls.getoldinterest()));
 
 			ls.save();
 		}

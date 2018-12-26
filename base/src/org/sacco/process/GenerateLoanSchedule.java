@@ -12,6 +12,9 @@ import org.compiere.model.SLoanType;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.sacco.loan.InterestPayMethod;
+import org.sacco.loan.ReducingBalance;
+import org.sacco.loan.Schedule;
 
 public class GenerateLoanSchedule extends SvrProcess {
 	/**
@@ -19,7 +22,6 @@ public class GenerateLoanSchedule extends SvrProcess {
 	 * 
 	 */
 
-	int loanID = 0;
 	SLoan loan = null;
 	SLoanType loanType = null;
 	int periods = 0;
@@ -29,7 +31,6 @@ public class GenerateLoanSchedule extends SvrProcess {
 
 	@Override
 	protected void prepare() {
-		loanID = getRecord_ID();
 		loan = new SLoan(getCtx(), getRecord_ID(), get_TrxName());
 
 		int loanTypeID = loan.gets_loantype_ID();
@@ -48,7 +49,7 @@ public class GenerateLoanSchedule extends SvrProcess {
 
 		formula = loanType.getinterestformula();
 
-		// Loan Type
+		// Interest Pay Method
 		/*
 		 * Reducing Balance----------------------------------------------------R
 		 * Reducing Balance Constant-----------------------------------------RC
@@ -68,7 +69,11 @@ public class GenerateLoanSchedule extends SvrProcess {
 					"Please confirm that you have seen and checked all supporting documents first..");
 			return "SCHEDULES NOT GENERATED.";
 		}
-		start();
+		// start();
+		Schedule schedule = new Schedule();
+		schedule.prepare(getRecord_ID());
+		Schedule interestPayMethod = new ReducingBalance();
+		interestPayMethod.execute();
 		return null;
 	}
 
@@ -145,7 +150,7 @@ public class GenerateLoanSchedule extends SvrProcess {
 				initialAmt = ls.getamountdue().add(total_interest);
 			if (ls == null)
 				continue;
-			//ls.setamountdue(initialAmt.subtract(ls.getmonthlyrepayment()));
+			// ls.setamountdue(initialAmt.subtract(ls.getmonthlyrepayment()));
 			ls.setloanbalance(initialAmt.subtract(ls.getamountpaid()));
 			ls.save();
 		}

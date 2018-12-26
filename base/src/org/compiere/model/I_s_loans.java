@@ -131,6 +131,15 @@ public interface I_s_loans
 	/** Get Applied Amount	  */
 	public BigDecimal getappliedamount();
 
+    /** Column name approval_done */
+    public static final String COLUMNNAME_approval_done = "approval_done";
+
+	/** Set approval_done	  */
+	public void setapproval_done (boolean approval_done);
+
+	/** Get approval_done	  */
+	public boolean isapproval_done();
+
     /** Column name approvalrejectionremarks */
     public static final String COLUMNNAME_approvalrejectionremarks = "approvalrejectionremarks";
 
@@ -169,6 +178,114 @@ public interface I_s_loans
 
 	public I_C_ValidCombination getbankgl_A() throws RuntimeException;
 
+    /** Column name btn_appraisal_approve */
+    public static final String COLUMNNAME_btn_appraisal_approve = "btn_appraisal_approve";
+
+	/** Set Approve Appraisal	  */
+	public void setbtn_appraisal_approve (String btn_appraisal_approve);
+
+	/** Get Approve Appraisal	  */
+	public String getbtn_appraisal_approve();
+
+    /** Column name btn_appraisal_reject */
+    public static final String COLUMNNAME_btn_appraisal_reject = "btn_appraisal_reject";
+
+	/** Set Reject Appraisal	  */
+	public void setbtn_appraisal_reject (String btn_appraisal_reject);
+
+	/** Get Reject Appraisal	  */
+	public String getbtn_appraisal_reject();
+
+    /** Column name btn_approve_reject_save */
+    public static final String COLUMNNAME_btn_approve_reject_save = "btn_approve_reject_save";
+
+	/** Set Save Approval/Rejection	  */
+	public void setbtn_approve_reject_save (String btn_approve_reject_save);
+
+	/** Get Save Approval/Rejection	  */
+	public String getbtn_approve_reject_save();
+
+    /** Column name btn_preprint_cheque */
+    public static final String COLUMNNAME_btn_preprint_cheque = "btn_preprint_cheque";
+
+	/** Set Pre-Print Cheques	  */
+	public void setbtn_preprint_cheque (String btn_preprint_cheque);
+
+	/** Get Pre-Print Cheques	  */
+	public String getbtn_preprint_cheque();
+
+    /** Column name btn_print_cheque */
+    public static final String COLUMNNAME_btn_print_cheque = "btn_print_cheque";
+
+	/** Set Print Cheque	  */
+	public void setbtn_print_cheque (String btn_print_cheque);
+
+	/** Get Print Cheque	  */
+	public String getbtn_print_cheque();
+
+    /** Column name btn_repaymode_reverse */
+    public static final String COLUMNNAME_btn_repaymode_reverse = "btn_repaymode_reverse";
+
+	/** Set Reverse Status[Payment Mode]	  */
+	public void setbtn_repaymode_reverse (String btn_repaymode_reverse);
+
+	/** Get Reverse Status[Payment Mode]	  */
+	public String getbtn_repaymode_reverse();
+
+    /** Column name btn_repaymode_save */
+    public static final String COLUMNNAME_btn_repaymode_save = "btn_repaymode_save";
+
+	/** Set Save [Payment Mode]	  */
+	public void setbtn_repaymode_save (String btn_repaymode_save);
+
+	/** Get Save [Payment Mode]	  */
+	public String getbtn_repaymode_save();
+
+    /** Column name btn_reverse_cheque_collection */
+    public static final String COLUMNNAME_btn_reverse_cheque_collection = "btn_reverse_cheque_collection";
+
+	/** Set Reverse Status[Checque Collection]	  */
+	public void setbtn_reverse_cheque_collection (String btn_reverse_cheque_collection);
+
+	/** Get Reverse Status[Checque Collection]	  */
+	public String getbtn_reverse_cheque_collection();
+
+    /** Column name btn_reverse_cheque_writing */
+    public static final String COLUMNNAME_btn_reverse_cheque_writing = "btn_reverse_cheque_writing";
+
+	/** Set Revers Status[Cheque Writing]	  */
+	public void setbtn_reverse_cheque_writing (String btn_reverse_cheque_writing);
+
+	/** Get Revers Status[Cheque Writing]	  */
+	public String getbtn_reverse_cheque_writing();
+
+    /** Column name btn_save_cheque_collection */
+    public static final String COLUMNNAME_btn_save_cheque_collection = "btn_save_cheque_collection";
+
+	/** Set Save[Cheque Collection]	  */
+	public void setbtn_save_cheque_collection (String btn_save_cheque_collection);
+
+	/** Get Save[Cheque Collection]	  */
+	public String getbtn_save_cheque_collection();
+
+    /** Column name btn_save_cheque_writing */
+    public static final String COLUMNNAME_btn_save_cheque_writing = "btn_save_cheque_writing";
+
+	/** Set Save [Cheque Writing]	  */
+	public void setbtn_save_cheque_writing (String btn_save_cheque_writing);
+
+	/** Get Save [Cheque Writing]	  */
+	public String getbtn_save_cheque_writing();
+
+    /** Column name btn_view_schedule */
+    public static final String COLUMNNAME_btn_view_schedule = "btn_view_schedule";
+
+	/** Set View Schedule	  */
+	public void setbtn_view_schedule (String btn_view_schedule);
+
+	/** Get View Schedule	  */
+	public String getbtn_view_schedule();
+
     /** Column name calcfied */
     public static final String COLUMNNAME_calcfied = "calcfied";
 
@@ -186,6 +303,24 @@ public interface I_s_loans
 
 	/** Get Cash Amount	  */
 	public BigDecimal getcashamount();
+
+    /** Column name cheque_collection_done */
+    public static final String COLUMNNAME_cheque_collection_done = "cheque_collection_done";
+
+	/** Set cheque_collection_done	  */
+	public void setcheque_collection_done (boolean cheque_collection_done);
+
+	/** Get cheque_collection_done	  */
+	public boolean ischeque_collection_done();
+
+    /** Column name cheque_writing_done */
+    public static final String COLUMNNAME_cheque_writing_done = "cheque_writing_done";
+
+	/** Set cheque_writing_done	  */
+	public void setcheque_writing_done (boolean cheque_writing_done);
+
+	/** Get cheque_writing_done	  */
+	public boolean ischeque_writing_done();
 
     /** Column name chequeamount */
     public static final String COLUMNNAME_chequeamount = "chequeamount";
@@ -657,6 +792,15 @@ public interface I_s_loans
 
 	/** Get Loan Original Amount	  */
 	public String getloanorigamount();
+
+    /** Column name loanpaymode_done */
+    public static final String COLUMNNAME_loanpaymode_done = "loanpaymode_done";
+
+	/** Set loanpaymode_done	  */
+	public void setloanpaymode_done (boolean loanpaymode_done);
+
+	/** Get loanpaymode_done	  */
+	public boolean isloanpaymode_done();
 
     /** Column name loanpenalty */
     public static final String COLUMNNAME_loanpenalty = "loanpenalty";
