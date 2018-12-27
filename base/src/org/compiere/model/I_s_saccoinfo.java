@@ -645,14 +645,16 @@ public interface I_s_saccoinfo
 	/** Get Sacco Name/Description	  */
 	public String getsacconame();
 
-    /** Column name saccoperiod */
-    public static final String COLUMNNAME_saccoperiod = "saccoperiod";
+    /** Column name saccoperiod_ID */
+    public static final String COLUMNNAME_saccoperiod_ID = "saccoperiod_ID";
 
-	/** Set saccoperiod	  */
-	public void setsaccoperiod (int saccoperiod);
+	/** Set Current Period	  */
+	public void setsaccoperiod_ID (int saccoperiod_ID);
 
-	/** Get saccoperiod	  */
-	public int getsaccoperiod();
+	/** Get Current Period	  */
+	public int getsaccoperiod_ID();
+
+	public org.compiere.model.I_C_Period getsaccoperiod() throws RuntimeException;
 
     /** Column name saccopobox */
     public static final String COLUMNNAME_saccopobox = "saccopobox";

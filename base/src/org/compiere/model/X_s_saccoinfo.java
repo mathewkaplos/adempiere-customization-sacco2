@@ -32,7 +32,7 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181220L;
+	private static final long serialVersionUID = 20181226L;
 
     /** Standard Constructor */
     public X_s_saccoinfo (Properties ctx, int s_saccoinfo_ID, String trxName)
@@ -1088,18 +1088,26 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_sacconame);
 	}
 
-	/** Set saccoperiod.
-		@param saccoperiod saccoperiod	  */
-	public void setsaccoperiod (int saccoperiod)
+	public org.compiere.model.I_C_Period getsaccoperiod() throws RuntimeException
+    {
+		return (org.compiere.model.I_C_Period)MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
+			.getPO(getsaccoperiod_ID(), get_TrxName());	}
+
+	/** Set Current Period.
+		@param saccoperiod_ID Current Period	  */
+	public void setsaccoperiod_ID (int saccoperiod_ID)
 	{
-		set_Value (COLUMNNAME_saccoperiod, Integer.valueOf(saccoperiod));
+		if (saccoperiod_ID < 1) 
+			set_Value (COLUMNNAME_saccoperiod_ID, null);
+		else 
+			set_Value (COLUMNNAME_saccoperiod_ID, Integer.valueOf(saccoperiod_ID));
 	}
 
-	/** Get saccoperiod.
-		@return saccoperiod	  */
-	public int getsaccoperiod () 
+	/** Get Current Period.
+		@return Current Period	  */
+	public int getsaccoperiod_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_saccoperiod);
+		Integer ii = (Integer)get_Value(COLUMNNAME_saccoperiod_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

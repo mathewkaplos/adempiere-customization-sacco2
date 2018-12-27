@@ -3,9 +3,15 @@ package org.sacco.loan;
 import java.math.BigDecimal;
 
 import org.compiere.model.LoanSchedule;
+import org.compiere.model.SLoan;
 import org.compiere.util.Env;
 
 public class ReducingBalance extends Schedule implements InterestPayMethod {
+
+	public ReducingBalance(int loanID) {
+		super(loanID);
+		// TODO Auto-generated constructor stub
+	}
 
 	// Reducing balance
 	public void execute() {
@@ -54,6 +60,20 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 
 			ls.save();
 		}
-
+		loan.setloaninterestamount(total_interest);
+		loan.setintbalance(total_interest);
+		loan.save();
 	}
+
+	public BigDecimal getExpectedPrincipal() {
+		double val = loan.getloanamount().doubleValue() / loan.getloanrepayperiod();
+		return BigDecimal.valueOf(val);
+	}
+
+	public BigDecimal getExpectedInterest() {
+		double Principal = loan.getmonthopeningbal().doubleValue();
+		BigDecimal expInterest = getInterest(Principal, 1);
+		return expInterest;
+	}
+	
 }

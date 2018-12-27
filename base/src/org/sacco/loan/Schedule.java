@@ -14,7 +14,7 @@ import org.compiere.util.Env;
 public class Schedule {
 
 	protected static BigDecimal interest = Env.ZERO;
-	protected static BigDecimal total_interest = Env.ZERO;
+	protected BigDecimal total_interest = Env.ZERO;
 	protected static SLoan loan;
 	protected static LoanSchedule[] loanSchedules;
 	private static String formula = "";
@@ -29,15 +29,18 @@ public class Schedule {
 
 	BigDecimal monthlyAmt = Env.ZERO;
 
-	public void prepare(int loanID) {
+	public Schedule(int loanID) {
 		loan = new SLoan(Env.getCtx(), loanID, get_TrxName());
 		int loanTypeID = loan.gets_loantype_ID();
 		if (loanTypeID > 0) {
 			loanType = new SLoanType(Env.getCtx(), loanTypeID, get_TrxName());
 		}
 		periods = loan.getloanrepayperiod();
+		if (loan.is_new())
+			P = loan.getloanamount().doubleValue();
+		else
+			loan.getloanbalance().doubleValue();
 
-		P = loan.getloanamount().doubleValue() + loan.getloanbalance().doubleValue();
 		R = loan.getloaninterestrate().doubleValue();
 		T = periods;
 
@@ -60,6 +63,10 @@ public class Schedule {
 		 * Modified Amortized-----------------------------------------------MA
 		 */
 		l_type = loanType.getloantypeinteresttype();
+
+	}
+
+	public void prepareSchedules() {
 		createSchedules();
 	}
 
@@ -92,7 +99,15 @@ public class Schedule {
 	private void createSchedules() {
 		deleteExistingSchedules();
 		BigDecimal monthlyAmt = Env.ZERO;
-		BigDecimal totalAmount = loan.getloanamount().add(loan.getloanbalance());
+		BigDecimal totalAmount = Env.ZERO;
+		if (loan.is_new()) {
+			totalAmount = loan.getloanamount();
+		} else {
+			totalAmount = loan.getloanbalance();
+			loan.setloanamount(loan.getloanbalance());
+			loan.save();
+		}
+
 		if (loan.isopen_repay_amount())
 			monthlyAmt = loan.getconstantrepayamnt();
 		else
@@ -113,7 +128,7 @@ public class Schedule {
 			LoanSchedule ls = new LoanSchedule(Env.getCtx(), 0, null);
 
 			ls.sets_loans_ID(loan.gets_loans_ID());
-			ls.setloanamount(loan.getloanamount().add(loan.getloanbalance()));
+			ls.setloanamount(totalAmount);
 			ls.setrepayperiod(i + 1);
 
 			ls.setinterestrate(loan.getloaninterestrate());
@@ -127,7 +142,7 @@ public class Schedule {
 
 			ls.setmonthopeningbal(totalAmount);
 			ls.setexpprincipal(totalAmount.subtract(ls.getmonthlyrepayment()));
-			
+
 			ls.save();
 			totalAmount = totalAmount.subtract(monthlyAmt);
 

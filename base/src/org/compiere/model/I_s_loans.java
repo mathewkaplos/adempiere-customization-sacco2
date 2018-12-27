@@ -304,6 +304,15 @@ public interface I_s_loans
 	/** Get Cash Amount	  */
 	public BigDecimal getcashamount();
 
+    /** Column name cheque_collection_date */
+    public static final String COLUMNNAME_cheque_collection_date = "cheque_collection_date";
+
+	/** Set Cheque Collection Date	  */
+	public void setcheque_collection_date (Timestamp cheque_collection_date);
+
+	/** Get Cheque Collection Date	  */
+	public Timestamp getcheque_collection_date();
+
     /** Column name cheque_collection_done */
     public static final String COLUMNNAME_cheque_collection_done = "cheque_collection_done";
 
@@ -418,6 +427,15 @@ public interface I_s_loans
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name date_debited */
+    public static final String COLUMNNAME_date_debited = "date_debited";
+
+	/** Set Date Debited	  */
+	public void setdate_debited (Timestamp date_debited);
+
+	/** Get Date Debited	  */
+	public Timestamp getdate_debited();
 
     /** Column name dateinformed */
     public static final String COLUMNNAME_dateinformed = "dateinformed";
@@ -637,6 +655,15 @@ public interface I_s_loans
 
 	/** Get Issued By	  */
 	public String getissuedby();
+
+    /** Column name last_pay_date */
+    public static final String COLUMNNAME_last_pay_date = "last_pay_date";
+
+	/** Set Last Pay Date	  */
+	public void setlast_pay_date (Timestamp last_pay_date);
+
+	/** Get Last Pay Date	  */
+	public Timestamp getlast_pay_date();
 
     /** Column name lastrescheduledmonth */
     public static final String COLUMNNAME_lastrescheduledmonth = "lastrescheduledmonth";

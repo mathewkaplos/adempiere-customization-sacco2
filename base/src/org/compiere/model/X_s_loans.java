@@ -41,8 +41,12 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
       super (ctx, s_loans_ID, trxName);
       /** if (s_loans_ID == 0)
         {
+			setappliedamount (Env.ZERO);
+// 0
 			setapproval_done (false);
 // N
+			setchequetype (null);
+// MANUAL
 			setinterest_recovery (null);
 // 1
 			setloanappdate (new Timestamp( System.currentTimeMillis() ));
@@ -507,6 +511,20 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
+	/** Set Cheque Collection Date.
+		@param cheque_collection_date Cheque Collection Date	  */
+	public void setcheque_collection_date (Timestamp cheque_collection_date)
+	{
+		set_Value (COLUMNNAME_cheque_collection_date, cheque_collection_date);
+	}
+
+	/** Get Cheque Collection Date.
+		@return Cheque Collection Date	  */
+	public Timestamp getcheque_collection_date () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_cheque_collection_date);
+	}
+
 	/** Set cheque_collection_done.
 		@param cheque_collection_done cheque_collection_done	  */
 	public void setcheque_collection_done (boolean cheque_collection_done)
@@ -566,10 +584,17 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
+	/** chequetype AD_Reference_ID=1000017 */
+	public static final int CHEQUETYPE_AD_Reference_ID=1000017;
+	/** MANUAL = MANUAL */
+	public static final String CHEQUETYPE_MANUAL = "MANUAL";
+	/** COMPUTER = COMPUTER */
+	public static final String CHEQUETYPE_COMPUTER = "COMPUTER";
 	/** Set Cheque Type.
 		@param chequetype Cheque Type	  */
 	public void setchequetype (String chequetype)
 	{
+
 		set_Value (COLUMNNAME_chequetype, chequetype);
 	}
 
@@ -689,6 +714,20 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Date Debited.
+		@param date_debited Date Debited	  */
+	public void setdate_debited (Timestamp date_debited)
+	{
+		set_Value (COLUMNNAME_date_debited, date_debited);
+	}
+
+	/** Get Date Debited.
+		@return Date Debited	  */
+	public Timestamp getdate_debited () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_date_debited);
 	}
 
 	/** Set Date Informed.
@@ -1077,6 +1116,20 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public String getissuedby () 
 	{
 		return (String)get_Value(COLUMNNAME_issuedby);
+	}
+
+	/** Set Last Pay Date.
+		@param last_pay_date Last Pay Date	  */
+	public void setlast_pay_date (Timestamp last_pay_date)
+	{
+		set_Value (COLUMNNAME_last_pay_date, last_pay_date);
+	}
+
+	/** Get Last Pay Date.
+		@return Last Pay Date	  */
+	public Timestamp getlast_pay_date () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_last_pay_date);
 	}
 
 	/** Set Last Rescheduled Month.

@@ -70,9 +70,9 @@ public class GenerateLoanSchedule extends SvrProcess {
 			return "SCHEDULES NOT GENERATED.";
 		}
 		// start();
-		Schedule schedule = new Schedule();
-		schedule.prepare(getRecord_ID());
-		Schedule interestPayMethod = new ReducingBalance();
+		Schedule schedule = new Schedule(getRecord_ID());
+		schedule.prepareSchedules();
+		Schedule interestPayMethod = new ReducingBalance(getRecord_ID());
 		interestPayMethod.execute();
 		return null;
 	}
