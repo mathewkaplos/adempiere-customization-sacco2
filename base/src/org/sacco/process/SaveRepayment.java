@@ -23,7 +23,7 @@ public class SaveRepayment extends SvrProcess {
 		repayment.setVoucherNo(repayment.getDocumentNo());
 		repayment.setmonthopeningbal(loan.getmonthopeningbal());
 		repayment.setInterest(repayment.getexpectedinterest());
-		
+
 		repayment.setIsComplete(true);
 		repayment.save();
 
@@ -33,6 +33,10 @@ public class SaveRepayment extends SvrProcess {
 		loan.setlast_pay_date(DateUtil.newTimestamp());
 
 		loan.save();
+
+		// interest balance
+		repayment.setloan_interest_balance(loan.getintbalance());
+		repayment.save();
 		return null;
 	}
 

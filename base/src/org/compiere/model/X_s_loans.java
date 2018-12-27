@@ -33,7 +33,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181226L;
+	private static final long serialVersionUID = 20181227L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -546,6 +546,27 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return false;
 	}
 
+	/** Set cheque_collector_changed.
+		@param cheque_collector_changed cheque_collector_changed	  */
+	public void setcheque_collector_changed (boolean cheque_collector_changed)
+	{
+		set_Value (COLUMNNAME_cheque_collector_changed, Boolean.valueOf(cheque_collector_changed));
+	}
+
+	/** Get cheque_collector_changed.
+		@return cheque_collector_changed	  */
+	public boolean ischeque_collector_changed () 
+	{
+		Object oo = get_Value(COLUMNNAME_cheque_collector_changed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set cheque_writing_done.
 		@param cheque_writing_done cheque_writing_done	  */
 	public void setcheque_writing_done (boolean cheque_writing_done)
@@ -697,6 +718,20 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public String getcollectionremarks () 
 	{
 		return (String)get_Value(COLUMNNAME_collectionremarks);
+	}
+
+	/** Set Collector ID No:.
+		@param collector_id_no Collector ID No:	  */
+	public void setcollector_id_no (String collector_id_no)
+	{
+		set_Value (COLUMNNAME_collector_id_no, collector_id_no);
+	}
+
+	/** Get Collector ID No:.
+		@return Collector ID No:	  */
+	public String getcollector_id_no () 
+	{
+		return (String)get_Value(COLUMNNAME_collector_id_no);
 	}
 
 	/** Set Cons. Repay Amt.

@@ -100,7 +100,7 @@ public class Schedule {
 		deleteExistingSchedules();
 		BigDecimal monthlyAmt = Env.ZERO;
 		BigDecimal totalAmount = Env.ZERO;
-		if (loan.is_new()) {
+		if (loan.isnewloan()) {
 			totalAmount = loan.getloanamount();
 		} else {
 			totalAmount = loan.getloanbalance();

@@ -322,6 +322,15 @@ public interface I_s_loans
 	/** Get cheque_collection_done	  */
 	public boolean ischeque_collection_done();
 
+    /** Column name cheque_collector_changed */
+    public static final String COLUMNNAME_cheque_collector_changed = "cheque_collector_changed";
+
+	/** Set cheque_collector_changed	  */
+	public void setcheque_collector_changed (boolean cheque_collector_changed);
+
+	/** Get cheque_collector_changed	  */
+	public boolean ischeque_collector_changed();
+
     /** Column name cheque_writing_done */
     public static final String COLUMNNAME_cheque_writing_done = "cheque_writing_done";
 
@@ -402,6 +411,15 @@ public interface I_s_loans
 
 	/** Get Collection Remarks	  */
 	public String getcollectionremarks();
+
+    /** Column name collector_id_no */
+    public static final String COLUMNNAME_collector_id_no = "collector_id_no";
+
+	/** Set Collector ID No:	  */
+	public void setcollector_id_no (String collector_id_no);
+
+	/** Get Collector ID No:	  */
+	public String getcollector_id_no();
 
     /** Column name constantrepayamnt */
     public static final String COLUMNNAME_constantrepayamnt = "constantrepayamnt";

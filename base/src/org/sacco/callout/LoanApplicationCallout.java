@@ -196,4 +196,17 @@ public class LoanApplicationCallout extends CalloutEngine {
 
 		return NO_ERROR;
 	}
+
+	public String period(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+
+		double loanAmount = ((BigDecimal) mTab.getValue("loanamount")).doubleValue();
+		int periods = ((int) value);
+		if (periods > 0) {
+			double repayAmount = loanAmount / periods;
+			mTab.setValue("loanrepayamt", BigDecimal.valueOf(repayAmount));
+		}
+		return NO_ERROR;
+	}
 }

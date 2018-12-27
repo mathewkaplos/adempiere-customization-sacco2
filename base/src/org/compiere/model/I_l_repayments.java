@@ -347,6 +347,15 @@ public interface I_l_repayments
 
 	public I_C_ValidCombination getloan_gl_A() throws RuntimeException;
 
+    /** Column name loan_interest_balance */
+    public static final String COLUMNNAME_loan_interest_balance = "loan_interest_balance";
+
+	/** Set Loan Interest Balance	  */
+	public void setloan_interest_balance (BigDecimal loan_interest_balance);
+
+	/** Get Loan Interest Balance	  */
+	public BigDecimal getloan_interest_balance();
+
     /** Column name loanbalance */
     public static final String COLUMNNAME_loanbalance = "loanbalance";
 
@@ -505,10 +514,10 @@ public interface I_l_repayments
     /** Column name ReceiptNo */
     public static final String COLUMNNAME_ReceiptNo = "ReceiptNo";
 
-	/** Set ReceiptNo	  */
+	/** Set Receipt No	  */
 	public void setReceiptNo (String ReceiptNo);
 
-	/** Get ReceiptNo	  */
+	/** Get Receipt No	  */
 	public String getReceiptNo();
 
     /** Column name ReceiptNoIssued */

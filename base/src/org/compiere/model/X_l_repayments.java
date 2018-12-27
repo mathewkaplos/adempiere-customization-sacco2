@@ -535,6 +535,23 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Loan Interest Balance.
+		@param loan_interest_balance Loan Interest Balance	  */
+	public void setloan_interest_balance (BigDecimal loan_interest_balance)
+	{
+		set_Value (COLUMNNAME_loan_interest_balance, loan_interest_balance);
+	}
+
+	/** Get Loan Interest Balance.
+		@return Loan Interest Balance	  */
+	public BigDecimal getloan_interest_balance () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_loan_interest_balance);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Loan Balance.
 		@param loanbalance Loan Balance	  */
 	public void setloanbalance (BigDecimal loanbalance)
@@ -840,15 +857,15 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return bd;
 	}
 
-	/** Set ReceiptNo.
-		@param ReceiptNo ReceiptNo	  */
+	/** Set Receipt No.
+		@param ReceiptNo Receipt No	  */
 	public void setReceiptNo (String ReceiptNo)
 	{
 		set_Value (COLUMNNAME_ReceiptNo, ReceiptNo);
 	}
 
-	/** Get ReceiptNo.
-		@return ReceiptNo	  */
+	/** Get Receipt No.
+		@return Receipt No	  */
 	public String getReceiptNo () 
 	{
 		return (String)get_Value(COLUMNNAME_ReceiptNo);
