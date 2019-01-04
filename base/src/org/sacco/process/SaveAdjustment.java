@@ -11,17 +11,17 @@ public class SaveAdjustment extends SvrProcess {
 		// TODO Auto-generated method stub
 
 	}
- 
+
 	@Override
 	protected String doIt() throws Exception {
 		save();
 		return null;
 	}
 
+	// save
 	private void save() {
 		MonthlyLoansAdjustments adjustments = new MonthlyLoansAdjustments(getCtx(), getRecord_ID(), get_TrxName());
 		SLoan loan = new SLoan(getCtx(), adjustments.gets_loans_ID(), get_TrxName());
-		
 
 	}
 
