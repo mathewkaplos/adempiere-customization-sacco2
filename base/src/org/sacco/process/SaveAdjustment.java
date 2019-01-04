@@ -21,6 +21,7 @@ public class SaveAdjustment extends SvrProcess {
 	private void save() {
 		MonthlyLoansAdjustments adjustments = new MonthlyLoansAdjustments(getCtx(), getRecord_ID(), get_TrxName());
 		SLoan loan = new SLoan(getCtx(), adjustments.gets_loans_ID(), get_TrxName());
+		
 
 	}
 
