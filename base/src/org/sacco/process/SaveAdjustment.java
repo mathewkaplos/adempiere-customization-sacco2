@@ -11,7 +11,7 @@ public class SaveAdjustment extends SvrProcess {
 		// TODO Auto-generated method stub
 
 	}
-
+ 
 	@Override
 	protected String doIt() throws Exception {
 		save();
