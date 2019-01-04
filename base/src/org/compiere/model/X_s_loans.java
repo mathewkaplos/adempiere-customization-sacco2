@@ -33,7 +33,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181227L;
+	private static final long serialVersionUID = 20190103L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -2237,6 +2237,27 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
     {
         return new KeyNamePair(get_ID(), String.valueOf(gets_member_ID()));
     }
+
+	/** Set Schedule Adjusted.
+		@param schedule_adjusted Schedule Adjusted	  */
+	public void setschedule_adjusted (boolean schedule_adjusted)
+	{
+		set_Value (COLUMNNAME_schedule_adjusted, Boolean.valueOf(schedule_adjusted));
+	}
+
+	/** Get Schedule Adjusted.
+		@return Schedule Adjusted	  */
+	public boolean isschedule_adjusted () 
+	{
+		Object oo = get_Value(COLUMNNAME_schedule_adjusted);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
 
 	/** Set Seen And Checked All Supporting Documents.
 		@param seen_documents Seen And Checked All Supporting Documents	  */

@@ -7,7 +7,10 @@ import java.util.Properties;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
+import org.compiere.model.LoanSchedule;
+import org.compiere.model.MPeriod;
 import org.compiere.model.SLoan;
+import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 import org.sacco.loan.ReducingBalance;
 
@@ -30,8 +33,15 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 		mTab.setValue("bankgl_Acct", loan.getbankgl_Acct());
 		mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
-		mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
+		mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct()); 
 
+		//
+		Sacco sacco = Sacco.getSaccco();
+		int period_ID = sacco.getsaccoperiod_ID();
+		MPeriod period = new MPeriod(Env.getCtx(), period_ID, null);
+		LoanSchedule ls = loan.getPeriodSchedule(period.getPeriodNo());
+		System.out.println(ls.getmonthlyrepayment());
+		System.out.println(ls.getinterestamount());
 		return NO_ERROR;
 	}
 
@@ -52,7 +62,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 		return NO_ERROR;
 	}
-	
+
 	//
 	public String documentNo(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)

@@ -2,6 +2,7 @@ package org.compiere.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 public class LoanSchedule extends X_s_loanschedule {
@@ -35,5 +36,10 @@ public class LoanSchedule extends X_s_loanschedule {
 		setmonthlyrepayment(principal);
 		setexpprincipal(principal);
 		save();
+	}
+
+	public LoanSchedule getPeriodSchedule(SLoan loan, Timestamp period) {
+
+		return null;
 	}
 }

@@ -1228,6 +1228,15 @@ public interface I_s_loans
 
 	public I_s_member gets_member() throws RuntimeException;
 
+    /** Column name schedule_adjusted */
+    public static final String COLUMNNAME_schedule_adjusted = "schedule_adjusted";
+
+	/** Set Schedule Adjusted	  */
+	public void setschedule_adjusted (boolean schedule_adjusted);
+
+	/** Get Schedule Adjusted	  */
+	public boolean isschedule_adjusted();
+
     /** Column name seen_documents */
     public static final String COLUMNNAME_seen_documents = "seen_documents";
 
