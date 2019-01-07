@@ -1,9 +1,7 @@
 package org.sacco.callout;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Properties;
-
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -14,16 +12,19 @@ import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 import org.sacco.loan.ReducingBalance;
 
-import zenith.util.DateUtil;
-
 public class LoanRemmittanceCallout extends CalloutEngine {
 	public String newRecord(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
 		int val = (Integer) value;
 		SLoan loan = new SLoan(Env.getCtx(), val, null);
+		BigDecimal expectedPrincipal = Env.ZERO;
 		ReducingBalance reducingBalance = new ReducingBalance(loan.get_ID());
-		BigDecimal expectedPrincipal = reducingBalance.getExpectedPrincipal();
+		if (loan.isschedule_adjusted()) {
+			expectedPrincipal = loan.getPeriodAdjustment().getnewamount();
+		} else {
+			expectedPrincipal = reducingBalance.getExpectedPrincipal();
+		}
 		BigDecimal expectedInterest = reducingBalance.getExpectedInterest();
 		BigDecimal gross = expectedPrincipal.add(expectedInterest);
 		mTab.setValue("PaymentAmount", gross);
@@ -33,7 +34,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 		mTab.setValue("bankgl_Acct", loan.getbankgl_Acct());
 		mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
-		mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct()); 
+		mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
 
 		//
 		Sacco sacco = Sacco.getSaccco();

@@ -12,7 +12,6 @@ import org.compiere.model.SLoanType;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.sacco.loan.InterestPayMethod;
 import org.sacco.loan.ReducingBalance;
 import org.sacco.loan.Schedule;
 

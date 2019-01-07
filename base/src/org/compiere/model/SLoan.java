@@ -2,9 +2,7 @@ package org.compiere.model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Properties;
-
 import org.compiere.util.DB;
 
 public class SLoan extends X_s_loans {
@@ -32,6 +30,24 @@ public class SLoan extends X_s_loans {
 			rs = stm.executeQuery();
 			if (rs.next()) {
 				return new LoanSchedule(getCtx(), rs, get_TrxName());
+			}
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
+
+	public MonthlyLoansAdjustments getPeriodAdjustment() {
+		String sql = "SELECT * FROM adempiere.s_monthlyloansadjustments WHERE s_loans_ID=" + get_ID()
+				+ " ORDER BY s_monthlyloansadjustments_ID DESC ";
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			if (rs.next()) {
+				return new MonthlyLoansAdjustments(getCtx(), rs, get_TrxName());
 			}
 
 		} catch (Exception e) {

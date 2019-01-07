@@ -1,9 +1,7 @@
 package org.sacco.loan;
 
 import java.math.BigDecimal;
-
 import org.compiere.model.LoanSchedule;
-import org.compiere.model.SLoan;
 import org.compiere.util.Env;
 
 public class ReducingBalance extends Schedule implements InterestPayMethod {
@@ -75,5 +73,5 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 		BigDecimal expInterest = getInterest(Principal, 1);
 		return expInterest;
 	}
-	
+
 }

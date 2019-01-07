@@ -145,6 +145,19 @@ public interface I_s_monthlyloansadjustments
 	  */
 	public boolean isActive();
 
+    /** Column name IsComplete */
+    public static final String COLUMNNAME_IsComplete = "IsComplete";
+
+	/** Set Complete.
+	  * It is complete
+	  */
+	public void setIsComplete (boolean IsComplete);
+
+	/** Get Complete.
+	  * It is complete
+	  */
+	public boolean isComplete();
+
     /** Column name loaneffectdate */
     public static final String COLUMNNAME_loaneffectdate = "loaneffectdate";
 

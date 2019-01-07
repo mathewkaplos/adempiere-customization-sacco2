@@ -32,7 +32,7 @@ public class X_s_monthlyloansadjustments extends PO implements I_s_monthlyloansa
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190103L;
+	private static final long serialVersionUID = 20190104L;
 
     /** Standard Constructor */
     public X_s_monthlyloansadjustments (Properties ctx, int s_monthlyloansadjustments_ID, String trxName)
@@ -177,6 +177,30 @@ public class X_s_monthlyloansadjustments extends PO implements I_s_monthlyloansa
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Complete.
+		@param IsComplete 
+		It is complete
+	  */
+	public void setIsComplete (boolean IsComplete)
+	{
+		set_Value (COLUMNNAME_IsComplete, Boolean.valueOf(IsComplete));
+	}
+
+	/** Get Complete.
+		@return It is complete
+	  */
+	public boolean isComplete () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsComplete);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Effect Period.

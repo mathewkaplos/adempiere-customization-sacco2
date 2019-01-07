@@ -47,4 +47,34 @@ public class DebitAdjustmentCallout extends CalloutEngine {
 		mTab.setValue("newinterest", ls.getinterestamount());
 		return NO_ERROR;
 	}
+
+	public String onemonthadjustment(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		boolean val = (Boolean) value;
+
+		if (val) {
+			mTab.setValue("recurring", false);
+		}
+
+		else {
+			mTab.setValue("recurring", true);
+		}
+		return NO_ERROR;
+	}
+
+	public String recurring(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		boolean val = (Boolean) value;
+
+		if (val) {
+			mTab.setValue("onemonthadjustment", false);
+		}
+
+		else {
+			mTab.setValue("onemonthadjustment", true);
+		}
+		return NO_ERROR;
+	}
 }
