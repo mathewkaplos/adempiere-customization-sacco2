@@ -149,6 +149,21 @@ public interface I_l_repayments
 	/** Get View Schedule	  */
 	public String getbtn_view_schedule();
 
+    /** Column name C_Bank_ID */
+    public static final String COLUMNNAME_C_Bank_ID = "C_Bank_ID";
+
+	/** Set Bank.
+	  * Bank
+	  */
+	public void setC_Bank_ID (int C_Bank_ID);
+
+	/** Get Bank.
+	  * Bank
+	  */
+	public int getC_Bank_ID();
+
+	public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException;
+
     /** Column name ChequeNo */
     public static final String COLUMNNAME_ChequeNo = "ChequeNo";
 
@@ -282,6 +297,33 @@ public interface I_l_repayments
 	public int getinterestgl_Acct();
 
 	public I_C_ValidCombination getinterestgl_A() throws RuntimeException;
+
+    /** Column name is_refund */
+    public static final String COLUMNNAME_is_refund = "is_refund";
+
+	/** Set Is Refund	  */
+	public void setis_refund (boolean is_refund);
+
+	/** Get Is Refund	  */
+	public boolean is_refund();
+
+    /** Column name is_repayment */
+    public static final String COLUMNNAME_is_repayment = "is_repayment";
+
+	/** Set Is Repayment	  */
+	public void setis_repayment (boolean is_repayment);
+
+	/** Get Is Repayment	  */
+	public boolean is_repayment();
+
+    /** Column name is_topup */
+    public static final String COLUMNNAME_is_topup = "is_topup";
+
+	/** Set Is Top Up	  */
+	public void setis_topup (boolean is_topup);
+
+	/** Get Is Top Up	  */
+	public boolean is_topup();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -529,6 +571,17 @@ public interface I_l_repayments
 	/** Get Receipt No Issued	  */
 	public String getReceiptNoIssued();
 
+    /** Column name refund_approvedby_ID */
+    public static final String COLUMNNAME_refund_approvedby_ID = "refund_approvedby_ID";
+
+	/** Set Refund/Top-Up Approved By	  */
+	public void setrefund_approvedby_ID (int refund_approvedby_ID);
+
+	/** Get Refund/Top-Up Approved By	  */
+	public int getrefund_approvedby_ID();
+
+	public org.compiere.model.I_AD_User getrefund_approvedby() throws RuntimeException;
+
     /** Column name Reversed */
     public static final String COLUMNNAME_Reversed = "Reversed";
 
@@ -579,10 +632,10 @@ public interface I_l_repayments
     /** Column name TransactionPer */
     public static final String COLUMNNAME_TransactionPer = "TransactionPer";
 
-	/** Set TransactionPer	  */
+	/** Set Transaction Period	  */
 	public void setTransactionPer (int TransactionPer);
 
-	/** Get TransactionPer	  */
+	/** Get Transaction Period	  */
 	public int getTransactionPer();
 
     /** Column name TransactionTime */
@@ -597,19 +650,19 @@ public interface I_l_repayments
     /** Column name TransactionType */
     public static final String COLUMNNAME_TransactionType = "TransactionType";
 
-	/** Set TransactionType	  */
+	/** Set Transaction Type	  */
 	public void setTransactionType (String TransactionType);
 
-	/** Get TransactionType	  */
+	/** Get Transaction Type	  */
 	public String getTransactionType();
 
     /** Column name transactionyear */
     public static final String COLUMNNAME_transactionyear = "transactionyear";
 
-	/** Set transactionyear	  */
+	/** Set Transaction Year	  */
 	public void settransactionyear (int transactionyear);
 
-	/** Get transactionyear	  */
+	/** Get Transaction Year	  */
 	public int gettransactionyear();
 
     /** Column name Transid */
@@ -640,10 +693,10 @@ public interface I_l_repayments
     /** Column name UserCode */
     public static final String COLUMNNAME_UserCode = "UserCode";
 
-	/** Set UserCode	  */
+	/** Set User Code	  */
 	public void setUserCode (String UserCode);
 
-	/** Get UserCode	  */
+	/** Get User Code	  */
 	public String getUserCode();
 
     /** Column name VoucherNo */

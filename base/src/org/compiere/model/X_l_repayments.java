@@ -32,7 +32,7 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181227L;
+	private static final long serialVersionUID = 20190115L;
 
     /** Standard Constructor */
     public X_l_repayments (Properties ctx, int l_repayments_ID, String trxName)
@@ -226,6 +226,34 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	public String getbtn_view_schedule () 
 	{
 		return (String)get_Value(COLUMNNAME_btn_view_schedule);
+	}
+
+	public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException
+    {
+		return (org.compiere.model.I_C_Bank)MTable.get(getCtx(), org.compiere.model.I_C_Bank.Table_Name)
+			.getPO(getC_Bank_ID(), get_TrxName());	}
+
+	/** Set Bank.
+		@param C_Bank_ID 
+		Bank
+	  */
+	public void setC_Bank_ID (int C_Bank_ID)
+	{
+		if (C_Bank_ID < 1) 
+			set_Value (COLUMNNAME_C_Bank_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Bank_ID, Integer.valueOf(C_Bank_ID));
+	}
+
+	/** Get Bank.
+		@return Bank
+	  */
+	public int getC_Bank_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Bank_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Cheque No.
@@ -437,6 +465,69 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Is Refund.
+		@param is_refund Is Refund	  */
+	public void setis_refund (boolean is_refund)
+	{
+		set_Value (COLUMNNAME_is_refund, Boolean.valueOf(is_refund));
+	}
+
+	/** Get Is Refund.
+		@return Is Refund	  */
+	public boolean is_refund () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_refund);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Is Repayment.
+		@param is_repayment Is Repayment	  */
+	public void setis_repayment (boolean is_repayment)
+	{
+		set_Value (COLUMNNAME_is_repayment, Boolean.valueOf(is_repayment));
+	}
+
+	/** Get Is Repayment.
+		@return Is Repayment	  */
+	public boolean is_repayment () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_repayment);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Is Top Up.
+		@param is_topup Is Top Up	  */
+	public void setis_topup (boolean is_topup)
+	{
+		set_Value (COLUMNNAME_is_topup, Boolean.valueOf(is_topup));
+	}
+
+	/** Get Is Top Up.
+		@return Is Top Up	  */
+	public boolean is_topup () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_topup);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Complete.
@@ -885,6 +976,31 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return (String)get_Value(COLUMNNAME_ReceiptNoIssued);
 	}
 
+	public org.compiere.model.I_AD_User getrefund_approvedby() throws RuntimeException
+    {
+		return (org.compiere.model.I_AD_User)MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
+			.getPO(getrefund_approvedby_ID(), get_TrxName());	}
+
+	/** Set Refund/Top-Up Approved By.
+		@param refund_approvedby_ID Refund/Top-Up Approved By	  */
+	public void setrefund_approvedby_ID (int refund_approvedby_ID)
+	{
+		if (refund_approvedby_ID < 1) 
+			set_Value (COLUMNNAME_refund_approvedby_ID, null);
+		else 
+			set_Value (COLUMNNAME_refund_approvedby_ID, Integer.valueOf(refund_approvedby_ID));
+	}
+
+	/** Get Refund/Top-Up Approved By.
+		@return Refund/Top-Up Approved By	  */
+	public int getrefund_approvedby_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_refund_approvedby_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Reversed.
 		@param Reversed Reversed	  */
 	public void setReversed (String Reversed)
@@ -978,15 +1094,15 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return bd;
 	}
 
-	/** Set TransactionPer.
-		@param TransactionPer TransactionPer	  */
+	/** Set Transaction Period.
+		@param TransactionPer Transaction Period	  */
 	public void setTransactionPer (int TransactionPer)
 	{
 		set_Value (COLUMNNAME_TransactionPer, Integer.valueOf(TransactionPer));
 	}
 
-	/** Get TransactionPer.
-		@return TransactionPer	  */
+	/** Get Transaction Period.
+		@return Transaction Period	  */
 	public int getTransactionPer () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_TransactionPer);
@@ -1009,29 +1125,29 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return (Timestamp)get_Value(COLUMNNAME_TransactionTime);
 	}
 
-	/** Set TransactionType.
-		@param TransactionType TransactionType	  */
+	/** Set Transaction Type.
+		@param TransactionType Transaction Type	  */
 	public void setTransactionType (String TransactionType)
 	{
 		set_Value (COLUMNNAME_TransactionType, TransactionType);
 	}
 
-	/** Get TransactionType.
-		@return TransactionType	  */
+	/** Get Transaction Type.
+		@return Transaction Type	  */
 	public String getTransactionType () 
 	{
 		return (String)get_Value(COLUMNNAME_TransactionType);
 	}
 
-	/** Set transactionyear.
-		@param transactionyear transactionyear	  */
+	/** Set Transaction Year.
+		@param transactionyear Transaction Year	  */
 	public void settransactionyear (int transactionyear)
 	{
 		set_Value (COLUMNNAME_transactionyear, Integer.valueOf(transactionyear));
 	}
 
-	/** Get transactionyear.
-		@return transactionyear	  */
+	/** Get Transaction Year.
+		@return Transaction Year	  */
 	public int gettransactionyear () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_transactionyear);
@@ -1057,15 +1173,15 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set UserCode.
-		@param UserCode UserCode	  */
+	/** Set User Code.
+		@param UserCode User Code	  */
 	public void setUserCode (String UserCode)
 	{
 		set_Value (COLUMNNAME_UserCode, UserCode);
 	}
 
-	/** Get UserCode.
-		@return UserCode	  */
+	/** Get User Code.
+		@return User Code	  */
 	public String getUserCode () 
 	{
 		return (String)get_Value(COLUMNNAME_UserCode);

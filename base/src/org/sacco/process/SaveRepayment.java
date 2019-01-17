@@ -29,12 +29,37 @@ public class SaveRepayment extends SvrProcess {
 
 		repayment.setReceiptNo(repayment.getDocumentNo());
 		repayment.setVoucherNo(repayment.getDocumentNo());
-		repayment.setmonthopeningbal(loan.getmonthopeningbal());
-		repayment.setInterest(repayment.getexpectedinterest());
 
 		repayment.setIsComplete(true);
 		repayment.save();
+		/////////////////////////
+		if (repayment.is_repayment())
+			updateLoanRemmittance();
+		else if (repayment.is_topup() || repayment.is_refund())
+			updateLoanRefund();
+		return null;
+	}
 
+	private void updateLoanRefund() {
+		loan.setloanbalance(loan.getloanbalance().add(repayment.getPaymentAmount()));
+		loan.setmonthopeningbal(loan.getmonthopeningbal().add(repayment.getPaymentAmount()));
+		loan.save();
+
+		// interest balance
+		repayment.setloan_interest_balance(loan.getintbalance());
+		repayment.setmonthopeningbal(loan.getmonthopeningbal());
+		repayment.setInterest(repayment.getexpectedinterest());
+		repayment.save();
+		saveAccPayables();
+
+	}
+
+	private void saveAccPayables() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void updateLoanRemmittance() {
 		loan.setloanbalance(loan.getloanbalance().subtract(repayment.getPrincipal()));
 		loan.setmonthopeningbal(loan.getmonthopeningbal().subtract(repayment.getPrincipal()));
 		loan.setintbalance(loan.getintbalance().subtract(repayment.getexpectedinterest()));
@@ -44,9 +69,10 @@ public class SaveRepayment extends SvrProcess {
 
 		// interest balance
 		repayment.setloan_interest_balance(loan.getintbalance());
+		repayment.setmonthopeningbal(loan.getmonthopeningbal());
+		repayment.setInterest(repayment.getexpectedinterest());
 		repayment.save();
 		saveAccRecievables();
-		return null;
 	}
 
 	private void saveAccRecievables() {
