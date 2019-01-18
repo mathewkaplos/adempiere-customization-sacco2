@@ -1,8 +1,12 @@
 package org.sacco.callout;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Properties;
+
+import javax.swing.JOptionPane;
 
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
@@ -74,6 +78,22 @@ public class DebitAdjustmentCallout extends CalloutEngine {
 
 		else {
 			mTab.setValue("onemonthadjustment", true);
+		}
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.DebitAdjustmentCallout.newAmount
+	public String newAmount(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		BigDecimal val = (BigDecimal) value;
+		int s_loans_ID = (Integer) mTab.getValue("s_loans_ID");
+		SLoan loan = new SLoan(Env.getCtx(), s_loans_ID, null);
+		if (val.compareTo(loan.getloanbalance()) > 0) {
+			mTab.setValue("newamount", null);
+			JOptionPane.showMessageDialog(null,
+					"Loan balance is: " + loan.getloanbalance().setScale(2, RoundingMode.UP));
+
 		}
 		return NO_ERROR;
 	}

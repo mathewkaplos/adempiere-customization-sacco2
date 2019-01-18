@@ -35,8 +35,14 @@ public class SaveRepayment extends SvrProcess {
 		/////////////////////////
 		if (repayment.is_repayment())
 			updateLoanRemmittance();
-		else if (repayment.is_topup() || repayment.is_refund())
+		else if (repayment.is_topup() || repayment.is_refund()){
 			updateLoanRefund();
+			repayment.setPaymentAmount(repayment.getPaymentAmount().negate());
+			repayment.setInterest(repayment.getInterest().negate());
+			repayment.setPrincipal(repayment.getPrincipal().negate());
+			repayment.save();
+		}
+		
 		return null;
 	}
 
@@ -48,7 +54,7 @@ public class SaveRepayment extends SvrProcess {
 		// interest balance
 		repayment.setloan_interest_balance(loan.getintbalance());
 		repayment.setmonthopeningbal(loan.getmonthopeningbal());
-		repayment.setInterest(repayment.getexpectedinterest());
+		//repayment.setInterest(repayment.getexpectedinterest());
 		repayment.save();
 		saveAccPayables();
 

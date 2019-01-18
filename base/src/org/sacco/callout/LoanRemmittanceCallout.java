@@ -65,6 +65,8 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 						isRefund(ctx, WindowNo, mTab, mField, true);
 						Repayment repayment = new Repayment(Env.getCtx(), l_repayments_ID, null);
 						mTab.setValue("PaymentAmount", repayment.getPaymentAmount());
+						mTab.setValue("Principal", repayment.getPrincipal());
+						mTab.setValue("interest", repayment.getInterest());
 					}
 				} catch (NumberFormatException e) {
 					System.out.println("This is not a number: l_repayments_ID_String");
