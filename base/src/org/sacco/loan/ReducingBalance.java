@@ -14,6 +14,7 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 	// Reducing balance
 	public void execute() {
 
+		System.out.println("reducing balance");
 		BigDecimal tempPaid = Env.ZERO;
 		System.out.println(loanSchedules);
 		for (int i = 0; i < loanSchedules.length; i++) {
@@ -60,6 +61,7 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 		}
 		loan.setloaninterestamount(total_interest);
 		loan.setintbalance(total_interest);
+		loan.setstatementbal(loan.getloanamount().add(total_interest));
 		loan.save();
 	}
 

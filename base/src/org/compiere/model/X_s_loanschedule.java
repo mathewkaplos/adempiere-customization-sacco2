@@ -32,7 +32,7 @@ public class X_s_loanschedule extends PO implements I_s_loanschedule, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181224L;
+	private static final long serialVersionUID = 20190127L;
 
     /** Standard Constructor */
     public X_s_loanschedule (Properties ctx, int s_loanschedule_ID, String trxName)
@@ -107,6 +107,34 @@ public class X_s_loanschedule extends PO implements I_s_loanschedule, I_Persiste
 		return bd;
 	}
 
+	public org.compiere.model.I_C_Period getC_Period() throws RuntimeException
+    {
+		return (org.compiere.model.I_C_Period)MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
+			.getPO(getC_Period_ID(), get_TrxName());	}
+
+	/** Set Period.
+		@param C_Period_ID 
+		Period of the Calendar
+	  */
+	public void setC_Period_ID (int C_Period_ID)
+	{
+		if (C_Period_ID < 1) 
+			set_Value (COLUMNNAME_C_Period_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
+	}
+
+	/** Get Period.
+		@return Period of the Calendar
+	  */
+	public int getC_Period_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Period_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set chargeintfirst.
 		@param chargeintfirst chargeintfirst	  */
 	public void setchargeintfirst (int chargeintfirst)
@@ -158,15 +186,15 @@ public class X_s_loanschedule extends PO implements I_s_loanschedule, I_Persiste
 		return bd;
 	}
 
-	/** Set Interest Due.
-		@param interest_due Interest Due	  */
+	/** Set Total Interest Due.
+		@param interest_due Total Interest Due	  */
 	public void setinterest_due (BigDecimal interest_due)
 	{
 		set_Value (COLUMNNAME_interest_due, interest_due);
 	}
 
-	/** Get Interest Due.
-		@return Interest Due	  */
+	/** Get Total Interest Due.
+		@return Total Interest Due	  */
 	public BigDecimal getinterest_due () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_interest_due);
@@ -175,15 +203,15 @@ public class X_s_loanschedule extends PO implements I_s_loanschedule, I_Persiste
 		return bd;
 	}
 
-	/** Set interestamount.
-		@param interestamount interestamount	  */
+	/** Set Interest Amount.
+		@param interestamount Interest Amount	  */
 	public void setinterestamount (BigDecimal interestamount)
 	{
 		set_Value (COLUMNNAME_interestamount, interestamount);
 	}
 
-	/** Get interestamount.
-		@return interestamount	  */
+	/** Get Interest Amount.
+		@return Interest Amount	  */
 	public BigDecimal getinterestamount () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_interestamount);

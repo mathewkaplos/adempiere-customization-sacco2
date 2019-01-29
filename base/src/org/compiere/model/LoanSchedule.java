@@ -33,7 +33,6 @@ public class LoanSchedule extends X_s_loanschedule {
 	public void setPrincipal(BigDecimal principal) {
 		setmonthlyrepayment(principal);
 		setprincipalrepayment(principal);
-		setmonthlyrepayment(principal);
 		setexpprincipal(principal);
 		save();
 	}

@@ -1,17 +1,17 @@
 package org.sacco.callout;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
-import org.compiere.model.LoanSchedule;
-import org.compiere.model.MPeriod;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
 import org.compiere.model.Sacco;
 import org.compiere.util.Env;
+import org.sacco.loan.Formula;
 import org.sacco.loan.ReducingBalance;
 
 public class LoanRemmittanceCallout extends CalloutEngine {
@@ -24,6 +24,12 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		int val = (Integer) value;
 		SLoan loan = new SLoan(Env.getCtx(), val, null);
 		BigDecimal expectedPrincipal = Env.ZERO;
+
+		// period
+		Sacco sacco = Sacco.getSaccco();
+		int C_Period_ID = sacco.getsaccoperiod_ID();
+		mTab.setValue("C_Period_ID", C_Period_ID);
+		boolean hasRemittance = loan.remittanceDoneForPeriod(C_Period_ID);
 
 		if (mTab.getAD_Tab_ID() == remmittanceTabID) {
 
@@ -49,12 +55,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("interestgl_Acct", loanType.getloantypeinterestgl_Acct());
 			mTab.setValue("is_repayment", true);
 			//
-			Sacco sacco = Sacco.getSaccco();
-			int period_ID = sacco.getsaccoperiod_ID();
-			MPeriod period = new MPeriod(Env.getCtx(), period_ID, null);
-			LoanSchedule ls = loan.getPeriodSchedule(period.getPeriodNo());
-			System.out.println(ls.getmonthlyrepayment());
-			System.out.println(ls.getinterestamount());
+
 		} else if (mTab.getAD_Tab_ID() == refundTabID) {
 			String l_repayments_ID_String = Env.getContext(Env.getCtx(), 2, 1, "l_repayments_ID");
 
@@ -146,6 +147,33 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("is_refund", true);
 			mTab.setValue("Comments", "Loan Refund");
 		}
+		return NO_ERROR;
+	}
+
+	// PaymentDate
+	// org.sacco.callout.LoanRemmittanceCallout.PaymentDate
+	public String PaymentDate(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		int s_loantype_ID = (int) mTab.getValue("s_loantype_ID");
+		SLoanType type = new SLoanType(ctx, s_loantype_ID, null);
+		if (type.getmonthlyintcalc().equals("0")) {
+			Timestamp paymentDate = (Timestamp) value;
+			int s_loans_ID = (int) mTab.getValue("s_loans_ID");
+			SLoan loan = new SLoan(ctx, s_loans_ID, null);
+			long days = loan.getLastRepayPeriodInDays(paymentDate);
+			double P = loan.getloanbalance().doubleValue();
+			double R = loan.getloaninterestrate().doubleValue();
+			double yearDays = 365;
+			double T = days / yearDays;
+
+			String method = type.getinterestformula();
+			Formula formula = new Formula(P, R, T, method);
+			BigDecimal interet = formula.getInterest();
+			mTab.setValue("expectedinterest", interet);
+
+		}
+
 		return NO_ERROR;
 	}
 }

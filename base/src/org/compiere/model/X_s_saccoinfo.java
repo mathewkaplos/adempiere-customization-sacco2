@@ -32,7 +32,7 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181226L;
+	private static final long serialVersionUID = 20190125L;
 
     /** Standard Constructor */
     public X_s_saccoinfo (Properties ctx, int s_saccoinfo_ID, String trxName)
@@ -44,6 +44,7 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 // N
 			sets_saccoinfo_ID (0);
 			setsacconame (null);
+			setsaccoperiod_ID (0);
 			setsaccoroundcurrency (Env.ZERO);
         } */
     }
@@ -1358,15 +1359,15 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set sharecode.
-		@param sharecode sharecode	  */
+	/** Set Share Code / Ref #.
+		@param sharecode Share Code / Ref #	  */
 	public void setsharecode (String sharecode)
 	{
 		set_Value (COLUMNNAME_sharecode, sharecode);
 	}
 
-	/** Get sharecode.
-		@return sharecode	  */
+	/** Get Share Code / Ref #.
+		@return Share Code / Ref #	  */
 	public String getsharecode () 
 	{
 		return (String)get_Value(COLUMNNAME_sharecode);

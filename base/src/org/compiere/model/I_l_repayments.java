@@ -98,14 +98,14 @@ public interface I_l_repayments
 	/** Get AmountInWords	  */
 	public String getAmountInWords();
 
-    /** Column name BankAccount */
-    public static final String COLUMNNAME_BankAccount = "BankAccount";
+    /** Column name BankAccount_Acct */
+    public static final String COLUMNNAME_BankAccount_Acct = "BankAccount_Acct";
 
 	/** Set Bank Account	  */
-	public void setBankAccount (String BankAccount);
+	public void setBankAccount_Acct (String BankAccount_Acct);
 
 	/** Get Bank Account	  */
-	public String getBankAccount();
+	public String getBankAccount_Acct();
 
     /** Column name bankgl_Acct */
     public static final String COLUMNNAME_bankgl_Acct = "bankgl_Acct";
@@ -163,6 +163,19 @@ public interface I_l_repayments
 	public int getC_Bank_ID();
 
 	public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException;
+
+    /** Column name C_Period_ID */
+    public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
+
+	/** Set Period.
+	  * Period of the Calendar
+	  */
+	public void setC_Period_ID (int C_Period_ID);
+
+	/** Get Period.
+	  * Period of the Calendar
+	  */
+	public int getC_Period_ID();
 
     /** Column name ChequeNo */
     public static final String COLUMNNAME_ChequeNo = "ChequeNo";
@@ -641,10 +654,10 @@ public interface I_l_repayments
     /** Column name TransactionTime */
     public static final String COLUMNNAME_TransactionTime = "TransactionTime";
 
-	/** Set TransactionTime	  */
+	/** Set Transaction Time	  */
 	public void setTransactionTime (Timestamp TransactionTime);
 
-	/** Get TransactionTime	  */
+	/** Get Transaction Time	  */
 	public Timestamp getTransactionTime();
 
     /** Column name TransactionType */

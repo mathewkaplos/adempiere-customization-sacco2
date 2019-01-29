@@ -80,6 +80,21 @@ public interface I_s_loanschedule
 	/** Get amountpaid	  */
 	public BigDecimal getamountpaid();
 
+    /** Column name C_Period_ID */
+    public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
+
+	/** Set Period.
+	  * Period of the Calendar
+	  */
+	public void setC_Period_ID (int C_Period_ID);
+
+	/** Get Period.
+	  * Period of the Calendar
+	  */
+	public int getC_Period_ID();
+
+	public org.compiere.model.I_C_Period getC_Period() throws RuntimeException;
+
     /** Column name chargeintfirst */
     public static final String COLUMNNAME_chargeintfirst = "chargeintfirst";
 
@@ -126,19 +141,19 @@ public interface I_s_loanschedule
     /** Column name interest_due */
     public static final String COLUMNNAME_interest_due = "interest_due";
 
-	/** Set Interest Due	  */
+	/** Set Total Interest Due	  */
 	public void setinterest_due (BigDecimal interest_due);
 
-	/** Get Interest Due	  */
+	/** Get Total Interest Due	  */
 	public BigDecimal getinterest_due();
 
     /** Column name interestamount */
     public static final String COLUMNNAME_interestamount = "interestamount";
 
-	/** Set interestamount	  */
+	/** Set Interest Amount	  */
 	public void setinterestamount (BigDecimal interestamount);
 
-	/** Get interestamount	  */
+	/** Get Interest Amount	  */
 	public BigDecimal getinterestamount();
 
     /** Column name interestrate */

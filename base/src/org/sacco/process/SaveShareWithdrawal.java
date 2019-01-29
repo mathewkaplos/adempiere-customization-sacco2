@@ -11,7 +11,7 @@ import org.compiere.process.SvrProcess;
 public class SaveShareWithdrawal extends SvrProcess {
 
 	ShareRemittance shareRemittance = null;
-	
+
 	@Override
 	protected void prepare() {
 		shareRemittance = new ShareRemittance(getCtx(), getRecord_ID(), get_TrxName());
@@ -23,6 +23,9 @@ public class SaveShareWithdrawal extends SvrProcess {
 		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
 		memberShares.setsharestodate(memberShares.getsharestodate().subtract(receiptAmt));
 		memberShares.save();
+		shareRemittance.setIsComplete(true);
+		shareRemittance.setreceiptamount(shareRemittance.getreceiptamount().negate());
+		shareRemittance.save();
 		JOptionPane.showMessageDialog(null, "Saved Successfully");
 		return null;
 	}

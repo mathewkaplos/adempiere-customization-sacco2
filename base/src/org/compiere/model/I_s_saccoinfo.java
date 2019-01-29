@@ -803,10 +803,10 @@ public interface I_s_saccoinfo
     /** Column name sharecode */
     public static final String COLUMNNAME_sharecode = "sharecode";
 
-	/** Set sharecode	  */
+	/** Set Share Code / Ref #	  */
 	public void setsharecode (String sharecode);
 
-	/** Get sharecode	  */
+	/** Get Share Code / Ref #	  */
 	public String getsharecode();
 
     /** Column name shareid */

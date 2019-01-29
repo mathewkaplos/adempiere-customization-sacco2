@@ -513,6 +513,17 @@ public interface I_s_loans
 	  */
 	public String getDocumentNo();
 
+    /** Column name effect_period_ID */
+    public static final String COLUMNNAME_effect_period_ID = "effect_period_ID";
+
+	/** Set Effect Period	  */
+	public void seteffect_period_ID (int effect_period_ID);
+
+	/** Get Effect Period	  */
+	public int geteffect_period_ID();
+
+	public org.compiere.model.I_C_Period geteffect_period() throws RuntimeException;
+
     /** Column name existingloan */
     public static final String COLUMNNAME_existingloan = "existingloan";
 

@@ -3,9 +3,8 @@ package org.sacco.loan;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
-
 import org.compiere.model.LoanSchedule;
+import org.compiere.model.MPeriod;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
 import org.compiere.util.DB;
@@ -128,7 +127,7 @@ public class Schedule {
 			LoanSchedule ls = new LoanSchedule(Env.getCtx(), 0, null);
 
 			ls.sets_loans_ID(loan.gets_loans_ID());
-			ls.setloanamount(totalAmount);
+			ls.setloanamount(loan.getloanamount());
 			ls.setrepayperiod(i + 1);
 
 			ls.setinterestrate(loan.getloaninterestrate());
@@ -146,12 +145,17 @@ public class Schedule {
 			ls.save();
 			totalAmount = totalAmount.subtract(monthlyAmt);
 
-			LocalDate date = ls.getloaneffectdate().toLocalDateTime().toLocalDate();
-			date = date.plusMonths(i + 1);
-			LocalDate lastDay = date.with(TemporalAdjusters.lastDayOfMonth());
-			ls.setmonthperiod(lastDay.getMonthValue());
-			Timestamp timestamp = Timestamp.valueOf(lastDay.atStartOfDay());
-			ls.setloanpaydate(timestamp);
+			MPeriod period = new MPeriod(Env.getCtx(), loan.geteffect_period_ID(), null);
+			LocalDate effectDate = period.getEndDate().toLocalDateTime().toLocalDate();
+			effectDate = effectDate.plusMonths(i);
+			Timestamp payDate = Timestamp.valueOf(effectDate.atStartOfDay());
+
+			LocalDate periodPayDate = effectDate.minusDays(1);// for February
+			Timestamp periodPayTimestamp = Timestamp.valueOf(periodPayDate.atStartOfDay());
+			int C_Period_ID = MPeriod.getC_Period_ID(Env.getCtx(), periodPayTimestamp, 0);
+			ls.setC_Period_ID(C_Period_ID);
+			ls.setloanpaydate(payDate);
+			ls.setmonthperiod(effectDate.getMonthValue());
 			ls.save();
 
 			loanSchedules[i] = ls;

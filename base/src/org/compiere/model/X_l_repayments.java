@@ -32,7 +32,7 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190115L;
+	private static final long serialVersionUID = 20190127L;
 
     /** Standard Constructor */
     public X_l_repayments (Properties ctx, int l_repayments_ID, String trxName)
@@ -145,17 +145,17 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	}
 
 	/** Set Bank Account.
-		@param BankAccount Bank Account	  */
-	public void setBankAccount (String BankAccount)
+		@param BankAccount_Acct Bank Account	  */
+	public void setBankAccount_Acct (String BankAccount_Acct)
 	{
-		set_Value (COLUMNNAME_BankAccount, BankAccount);
+		set_Value (COLUMNNAME_BankAccount_Acct, BankAccount_Acct);
 	}
 
 	/** Get Bank Account.
 		@return Bank Account	  */
-	public String getBankAccount () 
+	public String getBankAccount_Acct () 
 	{
-		return (String)get_Value(COLUMNNAME_BankAccount);
+		return (String)get_Value(COLUMNNAME_BankAccount_Acct);
 	}
 
 	public I_C_ValidCombination getbankgl_A() throws RuntimeException
@@ -251,6 +251,29 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	public int getC_Bank_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Bank_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Period.
+		@param C_Period_ID 
+		Period of the Calendar
+	  */
+	public void setC_Period_ID (int C_Period_ID)
+	{
+		if (C_Period_ID < 1) 
+			set_Value (COLUMNNAME_C_Period_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
+	}
+
+	/** Get Period.
+		@return Period of the Calendar
+	  */
+	public int getC_Period_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Period_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1111,15 +1134,15 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set TransactionTime.
-		@param TransactionTime TransactionTime	  */
+	/** Set Transaction Time.
+		@param TransactionTime Transaction Time	  */
 	public void setTransactionTime (Timestamp TransactionTime)
 	{
 		set_Value (COLUMNNAME_TransactionTime, TransactionTime);
 	}
 
-	/** Get TransactionTime.
-		@return TransactionTime	  */
+	/** Get Transaction Time.
+		@return Transaction Time	  */
 	public Timestamp getTransactionTime () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_TransactionTime);

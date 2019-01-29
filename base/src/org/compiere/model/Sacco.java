@@ -1,7 +1,7 @@
 package org.compiere.model;
 
 import java.util.Properties;
-
+import org.codehaus.groovy.classgen.GeneratorContext;
 import org.compiere.util.Env;
 
 public class Sacco extends X_s_saccoinfo {
@@ -16,7 +16,12 @@ public class Sacco extends X_s_saccoinfo {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static Sacco getSaccco(){
+	public static Sacco getSaccco() {
 		return new Sacco(Env.getCtx(), 1000000, null);
 	}
+
+	public static MPeriod getCurrentPeriod() {
+		return MPeriod.get(Env.getCtx(), getSaccco().getsaccoperiod_ID());
+	}
+
 }

@@ -12,6 +12,7 @@ import org.compiere.model.SLoanType;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.sacco.loan.Amortized;
 import org.sacco.loan.ReducingBalance;
 import org.sacco.loan.Schedule;
 
@@ -69,14 +70,22 @@ public class GenerateLoanSchedule extends SvrProcess {
 			return "SCHEDULES NOT GENERATED.";
 		}
 		// start();
+
 		Schedule schedule = new Schedule(getRecord_ID());
 		schedule.prepareSchedules();
-		Schedule interestPayMethod = new ReducingBalance(getRecord_ID());
-		interestPayMethod.execute();
+		if (loanType.getloantypeinteresttype().equalsIgnoreCase("A")) {
+
+			Schedule amortized = new Amortized(getRecord_ID());
+			amortized.execute();
+		} else {
+			Schedule interestPayMethod = new ReducingBalance(getRecord_ID());
+			interestPayMethod.execute();
+		}
+
 		return null;
 	}
 
-	void start() {
+	private void start() {
 		deleteExistingSchedules();
 		createSchedules();
 
@@ -93,7 +102,7 @@ public class GenerateLoanSchedule extends SvrProcess {
 	}
 
 	// Reducing balance
-	void firstAlgo() {
+	private void firstAlgo() {
 		BigDecimal interest = Env.ZERO;
 		BigDecimal total_interest = Env.ZERO;
 		double P = loan.getappliedamount().doubleValue();
@@ -179,7 +188,7 @@ public class GenerateLoanSchedule extends SvrProcess {
 	}
 
 	// Reducing balance constant
-	void secondAlgo() {
+	private void secondAlgo() {
 		BigDecimal interest = Env.ZERO;
 		BigDecimal total_interest = Env.ZERO;
 		double P = loan.getappliedamount().doubleValue();
@@ -232,7 +241,7 @@ public class GenerateLoanSchedule extends SvrProcess {
 	}
 
 	// Fixed
-	void thirdAlgo() {
+	private void thirdAlgo() {
 		BigDecimal interest = Env.ZERO;
 		BigDecimal total_interest = Env.ZERO;
 		double P = loan.getappliedamount().doubleValue();

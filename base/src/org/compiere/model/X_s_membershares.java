@@ -33,7 +33,7 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190118L;
+	private static final long serialVersionUID = 20190122L;
 
     /** Standard Constructor */
     public X_s_membershares (Properties ctx, int s_membershares_ID, String trxName)
@@ -251,18 +251,16 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return bd;
 	}
 
-	/** paymode AD_Reference_ID=1000016 */
-	public static final int PAYMODE_AD_Reference_ID=1000016;
-	/** Cash = 1 */
-	public static final String PAYMODE_Cash = "1";
-	/** Cheque = 2 */
-	public static final String PAYMODE_Cheque = "2";
-	/** Cash & Cheque = 3 */
-	public static final String PAYMODE_CashCheque = "3";
-	/** FOSA = 4 */
-	public static final String PAYMODE_FOSA = "4";
-	/** Error Detection = 5 */
-	public static final String PAYMODE_ErrorDetection = "5";
+	/** paymode AD_Reference_ID=1000010 */
+	public static final int PAYMODE_AD_Reference_ID=1000010;
+	/** CASH PERMIT = CASH PERMIT */
+	public static final String PAYMODE_CASHPERMIT = "CASH PERMIT";
+	/** DIRECT BANKING = DIRECT BANKING */
+	public static final String PAYMODE_DIRECTBANKING = "DIRECT BANKING";
+	/** FOSA = FOSA */
+	public static final String PAYMODE_FOSA = "FOSA";
+	/** SALARY DEDS = SALARY DEDS */
+	public static final String PAYMODE_SALARYDEDS = "SALARY DEDS";
 	/** Set Pay Mode.
 		@param paymode Pay Mode	  */
 	public void setpaymode (String paymode)
@@ -341,9 +339,9 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	public void sets_member_ID (int s_member_ID)
 	{
 		if (s_member_ID < 1) 
-			set_Value (COLUMNNAME_s_member_ID, null);
+			set_ValueNoCheck (COLUMNNAME_s_member_ID, null);
 		else 
-			set_Value (COLUMNNAME_s_member_ID, Integer.valueOf(s_member_ID));
+			set_ValueNoCheck (COLUMNNAME_s_member_ID, Integer.valueOf(s_member_ID));
 	}
 
 	/** Get Member.

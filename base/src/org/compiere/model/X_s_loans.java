@@ -33,7 +33,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190103L;
+	private static final long serialVersionUID = 20190128L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -878,6 +878,31 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public String getDocumentNo () 
 	{
 		return (String)get_Value(COLUMNNAME_DocumentNo);
+	}
+
+	public org.compiere.model.I_C_Period geteffect_period() throws RuntimeException
+    {
+		return (org.compiere.model.I_C_Period)MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
+			.getPO(geteffect_period_ID(), get_TrxName());	}
+
+	/** Set Effect Period.
+		@param effect_period_ID Effect Period	  */
+	public void seteffect_period_ID (int effect_period_ID)
+	{
+		if (effect_period_ID < 1) 
+			set_Value (COLUMNNAME_effect_period_ID, null);
+		else 
+			set_Value (COLUMNNAME_effect_period_ID, Integer.valueOf(effect_period_ID));
+	}
+
+	/** Get Effect Period.
+		@return Effect Period	  */
+	public int geteffect_period_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_effect_period_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Existing Loan.
@@ -1887,18 +1912,16 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
-	/** paymode AD_Reference_ID=1000016 */
-	public static final int PAYMODE_AD_Reference_ID=1000016;
-	/** Cash = 1 */
-	public static final String PAYMODE_Cash = "1";
-	/** Cheque = 2 */
-	public static final String PAYMODE_Cheque = "2";
-	/** Cash & Cheque = 3 */
-	public static final String PAYMODE_CashCheque = "3";
-	/** FOSA = 4 */
-	public static final String PAYMODE_FOSA = "4";
-	/** Error Detection = 5 */
-	public static final String PAYMODE_ErrorDetection = "5";
+	/** paymode AD_Reference_ID=1000010 */
+	public static final int PAYMODE_AD_Reference_ID=1000010;
+	/** CASH PERMIT = CASH PERMIT */
+	public static final String PAYMODE_CASHPERMIT = "CASH PERMIT";
+	/** DIRECT BANKING = DIRECT BANKING */
+	public static final String PAYMODE_DIRECTBANKING = "DIRECT BANKING";
+	/** FOSA = FOSA */
+	public static final String PAYMODE_FOSA = "FOSA";
+	/** SALARY DEDS = SALARY DEDS */
+	public static final String PAYMODE_SALARYDEDS = "SALARY DEDS";
 	/** Set Pay Mode.
 		@param paymode Pay Mode	  */
 	public void setpaymode (String paymode)
