@@ -14,16 +14,17 @@ import org.compiere.model.SLoanType;
 import org.compiere.model.SMember;
 import org.compiere.util.Env;
 
+import zenith.util.Util;
+
 public class LoanApplicationCallout extends CalloutEngine {
 
 	public String loanType(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		// Declare Variables
-		// org.sacco.callout.LoanApplicationCallout.loanAmount
 		int repayPeriod = 0;
 		BigDecimal minimumloan = Env.ZERO;
 		BigDecimal maximumloan = Env.ZERO;
 		SLoanType loanType = null;
-		int interestRate = 0;
+		BigDecimal interestRate = Env.ZERO;
 		int loanGLCode = 0;
 
 		// Get Loan Type Object
@@ -104,11 +105,11 @@ public class LoanApplicationCallout extends CalloutEngine {
 		int repayPeriod = loan.getloanrepayperiod();
 		if (repayPeriod > 0) {
 			double repay = amt.doubleValue() / repayPeriod;
-			mTab.setValue("LoanRepayAmt", BigDecimal.valueOf(repay).setScale(2, RoundingMode.HALF_UP));
+			mTab.setValue("LoanRepayAmt", Util.round(BigDecimal.valueOf(repay)));
 		}
 
 		// mTab.dataRefresh();`
-		createSchedule(loan);
+		// createSchedule(loan);
 		return NO_ERROR;
 	}
 
@@ -203,9 +204,9 @@ public class LoanApplicationCallout extends CalloutEngine {
 
 		double loanAmount = ((BigDecimal) mTab.getValue("loanamount")).doubleValue();
 		int periods = ((int) value);
-		if (periods > 0) {
+		if (periods > 0) {	
 			double repayAmount = loanAmount / periods;
-			mTab.setValue("loanrepayamt", BigDecimal.valueOf(repayAmount));
+			mTab.setValue("loanrepayamt", Util.round(BigDecimal.valueOf(repayAmount)));
 		}
 		return NO_ERROR;
 	}

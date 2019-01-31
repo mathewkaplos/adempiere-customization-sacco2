@@ -10,6 +10,8 @@ import org.compiere.model.SLoanType;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
+import zenith.util.Util;
+
 public class Schedule {
 
 	protected static BigDecimal interest = Env.ZERO;
@@ -25,21 +27,30 @@ public class Schedule {
 	static double P = 0;
 	static double R = 0;
 	static double T = 0;
+	static boolean newSchedule;
 
 	BigDecimal monthlyAmt = Env.ZERO;
 
-	public Schedule(int loanID) {
+	public Schedule(int loanID, boolean ns) {
+		newSchedule = ns;
 		loan = new SLoan(Env.getCtx(), loanID, get_TrxName());
+		if (!loan.isseen_documents()) {
+			javax.swing.JOptionPane.showMessageDialog(null,
+					"Please confirm that you have seen and checked all supporting documents first..");
+			return;
+		}
+
 		int loanTypeID = loan.gets_loantype_ID();
 		if (loanTypeID > 0) {
 			loanType = new SLoanType(Env.getCtx(), loanTypeID, get_TrxName());
 		}
 		periods = loan.getloanrepayperiod();
-		if (loan.is_new())
+		if (loan.isnewloan() && newSchedule) {
 			P = loan.getloanamount().doubleValue();
-		else
-			loan.getloanbalance().doubleValue();
-
+		} else {
+			P = loan.getloanbalance().doubleValue();
+		}
+		System.out.println("P: " + P);
 		R = loan.getloaninterestrate().doubleValue();
 		T = periods;
 
@@ -67,6 +78,14 @@ public class Schedule {
 
 	public void prepareSchedules() {
 		createSchedules();
+		if (loanType.getloantypeinteresttype().equalsIgnoreCase("A")) {
+
+			Schedule amortized = new Amortized(loan.get_ID());
+			amortized.execute();
+		} else {
+			Schedule interestPayMethod = new ReducingBalance(loan.get_ID());
+			interestPayMethod.execute();
+		}
 	}
 
 	private String get_TrxName() {
@@ -96,6 +115,7 @@ public class Schedule {
 	}
 
 	private void createSchedules() {
+
 		deleteExistingSchedules();
 		BigDecimal monthlyAmt = Env.ZERO;
 		BigDecimal totalAmount = Env.ZERO;
@@ -127,7 +147,7 @@ public class Schedule {
 			LoanSchedule ls = new LoanSchedule(Env.getCtx(), 0, null);
 
 			ls.sets_loans_ID(loan.gets_loans_ID());
-			ls.setloanamount(loan.getloanamount());
+			ls.setloanamount(BigDecimal.valueOf(P));
 			ls.setrepayperiod(i + 1);
 
 			ls.setinterestrate(loan.getloaninterestrate());
@@ -135,12 +155,12 @@ public class Schedule {
 			ls.setloanappdate(loan.getloanappdate());
 			ls.setloaneffectdate(loan.getloaneffectdate());
 
-			ls.setPrincipal(monthlyAmt);
+			ls.setPrincipal(Util.round(monthlyAmt));
 
 			ls.setintperiod(BigDecimal.valueOf(periods));
 
-			ls.setmonthopeningbal(totalAmount);
-			ls.setexpprincipal(totalAmount.subtract(ls.getmonthlyrepayment()));
+			ls.setmonthopeningbal(Util.round(totalAmount));
+			ls.setexpprincipal(Util.round(totalAmount.subtract(ls.getmonthlyrepayment())));
 
 			ls.save();
 			totalAmount = totalAmount.subtract(monthlyAmt);
@@ -148,14 +168,17 @@ public class Schedule {
 			MPeriod period = new MPeriod(Env.getCtx(), loan.geteffect_period_ID(), null);
 			LocalDate effectDate = period.getEndDate().toLocalDateTime().toLocalDate();
 			effectDate = effectDate.plusMonths(i);
-			Timestamp payDate = Timestamp.valueOf(effectDate.atStartOfDay());
 
 			LocalDate periodPayDate = effectDate.minusDays(1);// for February
 			Timestamp periodPayTimestamp = Timestamp.valueOf(periodPayDate.atStartOfDay());
 			int C_Period_ID = MPeriod.getC_Period_ID(Env.getCtx(), periodPayTimestamp, 0);
 			ls.setC_Period_ID(C_Period_ID);
-			ls.setloanpaydate(payDate);
+
 			ls.setmonthperiod(effectDate.getMonthValue());
+
+			Timestamp payDate = Timestamp.valueOf(
+					effectDate.withDayOfMonth(effectDate.getMonth().length(effectDate.isLeapYear())).atStartOfDay());
+			ls.setloanpaydate(payDate);
 			ls.save();
 
 			loanSchedules[i] = ls;
@@ -163,12 +186,14 @@ public class Schedule {
 	}
 
 	private void deleteExistingSchedules() {
-		String sql = "DELETE FROM s_loanschedule WHERE s_loans_ID =" + loan.gets_loans_ID();
+		int effectPeriod_ID = loan.geteffect_period_ID();
+		String sql = "DELETE FROM adempiere.s_loanschedule WHERE s_loans_ID =" + loan.gets_loans_ID();
+		if (!newSchedule)
+			sql = sql + " AND C_Period_ID>=" + effectPeriod_ID;
 		DB.executeUpdate(sql, null);
 	}
 
 	public void execute() {
-		// TODO Auto-generated method stub
 
 	}
 }

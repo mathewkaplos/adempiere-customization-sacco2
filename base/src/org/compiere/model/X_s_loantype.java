@@ -32,7 +32,7 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181223L;
+	private static final long serialVersionUID = 20190130L;
 
     /** Standard Constructor */
     public X_s_loantype (Properties ctx, int s_loantype_ID, String trxName)
@@ -367,15 +367,15 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return false;
 	}
 
-	/** Set isfosa.
-		@param isfosa isfosa	  */
+	/** Set Is FOSA.
+		@param isfosa Is FOSA	  */
 	public void setisfosa (boolean isfosa)
 	{
 		set_Value (COLUMNNAME_isfosa, Boolean.valueOf(isfosa));
 	}
 
-	/** Get isfosa.
-		@return isfosa	  */
+	/** Get Is FOSA.
+		@return Is FOSA	  */
 	public boolean isfosa () 
 	{
 		Object oo = get_Value(COLUMNNAME_isfosa);
@@ -496,19 +496,19 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 
 	/** Set Monthly Int Rate.
 		@param loantypeinterestrate Monthly Int Rate	  */
-	public void setloantypeinterestrate (int loantypeinterestrate)
+	public void setloantypeinterestrate (BigDecimal loantypeinterestrate)
 	{
-		set_Value (COLUMNNAME_loantypeinterestrate, Integer.valueOf(loantypeinterestrate));
+		set_Value (COLUMNNAME_loantypeinterestrate, loantypeinterestrate);
 	}
 
 	/** Get Monthly Int Rate.
 		@return Monthly Int Rate	  */
-	public int getloantypeinterestrate () 
+	public BigDecimal getloantypeinterestrate () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_loantypeinterestrate);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_loantypeinterestrate);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set loantypeinterestraterate.

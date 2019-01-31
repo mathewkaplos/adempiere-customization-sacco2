@@ -10,8 +10,7 @@ import z.mathew.FinanceLib;
 public class Amortized extends Schedule implements InterestPayMethod {
 
 	public Amortized(int loanID) {
-		super(loanID);
-		// TODO Auto-generated constructor stub
+		super(loanID, newSchedule);
 	}
 
 	// Amortized
@@ -25,12 +24,11 @@ public class Amortized extends Schedule implements InterestPayMethod {
 				continue;
 			double annaulRate = R;
 			double percent = 100;
-			//double period = periods;
+			// double period = periods;
 			double rPer = annaulRate / percent;
-			System.out.println("Amortized..");
 
 			double r = rPer;
-			double p = loan.getloanamount().doubleValue();
+			double p = P;
 			double inter = Finance.ipmt(r, i + 1, loanSchedules.length, p);
 			interest = BigDecimal.valueOf(Math.round(inter * 100D) / 100D);
 			total_interest = total_interest.add(interest);
@@ -54,6 +52,7 @@ public class Amortized extends Schedule implements InterestPayMethod {
 			// paid amount
 			tempPaid = tempPaid.add(ls.getamountdue());
 			ls.setamountpaid(tempPaid);
+			ls.setmonthopeningbal(ls.getmonthlyrepayment().add(ls.getloanbalance()));
 
 			ls.save();
 

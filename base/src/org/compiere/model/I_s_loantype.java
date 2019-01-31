@@ -229,10 +229,10 @@ public interface I_s_loantype
     /** Column name isfosa */
     public static final String COLUMNNAME_isfosa = "isfosa";
 
-	/** Set isfosa	  */
+	/** Set Is FOSA	  */
 	public void setisfosa (boolean isfosa);
 
-	/** Get isfosa	  */
+	/** Get Is FOSA	  */
 	public boolean isfosa();
 
     /** Column name linkedgl */
@@ -295,10 +295,10 @@ public interface I_s_loantype
     public static final String COLUMNNAME_loantypeinterestrate = "loantypeinterestrate";
 
 	/** Set Monthly Int Rate	  */
-	public void setloantypeinterestrate (int loantypeinterestrate);
+	public void setloantypeinterestrate (BigDecimal loantypeinterestrate);
 
 	/** Get Monthly Int Rate	  */
-	public int getloantypeinterestrate();
+	public BigDecimal getloantypeinterestrate();
 
     /** Column name loantypeinterestraterate */
     public static final String COLUMNNAME_loantypeinterestraterate = "loantypeinterestraterate";

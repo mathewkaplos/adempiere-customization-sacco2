@@ -12,34 +12,27 @@ import org.compiere.model.SLoanType;
 import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 import org.sacco.loan.Formula;
-import org.sacco.loan.ReducingBalance;
+import zenith.util.Util;
 
 public class LoanRemmittanceCallout extends CalloutEngine {
 	public String newRecord(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
-
 		int remmittanceTabID = 1000035;
 		int refundTabID = 1000044;
 		int val = (Integer) value;
 		SLoan loan = new SLoan(Env.getCtx(), val, null);
-		BigDecimal expectedPrincipal = Env.ZERO;
 
 		// period
 		Sacco sacco = Sacco.getSaccco();
 		int C_Period_ID = sacco.getsaccoperiod_ID();
 		mTab.setValue("C_Period_ID", C_Period_ID);
-		boolean hasRemittance = loan.remittanceDoneForPeriod(C_Period_ID);
+	
 
 		if (mTab.getAD_Tab_ID() == remmittanceTabID) {
 
-			ReducingBalance reducingBalance = new ReducingBalance(loan.get_ID());
-			if (loan.isschedule_adjusted()) {
-				expectedPrincipal = loan.getPeriodAdjustment().getnewamount();
-			} else {
-				expectedPrincipal = reducingBalance.getExpectedPrincipal();
-			}
-			BigDecimal expectedInterest = reducingBalance.getExpectedInterest();
+			BigDecimal expectedPrincipal = Util.round(loan.getPeriodPrincipal(C_Period_ID));
+			BigDecimal expectedInterest = Util.round(loan.getPeriodInterest(C_Period_ID));
 			BigDecimal gross = expectedPrincipal.add(expectedInterest);
 			mTab.setValue("PaymentAmount", gross);
 			mTab.setValue("Principal", expectedPrincipal);
@@ -171,9 +164,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			Formula formula = new Formula(P, R, T, method);
 			BigDecimal interet = formula.getInterest();
 			mTab.setValue("expectedinterest", interet);
-
 		}
-
 		return NO_ERROR;
 	}
 }

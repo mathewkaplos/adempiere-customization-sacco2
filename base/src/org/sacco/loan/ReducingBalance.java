@@ -4,34 +4,30 @@ import java.math.BigDecimal;
 import org.compiere.model.LoanSchedule;
 import org.compiere.util.Env;
 
+import zenith.util.Util;
+
 public class ReducingBalance extends Schedule implements InterestPayMethod {
 
 	public ReducingBalance(int loanID) {
-		super(loanID);
-		// TODO Auto-generated constructor stub
+		super(loanID, newSchedule);
 	}
 
-	// Reducing balance
 	public void execute() {
-
-		System.out.println("reducing balance");
 		BigDecimal tempPaid = Env.ZERO;
-		System.out.println(loanSchedules);
 		for (int i = 0; i < loanSchedules.length; i++) {
 			LoanSchedule ls = loanSchedules[i];
 			if (ls == null)
 				continue;
-			interest = getInterest(ls.getmonthopeningbal().doubleValue(), 1);
-			total_interest = total_interest.add(interest);
+			interest = Util.round(getInterest(ls.getmonthopeningbal().doubleValue(), 1));
+			total_interest = Util.round(total_interest.add(interest));
 			ls.setamountdue(ls.getmonthlyrepayment().add(interest));
-			P = P - monthlyAmt.doubleValue();
-			ls.setInterest(interest);
-			ls.setrepayamount(ls.getmonthlyrepayment().add(interest));
+			ls.setInterest(Util.round(interest));
+			ls.setrepayamount(Util.round(ls.getmonthlyrepayment().add(interest)));
 
 			ls.save();
 			// paid amount
 			tempPaid = tempPaid.add(ls.getamountdue());
-			ls.setamountpaid(tempPaid);
+			ls.setamountpaid(Util.round(tempPaid));
 
 			ls.save();
 		}
@@ -54,8 +50,8 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 			ls.save();
 
 			// loan balance
-			ls.setloanbalance(ls.getnewinterest().add(ls.getexpprincipal()));
-			ls.setopenning_loanbalance(ls.getmonthopeningbal().add(ls.getoldinterest()));
+			ls.setloanbalance(Util.round(ls.getnewinterest().add(ls.getexpprincipal())));
+			ls.setopenning_loanbalance(Util.round(ls.getmonthopeningbal().add(ls.getoldinterest())));
 
 			ls.save();
 		}
@@ -63,11 +59,6 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 		loan.setintbalance(total_interest);
 		loan.setstatementbal(loan.getloanamount().add(total_interest));
 		loan.save();
-	}
-
-	public BigDecimal getExpectedPrincipal() {
-		double val = loan.getloanamount().doubleValue() / loan.getloanrepayperiod();
-		return BigDecimal.valueOf(val);
 	}
 
 	public BigDecimal getExpectedInterest() {
