@@ -347,4 +347,39 @@ public class SLoan extends X_s_loans {
 		SLoanType loanType = new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
 		return loanType.getloantypeinteresttype();
 	}
+
+	public boolean hasAdjustment(int C_Period_ID) {
+		String sql = "SELECT * FROM adempiere.s_monthlyloansadjustments WHERE s_loans_ID =" + get_ID()
+				+ " AND C_Period_ID =" + C_Period_ID;
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				Repayment repayment = new Repayment(getCtx(), rs, get_TrxName());
+				if (repayment.isComplete())
+					return true;
+			}
+
+		} catch (Exception e) {
+
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
 }
