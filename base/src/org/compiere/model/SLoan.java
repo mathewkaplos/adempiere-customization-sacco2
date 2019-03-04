@@ -382,4 +382,42 @@ public class SLoan extends X_s_loans {
 
 		return false;
 	}
+
+	private BigDecimal getOtherCharges(String whereClause) {
+		String sql = "SELECT * FROM adempiere.s_loan_charges " + whereClause;
+		BigDecimal value = Env.ZERO;
+
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				Sloan_charges charge = new Sloan_charges(getCtx(), rs, get_TrxName());
+				value = value.add(charge.getAmount()).add(charge.getadditionalamt());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return value;
+	}
+
+	public BigDecimal getOtherChargesAll() {
+		return getOtherCharges("");
+	}
 }

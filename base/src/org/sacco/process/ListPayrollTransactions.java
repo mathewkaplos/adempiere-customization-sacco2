@@ -15,7 +15,6 @@ import org.compiere.model.STransactions;
 import org.compiere.model.ShareType;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
-import org.jruby.RubyProcess.Sys;
 
 public class ListPayrollTransactions extends SvrProcess {
 
