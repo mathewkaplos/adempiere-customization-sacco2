@@ -156,7 +156,7 @@ public class AddCharges extends SvrProcess {
 					String func = str.substring(startPos, this.pos);
 					x = parseFactor();
 					if (func.equals("sqrt"))
-						x = Math.sqrt(x);
+						x = Math.sqrt(x); 
 					else if (func.equals("sin"))
 						x = Math.sin(Math.toRadians(x));
 					else if (func.equals("cos"))
