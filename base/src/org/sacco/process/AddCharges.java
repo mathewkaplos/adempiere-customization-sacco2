@@ -161,7 +161,7 @@ public class AddCharges extends SvrProcess {
 						x = Math.sin(Math.toRadians(x));
 					else if (func.equals("cos"))
 						x = Math.cos(Math.toRadians(x));
-					else if (func.equals("tan"))
+			 		else if (func.equals("tan"))
 						x = Math.tan(Math.toRadians(x));
 					else
 						throw new RuntimeException("Unknown function: " + func);
