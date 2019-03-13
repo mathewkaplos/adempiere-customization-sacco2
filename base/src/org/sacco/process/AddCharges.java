@@ -16,6 +16,7 @@ public class AddCharges extends SvrProcess {
 	private ChargeSetup chargeSetup = null;
 	private BigDecimal amt = Env.ZERO;
 	private String Description = "";
+	private BigDecimal loanAmt = Env.ZERO;
 
 	private SLoan loan = null;
 
@@ -37,6 +38,7 @@ public class AddCharges extends SvrProcess {
 			chargeSetup = new ChargeSetup(getCtx(), s_accountsetup_ID, get_TrxName());
 		}
 		loan = new SLoan(getCtx(), getRecord_ID(), get_TrxName());
+		loanAmt = loan.getappliedamount();
 
 	}
 
@@ -50,11 +52,128 @@ public class AddCharges extends SvrProcess {
 	}
 
 	private void add() {
+		String formula = chargeSetup.getchargeformula();
+		formula = formula.replace("P", loanAmt.stripTrailingZeros().toPlainString());
+		formula = formula.replace("[", "").replace("]", "");
+		double d = eval(formula);
+		BigDecimal f_amt = BigDecimal.valueOf(d);
+
 		Sloan_charges charges = new Sloan_charges(getCtx(), 0, get_TrxName());
 		charges.sets_loans_ID(getRecord_ID());
 		charges.sets_accountsetup_ID(s_accountsetup_ID);
 		charges.setDescription(Description);
-		charges.setAmount(amt);
+		charges.setAmount(f_amt);
 		charges.save();
+
+	}
+
+	public static void main(String[] arg) {
+		String rr = "[5+9]";
+		String s = "y % x + y / x * 2";
+		int x = 3;
+		int y = 5;
+		double m = 0.5 * (x);
+		System.out.println(m);
+		System.out.println(rr);
+		System.out.println(eval(rr));
+
+	}
+
+	private static double eval(final String str) {
+		return new Object() {
+			int pos = -1, ch;
+
+			void nextChar() {
+				ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+			}
+
+			boolean eat(int charToEat) {
+				while (ch == ' ')
+					nextChar();
+				if (ch == charToEat) {
+					nextChar();
+					return true;
+				}
+				return false;
+			}
+
+			double parse() {
+				nextChar();
+				double x = parseExpression();
+				if (pos < str.length())
+					throw new RuntimeException("Unexpected: " + (char) ch);
+				return x;
+			}
+
+			// Grammar:
+			// expression = term | expression `+` term | expression `-` term
+			// term = factor | term `*` factor | term `/` factor
+			// factor = `+` factor | `-` factor | `(` expression `)`
+			// | number | functionName factor | factor `^` factor
+
+			double parseExpression() {
+				double x = parseTerm();
+				for (;;) {
+					if (eat('+'))
+						x += parseTerm(); // addition
+					else if (eat('-'))
+						x -= parseTerm(); // subtraction
+					else
+						return x;
+				}
+			}
+
+			double parseTerm() {
+				double x = parseFactor();
+				for (;;) {
+					if (eat('*'))
+						x *= parseFactor(); // multiplication
+					else if (eat('/'))
+						x /= parseFactor(); // division
+					else
+						return x;
+				}
+			}
+
+			double parseFactor() {
+				if (eat('+'))
+					return parseFactor(); // unary plus
+				if (eat('-'))
+					return -parseFactor(); // unary minus
+
+				double x;
+				int startPos = this.pos;
+				if (eat('(')) { // parentheses
+					x = parseExpression();
+					eat(')');
+				} else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
+					while ((ch >= '0' && ch <= '9') || ch == '.')
+						nextChar();
+					x = Double.parseDouble(str.substring(startPos, this.pos));
+				} else if (ch >= 'a' && ch <= 'z') { // functions
+					while (ch >= 'a' && ch <= 'z')
+						nextChar();
+					String func = str.substring(startPos, this.pos);
+					x = parseFactor();
+					if (func.equals("sqrt"))
+						x = Math.sqrt(x);
+					else if (func.equals("sin"))
+						x = Math.sin(Math.toRadians(x));
+					else if (func.equals("cos"))
+						x = Math.cos(Math.toRadians(x));
+					else if (func.equals("tan"))
+						x = Math.tan(Math.toRadians(x));
+					else
+						throw new RuntimeException("Unknown function: " + func);
+				} else {
+					throw new RuntimeException("Unexpected: " + (char) ch);
+				}
+
+				if (eat('^'))
+					x = Math.pow(x, parseFactor()); // exponentiation
+
+				return x;
+			}
+		}.parse();
 	}
 }
