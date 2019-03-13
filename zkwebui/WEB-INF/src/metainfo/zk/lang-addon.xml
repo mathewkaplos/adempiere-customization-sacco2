@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- lang.xml
-	Purpose:
-
-	Description:
-
-	History:
-		Saturday Mar 10 23:43:11     2007, Created by Ashley G Ramdass
-
-Copyright (C) 2007 Ashley G Ramdass (ADempiere WebUI).
--->
+<!-- lang.xml Purpose: Description: History: Saturday Mar 10 23:43:11 2007, 
+	Created by Ashley G Ramdass Copyright (C) 2007 Ashley G Ramdass (ADempiere 
+	WebUI). -->
 
 <language>
 
@@ -22,9 +15,9 @@ Copyright (C) 2007 Ashley G Ramdass (ADempiere WebUI).
 		<version-uid>3.5</version-uid>
 	</version>
 
-	<javascript src="/js/calc.js" charset="UTF-8"/>
-	<javascript src="/js/layout.js" charset="UTF-8"/>
-	<javascript src="/js/report.js" charset="UTF-8"/>	
-	<javascript src="/js/persist-min.js" charset="UTF-8"/>
-	<javascript src="/js/token.js" charset="UTF-8"/>
+	<javascript src="/js/calc.js" charset="UTF-8" />
+	<javascript src="/js/layout.js" charset="UTF-8" />
+	<javascript src="/js/report.js" charset="UTF-8" />
+	<javascript src="/js/persist-min.js" charset="UTF-8" />
+	<javascript src="/js/token.js" charset="UTF-8" />
 </language>

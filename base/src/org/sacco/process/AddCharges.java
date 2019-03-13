@@ -156,12 +156,12 @@ public class AddCharges extends SvrProcess {
 					String func = str.substring(startPos, this.pos);
 					x = parseFactor();
 					if (func.equals("sqrt"))
-						x = Math.sqrt(x);
+						x = Math.sqrt(x); 
 					else if (func.equals("sin"))
 						x = Math.sin(Math.toRadians(x));
 					else if (func.equals("cos"))
 						x = Math.cos(Math.toRadians(x));
-					else if (func.equals("tan"))
+			 		else if (func.equals("tan"))
 						x = Math.tan(Math.toRadians(x));
 					else
 						throw new RuntimeException("Unknown function: " + func);
@@ -175,6 +175,13 @@ public class AddCharges extends SvrProcess {
 				return x;
 			}
 		}.parse(); 
+<<<<<<< HEAD
 	} 
 	//this is new change
 }
+=======
+	}  
+}  //dd
+//add charges   gg
+  
+>>>>>>> branch 'master' of https://github.com/mathewkaplos/adempiere-customization-sacco.git

@@ -3,7 +3,7 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-	
+
 	<display-name>ADempiere WebUI</display-name>
 	<!-- /// -->
 	<!-- DSP -->
@@ -12,9 +12,7 @@
 			<![CDATA[The servlet loads the DSP pages.]]>
 		</description>
 		<servlet-name>dspLoader</servlet-name>
-		<servlet-class>
-			org.zkoss.web.servlet.dsp.InterpreterServlet
-		</servlet-class>
+		<servlet-class>org.zkoss.web.servlet.dsp.InterpreterServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>dspLoader</servlet-name>
@@ -29,20 +27,15 @@
 			Used to cleanup when a session is destroyed
 		</description>
 		<display-name>ZK Session Cleaner</display-name>
-		<listener-class>
-			org.zkoss.zk.ui.http.HttpSessionListener
-		</listener-class>
+		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
 	</listener>
 
 	<servlet>
 		<description>ZK loader for ZUML pages</description>
 		<servlet-name>zkLoader</servlet-name>
-		<servlet-class>
-			org.adempiere.webui.session.WebUIServlet
-		</servlet-class>
-		<!-- Must. Specifies URI of the update engine (DHtmlUpdateServlet).
-			It must be the same as <url-pattern> for the update engine.
-		-->
+		<servlet-class>org.adempiere.webui.session.WebUIServlet</servlet-class>
+		<!-- Must. Specifies URI of the update engine (DHtmlUpdateServlet). It 
+			must be the same as <url-pattern> for the update engine. -->
 		<init-param>
 			<param-name>update-uri</param-name>
 			<param-value>/zkau</param-value>
@@ -60,9 +53,7 @@
 	<servlet>
 		<description>The asynchronous update engine for ZK</description>
 		<servlet-name>auEngine</servlet-name>
-		<servlet-class>
-			org.zkoss.zk.au.http.DHtmlUpdateServlet
-		</servlet-class>
+		<servlet-class>org.zkoss.zk.au.http.DHtmlUpdateServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>auEngine</servlet-name>
@@ -72,9 +63,7 @@
 	<servlet>
 		<description>servlet to provide timeline xml event feed</description>
 		<servlet-name>timelineFeed</servlet-name>
-		<servlet-class>
-			org.adempiere.webui.TimelineEventFeed
-		</servlet-class>
+		<servlet-class>org.adempiere.webui.TimelineEventFeed</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>timelineFeed</servlet-name>
@@ -162,15 +151,15 @@
 	</mime-mapping>
 	<welcome-file-list>
 		<welcome-file>index.zul</welcome-file>
-		
+
 	</welcome-file-list>
-	
+
 	<ejb-local-ref>
 		<ejb-ref-name>adempiere/Status</ejb-ref-name>
 		<ejb-ref-type>Session</ejb-ref-type>
 		<local>org.compiere.interfaces.StatusLocal</local>
 	</ejb-local-ref>
-	
+
 	<ejb-local-ref>
 		<ejb-ref-name>adempiere/Server</ejb-ref-name>
 		<ejb-ref-type>Session</ejb-ref-type>
