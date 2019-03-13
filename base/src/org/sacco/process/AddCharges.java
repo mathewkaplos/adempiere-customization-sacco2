@@ -174,7 +174,7 @@ public class AddCharges extends SvrProcess {
 
 				return x;
 			}
-		}.parse();
+		}.parse(); 
 	} 
 	//this is new change
 }
