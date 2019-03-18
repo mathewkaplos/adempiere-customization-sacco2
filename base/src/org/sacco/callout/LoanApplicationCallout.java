@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -204,10 +206,34 @@ public class LoanApplicationCallout extends CalloutEngine {
 
 		double loanAmount = ((BigDecimal) mTab.getValue("loanamount")).doubleValue();
 		int periods = ((int) value);
-		if (periods > 0) {	
+		if (periods > 0) {
 			double repayAmount = loanAmount / periods;
 			mTab.setValue("loanrepayamt", Util.round(BigDecimal.valueOf(repayAmount)));
 		}
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.LoanApplicationCallout.oldLoan
+	public String oldLoan(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		int s_loans_ID = (int) value;
+		SLoan loan = new SLoan(ctx, s_loans_ID, null);
+		BigDecimal loanBal = loan.getloanbalance();
+		if (loanBal.compareTo(Env.ZERO) < 1) {
+			JOptionPane.showMessageDialog(null, "This loan is fully settled!");
+			mTab.setValue("s_loans_refinance_ID", null);
+			// mTab.setValue(mField, null);
+		}
+
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.LoanApplicationCallout.is_refinance
+	public String is_refinance(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		mTab.setValue("s_loans_refinance_ID", null);
 		return NO_ERROR;
 	}
 }

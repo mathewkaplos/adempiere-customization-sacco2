@@ -47,7 +47,7 @@ public class Amortized extends Schedule implements InterestPayMethod {
 			BigDecimal principalRepayment = BigDecimal.valueOf(Math.round(principal * 100D) / 100D);
 			ls.setprincipalrepayment(principalRepayment.negate());
 			ls.setinterestamount(interest.negate());
-
+ 
 			ls.save();
 			// paid amount
 			tempPaid = tempPaid.add(ls.getamountdue());

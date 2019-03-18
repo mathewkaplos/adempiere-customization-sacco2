@@ -1,10 +1,13 @@
 package org.sacco.callout;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Properties;
 
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
+import org.compiere.model.MemberShares;
 import org.compiere.model.SMember;
 import org.compiere.model.ShareType;
 import org.compiere.util.Env;
@@ -47,10 +50,36 @@ public class ShareAccountOpenningCallout extends CalloutEngine {
 		if (value == null)
 			return "";
 		int s_sharetype_ID = (int) value;
+
 		ShareType shareType = new ShareType(Env.getCtx(), s_sharetype_ID, null);
 		String code = shareType.getsharecode();
-		mTab.setValue("share_code", code);
+		int s_member_ID = (int) mTab.getValue("s_member_ID");
+		SMember member = getMember(s_member_ID);
 
+		MemberShares[] savings = member.getSavings(" AND s_sharetype_ID = " + s_sharetype_ID + "");
+		int no = savings.length + 1;
+		//
+		Arrays.sort(savings, Comparator.comparing(MemberShares::get_ID));
+		for (int i = 0; i < savings.length; i++) {
+			int count = i + 1;
+			MemberShares saving = savings[i];
+			saving.setshare_code(code + count);
+			saving.save();
+		}
+		updateCode(mTab, code + no);
+
+		return NO_ERROR;
+	}
+
+	private void updateCode(GridTab mTab, String code) {
+		mTab.setValue("share_code", code);
+	}
+
+	// org.sacco.callout.ShareAccountOpenningCallout.updated
+	public String updated(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		System.out.println("gggg");
 		return NO_ERROR;
 	}
 }

@@ -19,5 +19,6 @@ public class MemberShares extends X_s_membershares {
 		super(ctx, rs, trxName);
 		// TODO Auto-generated constructor stub
 	}
+	
 
 }

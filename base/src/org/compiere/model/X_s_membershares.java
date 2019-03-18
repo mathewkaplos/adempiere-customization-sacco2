@@ -33,7 +33,7 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190122L;
+	private static final long serialVersionUID = 20190316L;
 
     /** Standard Constructor */
     public X_s_membershares (Properties ctx, int s_membershares_ID, String trxName)
@@ -117,6 +117,27 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return bd;
 	}
 
+	/** Set disp001.
+		@param disp001 disp001	  */
+	public void setdisp001 (boolean disp001)
+	{
+		set_Value (COLUMNNAME_disp001, Boolean.valueOf(disp001));
+	}
+
+	/** Get disp001.
+		@return disp001	  */
+	public boolean isdisp001 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp001);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Document No.
 		@param DocumentNo 
 		Document sequence number of the document
@@ -132,6 +153,23 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	public String getDocumentNo () 
 	{
 		return (String)get_Value(COLUMNNAME_DocumentNo);
+	}
+
+	/** Set Free Shares.
+		@param freeshares Free Shares	  */
+	public void setfreeshares (BigDecimal freeshares)
+	{
+		set_Value (COLUMNNAME_freeshares, freeshares);
+	}
+
+	/** Get Free Shares.
+		@return Free Shares	  */
+	public BigDecimal getfreeshares () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_freeshares);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Interest To Date.

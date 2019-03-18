@@ -1,14 +1,23 @@
 package org.sacco.process;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.compiere.model.AccRecievables;
+import org.compiere.model.MemberShares;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
+import org.compiere.model.SLoanGuantorDetails;
 import org.compiere.model.SLoanType;
 import org.compiere.model.Sacco;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.AmtInWords_EN;
-
+import org.compiere.util.DB;
 import zenith.util.DateUtil;
+import zenith.util.Util;
 
 public class SaveRepayment extends SvrProcess {
 	private Repayment repayment = null;
@@ -35,14 +44,15 @@ public class SaveRepayment extends SvrProcess {
 		/////////////////////////
 		if (repayment.is_repayment())
 			updateLoanRemmittance();
-		else if (repayment.is_topup() || repayment.is_refund()){
+		else if (repayment.is_topup() || repayment.is_refund()) {
 			updateLoanRefund();
 			repayment.setPaymentAmount(repayment.getPaymentAmount().negate());
 			repayment.setInterest(repayment.getInterest().negate());
 			repayment.setPrincipal(repayment.getPrincipal().negate());
 			repayment.save();
 		}
-		
+		repayment.getGuarantorDetails(repayment.gets_loans_ID());
+		repayment.freeTiedShares();
 		return null;
 	}
 
@@ -54,7 +64,7 @@ public class SaveRepayment extends SvrProcess {
 		// interest balance
 		repayment.setloan_interest_balance(loan.getintbalance());
 		repayment.setmonthopeningbal(loan.getmonthopeningbal());
-		//repayment.setInterest(repayment.getexpectedinterest());
+		// repayment.setInterest(repayment.getexpectedinterest());
 		repayment.save();
 		saveAccPayables();
 

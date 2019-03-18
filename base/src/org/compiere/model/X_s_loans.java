@@ -33,7 +33,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190128L;
+	private static final long serialVersionUID = 20190317L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -47,11 +47,15 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 // N
 			setchequetype (null);
 // MANUAL
+			setdisbursed (false);
+// N
+			seteffect_period_ID (0);
 			setinterest_recovery (null);
 // 1
+			setis_refinance (false);
+// N
 			setloanappdate (new Timestamp( System.currentTimeMillis() ));
 // @Date@
-			setloaneffectdate (new Timestamp( System.currentTimeMillis() ));
 			setloanstatus (null);
 // PENDING
 			setnewloan (true);
@@ -354,6 +358,48 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return (String)get_Value(COLUMNNAME_btn_approve_reject_save);
 	}
 
+	/** Set Add Charges (Cheque Writing).
+		@param btn_cheque_witing_OC Add Charges (Cheque Writing)	  */
+	public void setbtn_cheque_witing_OC (String btn_cheque_witing_OC)
+	{
+		set_Value (COLUMNNAME_btn_cheque_witing_OC, btn_cheque_witing_OC);
+	}
+
+	/** Get Add Charges (Cheque Writing).
+		@return Add Charges (Cheque Writing)	  */
+	public String getbtn_cheque_witing_OC () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_cheque_witing_OC);
+	}
+
+	/** Set Add Charges (Partial Disbursement).
+		@param btn_partial_disbur_OC Add Charges (Partial Disbursement)	  */
+	public void setbtn_partial_disbur_OC (String btn_partial_disbur_OC)
+	{
+		set_Value (COLUMNNAME_btn_partial_disbur_OC, btn_partial_disbur_OC);
+	}
+
+	/** Get Add Charges (Partial Disbursement).
+		@return Add Charges (Partial Disbursement)	  */
+	public String getbtn_partial_disbur_OC () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_partial_disbur_OC);
+	}
+
+	/** Set Add Charges (Pay Mode).
+		@param btn_paymode_OC Add Charges (Pay Mode)	  */
+	public void setbtn_paymode_OC (String btn_paymode_OC)
+	{
+		set_Value (COLUMNNAME_btn_paymode_OC, btn_paymode_OC);
+	}
+
+	/** Get Add Charges (Pay Mode).
+		@return Add Charges (Pay Mode)	  */
+	public String getbtn_paymode_OC () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_paymode_OC);
+	}
+
 	/** Set Pre-Print Cheques.
 		@param btn_preprint_cheque Pre-Print Cheques	  */
 	public void setbtn_preprint_cheque (String btn_preprint_cheque)
@@ -380,6 +426,20 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public String getbtn_print_cheque () 
 	{
 		return (String)get_Value(COLUMNNAME_btn_print_cheque);
+	}
+
+	/** Set RE-SCHEDULE LOAN.
+		@param btn_re_schedule RE-SCHEDULE LOAN	  */
+	public void setbtn_re_schedule (String btn_re_schedule)
+	{
+		set_Value (COLUMNNAME_btn_re_schedule, btn_re_schedule);
+	}
+
+	/** Get RE-SCHEDULE LOAN.
+		@return RE-SCHEDULE LOAN	  */
+	public String getbtn_re_schedule () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_re_schedule);
 	}
 
 	/** Set Reverse Status[Payment Mode].
@@ -588,6 +648,23 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return false;
 	}
 
+	/** Set Other Charges(cheque writing).
+		@param cheque_writing_oc Other Charges(cheque writing)	  */
+	public void setcheque_writing_oc (BigDecimal cheque_writing_oc)
+	{
+		set_Value (COLUMNNAME_cheque_writing_oc, cheque_writing_oc);
+	}
+
+	/** Get Other Charges(cheque writing).
+		@return Other Charges(cheque writing)	  */
+	public BigDecimal getcheque_writing_oc () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_cheque_writing_oc);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Cheque Amount.
 		@param chequeamount Cheque Amount	  */
 	public void setchequeamount (BigDecimal chequeamount)
@@ -751,6 +828,76 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
+	/** Set Contract/Offer Returned.
+		@param contract_offer_returned Contract/Offer Returned	  */
+	public void setcontract_offer_returned (boolean contract_offer_returned)
+	{
+		set_Value (COLUMNNAME_contract_offer_returned, Boolean.valueOf(contract_offer_returned));
+	}
+
+	/** Get Contract/Offer Returned.
+		@return Contract/Offer Returned	  */
+	public boolean iscontract_offer_returned () 
+	{
+		Object oo = get_Value(COLUMNNAME_contract_offer_returned);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Contract/Offer Returned Date.
+		@param contract_offer_returned_date Contract/Offer Returned Date	  */
+	public void setcontract_offer_returned_date (Timestamp contract_offer_returned_date)
+	{
+		set_Value (COLUMNNAME_contract_offer_returned_date, contract_offer_returned_date);
+	}
+
+	/** Get Contract/Offer Returned Date.
+		@return Contract/Offer Returned Date	  */
+	public Timestamp getcontract_offer_returned_date () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_contract_offer_returned_date);
+	}
+
+	/** Set Contract/Offer Sent.
+		@param contract_offer_sent Contract/Offer Sent	  */
+	public void setcontract_offer_sent (boolean contract_offer_sent)
+	{
+		set_Value (COLUMNNAME_contract_offer_sent, Boolean.valueOf(contract_offer_sent));
+	}
+
+	/** Get Contract/Offer Sent.
+		@return Contract/Offer Sent	  */
+	public boolean iscontract_offer_sent () 
+	{
+		Object oo = get_Value(COLUMNNAME_contract_offer_sent);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Contract/Offer Sent Date.
+		@param contract_offer_sent_date Contract/Offer Sent Date	  */
+	public void setcontract_offer_sent_date (Timestamp contract_offer_sent_date)
+	{
+		set_Value (COLUMNNAME_contract_offer_sent_date, contract_offer_sent_date);
+	}
+
+	/** Get Contract/Offer Sent Date.
+		@return Contract/Offer Sent Date	  */
+	public Timestamp getcontract_offer_sent_date () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_contract_offer_sent_date);
+	}
+
 	/** Set Date Debited.
 		@param date_debited Date Debited	  */
 	public void setdate_debited (Timestamp date_debited)
@@ -821,6 +968,27 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return false;
 	}
 
+	/** Set Disbursed.
+		@param disbursed Disbursed	  */
+	public void setdisbursed (boolean disbursed)
+	{
+		set_Value (COLUMNNAME_disbursed, Boolean.valueOf(disbursed));
+	}
+
+	/** Get Disbursed.
+		@return Disbursed	  */
+	public boolean isdisbursed () 
+	{
+		Object oo = get_Value(COLUMNNAME_disbursed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set disp001.
 		@param disp001 disp001	  */
 	public void setdisp001 (boolean disp001)
@@ -833,6 +1001,27 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public boolean isdisp001 () 
 	{
 		Object oo = get_Value(COLUMNNAME_disp001);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set disp002.
+		@param disp002 disp002	  */
+	public void setdisp002 (boolean disp002)
+	{
+		set_Value (COLUMNNAME_disp002, Boolean.valueOf(disp002));
+	}
+
+	/** Get disp002.
+		@return disp002	  */
+	public boolean isdisp002 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp002);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -1105,6 +1294,27 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Is Refinance.
+		@param is_refinance Is Refinance	  */
+	public void setis_refinance (boolean is_refinance)
+	{
+		set_Value (COLUMNNAME_is_refinance, Boolean.valueOf(is_refinance));
+	}
+
+	/** Get Is Refinance.
+		@return Is Refinance	  */
+	public boolean is_refinance () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_refinance);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Approved.
 		@param IsApproved 
 		Indicates if this document requires approval
@@ -1327,15 +1537,15 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return (String)get_Value(COLUMNNAME_loancode);
 	}
 
-	/** Set Effect Period.
-		@param loaneffectdate Effect Period	  */
+	/** Set Effect Date.
+		@param loaneffectdate Effect Date	  */
 	public void setloaneffectdate (Timestamp loaneffectdate)
 	{
 		set_Value (COLUMNNAME_loaneffectdate, loaneffectdate);
 	}
 
-	/** Get Effect Period.
-		@return Effect Period	  */
+	/** Get Effect Date.
+		@return Effect Date	  */
 	public Timestamp getloaneffectdate () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_loaneffectdate);
@@ -1912,16 +2122,37 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
-	/** paymode AD_Reference_ID=1000010 */
-	public static final int PAYMODE_AD_Reference_ID=1000010;
-	/** CASH PERMIT = CASH PERMIT */
-	public static final String PAYMODE_CASHPERMIT = "CASH PERMIT";
-	/** DIRECT BANKING = DIRECT BANKING */
-	public static final String PAYMODE_DIRECTBANKING = "DIRECT BANKING";
-	/** FOSA = FOSA */
-	public static final String PAYMODE_FOSA = "FOSA";
-	/** SALARY DEDS = SALARY DEDS */
-	public static final String PAYMODE_SALARYDEDS = "SALARY DEDS";
+	/** Set Other Charges(partial disb.).
+		@param partial_disbursement_oc Other Charges(partial disb.)	  */
+	public void setpartial_disbursement_oc (BigDecimal partial_disbursement_oc)
+	{
+		set_Value (COLUMNNAME_partial_disbursement_oc, partial_disbursement_oc);
+	}
+
+	/** Get Other Charges(partial disb.).
+		@return Other Charges(partial disb.)	  */
+	public BigDecimal getpartial_disbursement_oc () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_partial_disbursement_oc);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** paymode AD_Reference_ID=1000016 */
+	public static final int PAYMODE_AD_Reference_ID=1000016;
+	/** Cash = 1 */
+	public static final String PAYMODE_Cash = "1";
+	/** Cheque = 2 */
+	public static final String PAYMODE_Cheque = "2";
+	/** Cash & Cheque = 3 */
+	public static final String PAYMODE_CashCheque = "3";
+	/** FOSA = 4 */
+	public static final String PAYMODE_FOSA = "4";
+	/** Error Detection = 5 */
+	public static final String PAYMODE_ErrorDetection = "5";
+	/** Payroll Payment = SALARY DEDS */
+	public static final String PAYMODE_PayrollPayment = "SALARY DEDS";
 	/** Set Pay Mode.
 		@param paymode Pay Mode	  */
 	public void setpaymode (String paymode)
@@ -1935,6 +2166,23 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public String getpaymode () 
 	{
 		return (String)get_Value(COLUMNNAME_paymode);
+	}
+
+	/** Set Other Charges(paymode).
+		@param paymode_oc Other Charges(paymode)	  */
+	public void setpaymode_oc (BigDecimal paymode_oc)
+	{
+		set_Value (COLUMNNAME_paymode_oc, paymode_oc);
+	}
+
+	/** Get Other Charges(paymode).
+		@return Other Charges(paymode)	  */
+	public BigDecimal getpaymode_oc () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_paymode_oc);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Payroll NO.
@@ -2198,6 +2446,31 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public int gets_loans_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_loans_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_s_loans gets_loans_refinance() throws RuntimeException
+    {
+		return (I_s_loans)MTable.get(getCtx(), I_s_loans.Table_Name)
+			.getPO(gets_loans_refinance_ID(), get_TrxName());	}
+
+	/** Set Old Loan.
+		@param s_loans_refinance_ID Old Loan	  */
+	public void sets_loans_refinance_ID (int s_loans_refinance_ID)
+	{
+		if (s_loans_refinance_ID < 1) 
+			set_Value (COLUMNNAME_s_loans_refinance_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_loans_refinance_ID, Integer.valueOf(s_loans_refinance_ID));
+	}
+
+	/** Get Old Loan.
+		@return Old Loan	  */
+	public int gets_loans_refinance_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_loans_refinance_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

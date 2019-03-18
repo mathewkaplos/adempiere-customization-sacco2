@@ -96,6 +96,15 @@ public interface I_s_membershares
 	  */
 	public int getCreatedBy();
 
+    /** Column name disp001 */
+    public static final String COLUMNNAME_disp001 = "disp001";
+
+	/** Set disp001	  */
+	public void setdisp001 (boolean disp001);
+
+	/** Get disp001	  */
+	public boolean isdisp001();
+
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
 
@@ -108,6 +117,15 @@ public interface I_s_membershares
 	  * Document sequence number of the document
 	  */
 	public String getDocumentNo();
+
+    /** Column name freeshares */
+    public static final String COLUMNNAME_freeshares = "freeshares";
+
+	/** Set Free Shares	  */
+	public void setfreeshares (BigDecimal freeshares);
+
+	/** Get Free Shares	  */
+	public BigDecimal getfreeshares();
 
     /** Column name interesttodate */
     public static final String COLUMNNAME_interesttodate = "interesttodate";

@@ -37,6 +37,7 @@ public class X_s_other_loan_charges extends PO implements I_s_other_loan_charges
       super (ctx, s_other_loan_charges_ID, trxName);
       /** if (s_other_loan_charges_ID == 0)
         {
+			sets_accountsetup_ID (0);
 			sets_other_loan_charges_ID (0);
         } */
     }

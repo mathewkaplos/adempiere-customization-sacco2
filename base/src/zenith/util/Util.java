@@ -12,10 +12,10 @@ import org.compiere.model.Sacco;
 public final class Util {
 
 	public static void main(String[] args) {
-		BigDecimal value = BigDecimal.valueOf(13.87);
-		BigDecimal increment = BigDecimal.valueOf(0.1);
+		BigDecimal value = BigDecimal.valueOf(76999.999999999998);
+		BigDecimal increment = BigDecimal.valueOf(1);
 		BigDecimal rounded = round(value, increment, RoundingMode.CEILING);
-		System.out.println(rounded);
+		System.out.println(rounded.toPlainString());
 	}
 
 	public static BigDecimal round(BigDecimal value) {

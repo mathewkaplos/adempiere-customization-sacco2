@@ -1,7 +1,17 @@
 package org.compiere.model;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+
+import org.compiere.util.AmtInWords_EN;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
+import zenith.util.DateUtil;
 
 public class Repayment extends X_l_repayments {
 	/**
@@ -19,4 +29,57 @@ public class Repayment extends X_l_repayments {
 		// TODO Auto-generated constructor stub
 	}
 
+	private SLoanGuantorDetails[] details = null;
+	private double totalAmtGuranteed = 0;
+
+	public SLoanGuantorDetails[] getGuarantorDetails(int s_loans_ID) {
+		List<SLoanGuantorDetails> list = new ArrayList<>();
+		String sql = "SELECT * FROM adempiere.s_loanguantordetails WHERE s_loans_ID= " + s_loans_ID
+				+ " AND amountguaranteed>0";
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				SLoanGuantorDetails detail = new SLoanGuantorDetails(getCtx(), rs, get_TrxName());
+				totalAmtGuranteed = totalAmtGuranteed + detail.getamountguaranteed().doubleValue();
+				list.add(detail);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+		details = list.toArray(new SLoanGuantorDetails[list.size()]);
+
+		return list.toArray(new SLoanGuantorDetails[list.size()]);
+	}
+
+	public void freeTiedShares() {
+		for (int i = 0; i < details.length; i++) {
+			SLoanGuantorDetails d = details[i];
+			double dd = (d.getamountguaranteed().doubleValue() / totalAmtGuranteed) * this.getPrincipal().doubleValue();
+			int s_membershares_ID = d.gets_membershares_ID();
+			MemberShares ms = new MemberShares(getCtx(), s_membershares_ID, get_TrxName());
+
+			BigDecimal amt = BigDecimal.valueOf(dd);
+			ms.setfreeshares(ms.getfreeshares().add(amt));
+			ms.settiedshares(ms.gettiedshares().subtract(amt));
+			ms.save();
+		}
+
+	}
 }

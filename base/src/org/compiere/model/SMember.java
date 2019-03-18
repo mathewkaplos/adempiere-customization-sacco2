@@ -1,7 +1,15 @@
 package org.compiere.model;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.python.antlr.ast.GeneratorExp.generators_descriptor;
 
 import mat.mathew.SendMailSSL;
 
@@ -41,5 +49,54 @@ public class SMember extends X_s_member {
 			}
 		}
 		return super.afterSave(newRecord, success);
+	}
+
+	public int getExistingAccounts(int s_sharetype_ID) {
+		String sql = "SELECT COUNT(s_membershares_ID) FROM adempiere.s_membershares WHERE s_sharetype_ID = "
+				+ s_sharetype_ID + " AND s_member_ID=" + get_ID();
+		int val = DB.getSQLValue(get_TrxName(), sql);
+		return val;
+	}
+
+	public BigDecimal getSavingsBal() {
+
+		String Sql = "SELECT COALESCE(SUM(sharestodate),0) " + " FROM adempiere.s_membershares  WHERE s_member_ID ="
+				+ get_ID();
+
+		return null;
+
+	}
+
+	public MemberShares[] getSavings(String and_whereClause) {
+		List<MemberShares> list = new ArrayList<>();
+		String sql = "SELECT * FROM adempiere.s_membershares  WHERE s_member_ID =" + get_ID() + " " + and_whereClause
+				+ " ORDER BY s_membershares_ID";
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				MemberShares shares = new MemberShares(getCtx(), rs, get_TrxName());
+				list.add(shares);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return list.toArray(new MemberShares[list.size()]);
+
 	}
 }

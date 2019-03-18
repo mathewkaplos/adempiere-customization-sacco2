@@ -205,6 +205,33 @@ public interface I_s_loans
 	/** Get Save Approval/Rejection	  */
 	public String getbtn_approve_reject_save();
 
+    /** Column name btn_cheque_witing_OC */
+    public static final String COLUMNNAME_btn_cheque_witing_OC = "btn_cheque_witing_OC";
+
+	/** Set Add Charges (Cheque Writing)	  */
+	public void setbtn_cheque_witing_OC (String btn_cheque_witing_OC);
+
+	/** Get Add Charges (Cheque Writing)	  */
+	public String getbtn_cheque_witing_OC();
+
+    /** Column name btn_partial_disbur_OC */
+    public static final String COLUMNNAME_btn_partial_disbur_OC = "btn_partial_disbur_OC";
+
+	/** Set Add Charges (Partial Disbursement)	  */
+	public void setbtn_partial_disbur_OC (String btn_partial_disbur_OC);
+
+	/** Get Add Charges (Partial Disbursement)	  */
+	public String getbtn_partial_disbur_OC();
+
+    /** Column name btn_paymode_OC */
+    public static final String COLUMNNAME_btn_paymode_OC = "btn_paymode_OC";
+
+	/** Set Add Charges (Pay Mode)	  */
+	public void setbtn_paymode_OC (String btn_paymode_OC);
+
+	/** Get Add Charges (Pay Mode)	  */
+	public String getbtn_paymode_OC();
+
     /** Column name btn_preprint_cheque */
     public static final String COLUMNNAME_btn_preprint_cheque = "btn_preprint_cheque";
 
@@ -222,6 +249,15 @@ public interface I_s_loans
 
 	/** Get Print Cheque	  */
 	public String getbtn_print_cheque();
+
+    /** Column name btn_re_schedule */
+    public static final String COLUMNNAME_btn_re_schedule = "btn_re_schedule";
+
+	/** Set RE-SCHEDULE LOAN	  */
+	public void setbtn_re_schedule (String btn_re_schedule);
+
+	/** Get RE-SCHEDULE LOAN	  */
+	public String getbtn_re_schedule();
 
     /** Column name btn_repaymode_reverse */
     public static final String COLUMNNAME_btn_repaymode_reverse = "btn_repaymode_reverse";
@@ -340,6 +376,15 @@ public interface I_s_loans
 	/** Get cheque_writing_done	  */
 	public boolean ischeque_writing_done();
 
+    /** Column name cheque_writing_oc */
+    public static final String COLUMNNAME_cheque_writing_oc = "cheque_writing_oc";
+
+	/** Set Other Charges(cheque writing)	  */
+	public void setcheque_writing_oc (BigDecimal cheque_writing_oc);
+
+	/** Get Other Charges(cheque writing)	  */
+	public BigDecimal getcheque_writing_oc();
+
     /** Column name chequeamount */
     public static final String COLUMNNAME_chequeamount = "chequeamount";
 
@@ -430,6 +475,42 @@ public interface I_s_loans
 	/** Get Cons. Repay Amt	  */
 	public BigDecimal getconstantrepayamnt();
 
+    /** Column name contract_offer_returned */
+    public static final String COLUMNNAME_contract_offer_returned = "contract_offer_returned";
+
+	/** Set Contract/Offer Returned	  */
+	public void setcontract_offer_returned (boolean contract_offer_returned);
+
+	/** Get Contract/Offer Returned	  */
+	public boolean iscontract_offer_returned();
+
+    /** Column name contract_offer_returned_date */
+    public static final String COLUMNNAME_contract_offer_returned_date = "contract_offer_returned_date";
+
+	/** Set Contract/Offer Returned Date	  */
+	public void setcontract_offer_returned_date (Timestamp contract_offer_returned_date);
+
+	/** Get Contract/Offer Returned Date	  */
+	public Timestamp getcontract_offer_returned_date();
+
+    /** Column name contract_offer_sent */
+    public static final String COLUMNNAME_contract_offer_sent = "contract_offer_sent";
+
+	/** Set Contract/Offer Sent	  */
+	public void setcontract_offer_sent (boolean contract_offer_sent);
+
+	/** Get Contract/Offer Sent	  */
+	public boolean iscontract_offer_sent();
+
+    /** Column name contract_offer_sent_date */
+    public static final String COLUMNNAME_contract_offer_sent_date = "contract_offer_sent_date";
+
+	/** Set Contract/Offer Sent Date	  */
+	public void setcontract_offer_sent_date (Timestamp contract_offer_sent_date);
+
+	/** Get Contract/Offer Sent Date	  */
+	public Timestamp getcontract_offer_sent_date();
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -482,6 +563,15 @@ public interface I_s_loans
 	/** Get Deffered	  */
 	public boolean isdeffered();
 
+    /** Column name disbursed */
+    public static final String COLUMNNAME_disbursed = "disbursed";
+
+	/** Set Disbursed	  */
+	public void setdisbursed (boolean disbursed);
+
+	/** Get Disbursed	  */
+	public boolean isdisbursed();
+
     /** Column name disp001 */
     public static final String COLUMNNAME_disp001 = "disp001";
 
@@ -490,6 +580,15 @@ public interface I_s_loans
 
 	/** Get disp001	  */
 	public boolean isdisp001();
+
+    /** Column name disp002 */
+    public static final String COLUMNNAME_disp002 = "disp002";
+
+	/** Set disp002	  */
+	public void setdisp002 (boolean disp002);
+
+	/** Get disp002	  */
+	public boolean isdisp002();
 
     /** Column name display */
     public static final String COLUMNNAME_display = "display";
@@ -632,6 +731,15 @@ public interface I_s_loans
 	/** Get Repay Period	  */
 	public int getintperiod();
 
+    /** Column name is_refinance */
+    public static final String COLUMNNAME_is_refinance = "is_refinance";
+
+	/** Set Is Refinance	  */
+	public void setis_refinance (boolean is_refinance);
+
+	/** Get Is Refinance	  */
+	public boolean is_refinance();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -771,10 +879,10 @@ public interface I_s_loans
     /** Column name loaneffectdate */
     public static final String COLUMNNAME_loaneffectdate = "loaneffectdate";
 
-	/** Set Effect Period	  */
+	/** Set Effect Date	  */
 	public void setloaneffectdate (Timestamp loaneffectdate);
 
-	/** Get Effect Period	  */
+	/** Get Effect Date	  */
 	public Timestamp getloaneffectdate();
 
     /** Column name loanenddate */
@@ -1074,6 +1182,15 @@ public interface I_s_loans
 	/** Get Other Charges	  */
 	public BigDecimal getothercharges();
 
+    /** Column name partial_disbursement_oc */
+    public static final String COLUMNNAME_partial_disbursement_oc = "partial_disbursement_oc";
+
+	/** Set Other Charges(partial disb.)	  */
+	public void setpartial_disbursement_oc (BigDecimal partial_disbursement_oc);
+
+	/** Get Other Charges(partial disb.)	  */
+	public BigDecimal getpartial_disbursement_oc();
+
     /** Column name paymode */
     public static final String COLUMNNAME_paymode = "paymode";
 
@@ -1082,6 +1199,15 @@ public interface I_s_loans
 
 	/** Get Pay Mode	  */
 	public String getpaymode();
+
+    /** Column name paymode_oc */
+    public static final String COLUMNNAME_paymode_oc = "paymode_oc";
+
+	/** Set Other Charges(paymode)	  */
+	public void setpaymode_oc (BigDecimal paymode_oc);
+
+	/** Get Other Charges(paymode)	  */
+	public BigDecimal getpaymode_oc();
 
     /** Column name payroll_no */
     public static final String COLUMNNAME_payroll_no = "payroll_no";
@@ -1216,6 +1342,17 @@ public interface I_s_loans
 
 	/** Get Loan Ref	  */
 	public int gets_loans_ID();
+
+    /** Column name s_loans_refinance_ID */
+    public static final String COLUMNNAME_s_loans_refinance_ID = "s_loans_refinance_ID";
+
+	/** Set Old Loan	  */
+	public void sets_loans_refinance_ID (int s_loans_refinance_ID);
+
+	/** Get Old Loan	  */
+	public int gets_loans_refinance_ID();
+
+	public I_s_loans gets_loans_refinance() throws RuntimeException;
 
     /** Column name s_loantype_ID */
     public static final String COLUMNNAME_s_loantype_ID = "s_loantype_ID";

@@ -8,9 +8,13 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Properties;
+
+import org.compiere.util.AmtInWords_EN;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.sacco.loan.ReducingBalance;
+
+import zenith.util.DateUtil;
 
 public class SLoan extends X_s_loans {
 
@@ -62,7 +66,7 @@ public class SLoan extends X_s_loans {
 
 	public MonthlyLoansAdjustments getPeriodAdjustment() {
 		String sql = "SELECT * FROM adempiere.s_monthlyloansadjustments WHERE s_loans_ID=" + get_ID()
-				+ " ORDER BY s_monthlyloansadjustments_ID DESC ";
+				+ " AND iscomplete='Y' ORDER BY s_monthlyloansadjustments_ID DESC ";
 		PreparedStatement stm = null;
 		ResultSet rs = null;
 		try {
@@ -232,7 +236,13 @@ public class SLoan extends X_s_loans {
 
 	public BigDecimal getPeriodPrincipal(int C_Period_ID) {
 		if (isschedule_adjusted()) {
-			return getPeriodAdjustment().getnewamount();
+			BigDecimal adjustedValue = getPeriodAdjustment().getnewamount();
+			BigDecimal loanBal = this.getloanbalance();
+			if (adjustedValue.compareTo(loanBal) == 1) {
+				return loanBal;
+			} else {
+				return adjustedValue;
+			}
 		} else {
 			return getSchedulePrincipal(C_Period_ID);
 		}
@@ -419,5 +429,102 @@ public class SLoan extends X_s_loans {
 
 	public BigDecimal getOtherChargesAll() {
 		return getOtherCharges("");
+	}
+
+	public void updateCharges() {
+		String sql = "select SUM(amount) from adempiere.s_loan_charges WHERE s_loans_ID =" + get_ID();
+		BigDecimal totalAmt = DB.getSQLValueBD(get_TrxName(), sql);
+		System.out.println("totalAmt: " + totalAmt);
+
+		setothercharges(totalAmt);
+		save();
+	}
+
+	////////////////////////////////////////
+	// REPAYMENT///////////
+	private SLoan loan = null;
+	private Repayment repayment = null;
+
+	public Repayment newRepayment(SLoan _loan) {
+		loan = _loan;
+		BigDecimal PaymentAmount = loan.getloanbalance();
+		SLoanType loanType = new SLoanType(Env.getCtx(), loan.gets_loantype_ID(), get_TrxName());
+		Repayment r = new Repayment(getCtx(), 0, get_TrxName());
+		r.sets_loans_ID(loan.get_ID());
+		r.setC_Period_ID(Sacco.getSaccco().getsaccoperiod_ID());
+		r.setbankgl_Acct(loan.getbankgl_Acct());
+		r.sets_loantype_ID(loan.gets_loantype_ID());
+		r.setPaymentDate(DateUtil.newTimestamp());
+		r.setpaymode("CASH PERMIT");
+		r.setloan_gl_Acct(loan.getloan_gl_Acct());
+		r.setinterestgl_Acct(loanType.getloantypeinterestgl_Acct());
+		r.save();
+		r.setReceiptNo(r.getDocumentNo());
+		r.setVoucherNo(r.getDocumentNo());
+		r.setPrincipal(PaymentAmount);
+		r.setPaymentAmount(PaymentAmount);
+		r.setIsComplete(true);
+		r.setis_repayment(true);
+		r.save();
+		repayment = r;
+		updateLoanRemmittance();
+		reAllocateGuarantors();
+		return r;
+	}
+
+	private void reAllocateGuarantors() {
+		SLoanGuantorDetails[] details = repayment.getGuarantorDetails(loan.gets_loans_ID());
+		for (int i = 0; i < details.length; i++) {
+			SLoanGuantorDetails detail = details[i];
+			detail.sets_loans_ID(this.gets_loans_ID());
+			detail.save();
+		}
+
+	}
+
+	private void updateLoanRemmittance() {
+		loan.setloanbalance(loan.getloanbalance().subtract(repayment.getPrincipal()));
+		loan.setmonthopeningbal(loan.getmonthopeningbal().subtract(repayment.getPrincipal()));
+		loan.setintbalance(loan.getintbalance().subtract(repayment.getexpectedinterest()));
+		loan.setlast_pay_date(DateUtil.newTimestamp());
+
+		loan.save();
+
+		// interest balance
+		repayment.setloan_interest_balance(loan.getintbalance());
+		repayment.setmonthopeningbal(loan.getmonthopeningbal());
+		repayment.setInterest(repayment.getexpectedinterest());
+		repayment.save();
+		saveAccRecievables();
+	}
+
+	private void saveAccRecievables() {
+		AccRecievables accRecievables = new AccRecievables(getCtx(), 0, get_TrxName());
+		accRecievables.setTransDate(DateUtil.newTimestamp());
+		accRecievables.settransperiod(Sacco.getSaccco().getsaccoperiod_ID());
+		accRecievables.setCrAmount(repayment.getgross_amount_due());
+		accRecievables.setTransAmount(repayment.getgross_amount_due());
+		accRecievables.setappliedamount(repayment.getgross_amount_due());
+		accRecievables.setComments(repayment.getComments());
+		accRecievables.setbankgl_Acct(repayment.getbankgl_Acct());
+		accRecievables.setCredit_Acct(repayment.getloan_gl_Acct());
+		accRecievables.setDescription(getDescription());
+		accRecievables.setLoanShare("Loan");
+		accRecievables.sets_member_ID(loan.gets_member_ID());
+		accRecievables.setpaymode(repayment.getpaymode());
+		AmtInWords_EN aiw = new AmtInWords_EN();
+		try {
+			// String AmountInWords =
+			// aiw.getAmtInWords(repayment.getgross_amount_due().toString());
+			// accRecievables.setAmountInWords(AmountInWords);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		accRecievables.save();
+	}
+
+	private String getDescription() {
+		SLoanType loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
+		return loanType.getloantypecode() + " Loan Remmittance No: " + repayment.getDocumentNo();
 	}
 }
