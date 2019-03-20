@@ -527,4 +527,13 @@ public class SLoan extends X_s_loans {
 		SLoanType loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
 		return loanType.getloantypecode() + " Loan Remmittance No: " + repayment.getDocumentNo();
 	}
+
+	public BigDecimal getAllDisbursedAmounts() {
+		String sql = "SELECT COALESCE (SUM(disbursed_amount),0) FROM adempiere.s_loan_disbursement WHERE s_loans_ID ="
+				+ gets_loans_ID();
+
+		return DB.getSQLValueBD(get_TrxName(), sql);
+
+	}
+
 }

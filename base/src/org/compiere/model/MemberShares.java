@@ -1,7 +1,10 @@
 package org.compiere.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
+
+import zenith.util.DateUtil;
 
 public class MemberShares extends X_s_membershares {
 
@@ -19,6 +22,28 @@ public class MemberShares extends X_s_membershares {
 		super(ctx, rs, trxName);
 		// TODO Auto-generated constructor stub
 	}
-	
+
+	public void newRemmittance(BigDecimal appliedamount) {
+		SMember member = new SMember(getCtx(), gets_member_ID(), get_TrxName());
+		ShareType shareType = new ShareType(getCtx(), gets_sharetype_ID(), get_TrxName());
+
+		ShareRemittance shareRemittance = new ShareRemittance(getCtx(), 0, get_TrxName());
+		shareRemittance.setmcode(member.getDocumentNo());
+		shareRemittance.setpayroll_no(member.getmpayroll());
+		shareRemittance.sets_member_ID(member.get_ID());
+		shareRemittance.setpaymode("9");
+		shareRemittance.setremittancedate(DateUtil.newTimestamp());
+		shareRemittance.sets_membershares_ID(gets_membershares_ID());
+		shareRemittance.sets_sharetype_ID(gets_sharetype_ID());
+		shareRemittance.setsharegl_Acct(shareType.getsharegl_Acct());
+		shareRemittance.setreceiptamount(appliedamount);
+		shareRemittance.setIsComplete(true);
+		shareRemittance.save();
+
+		setsharestodate(getsharestodate().add(appliedamount));
+		setfreeshares(getfreeshares().add(appliedamount));
+		save();
+
+	}
 
 }

@@ -572,6 +572,24 @@ public interface I_s_loans
 	/** Get Disbursed	  */
 	public boolean isdisbursed();
 
+    /** Column name disbursed_amount */
+    public static final String COLUMNNAME_disbursed_amount = "disbursed_amount";
+
+	/** Set Disbursed Amount	  */
+	public void setdisbursed_amount (BigDecimal disbursed_amount);
+
+	/** Get Disbursed Amount	  */
+	public BigDecimal getdisbursed_amount();
+
+    /** Column name disbursement_installments */
+    public static final String COLUMNNAME_disbursement_installments = "disbursement_installments";
+
+	/** Set Disbursement Installments	  */
+	public void setdisbursement_installments (int disbursement_installments);
+
+	/** Get Disbursement Installments	  */
+	public int getdisbursement_installments();
+
     /** Column name disp001 */
     public static final String COLUMNNAME_disp001 = "disp001";
 
@@ -589,6 +607,15 @@ public interface I_s_loans
 
 	/** Get disp002	  */
 	public boolean isdisp002();
+
+    /** Column name disp003 */
+    public static final String COLUMNNAME_disp003 = "disp003";
+
+	/** Set disp003	  */
+	public void setdisp003 (boolean disp003);
+
+	/** Get disp003	  */
+	public boolean isdisp003();
 
     /** Column name display */
     public static final String COLUMNNAME_display = "display";
@@ -1182,6 +1209,15 @@ public interface I_s_loans
 	/** Get Other Charges	  */
 	public BigDecimal getothercharges();
 
+    /** Column name partial_disbursement */
+    public static final String COLUMNNAME_partial_disbursement = "partial_disbursement";
+
+	/** Set Is Partial Disbursement	  */
+	public void setpartial_disbursement (boolean partial_disbursement);
+
+	/** Get Is Partial Disbursement	  */
+	public boolean ispartial_disbursement();
+
     /** Column name partial_disbursement_oc */
     public static final String COLUMNNAME_partial_disbursement_oc = "partial_disbursement_oc";
 
@@ -1226,6 +1262,15 @@ public interface I_s_loans
 
 	/** Get Pay Type	  */
 	public String getpaytype();
+
+    /** Column name pending_disbursement */
+    public static final String COLUMNNAME_pending_disbursement = "pending_disbursement";
+
+	/** Set Pending Disbursement	  */
+	public void setpending_disbursement (BigDecimal pending_disbursement);
+
+	/** Get Pending Disbursement	  */
+	public BigDecimal getpending_disbursement();
 
     /** Column name Posted */
     public static final String COLUMNNAME_Posted = "Posted";
@@ -1375,6 +1420,39 @@ public interface I_s_loans
 	public int gets_member_ID();
 
 	public I_s_member gets_member() throws RuntimeException;
+
+    /** Column name s_membershares_ID */
+    public static final String COLUMNNAME_s_membershares_ID = "s_membershares_ID";
+
+	/** Set Member Shares	  */
+	public void sets_membershares_ID (int s_membershares_ID);
+
+	/** Get Member Shares	  */
+	public int gets_membershares_ID();
+
+	public I_s_membershares gets_membershares() throws RuntimeException;
+
+    /** Column name s_shamba_ID */
+    public static final String COLUMNNAME_s_shamba_ID = "s_shamba_ID";
+
+	/** Set Shamba	  */
+	public void sets_shamba_ID (int s_shamba_ID);
+
+	/** Get Shamba	  */
+	public int gets_shamba_ID();
+
+	public I_s_shamba gets_shamba() throws RuntimeException;
+
+    /** Column name s_shamba_plot_ID */
+    public static final String COLUMNNAME_s_shamba_plot_ID = "s_shamba_plot_ID";
+
+	/** Set Shamba Plot	  */
+	public void sets_shamba_plot_ID (int s_shamba_plot_ID);
+
+	/** Get Shamba Plot	  */
+	public int gets_shamba_plot_ID();
+
+	public I_s_shamba_plot gets_shamba_plot() throws RuntimeException;
 
     /** Column name schedule_adjusted */
     public static final String COLUMNNAME_schedule_adjusted = "schedule_adjusted";

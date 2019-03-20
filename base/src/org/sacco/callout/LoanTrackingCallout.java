@@ -51,9 +51,12 @@ public class LoanTrackingCallout extends CalloutEngine {
 		if (val.equals("3")) {
 			mTab.setValue("cashamount", null);
 		} else {
-
+			
 		}
 		mTab.setValue("appliedamount", null);
+		mTab.setValue("s_shamba_ID", null);
+		mTab.setValue("s_shamba_plot_ID", null);
+		mTab.setValue("s_membershares_ID", null);
 		return NO_ERROR;
 	}
 
