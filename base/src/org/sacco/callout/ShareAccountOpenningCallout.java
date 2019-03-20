@@ -74,12 +74,4 @@ public class ShareAccountOpenningCallout extends CalloutEngine {
 	private void updateCode(GridTab mTab, String code) {
 		mTab.setValue("share_code", code);
 	}
-
-	// org.sacco.callout.ShareAccountOpenningCallout.updated
-	public String updated(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
-		if (value == null)
-			return "";
-		System.out.println("gggg");
-		return NO_ERROR;
-	}
 }
