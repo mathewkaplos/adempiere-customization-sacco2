@@ -22,6 +22,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 		BigDecimal receiptAmt = shareRemittance.getreceiptamount();
 		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
 		memberShares.setsharestodate(memberShares.getsharestodate().subtract(receiptAmt));
+		memberShares.setfreeshares(memberShares.getfreeshares().subtract(receiptAmt));
 		memberShares.save();
 		shareRemittance.setIsComplete(true);
 		shareRemittance.setreceiptamount(shareRemittance.getreceiptamount().negate());
@@ -29,5 +30,4 @@ public class SaveShareWithdrawal extends SvrProcess {
 		JOptionPane.showMessageDialog(null, "Saved Successfully");
 		return null;
 	}
-
 }

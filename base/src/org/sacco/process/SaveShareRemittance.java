@@ -22,6 +22,7 @@ public class SaveShareRemittance extends SvrProcess {
 		BigDecimal receiptAmt = shareRemittance.getreceiptamount();
 		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
 		memberShares.setsharestodate(memberShares.getsharestodate().add(receiptAmt));
+		memberShares.setfreeshares(memberShares.getfreeshares().add(receiptAmt));
 		memberShares.save();
 		JOptionPane.showMessageDialog(null,"Saved Successfully");
 		return null;
