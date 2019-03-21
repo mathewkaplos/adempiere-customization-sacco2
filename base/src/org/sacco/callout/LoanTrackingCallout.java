@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -51,7 +53,7 @@ public class LoanTrackingCallout extends CalloutEngine {
 		if (val.equals("3")) {
 			mTab.setValue("cashamount", null);
 		} else {
-			
+
 		}
 		mTab.setValue("appliedamount", null);
 		mTab.setValue("s_shamba_ID", null);
@@ -90,6 +92,22 @@ public class LoanTrackingCallout extends CalloutEngine {
 			if (!memberName.trim().equalsIgnoreCase(val.trim())) {
 				mTab.setValue("cheque_collector_changed", true);
 			}
+		}
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.LoanTrackingCallout.disbursement_amount
+	public String disbursement_amount(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+
+		BigDecimal pending_disbursement = (BigDecimal) mTab.getValue("pending_disbursement");
+		BigDecimal disbursement_amount = (BigDecimal) value;
+		if (pending_disbursement.compareTo(disbursement_amount) == 1) {
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Disbursement cannot be more than Pendiing amount!");
+			mTab.setValue("disbursed_amount", Env.ZERO);
 		}
 		return NO_ERROR;
 	}

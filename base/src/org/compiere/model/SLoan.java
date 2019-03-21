@@ -536,4 +536,10 @@ public class SLoan extends X_s_loans {
 
 	}
 
+	public int getNumberOfRepayments() {
+		String sql = "SELECT COUNT(l_repayments_ID) FROM adempiere.l_repayments WHERE is_repayment ='Y' AND isComplete='Y' AND  s_loans_ID  = "
+				+ get_ID();
+		return DB.getSQLValue(get_TrxName(), sql);
+	}
+
 }

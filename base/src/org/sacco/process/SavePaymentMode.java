@@ -25,12 +25,13 @@ public class SavePaymentMode extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-
-		loan.setloanbalance(loan.getapprovedamount());
-		loan.setmonthopeningbal(loan.getapprovedamount());
-		loan.setloanpaymode_done(true);
-		loan.setintbalance(loan.getloaninterestamount());
-		loan.save();
+		if (loan.getNumberOfRepayments() == 0) {
+			loan.setloanbalance(loan.getapprovedamount());
+			loan.setmonthopeningbal(loan.getapprovedamount());
+			loan.setloanpaymode_done(true);
+			loan.setintbalance(loan.getloaninterestamount());
+			loan.save();
+		}
 		if (loan.is_refinance()) {
 			repayOldLoan();
 		}

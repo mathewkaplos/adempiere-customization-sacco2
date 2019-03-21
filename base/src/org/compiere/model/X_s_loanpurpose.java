@@ -30,7 +30,7 @@ public class X_s_loanpurpose extends PO implements I_s_loanpurpose, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181220L;
+	private static final long serialVersionUID = 20190321L;
 
     /** Standard Constructor */
     public X_s_loanpurpose (Properties ctx, int s_loanpurpose_ID, String trxName)
