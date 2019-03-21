@@ -61,6 +61,10 @@ public class LoanProductSetupCallout extends CalloutEngine {
 		if (mode.equals("0")) {
 			mTab.setValue("loantypeinteresttype", "R");
 		}
+		if (mode.equals("1")) {
+			mTab.setValue("overdue_penalty", false);
+		}
+
 		return NO_ERROR;
 	}
 }

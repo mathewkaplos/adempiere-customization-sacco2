@@ -32,7 +32,7 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190130L;
+	private static final long serialVersionUID = 20190321L;
 
     /** Standard Constructor */
     public X_s_loantype (Properties ctx, int s_loantype_ID, String trxName)
@@ -40,12 +40,29 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
       super (ctx, s_loantype_ID, trxName);
       /** if (s_loantype_ID == 0)
         {
+			setadjustable_interest_rates (false);
+// N
+			setallow_partial_dispursement (false);
+// N
+			setallow_zero_value_guarantors (false);
+// N
+			setcan_be_refinanced (false);
+// N
+			setchange_interest_if_clearing (false);
+// N
 			setinterestformula (null);
+			setloan_product_type (null);
+// 1
 			setloantypeinteresttype (null);
+			setloantypename (null);
 			setloantypepaymentfrequency (null);
 			setloantypepaymentmethod (null);
 			setmonthlyintcalc (null);
+			setoverdue_penalty (false);
+// N
 			sets_loantype_ID (0);
+			setshould_be_guaranteed (false);
+// N
         } */
     }
 
@@ -89,6 +106,69 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	public boolean isacceptable () 
 	{
 		Object oo = get_Value(COLUMNNAME_acceptable);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Adjustable Interest Rates.
+		@param adjustable_interest_rates Adjustable Interest Rates	  */
+	public void setadjustable_interest_rates (boolean adjustable_interest_rates)
+	{
+		set_Value (COLUMNNAME_adjustable_interest_rates, Boolean.valueOf(adjustable_interest_rates));
+	}
+
+	/** Get Adjustable Interest Rates.
+		@return Adjustable Interest Rates	  */
+	public boolean isadjustable_interest_rates () 
+	{
+		Object oo = get_Value(COLUMNNAME_adjustable_interest_rates);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Allow Partial Dispursement.
+		@param allow_partial_dispursement Allow Partial Dispursement	  */
+	public void setallow_partial_dispursement (boolean allow_partial_dispursement)
+	{
+		set_Value (COLUMNNAME_allow_partial_dispursement, Boolean.valueOf(allow_partial_dispursement));
+	}
+
+	/** Get Allow Partial Dispursement.
+		@return Allow Partial Dispursement	  */
+	public boolean isallow_partial_dispursement () 
+	{
+		Object oo = get_Value(COLUMNNAME_allow_partial_dispursement);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Allow Zero Value Guarantors.
+		@param allow_zero_value_guarantors Allow Zero Value Guarantors	  */
+	public void setallow_zero_value_guarantors (boolean allow_zero_value_guarantors)
+	{
+		set_Value (COLUMNNAME_allow_zero_value_guarantors, Boolean.valueOf(allow_zero_value_guarantors));
+	}
+
+	/** Get Allow Zero Value Guarantors.
+		@return Allow Zero Value Guarantors	  */
+	public boolean isallow_zero_value_guarantors () 
+	{
+		Object oo = get_Value(COLUMNNAME_allow_zero_value_guarantors);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -174,6 +254,90 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return false;
 	}
 
+	/** Set Can Be Refinanced.
+		@param can_be_refinanced Can Be Refinanced	  */
+	public void setcan_be_refinanced (boolean can_be_refinanced)
+	{
+		set_Value (COLUMNNAME_can_be_refinanced, Boolean.valueOf(can_be_refinanced));
+	}
+
+	/** Get Can Be Refinanced.
+		@return Can Be Refinanced	  */
+	public boolean iscan_be_refinanced () 
+	{
+		Object oo = get_Value(COLUMNNAME_can_be_refinanced);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Can Be Topped Up.
+		@param can_be_topped_up Can Be Topped Up	  */
+	public void setcan_be_topped_up (boolean can_be_topped_up)
+	{
+		set_Value (COLUMNNAME_can_be_topped_up, Boolean.valueOf(can_be_topped_up));
+	}
+
+	/** Get Can Be Topped Up.
+		@return Can Be Topped Up	  */
+	public boolean iscan_be_topped_up () 
+	{
+		Object oo = get_Value(COLUMNNAME_can_be_topped_up);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Change Interest If Clearing Loan.
+		@param change_interest_if_clearing Change Interest If Clearing Loan	  */
+	public void setchange_interest_if_clearing (boolean change_interest_if_clearing)
+	{
+		set_Value (COLUMNNAME_change_interest_if_clearing, Boolean.valueOf(change_interest_if_clearing));
+	}
+
+	/** Get Change Interest If Clearing Loan.
+		@return Change Interest If Clearing Loan	  */
+	public boolean ischange_interest_if_clearing () 
+	{
+		Object oo = get_Value(COLUMNNAME_change_interest_if_clearing);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Transaction Charges Apply When Transacting.
+		@param charges_apply_when_transacting Transaction Charges Apply When Transacting	  */
+	public void setcharges_apply_when_transacting (boolean charges_apply_when_transacting)
+	{
+		set_Value (COLUMNNAME_charges_apply_when_transacting, Boolean.valueOf(charges_apply_when_transacting));
+	}
+
+	/** Get Transaction Charges Apply When Transacting.
+		@return Transaction Charges Apply When Transacting	  */
+	public boolean ischarges_apply_when_transacting () 
+	{
+		Object oo = get_Value(COLUMNNAME_charges_apply_when_transacting);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Consider Tied Shares.
 		@param considertiedshares Consider Tied Shares	  */
 	public void setconsidertiedshares (boolean considertiedshares)
@@ -186,6 +350,48 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	public boolean isconsidertiedshares () 
 	{
 		Object oo = get_Value(COLUMNNAME_considertiedshares);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set disp001.
+		@param disp001 disp001	  */
+	public void setdisp001 (boolean disp001)
+	{
+		set_Value (COLUMNNAME_disp001, Boolean.valueOf(disp001));
+	}
+
+	/** Get disp001.
+		@return disp001	  */
+	public boolean isdisp001 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp001);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set disp002.
+		@param disp002 disp002	  */
+	public void setdisp002 (boolean disp002)
+	{
+		set_Value (COLUMNNAME_disp002, Boolean.valueOf(disp002));
+	}
+
+	/** Get disp002.
+		@return disp002	  */
+	public boolean isdisp002 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp002);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -400,6 +606,27 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	public String getlinkedgl () 
 	{
 		return (String)get_Value(COLUMNNAME_linkedgl);
+	}
+
+	/** loan_product_type AD_Reference_ID=1000026 */
+	public static final int LOAN_PRODUCT_TYPE_AD_Reference_ID=1000026;
+	/** Normal Loan = 1 */
+	public static final String LOAN_PRODUCT_TYPE_NormalLoan = "1";
+	/** Shamba Loan = 2 */
+	public static final String LOAN_PRODUCT_TYPE_ShambaLoan = "2";
+	/** Set Loan Product Type.
+		@param loan_product_type Loan Product Type	  */
+	public void setloan_product_type (String loan_product_type)
+	{
+
+		set_Value (COLUMNNAME_loan_product_type, loan_product_type);
+	}
+
+	/** Get Loan Product Type.
+		@return Loan Product Type	  */
+	public String getloan_product_type () 
+	{
+		return (String)get_Value(COLUMNNAME_loan_product_type);
 	}
 
 	/** Set loanprc.
@@ -894,6 +1121,23 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return bd;
 	}
 
+	/** Set Maximum Grace Period(Months).
+		@param max_grace_period Maximum Grace Period(Months)	  */
+	public void setmax_grace_period (int max_grace_period)
+	{
+		set_Value (COLUMNNAME_max_grace_period, Integer.valueOf(max_grace_period));
+	}
+
+	/** Get Maximum Grace Period(Months).
+		@return Maximum Grace Period(Months)	  */
+	public int getmax_grace_period () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_max_grace_period);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Min No. Of Conts(Months).
 		@param minimumcontributions Min No. Of Conts(Months)	  */
 	public void setminimumcontributions (int minimumcontributions)
@@ -932,6 +1176,27 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return (String)get_Value(COLUMNNAME_monthlyintcalc);
 	}
 
+	/** Set Overdue Penalty.
+		@param overdue_penalty Overdue Penalty	  */
+	public void setoverdue_penalty (boolean overdue_penalty)
+	{
+		set_Value (COLUMNNAME_overdue_penalty, Boolean.valueOf(overdue_penalty));
+	}
+
+	/** Get Overdue Penalty.
+		@return Overdue Penalty	  */
+	public boolean isoverdue_penalty () 
+	{
+		Object oo = get_Value(COLUMNNAME_overdue_penalty);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set penaltyprc.
 		@param penaltyprc penaltyprc	  */
 	public void setpenaltyprc (String penaltyprc)
@@ -965,6 +1230,23 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Prefix.
+		@param Prefix 
+		Prefix before the sequence number
+	  */
+	public void setPrefix (String Prefix)
+	{
+		set_Value (COLUMNNAME_Prefix, Prefix);
+	}
+
+	/** Get Prefix.
+		@return Prefix before the sequence number
+	  */
+	public String getPrefix () 
+	{
+		return (String)get_Value(COLUMNNAME_Prefix);
 	}
 
 	/** Set Priority.
@@ -1081,6 +1363,27 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Should Be Guaranteed.
+		@param should_be_guaranteed Should Be Guaranteed	  */
+	public void setshould_be_guaranteed (boolean should_be_guaranteed)
+	{
+		set_Value (COLUMNNAME_should_be_guaranteed, Boolean.valueOf(should_be_guaranteed));
+	}
+
+	/** Get Should Be Guaranteed.
+		@return Should Be Guaranteed	  */
+	public boolean isshould_be_guaranteed () 
+	{
+		Object oo = get_Value(COLUMNNAME_should_be_guaranteed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set showonstatement.

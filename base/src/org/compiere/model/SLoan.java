@@ -12,6 +12,7 @@ import java.util.Properties;
 import org.compiere.util.AmtInWords_EN;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.sacco.loan.Formula;
 import org.sacco.loan.ReducingBalance;
 
 import zenith.util.DateUtil;
@@ -234,7 +235,7 @@ public class SLoan extends X_s_loans {
 		return diff;
 	}
 
-	public BigDecimal getPeriodPrincipal(int C_Period_ID) {
+	public BigDecimal getPeriodPrincipal(int C_Period_ID, Timestamp paymentDate) {
 		if (isschedule_adjusted()) {
 			BigDecimal adjustedValue = getPeriodAdjustment().getnewamount();
 			BigDecimal loanBal = this.getloanbalance();
@@ -256,17 +257,17 @@ public class SLoan extends X_s_loans {
 		return Env.ZERO;
 	}
 
-	public BigDecimal getPeriodInterest(int C_Period_ID) {
+	public BigDecimal getPeriodInterest(int C_Period_ID, Timestamp paymentDate) {
 
 		if (isReducingBalance()) {
 			if (isschedule_adjusted()) {
 				return getReducingBalanceInterest();
 			} else {
-				return getScheduleInterest(C_Period_ID);
+				return getScheduleInterest(C_Period_ID, paymentDate);
 			}
 
 		} else {
-			return getScheduleInterest(C_Period_ID);
+			return getScheduleInterest(C_Period_ID, paymentDate);
 		}
 	}
 
@@ -305,13 +306,29 @@ public class SLoan extends X_s_loans {
 		return false;
 	}
 
-	private BigDecimal getScheduleInterest(int c_Period_ID) {
+	private BigDecimal getScheduleInterest(int c_Period_ID, Timestamp paymentDate) {
 		boolean hasRemittance = remittanceDoneForPeriod(c_Period_ID);
-		if (hasRemittance)
-			return Env.ZERO;
-		LoanSchedule schedule = getScheduleForPeriod(c_Period_ID);
-		if (schedule != null) {
-			return schedule.getinterestamount();
+		int s_loantype_ID = gets_loantype_ID();
+		SLoanType type = new SLoanType(getCtx(), s_loantype_ID, get_TrxName());
+		boolean dailyMode = type.getmonthlyintcalc().equalsIgnoreCase("0");
+
+		if (dailyMode) {
+			long days = getLastRepayPeriodInDays(paymentDate);
+			double P = getloanbalance().doubleValue();
+			double R = getloaninterestrate().doubleValue() * 12;
+			double yearDays = 365;
+			double T = days / yearDays;
+			String method = type.getinterestformula();
+			Formula formula = new Formula(P, R, T, method);
+			BigDecimal interet = formula.getInterest();
+			return interet;
+		} else {
+			if (hasRemittance)
+				return Env.ZERO;
+			LoanSchedule schedule = getScheduleForPeriod(c_Period_ID);
+			if (schedule != null) {
+				return schedule.getinterestamount();
+			}
 		}
 		return Env.ZERO;
 	}
@@ -542,4 +559,14 @@ public class SLoan extends X_s_loans {
 		return DB.getSQLValue(get_TrxName(), sql);
 	}
 
+	public BigDecimal getGuaranteedAmountSum() {
+		String sql = "SELECT COALESCE(SUM(amountguaranteed),0) FROM adempiere.s_loanguantordetails WHERE s_loans_ID="
+				+ get_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
+
+	public BigDecimal getRemainingGuaranteedAmount() {
+
+		return getloanamount().subtract(getGuaranteedAmountSum());
+	}
 }

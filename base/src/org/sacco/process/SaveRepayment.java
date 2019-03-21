@@ -78,7 +78,8 @@ public class SaveRepayment extends SvrProcess {
 	private void updateLoanRemmittance() {
 		loan.setloanbalance(loan.getloanbalance().subtract(repayment.getPrincipal()));
 		loan.setmonthopeningbal(loan.getmonthopeningbal().subtract(repayment.getPrincipal()));
-		loan.setintbalance(loan.getintbalance().subtract(repayment.getexpectedinterest()));
+		BigDecimal totalInterest = repayment.getexpectedinterest().add(repayment.getExtraInterest());
+		loan.setintbalance(loan.getintbalance().subtract(totalInterest));
 		loan.setlast_pay_date(DateUtil.newTimestamp());
 
 		loan.save();

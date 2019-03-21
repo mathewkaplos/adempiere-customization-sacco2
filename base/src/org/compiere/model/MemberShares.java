@@ -46,4 +46,10 @@ public class MemberShares extends X_s_membershares {
 
 	}
 
+	public void transfer(BigDecimal amount) {
+		setsharestodate(getsharestodate().add(amount));
+		setfreeshares(getfreeshares().add(amount));
+		save();
+	}
+
 }

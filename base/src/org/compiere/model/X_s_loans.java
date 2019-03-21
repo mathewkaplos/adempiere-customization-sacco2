@@ -33,7 +33,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190320L;
+	private static final long serialVersionUID = 20190321L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -2303,8 +2303,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		@param pending_disbursement Pending Disbursement	  */
 	public void setpending_disbursement (BigDecimal pending_disbursement)
 	{
-		set_Value (COLUMNNAME_pending_disbursement, pending_disbursement);
-	}
+		throw new IllegalArgumentException ("pending_disbursement is virtual column");	}
 
 	/** Get Pending Disbursement.
 		@return Pending Disbursement	  */

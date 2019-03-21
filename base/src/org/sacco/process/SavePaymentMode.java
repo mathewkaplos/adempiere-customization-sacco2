@@ -52,7 +52,6 @@ public class SavePaymentMode extends SvrProcess {
 			disbursement.setdisbursed_amount(loan.getdisbursed_amount());
 		} else {
 			disbursement.setdisbursed_amount(loan.getappliedamount());
-
 		}
 		disbursement.settransactiondate(DateUtil.newTimestamp());
 		disbursement.save();
@@ -71,23 +70,17 @@ public class SavePaymentMode extends SvrProcess {
 		ShambaPlot plot = new ShambaPlot(getCtx(), s_shamba_plot_ID, get_TrxName());
 		plot.setStatus("0");
 		plot.save();
-
 	}
 
 	private void repayOldLoan() {
 		int oldLoan_ID = loan.gets_loans_refinance_ID();
-
 		SLoan oldLoan = new SLoan(getCtx(), oldLoan_ID, get_TrxName());
-
 		BigDecimal oldLoanBal = oldLoan.getloanbalance();
 		BigDecimal approvedAmount = loan.getapprovedamount();
 		BigDecimal appliedamount = approvedAmount.subtract(oldLoanBal);
-
 		loan.setappliedamount(appliedamount);
 		loan.save();
-
 		loan.newRepayment(oldLoan);
 
 	}
-
 }

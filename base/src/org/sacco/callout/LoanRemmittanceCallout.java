@@ -3,6 +3,9 @@ package org.sacco.callout;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Properties;
+
+import javax.swing.JOptionPane;
+
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -11,13 +14,17 @@ import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
 import org.compiere.model.Sacco;
 import org.compiere.util.Env;
+import org.python.modules.synchronize;
 import org.sacco.loan.Formula;
+import org.sacco.loan.Penalty;
+
 import zenith.util.Util;
 
 public class LoanRemmittanceCallout extends CalloutEngine {
 	public String newRecord(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
+		
 		int remmittanceTabID = 1000035;
 		int refundTabID = 1000044;
 		int val = (Integer) value;
@@ -27,17 +34,19 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		Sacco sacco = Sacco.getSaccco();
 		int C_Period_ID = sacco.getsaccoperiod_ID();
 		mTab.setValue("C_Period_ID", C_Period_ID);
-	
 
 		if (mTab.getAD_Tab_ID() == remmittanceTabID) {
+			Timestamp PaymentDate = (Timestamp) mTab.getValue("PaymentDate");
 
-			BigDecimal expectedPrincipal = Util.round(loan.getPeriodPrincipal(C_Period_ID));
-			BigDecimal expectedInterest = Util.round(loan.getPeriodInterest(C_Period_ID));
+			BigDecimal expectedPrincipal = Util.round(loan.getPeriodPrincipal(C_Period_ID, PaymentDate));
+			BigDecimal expectedInterest = Util.round(loan.getPeriodInterest(C_Period_ID, PaymentDate));
 			BigDecimal gross = expectedPrincipal.add(expectedInterest);
+
 			mTab.setValue("PaymentAmount", gross);
 			mTab.setValue("Principal", expectedPrincipal);
 			mTab.setValue("expectedinterest", expectedInterest);
 			mTab.setValue("gross_amount_due", gross);
+			mTab.setValue("interest_due", loan.getintbalance());
 
 			mTab.setValue("bankgl_Acct", loan.getbankgl_Acct());
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
@@ -82,6 +91,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 	public String paymentAmount(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
+
 		if (mTab.getAD_Tab_ID() == 1000044)
 			return null;
 		double gross = ((BigDecimal) value).doubleValue();
@@ -157,15 +167,77 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			SLoan loan = new SLoan(ctx, s_loans_ID, null);
 			long days = loan.getLastRepayPeriodInDays(paymentDate);
 			double P = loan.getloanbalance().doubleValue();
-			double R = loan.getloaninterestrate().doubleValue();
+			double R = loan.getloaninterestrate().doubleValue() * 12;
 			double yearDays = 365;
 			double T = days / yearDays;
-
+			System.out.println(days);
 			String method = type.getinterestformula();
 			Formula formula = new Formula(P, R, T, method);
 			BigDecimal interet = formula.getInterest();
+			BigDecimal Principal = (BigDecimal) mTab.getValue("Principal");
+			// penalty
+			BigDecimal penalty = Env.ZERO;
+			if (type.isoverdue_penalty()) {
+				Penalty pen = new Penalty(days, interet);
+				penalty = pen.getPenalty();
+			}
+
 			mTab.setValue("expectedinterest", interet);
+			mTab.setValue("penalty_due", penalty);
+			BigDecimal PaymentAmount = Principal.add(interet).add(penalty);
+			mTab.setValue("PaymentAmount", PaymentAmount);
 		}
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.LoanRemmittanceCallout.clear
+	public String clear(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		boolean val = (boolean) value;
+
+		if (val) {
+			int s_loans_ID = (int) mTab.getValue("s_loans_ID");
+			SLoan loan = new SLoan(ctx, s_loans_ID, null);
+			BigDecimal loanBalance = loan.getloanbalance();//
+			System.out.println(loanBalance);
+			BigDecimal expectedinterest = (BigDecimal) mTab.getValue("expectedinterest");
+			BigDecimal interest_due = (BigDecimal) mTab.getValue("interest_due");//
+			BigDecimal ExtraInterest = interest_due.subtract(expectedinterest);
+			BigDecimal penalty_due = (BigDecimal) mTab.getValue("penalty_due");//
+			BigDecimal gross = loanBalance.add(interest_due).add(penalty_due);
+
+			mTab.setValue("ExtraInterest", ExtraInterest);
+			mTab.setValue("PaymentAmount", gross);
+
+			mTab.setValue("Principal", loanBalance);
+
+		}
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.LoanRemmittanceCallout.extraInterest
+	public String extraInterest(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		BigDecimal val = (BigDecimal) value;
+
+		BigDecimal interest_due = (BigDecimal) mTab.getValue("interest_due");//
+		BigDecimal expectedinterest = (BigDecimal) mTab.getValue("expectedinterest");
+
+		BigDecimal maxExtraInterest = interest_due.subtract(expectedinterest);
+		if (val.compareTo(maxExtraInterest) < 1) {
+			BigDecimal diff = ((BigDecimal) mField.getOldValue()).subtract(val);
+			BigDecimal PaymentAmount = (BigDecimal) mTab.getValue("PaymentAmount");
+			BigDecimal Principal = (BigDecimal) mTab.getValue("Principal");
+			mTab.setValue("PaymentAmount", PaymentAmount.subtract(diff));
+			mTab.setValue("Principal", Principal);
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Extra interest must not exceed " + maxExtraInterest);
+			mTab.setValue("ExtraInterest", mField.getOldValue());
+		}
+
 		return NO_ERROR;
 	}
 }

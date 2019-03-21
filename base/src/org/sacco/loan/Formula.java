@@ -58,5 +58,4 @@ public class Formula {
 		}
 		return BigDecimal.valueOf(interest).setScale(2, RoundingMode.CEILING);
 	}
-
 }

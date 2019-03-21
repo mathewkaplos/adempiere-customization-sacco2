@@ -71,6 +71,33 @@ public interface I_s_loantype
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name adjustable_interest_rates */
+    public static final String COLUMNNAME_adjustable_interest_rates = "adjustable_interest_rates";
+
+	/** Set Adjustable Interest Rates	  */
+	public void setadjustable_interest_rates (boolean adjustable_interest_rates);
+
+	/** Get Adjustable Interest Rates	  */
+	public boolean isadjustable_interest_rates();
+
+    /** Column name allow_partial_dispursement */
+    public static final String COLUMNNAME_allow_partial_dispursement = "allow_partial_dispursement";
+
+	/** Set Allow Partial Dispursement	  */
+	public void setallow_partial_dispursement (boolean allow_partial_dispursement);
+
+	/** Get Allow Partial Dispursement	  */
+	public boolean isallow_partial_dispursement();
+
+    /** Column name allow_zero_value_guarantors */
+    public static final String COLUMNNAME_allow_zero_value_guarantors = "allow_zero_value_guarantors";
+
+	/** Set Allow Zero Value Guarantors	  */
+	public void setallow_zero_value_guarantors (boolean allow_zero_value_guarantors);
+
+	/** Get Allow Zero Value Guarantors	  */
+	public boolean isallow_zero_value_guarantors();
+
     /** Column name annualinterest */
     public static final String COLUMNNAME_annualinterest = "annualinterest";
 
@@ -107,6 +134,42 @@ public interface I_s_loantype
 	/** Get Calculate Interest On Original Period	  */
 	public boolean iscalculateonperiod();
 
+    /** Column name can_be_refinanced */
+    public static final String COLUMNNAME_can_be_refinanced = "can_be_refinanced";
+
+	/** Set Can Be Refinanced	  */
+	public void setcan_be_refinanced (boolean can_be_refinanced);
+
+	/** Get Can Be Refinanced	  */
+	public boolean iscan_be_refinanced();
+
+    /** Column name can_be_topped_up */
+    public static final String COLUMNNAME_can_be_topped_up = "can_be_topped_up";
+
+	/** Set Can Be Topped Up	  */
+	public void setcan_be_topped_up (boolean can_be_topped_up);
+
+	/** Get Can Be Topped Up	  */
+	public boolean iscan_be_topped_up();
+
+    /** Column name change_interest_if_clearing */
+    public static final String COLUMNNAME_change_interest_if_clearing = "change_interest_if_clearing";
+
+	/** Set Change Interest If Clearing Loan	  */
+	public void setchange_interest_if_clearing (boolean change_interest_if_clearing);
+
+	/** Get Change Interest If Clearing Loan	  */
+	public boolean ischange_interest_if_clearing();
+
+    /** Column name charges_apply_when_transacting */
+    public static final String COLUMNNAME_charges_apply_when_transacting = "charges_apply_when_transacting";
+
+	/** Set Transaction Charges Apply When Transacting	  */
+	public void setcharges_apply_when_transacting (boolean charges_apply_when_transacting);
+
+	/** Get Transaction Charges Apply When Transacting	  */
+	public boolean ischarges_apply_when_transacting();
+
     /** Column name considertiedshares */
     public static final String COLUMNNAME_considertiedshares = "considertiedshares";
 
@@ -131,6 +194,24 @@ public interface I_s_loantype
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name disp001 */
+    public static final String COLUMNNAME_disp001 = "disp001";
+
+	/** Set disp001	  */
+	public void setdisp001 (boolean disp001);
+
+	/** Get disp001	  */
+	public boolean isdisp001();
+
+    /** Column name disp002 */
+    public static final String COLUMNNAME_disp002 = "disp002";
+
+	/** Set disp002	  */
+	public void setdisp002 (boolean disp002);
+
+	/** Get disp002	  */
+	public boolean isdisp002();
 
     /** Column name fortyfivedaysrule */
     public static final String COLUMNNAME_fortyfivedaysrule = "fortyfivedaysrule";
@@ -243,6 +324,15 @@ public interface I_s_loantype
 
 	/** Get Linked To Saving Type	  */
 	public String getlinkedgl();
+
+    /** Column name loan_product_type */
+    public static final String COLUMNNAME_loan_product_type = "loan_product_type";
+
+	/** Set Loan Product Type	  */
+	public void setloan_product_type (String loan_product_type);
+
+	/** Get Loan Product Type	  */
+	public String getloan_product_type();
 
     /** Column name loanprc */
     public static final String COLUMNNAME_loanprc = "loanprc";
@@ -493,6 +583,15 @@ public interface I_s_loantype
 	/** Get Savings Factor	  */
 	public BigDecimal getloantypesharesfactor();
 
+    /** Column name max_grace_period */
+    public static final String COLUMNNAME_max_grace_period = "max_grace_period";
+
+	/** Set Maximum Grace Period(Months)	  */
+	public void setmax_grace_period (int max_grace_period);
+
+	/** Get Maximum Grace Period(Months)	  */
+	public int getmax_grace_period();
+
     /** Column name minimumcontributions */
     public static final String COLUMNNAME_minimumcontributions = "minimumcontributions";
 
@@ -511,6 +610,15 @@ public interface I_s_loantype
 	/** Get Interest Mode	  */
 	public String getmonthlyintcalc();
 
+    /** Column name overdue_penalty */
+    public static final String COLUMNNAME_overdue_penalty = "overdue_penalty";
+
+	/** Set Overdue Penalty	  */
+	public void setoverdue_penalty (boolean overdue_penalty);
+
+	/** Get Overdue Penalty	  */
+	public boolean isoverdue_penalty();
+
     /** Column name penaltyprc */
     public static final String COLUMNNAME_penaltyprc = "penaltyprc";
 
@@ -528,6 +636,19 @@ public interface I_s_loantype
 
 	/** Get % Of Loan Bal	  */
 	public boolean isperofloanbal();
+
+    /** Column name Prefix */
+    public static final String COLUMNNAME_Prefix = "Prefix";
+
+	/** Set Prefix.
+	  * Prefix before the sequence number
+	  */
+	public void setPrefix (String Prefix);
+
+	/** Get Prefix.
+	  * Prefix before the sequence number
+	  */
+	public String getPrefix();
 
     /** Column name Priority */
     public static final String COLUMNNAME_Priority = "Priority";
@@ -586,6 +707,15 @@ public interface I_s_loantype
 
 	/** Get Share/Loan Rule	  */
 	public int getshareloanrule();
+
+    /** Column name should_be_guaranteed */
+    public static final String COLUMNNAME_should_be_guaranteed = "should_be_guaranteed";
+
+	/** Set Should Be Guaranteed	  */
+	public void setshould_be_guaranteed (boolean should_be_guaranteed);
+
+	/** Get Should Be Guaranteed	  */
+	public boolean isshould_be_guaranteed();
 
     /** Column name showonstatement */
     public static final String COLUMNNAME_showonstatement = "showonstatement";
