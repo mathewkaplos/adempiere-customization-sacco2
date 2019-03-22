@@ -24,7 +24,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 	public String newRecord(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
-		
+
 		int remmittanceTabID = 1000035;
 		int refundTabID = 1000044;
 		int val = (Integer) value;
@@ -51,6 +51,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("bankgl_Acct", loan.getbankgl_Acct());
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
 			mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
+			mTab.setValue("s_member_ID", loan.gets_member_ID());
 
 			// interestgl_Acct
 			SLoanType loanType = new SLoanType(Env.getCtx(), loan.gets_loantype_ID(), null);
@@ -83,6 +84,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("LoanNo", loan.getDocumentNo());
 			mTab.setValue("loanbalance", loan.getloanbalance());
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
+			mTab.setValue("s_member_ID", loan.gets_member_ID());
 		}
 		return NO_ERROR;
 	}
@@ -91,7 +93,9 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 	public String paymentAmount(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
-
+		Object record = mTab.getValue("l_repayments_ID");
+		if (record == null)
+			return "";
 		if (mTab.getAD_Tab_ID() == 1000044)
 			return null;
 		double gross = ((BigDecimal) value).doubleValue();
@@ -194,9 +198,13 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 	public String clear(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
+		Object record = mTab.getValue("l_repayments_ID");
+		if (record == null)
+			return "";
 		boolean val = (boolean) value;
 
 		if (val) {
+
 			int s_loans_ID = (int) mTab.getValue("s_loans_ID");
 			SLoan loan = new SLoan(ctx, s_loans_ID, null);
 			BigDecimal loanBalance = loan.getloanbalance();//
@@ -219,6 +227,9 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 	// org.sacco.callout.LoanRemmittanceCallout.extraInterest
 	public String extraInterest(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
+			return "";
+		Object record = mTab.getValue("l_repayments_ID");
+		if (record == null)
 			return "";
 		BigDecimal val = (BigDecimal) value;
 

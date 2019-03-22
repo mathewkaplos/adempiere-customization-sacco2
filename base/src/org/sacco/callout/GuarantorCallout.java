@@ -42,10 +42,12 @@ public class GuarantorCallout extends CalloutEngine {
 		} else {
 
 			if (amt.compareTo(remainingGuaranteedAmount) > 0 && !allowZeroGurantors) {
+				amt = remainingGuaranteedAmount.subtract(oldVal);
 				JOptionPane.showMessageDialog(null, "The guaranteed amount should not exceed the loan amount");
 				mTab.setValue("amountguaranteed", remainingGuaranteedAmount);
 				ms.setfreeshares(ms.getfreeshares().subtract(remainingGuaranteedAmount));
 				ms.settiedshares(ms.gettiedshares().add(remainingGuaranteedAmount));
+				System.out.println(remainingGuaranteedAmount);
 			} else {
 				if (!allowZeroGurantors) {
 					ms.setfreeshares(ms.getfreeshares().subtract(amt));

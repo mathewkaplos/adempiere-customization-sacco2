@@ -99,4 +99,23 @@ public class SMember extends X_s_member {
 		return list.toArray(new MemberShares[list.size()]);
 
 	}
+
+	public Repayment[] getLoanRemittance(String whereClause) {
+		List<Repayment> list = new ArrayList<>();
+		String sql = "SELECT * FROM adempiere.l_repayments WHERE s_member_ID=" + gets_member_ID() + " " + whereClause;
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				Repayment repayment = new Repayment(getCtx(), rs, get_TrxName());
+				list.add(repayment);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list.toArray(new Repayment[list.size()]);
+	}
 }
