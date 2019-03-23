@@ -24,4 +24,7 @@ public class Sacco extends X_s_saccoinfo {
 		return MPeriod.get(Env.getCtx(), getSaccco().getsaccoperiod_ID());
 	}
 
+	public static TransactionSupervision getTransactionSupervision() {
+		return new TransactionSupervision(Env.getCtx(), 1000000, null);
+	}
 }
