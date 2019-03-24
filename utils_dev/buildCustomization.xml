@@ -22,7 +22,7 @@
 	<target name="jar" depends="clean">
 		<!-- add others as required -->
 		<ant inheritAll="false" dir="../base" />
-		<ant inheritAll="false" dir="../client" />
+		<!-- <ant inheritAll="false" dir="../client" /> -->
 
 	</target>
 

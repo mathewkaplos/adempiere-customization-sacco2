@@ -78,6 +78,8 @@ public class ShareTransactionsCallout extends CalloutEngine {
 					} else {
 						mTab.setValue("needs_supervision", false);
 					}
+				} else {
+					mTab.setValue("needs_supervision", false);
 				}
 			}
 		}

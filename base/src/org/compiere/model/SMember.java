@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.python.antlr.ast.GeneratorExp.generators_descriptor;
-
 import mat.mathew.SendMailSSL;
 
 public class SMember extends X_s_member {
