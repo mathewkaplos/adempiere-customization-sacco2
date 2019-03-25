@@ -37,7 +37,7 @@ public class ComparePayroll extends SvrProcess {
 		getCSVList();
 
 		for (Payroll_csv csv : csv_list) {
-			getTransactionByPayrollNoAndType(csv.getpayroll_no(), csv.getTransactionType(), csv.getAmount());
+			//getTransactionByPayrollNoAndType(csv.getpayroll_no(), csv.getTransactionType(), csv.getAmount());
 		}
 		payroll_Interface.setcompared(true);
 		payroll_Interface.save();

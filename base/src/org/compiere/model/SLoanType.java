@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 public class SLoanType extends X_s_loantype {
 	/**
@@ -22,6 +23,11 @@ public class SLoanType extends X_s_loantype {
 	public SLoanType(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
 		// TODO Auto-generated constructor stub
+	}
+
+	public static SLoanType getLoanType(int s_loans_ID) {
+		int s_loantype_ID = new SLoan(Env.getCtx(), s_loans_ID, null).gets_loantype_ID();
+		return new SLoanType(Env.getCtx(), s_loantype_ID, null);
 	}
 
 	public Other_loan_charges[] getChargesForLoan() {

@@ -31,7 +31,7 @@ public class X_z_payroll_csv extends PO implements I_z_payroll_csv, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190124L;
+	private static final long serialVersionUID = 20190325L;
 
     /** Standard Constructor */
     public X_z_payroll_csv (Properties ctx, int z_payroll_csv_ID, String trxName)
@@ -91,6 +91,82 @@ public class X_z_payroll_csv extends PO implements I_z_payroll_csv, I_Persistent
 		return bd;
 	}
 
+	/** Set Balance.
+		@param Balance Balance	  */
+	public void setBalance (BigDecimal Balance)
+	{
+		set_Value (COLUMNNAME_Balance, Balance);
+	}
+
+	/** Get Balance.
+		@return Balance	  */
+	public BigDecimal getBalance () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Balance);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Interest.
+		@param Interest Interest	  */
+	public void setInterest (BigDecimal Interest)
+	{
+		set_Value (COLUMNNAME_Interest, Interest);
+	}
+
+	/** Get Interest.
+		@return Interest	  */
+	public BigDecimal getInterest () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Interest);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Item.
+		@param Item Item	  */
+	public void setItem (String Item)
+	{
+		set_Value (COLUMNNAME_Item, Item);
+	}
+
+	/** Get Item.
+		@return Item	  */
+	public String getItem () 
+	{
+		return (String)get_Value(COLUMNNAME_Item);
+	}
+
+	/** Set Item_Code.
+		@param Item_Code Item_Code	  */
+	public void setItem_Code (String Item_Code)
+	{
+		set_Value (COLUMNNAME_Item_Code, Item_Code);
+	}
+
+	/** Get Item_Code.
+		@return Item_Code	  */
+	public String getItem_Code () 
+	{
+		return (String)get_Value(COLUMNNAME_Item_Code);
+	}
+
+	/** Set Month.
+		@param Month Month	  */
+	public void setMonth (String Month)
+	{
+		set_Value (COLUMNNAME_Month, Month);
+	}
+
+	/** Get Month.
+		@return Month	  */
+	public String getMonth () 
+	{
+		return (String)get_Value(COLUMNNAME_Month);
+	}
+
 	/** Set Name.
 		@param Name 
 		Alphanumeric identifier of the entity
@@ -108,18 +184,35 @@ public class X_z_payroll_csv extends PO implements I_z_payroll_csv, I_Persistent
 		return (String)get_Value(COLUMNNAME_Name);
 	}
 
-	/** Set Payroll NO.
-		@param payroll_no Payroll NO	  */
-	public void setpayroll_no (String payroll_no)
+	/** Set Other Charges.
+		@param othercharges Other Charges	  */
+	public void setothercharges (BigDecimal othercharges)
 	{
-		set_Value (COLUMNNAME_payroll_no, payroll_no);
+		set_Value (COLUMNNAME_othercharges, othercharges);
 	}
 
-	/** Get Payroll NO.
-		@return Payroll NO	  */
-	public String getpayroll_no () 
+	/** Get Other Charges.
+		@return Other Charges	  */
+	public BigDecimal getothercharges () 
 	{
-		return (String)get_Value(COLUMNNAME_payroll_no);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_othercharges);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Payroll_Code.
+		@param Payroll_Code Payroll_Code	  */
+	public void setPayroll_Code (String Payroll_Code)
+	{
+		set_Value (COLUMNNAME_Payroll_Code, Payroll_Code);
+	}
+
+	/** Get Payroll_Code.
+		@return Payroll_Code	  */
+	public String getPayroll_Code () 
+	{
+		return (String)get_Value(COLUMNNAME_Payroll_Code);
 	}
 
 	/** Set s_payrol_interface ID.
@@ -154,6 +247,20 @@ public class X_z_payroll_csv extends PO implements I_z_payroll_csv, I_Persistent
 	public String getTransactionType () 
 	{
 		return (String)get_Value(COLUMNNAME_TransactionType);
+	}
+
+	/** Set Year.
+		@param Year Year	  */
+	public void setYear (String Year)
+	{
+		set_Value (COLUMNNAME_Year, Year);
+	}
+
+	/** Get Year.
+		@return Year	  */
+	public String getYear () 
+	{
+		return (String)get_Value(COLUMNNAME_Year);
 	}
 
 	/** Set z_payroll_csv ID.

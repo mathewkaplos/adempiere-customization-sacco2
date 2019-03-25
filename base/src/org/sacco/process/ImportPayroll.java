@@ -37,6 +37,7 @@ public class ImportPayroll extends SvrProcess {
 		Payroll_Interface payroll_Interface = new Payroll_Interface(getCtx(), getRecord_ID(), get_TrxName());
 		payroll_Interface.setcsv_imported(true);
 		payroll_Interface.save();
+		
 		return null;
 	}
 
@@ -44,6 +45,17 @@ public class ImportPayroll extends SvrProcess {
 		String sql = "DELETE FROM adempiere.z_payroll_csv WHERE s_payrol_interface_ID =" + getRecord_ID();
 		DB.executeUpdate(sql, get_TrxName());
 	}
+
+	// // / CSV Headings and order
+	// Payroll_Code
+	// Item
+	// Item_Code
+	// Amount
+	// Month
+	// Year
+	// Balance
+	// Interest
+	// Othercharges
 
 	private void saveToDb(String file) {
 
@@ -60,16 +72,27 @@ public class ImportPayroll extends SvrProcess {
 				String[] row = line.split(cvsSplitBy);
 				// System.out.println(row.length);
 				if (x > 0) {
-					String payroll_no = row[0];
-					String name = row[1];
-					String type = row[2];
-					BigDecimal amount = new BigDecimal(row[3]);
+					String Payroll_Code = row[0];
+					String Item = row[1];
+					String Item_Code = row[2];
+					BigDecimal Amount = new BigDecimal(row[3]);
+					String Month = row[4];
+					String Year = row[5];
+					BigDecimal Balance = new BigDecimal(row[6]);
+					BigDecimal Interest = new BigDecimal(row[7]);
+					BigDecimal Othercharges = new BigDecimal(row[8]);
+
 					Payroll_csv csv = new Payroll_csv(getCtx(), 0, get_TrxName());
-					csv.setpayroll_no(payroll_no);
-					csv.setName(name);
-					csv.setTransactionType(type);
-					csv.setAmount(amount);
+					csv.setPayroll_Code(Payroll_Code);
+					csv.setItem(Item);
+					csv.setItem_Code(Item_Code);
+					csv.setAmount(Amount);
+					csv.setMonth(Month);
+					csv.setYear(Year);
+					csv.setBalance(Balance);
+					csv.setInterest(Interest);
 					csv.sets_payrol_interface_ID(getRecord_ID());
+					csv.setothercharges(Othercharges);
 					csv.save();
 				}
 				x++;

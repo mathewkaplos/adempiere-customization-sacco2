@@ -75,6 +75,15 @@ public interface I_z_payroll_csv
 	  */
 	public BigDecimal getAmount();
 
+    /** Column name Balance */
+    public static final String COLUMNNAME_Balance = "Balance";
+
+	/** Set Balance	  */
+	public void setBalance (BigDecimal Balance);
+
+	/** Get Balance	  */
+	public BigDecimal getBalance();
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -91,6 +100,15 @@ public interface I_z_payroll_csv
 	  */
 	public int getCreatedBy();
 
+    /** Column name Interest */
+    public static final String COLUMNNAME_Interest = "Interest";
+
+	/** Set Interest	  */
+	public void setInterest (BigDecimal Interest);
+
+	/** Get Interest	  */
+	public BigDecimal getInterest();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -103,6 +121,33 @@ public interface I_z_payroll_csv
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name Item */
+    public static final String COLUMNNAME_Item = "Item";
+
+	/** Set Item	  */
+	public void setItem (String Item);
+
+	/** Get Item	  */
+	public String getItem();
+
+    /** Column name Item_Code */
+    public static final String COLUMNNAME_Item_Code = "Item_Code";
+
+	/** Set Item_Code	  */
+	public void setItem_Code (String Item_Code);
+
+	/** Get Item_Code	  */
+	public String getItem_Code();
+
+    /** Column name Month */
+    public static final String COLUMNNAME_Month = "Month";
+
+	/** Set Month	  */
+	public void setMonth (String Month);
+
+	/** Get Month	  */
+	public String getMonth();
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -117,14 +162,23 @@ public interface I_z_payroll_csv
 	  */
 	public String getName();
 
-    /** Column name payroll_no */
-    public static final String COLUMNNAME_payroll_no = "payroll_no";
+    /** Column name othercharges */
+    public static final String COLUMNNAME_othercharges = "othercharges";
 
-	/** Set Payroll NO	  */
-	public void setpayroll_no (String payroll_no);
+	/** Set Other Charges	  */
+	public void setothercharges (BigDecimal othercharges);
 
-	/** Get Payroll NO	  */
-	public String getpayroll_no();
+	/** Get Other Charges	  */
+	public BigDecimal getothercharges();
+
+    /** Column name Payroll_Code */
+    public static final String COLUMNNAME_Payroll_Code = "Payroll_Code";
+
+	/** Set Payroll_Code	  */
+	public void setPayroll_Code (String Payroll_Code);
+
+	/** Get Payroll_Code	  */
+	public String getPayroll_Code();
 
     /** Column name s_payrol_interface_ID */
     public static final String COLUMNNAME_s_payrol_interface_ID = "s_payrol_interface_ID";
@@ -159,6 +213,15 @@ public interface I_z_payroll_csv
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name Year */
+    public static final String COLUMNNAME_Year = "Year";
+
+	/** Set Year	  */
+	public void setYear (String Year);
+
+	/** Get Year	  */
+	public String getYear();
 
     /** Column name z_payroll_csv_ID */
     public static final String COLUMNNAME_z_payroll_csv_ID = "z_payroll_csv_ID";

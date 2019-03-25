@@ -28,4 +28,16 @@ public class AD_User extends X_AD_User {
 		}
 		return false;
 	}
+
+	/**
+	 * Get Member.
+	 * 
+	 * @return s_member_ID
+	 */
+	public int getSMember_ID() {
+		Integer ii = (Integer) get_Value("s_member_ID");
+		if (ii == null)
+			return 0;
+		return ii.intValue();
+	}
 }
