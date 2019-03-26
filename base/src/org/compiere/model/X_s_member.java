@@ -24,8 +24,6 @@ import java.util.Properties;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 
-import mat.mathew.SendMailSSL;
-
 /** Generated Model for s_member
  *  @author Adempiere (generated) 
  *  @version Release 3.8.0 - $Id$ */
@@ -35,7 +33,7 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181219L;
+	private static final long serialVersionUID = 20190326L;
 
     /** Standard Constructor */
     public X_s_member (Properties ctx, int s_member_ID, String trxName)
@@ -48,6 +46,8 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 // @Date@
 			setmfirstname (null);
 			setmothername (null);
+			setmstatus (null);
+// A
 			setmsurname (null);
 			sets_member_ID (0);
         } */
@@ -80,6 +80,29 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** Set User/Contact.
+		@param AD_User_ID 
+		User within the system - Internal or Business Partner Contact
+	  */
+	public void setAD_User_ID (int AD_User_ID)
+	{
+		if (AD_User_ID < 1) 
+			set_Value (COLUMNNAME_AD_User_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+	}
+
+	/** Get User/Contact.
+		@return User within the system - Internal or Business Partner Contact
+	  */
+	public int getAD_User_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_User_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	/** Set Physical Address.
 		@param address Physical Address	  */
@@ -257,6 +280,48 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 		return false;
 	}
 
+	/** Set disp003.
+		@param disp003 disp003	  */
+	public void setdisp003 (boolean disp003)
+	{
+		set_Value (COLUMNNAME_disp003, Boolean.valueOf(disp003));
+	}
+
+	/** Get disp003.
+		@return disp003	  */
+	public boolean isdisp003 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp003);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set disp004.
+		@param disp004 disp004	  */
+	public void setdisp004 (boolean disp004)
+	{
+		set_Value (COLUMNNAME_disp004, Boolean.valueOf(disp004));
+	}
+
+	/** Get disp004.
+		@return disp004	  */
+	public boolean isdisp004 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp004);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Member Number.
 		@param DocumentNo 
 		Document sequence number of the document
@@ -368,18 +433,47 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 		return (String)get_Value(COLUMNNAME_id_no);
 	}
 
-	/** Set introducerid.
-		@param introducerid introducerid	  */
-	public void setintroducerid (int introducerid)
+	/** Set Introduced.
+		@param introduced Introduced	  */
+	public void setintroduced (boolean introduced)
 	{
-		set_Value (COLUMNNAME_introducerid, Integer.valueOf(introducerid));
+		set_Value (COLUMNNAME_introduced, Boolean.valueOf(introduced));
 	}
 
-	/** Get introducerid.
-		@return introducerid	  */
-	public int getintroducerid () 
+	/** Get Introduced.
+		@return Introduced	  */
+	public boolean isintroduced () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_introducerid);
+		Object oo = get_Value(COLUMNNAME_introduced);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	public I_s_member getintroducer() throws RuntimeException
+    {
+		return (I_s_member)MTable.get(getCtx(), I_s_member.Table_Name)
+			.getPO(getintroducer_ID(), get_TrxName());	}
+
+	/** Set Introducer.
+		@param introducer_ID Introducer	  */
+	public void setintroducer_ID (int introducer_ID)
+	{
+		if (introducer_ID < 1) 
+			set_Value (COLUMNNAME_introducer_ID, null);
+		else 
+			set_Value (COLUMNNAME_introducer_ID, Integer.valueOf(introducer_ID));
+	}
+
+	/** Get Introducer.
+		@return Introducer	  */
+	public int getintroducer_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_introducer_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -446,6 +540,20 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Job Title.
+		@param job_title Job Title	  */
+	public void setjob_title (String job_title)
+	{
+		set_Value (COLUMNNAME_job_title, job_title);
+	}
+
+	/** Get Job Title.
+		@return Job Title	  */
+	public String getjob_title () 
+	{
+		return (String)get_Value(COLUMNNAME_job_title);
 	}
 
 	public I_m_designation getm_designation() throws RuntimeException
@@ -543,32 +651,44 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 		return (Timestamp)get_Value(COLUMNNAME_mdob);
 	}
 
-	/** Set memberimage.
-		@param memberimage memberimage	  */
-	public void setmemberimage (String memberimage)
+	/** Set Member Image.
+		@param memberimage_ID Member Image	  */
+	public void setmemberimage_ID (int memberimage_ID)
 	{
-		set_Value (COLUMNNAME_memberimage, memberimage);
+		if (memberimage_ID < 1) 
+			set_Value (COLUMNNAME_memberimage_ID, null);
+		else 
+			set_Value (COLUMNNAME_memberimage_ID, Integer.valueOf(memberimage_ID));
 	}
 
-	/** Get memberimage.
-		@return memberimage	  */
-	public String getmemberimage () 
+	/** Get Member Image.
+		@return Member Image	  */
+	public int getmemberimage_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_memberimage);
+		Integer ii = (Integer)get_Value(COLUMNNAME_memberimage_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
-	/** Set membersignature.
-		@param membersignature membersignature	  */
-	public void setmembersignature (String membersignature)
+	/** Set Member Signature.
+		@param membersignature_ID Member Signature	  */
+	public void setmembersignature_ID (int membersignature_ID)
 	{
-		set_Value (COLUMNNAME_membersignature, membersignature);
+		if (membersignature_ID < 1) 
+			set_Value (COLUMNNAME_membersignature_ID, null);
+		else 
+			set_Value (COLUMNNAME_membersignature_ID, Integer.valueOf(membersignature_ID));
 	}
 
-	/** Get membersignature.
-		@return membersignature	  */
-	public String getmembersignature () 
+	/** Get Member Signature.
+		@return Member Signature	  */
+	public int getmembersignature_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_membersignature);
+		Integer ii = (Integer)get_Value(COLUMNNAME_membersignature_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set membertype.
@@ -795,6 +915,10 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 	public static final String MSTATUS_Active = "A";
 	/** Dormant = D */
 	public static final String MSTATUS_Dormant = "D";
+	/** Withdrawn = W */
+	public static final String MSTATUS_Withdrawn = "W";
+	/** Deceased = X */
+	public static final String MSTATUS_Deceased = "X";
 	/** Set Member Status.
 		@param mstatus Member Status	  */
 	public void setmstatus (String mstatus)
@@ -1039,8 +1163,8 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 		return (I_s_department)MTable.get(getCtx(), I_s_department.Table_Name)
 			.getPO(gets_department_ID(), get_TrxName());	}
 
-	/** Set Sacco Department.
-		@param s_department_ID Sacco Department	  */
+	/** Set Department.
+		@param s_department_ID Department	  */
 	public void sets_department_ID (int s_department_ID)
 	{
 		if (s_department_ID < 1) 
@@ -1049,8 +1173,8 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 			set_Value (COLUMNNAME_s_department_ID, Integer.valueOf(s_department_ID));
 	}
 
-	/** Get Sacco Department.
-		@return Sacco Department	  */
+	/** Get Department.
+		@return Department	  */
 	public int gets_department_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_department_ID);
@@ -1109,8 +1233,8 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Member Description.
-		@param s_member_ID Member Description	  */
+	/** Set Member.
+		@param s_member_ID Member	  */
 	public void sets_member_ID (int s_member_ID)
 	{
 		if (s_member_ID < 1) 
@@ -1119,8 +1243,8 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 			set_ValueNoCheck (COLUMNNAME_s_member_ID, Integer.valueOf(s_member_ID));
 	}
 
-	/** Get Member Description.
-		@return Member Description	  */
+	/** Get Member.
+		@return Member	  */
 	public int gets_member_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_member_ID);
@@ -1175,6 +1299,28 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 		return false;
 	}
 
+	public I_s_member getsenior_mem() throws RuntimeException
+    {
+		return (I_s_member)MTable.get(getCtx(), I_s_member.Table_Name)
+			.getPO(getsenior_member(), get_TrxName());	}
+
+	/** Set Senior Member Account.
+		@param senior_member Senior Member Account	  */
+	public void setsenior_member (int senior_member)
+	{
+		set_Value (COLUMNNAME_senior_member, Integer.valueOf(senior_member));
+	}
+
+	/** Get Senior Member Account.
+		@return Senior Member Account	  */
+	public int getsenior_member () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_senior_member);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set sharestodateinowords.
 		@param sharestodateinowords sharestodateinowords	  */
 	public void setsharestodateinowords (String sharestodateinowords)
@@ -1189,15 +1335,15 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 		return (String)get_Value(COLUMNNAME_sharestodateinowords);
 	}
 
-	/** Set tiedshares.
-		@param tiedshares tiedshares	  */
+	/** Set Tied Shares.
+		@param tiedshares Tied Shares	  */
 	public void settiedshares (BigDecimal tiedshares)
 	{
 		set_Value (COLUMNNAME_tiedshares, tiedshares);
 	}
 
-	/** Get tiedshares.
-		@return tiedshares	  */
+	/** Get Tied Shares.
+		@return Tied Shares	  */
 	public BigDecimal gettiedshares () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_tiedshares);
@@ -1206,29 +1352,29 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 		return bd;
 	}
 
-	/** Set Membership Period.
-		@param transperiod Membership Period	  */
+	/** Set Period.
+		@param transperiod Period	  */
 	public void settransperiod (String transperiod)
 	{
 		set_Value (COLUMNNAME_transperiod, transperiod);
 	}
 
-	/** Get Membership Period.
-		@return Membership Period	  */
+	/** Get Period.
+		@return Period	  */
 	public String gettransperiod () 
 	{
 		return (String)get_Value(COLUMNNAME_transperiod);
 	}
 
-	/** Set transyear.
-		@param transyear transyear	  */
+	/** Set Transaction Year.
+		@param transyear Transaction Year	  */
 	public void settransyear (boolean transyear)
 	{
 		set_Value (COLUMNNAME_transyear, Boolean.valueOf(transyear));
 	}
 
-	/** Get transyear.
-		@return transyear	  */
+	/** Get Transaction Year.
+		@return Transaction Year	  */
 	public boolean istransyear () 
 	{
 		Object oo = get_Value(COLUMNNAME_transyear);
@@ -1253,25 +1399,5 @@ public class X_s_member extends PO implements I_s_member, I_Persistent
 	public String getuuid () 
 	{
 		return (String)get_Value(COLUMNNAME_uuid);
-	}
-	@Override
-	public boolean afterSave(boolean newRecord, boolean success) {
-		if (newRecord) {
-			String email = this.getEMail();
-			if (email != null) {
-				I_s_saccoinfo info = new X_s_saccoinfo(getCtx(), 1000000, get_TrxName());
-				String saccoName = info.getsacconame();
-				String subject = saccoName + " Registration";
-				String message = "Dear " + this.getmfirstname() + ", \n\n" + " Thank you for registering at "
-						+ info.getsacconame() + ".Welcome";
-				SaccoMail sm = SaccoMail.get();
-
-				SendMailSSL send = new SendMailSSL(sm.getsmtp_host(), sm.getsmtp_port(),
-						sm.getsmtp_socketfactory_port(), sm.issmtp_auth(), sm.getEMail(), sm.getPassword(), email,
-						subject, message);
-				send.send();
-			}
-		}
-		return super.afterSave(newRecord, success);
 	}
 }

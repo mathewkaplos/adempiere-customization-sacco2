@@ -115,4 +115,5 @@ public class SMember extends X_s_member {
 		}
 		return list.toArray(new Repayment[list.size()]);
 	}
+
 }

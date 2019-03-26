@@ -8,6 +8,8 @@ import org.compiere.model.MemberShares;
 import org.compiere.model.ShareRemittance;
 import org.compiere.process.SvrProcess;
 
+import zenith.util.DateUtil;
+
 public class SaveShareWithdrawal extends SvrProcess {
 
 	ShareRemittance shareRemittance = null;
@@ -26,6 +28,9 @@ public class SaveShareWithdrawal extends SvrProcess {
 		memberShares.save();
 		shareRemittance.setIsComplete(true);
 		shareRemittance.setreceiptamount(shareRemittance.getreceiptamount().negate());
+		shareRemittance.setTransactionTime(DateUtil.newTimestamp());
+		shareRemittance.setTransDate(DateUtil.newTimestamp());
+		shareRemittance.setIsComplete(true);
 		shareRemittance.save();
 		JOptionPane.showMessageDialog(null, "Saved Successfully");
 		return null;

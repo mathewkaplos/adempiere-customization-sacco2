@@ -31,7 +31,10 @@ public class ShareAccountOpenningCallout extends CalloutEngine {
 		if (member != null) {
 			payroll_number = member.getmpayroll();
 			member_number = member.getDocumentNo();
-
+			int AD_User_ID = member.getAD_User_ID();
+			if (AD_User_ID > 0) {
+				mTab.setValue("member_userid", AD_User_ID);
+			}
 		}
 		//
 		// Set values to fields
@@ -67,7 +70,7 @@ public class ShareAccountOpenningCallout extends CalloutEngine {
 			saving.save();
 		}
 		updateCode(mTab, code + no);
- 
+
 		return NO_ERROR;
 	}
 

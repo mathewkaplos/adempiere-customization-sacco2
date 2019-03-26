@@ -22,6 +22,8 @@ public class UpdateMemberInformation extends SvrProcess {
 		member.setaddress(request.getaddress());
 		member.setbankaccno(request.getbankaccno());
 		member.save();
+		request.setis_updated(true);
+		request.save();
 		return null;
 	}
 

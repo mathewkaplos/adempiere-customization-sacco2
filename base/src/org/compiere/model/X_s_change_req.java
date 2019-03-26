@@ -29,7 +29,7 @@ public class X_s_change_req extends PO implements I_s_change_req, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190325L;
+	private static final long serialVersionUID = 20190326L;
 
     /** Standard Constructor */
     public X_s_change_req (Properties ctx, int s_change_req_ID, String trxName)
@@ -159,6 +159,27 @@ public class X_s_change_req extends PO implements I_s_change_req, I_Persistent
 	public String getemployer () 
 	{
 		return (String)get_Value(COLUMNNAME_employer);
+	}
+
+	/** Set Is Updated.
+		@param is_updated Is Updated	  */
+	public void setis_updated (boolean is_updated)
+	{
+		set_Value (COLUMNNAME_is_updated, Boolean.valueOf(is_updated));
+	}
+
+	/** Get Is Updated.
+		@return Is Updated	  */
+	public boolean is_updated () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_updated);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Next Of Kin.

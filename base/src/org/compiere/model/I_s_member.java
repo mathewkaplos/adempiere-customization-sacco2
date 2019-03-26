@@ -62,6 +62,19 @@ public interface I_s_member
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AD_User_ID */
+    public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
+
+	/** Set User/Contact.
+	  * User within the system - Internal or Business Partner Contact
+	  */
+	public void setAD_User_ID (int AD_User_ID);
+
+	/** Get User/Contact.
+	  * User within the system - Internal or Business Partner Contact
+	  */
+	public int getAD_User_ID();
+
     /** Column name address */
     public static final String COLUMNNAME_address = "address";
 
@@ -168,6 +181,24 @@ public interface I_s_member
 	/** Get disp002	  */
 	public boolean isdisp002();
 
+    /** Column name disp003 */
+    public static final String COLUMNNAME_disp003 = "disp003";
+
+	/** Set disp003	  */
+	public void setdisp003 (boolean disp003);
+
+	/** Get disp003	  */
+	public boolean isdisp003();
+
+    /** Column name disp004 */
+    public static final String COLUMNNAME_disp004 = "disp004";
+
+	/** Set disp004	  */
+	public void setdisp004 (boolean disp004);
+
+	/** Get disp004	  */
+	public boolean isdisp004();
+
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
 
@@ -239,14 +270,25 @@ public interface I_s_member
 	/** Get ID No:	  */
 	public String getid_no();
 
-    /** Column name introducerid */
-    public static final String COLUMNNAME_introducerid = "introducerid";
+    /** Column name introduced */
+    public static final String COLUMNNAME_introduced = "introduced";
 
-	/** Set introducerid	  */
-	public void setintroducerid (int introducerid);
+	/** Set Introduced	  */
+	public void setintroduced (boolean introduced);
 
-	/** Get introducerid	  */
-	public int getintroducerid();
+	/** Get Introduced	  */
+	public boolean isintroduced();
+
+    /** Column name introducer_ID */
+    public static final String COLUMNNAME_introducer_ID = "introducer_ID";
+
+	/** Set Introducer	  */
+	public void setintroducer_ID (int introducer_ID);
+
+	/** Get Introducer	  */
+	public int getintroducer_ID();
+
+	public I_s_member getintroducer() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -287,6 +329,15 @@ public interface I_s_member
 
 	/** Get Junior Account	  */
 	public boolean isjunioracc();
+
+    /** Column name job_title */
+    public static final String COLUMNNAME_job_title = "job_title";
+
+	/** Set Job Title	  */
+	public void setjob_title (String job_title);
+
+	/** Get Job Title	  */
+	public String getjob_title();
 
     /** Column name m_designation_ID */
     public static final String COLUMNNAME_m_designation_ID = "m_designation_ID";
@@ -344,23 +395,23 @@ public interface I_s_member
 	/** Get Date Of Birth:	  */
 	public Timestamp getmdob();
 
-    /** Column name memberimage */
-    public static final String COLUMNNAME_memberimage = "memberimage";
+    /** Column name memberimage_ID */
+    public static final String COLUMNNAME_memberimage_ID = "memberimage_ID";
 
-	/** Set memberimage	  */
-	public void setmemberimage (String memberimage);
+	/** Set Member Image	  */
+	public void setmemberimage_ID (int memberimage_ID);
 
-	/** Get memberimage	  */
-	public String getmemberimage();
+	/** Get Member Image	  */
+	public int getmemberimage_ID();
 
-    /** Column name membersignature */
-    public static final String COLUMNNAME_membersignature = "membersignature";
+    /** Column name membersignature_ID */
+    public static final String COLUMNNAME_membersignature_ID = "membersignature_ID";
 
-	/** Set membersignature	  */
-	public void setmembersignature (String membersignature);
+	/** Set Member Signature	  */
+	public void setmembersignature_ID (int membersignature_ID);
 
-	/** Get membersignature	  */
-	public String getmembersignature();
+	/** Get Member Signature	  */
+	public int getmembersignature_ID();
 
     /** Column name membertype */
     public static final String COLUMNNAME_membertype = "membertype";
@@ -619,10 +670,10 @@ public interface I_s_member
     /** Column name s_department_ID */
     public static final String COLUMNNAME_s_department_ID = "s_department_ID";
 
-	/** Set Sacco Department	  */
+	/** Set Department	  */
 	public void sets_department_ID (int s_department_ID);
 
-	/** Get Sacco Department	  */
+	/** Get Department	  */
 	public int gets_department_ID();
 
 	public I_s_department gets_department() throws RuntimeException;
@@ -652,10 +703,10 @@ public interface I_s_member
     /** Column name s_member_ID */
     public static final String COLUMNNAME_s_member_ID = "s_member_ID";
 
-	/** Set Member Description	  */
+	/** Set Member	  */
 	public void sets_member_ID (int s_member_ID);
 
-	/** Get Member Description	  */
+	/** Get Member	  */
 	public int gets_member_ID();
 
     /** Column name s_station_ID */
@@ -678,6 +729,17 @@ public interface I_s_member
 	/** Get Sacco Official?	  */
 	public boolean issaccoofficial();
 
+    /** Column name senior_member */
+    public static final String COLUMNNAME_senior_member = "senior_member";
+
+	/** Set Senior Member Account	  */
+	public void setsenior_member (int senior_member);
+
+	/** Get Senior Member Account	  */
+	public int getsenior_member();
+
+	public I_s_member getsenior_mem() throws RuntimeException;
+
     /** Column name sharestodateinowords */
     public static final String COLUMNNAME_sharestodateinowords = "sharestodateinowords";
 
@@ -690,28 +752,28 @@ public interface I_s_member
     /** Column name tiedshares */
     public static final String COLUMNNAME_tiedshares = "tiedshares";
 
-	/** Set tiedshares	  */
+	/** Set Tied Shares	  */
 	public void settiedshares (BigDecimal tiedshares);
 
-	/** Get tiedshares	  */
+	/** Get Tied Shares	  */
 	public BigDecimal gettiedshares();
 
     /** Column name transperiod */
     public static final String COLUMNNAME_transperiod = "transperiod";
 
-	/** Set Membership Period	  */
+	/** Set Period	  */
 	public void settransperiod (String transperiod);
 
-	/** Get Membership Period	  */
+	/** Get Period	  */
 	public String gettransperiod();
 
     /** Column name transyear */
     public static final String COLUMNNAME_transyear = "transyear";
 
-	/** Set transyear	  */
+	/** Set Transaction Year	  */
 	public void settransyear (boolean transyear);
 
-	/** Get transyear	  */
+	/** Get Transaction Year	  */
 	public boolean istransyear();
 
     /** Column name Updated */

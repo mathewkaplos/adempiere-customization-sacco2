@@ -132,6 +132,15 @@ public interface I_s_change_req
 	/** Get Employer	  */
 	public String getemployer();
 
+    /** Column name is_updated */
+    public static final String COLUMNNAME_is_updated = "is_updated";
+
+	/** Set Is Updated	  */
+	public void setis_updated (boolean is_updated);
+
+	/** Get Is Updated	  */
+	public boolean is_updated();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
