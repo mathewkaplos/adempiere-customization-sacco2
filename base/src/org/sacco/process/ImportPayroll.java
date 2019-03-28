@@ -37,7 +37,7 @@ public class ImportPayroll extends SvrProcess {
 		Payroll_Interface payroll_Interface = new Payroll_Interface(getCtx(), getRecord_ID(), get_TrxName());
 		payroll_Interface.setcsv_imported(true);
 		payroll_Interface.save();
-		
+
 		return null;
 	}
 
@@ -79,10 +79,9 @@ public class ImportPayroll extends SvrProcess {
 					String Month = row[4];
 					String Year = row[5];
 					BigDecimal Balance = new BigDecimal(row[6]);
-					BigDecimal Interest = new BigDecimal(row[7]);
-					BigDecimal Othercharges = new BigDecimal(row[8]);
 
 					Payroll_csv csv = new Payroll_csv(getCtx(), 0, get_TrxName());
+					csv.sets_payrol_interface_ID(getRecord_ID());
 					csv.setPayroll_Code(Payroll_Code);
 					csv.setItem(Item);
 					csv.setItem_Code(Item_Code);
@@ -90,18 +89,19 @@ public class ImportPayroll extends SvrProcess {
 					csv.setMonth(Month);
 					csv.setYear(Year);
 					csv.setBalance(Balance);
-					csv.setInterest(Interest);
+					if (Item.equalsIgnoreCase("LOAN")) {
+						BigDecimal Interest = new BigDecimal(row[7]);
+						BigDecimal Othercharges = new BigDecimal(row[8]);
+						csv.setInterest(Interest);
+						csv.setothercharges(Othercharges);
+					}
 					csv.sets_payrol_interface_ID(getRecord_ID());
-					csv.setothercharges(Othercharges);
 					csv.save();
 				}
 				x++;
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
-
 }

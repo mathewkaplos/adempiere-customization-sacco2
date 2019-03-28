@@ -32,7 +32,7 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190125L;
+	private static final long serialVersionUID = 20190327L;
 
     /** Standard Constructor */
     public X_s_saccoinfo (Properties ctx, int s_saccoinfo_ID, String trxName)
@@ -204,15 +204,15 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return false;
 	}
 
-	/** Set Cash Only.
-		@param cashonly Cash Only	  */
+	/** Set Cash Only Remittance.
+		@param cashonly Cash Only Remittance	  */
 	public void setcashonly (boolean cashonly)
 	{
 		set_Value (COLUMNNAME_cashonly, Boolean.valueOf(cashonly));
 	}
 
-	/** Get Cash Only.
-		@return Cash Only	  */
+	/** Get Cash Only Remittance.
+		@return Cash Only Remittance	  */
 	public boolean iscashonly () 
 	{
 		Object oo = get_Value(COLUMNNAME_cashonly);
@@ -479,6 +479,28 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_incomingmailserver);
 	}
 
+	public I_C_ValidCombination getInterestReceivable_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getInterestReceivable_Acct(), get_TrxName());	}
+
+	/** Set Interest Receivable GL A/C.
+		@param InterestReceivable_Acct Interest Receivable GL A/C	  */
+	public void setInterestReceivable_Acct (int InterestReceivable_Acct)
+	{
+		set_Value (COLUMNNAME_InterestReceivable_Acct, Integer.valueOf(InterestReceivable_Acct));
+	}
+
+	/** Get Interest Receivable GL A/C.
+		@return Interest Receivable GL A/C	  */
+	public int getInterestReceivable_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_InterestReceivable_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Accrual.
 		@param IsAccrual 
 		Indicates if Accrual or Cash Based accounting will be used
@@ -667,6 +689,37 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 	public String getoutgoingmailserver () 
 	{
 		return (String)get_Value(COLUMNNAME_outgoingmailserver);
+	}
+
+	/** Set Overdue Penalty Days.
+		@param overdue_penalty_days Overdue Penalty Days	  */
+	public void setoverdue_penalty_days (int overdue_penalty_days)
+	{
+		set_Value (COLUMNNAME_overdue_penalty_days, Integer.valueOf(overdue_penalty_days));
+	}
+
+	/** Get Overdue Penalty Days.
+		@return Overdue Penalty Days	  */
+	public int getoverdue_penalty_days () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_overdue_penalty_days);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Overdue Penalty Fomula.
+		@param overdue_penalty_formula Overdue Penalty Fomula	  */
+	public void setoverdue_penalty_formula (String overdue_penalty_formula)
+	{
+		set_Value (COLUMNNAME_overdue_penalty_formula, overdue_penalty_formula);
+	}
+
+	/** Get Overdue Penalty Fomula.
+		@return Overdue Penalty Fomula	  */
+	public String getoverdue_penalty_formula () 
+	{
+		return (String)get_Value(COLUMNNAME_overdue_penalty_formula);
 	}
 
 	public I_C_ValidCombination getprovision() throws RuntimeException
@@ -1089,10 +1142,23 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_sacconame);
 	}
 
-	public org.compiere.model.I_C_Period getsaccoperiod() throws RuntimeException
-    {
-		return (org.compiere.model.I_C_Period)MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-			.getPO(getsaccoperiod_ID(), get_TrxName());	}
+	/** Set saccoperiod.
+		@param saccoperiod saccoperiod	  */
+	public void setsaccoperiod (int saccoperiod)
+	{
+		set_Value (COLUMNNAME_saccoperiod, Integer.valueOf(saccoperiod));
+	}
+
+	/** Get saccoperiod.
+		@return saccoperiod	  */
+	public int getsaccoperiod () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_saccoperiod);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 
 	/** Set Current Period.
 		@param saccoperiod_ID Current Period	  */
@@ -1447,6 +1513,31 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 	public int gettransportsacco () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_transportsacco);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_ValidCombination getUnEarnedInterest_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getUnEarnedInterest_Acct(), get_TrxName());	}
+
+	/** Set Unearned Interest GL A/C.
+		@param UnEarnedInterest_Acct 
+		Account for unearned revenue
+	  */
+	public void setUnEarnedInterest_Acct (int UnEarnedInterest_Acct)
+	{
+		set_Value (COLUMNNAME_UnEarnedInterest_Acct, Integer.valueOf(UnEarnedInterest_Acct));
+	}
+
+	/** Get Unearned Interest GL A/C.
+		@return Account for unearned revenue
+	  */
+	public int getUnEarnedInterest_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_UnEarnedInterest_Acct);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

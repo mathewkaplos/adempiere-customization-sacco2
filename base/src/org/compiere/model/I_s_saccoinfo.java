@@ -130,10 +130,10 @@ public interface I_s_saccoinfo
     /** Column name cashonly */
     public static final String COLUMNNAME_cashonly = "cashonly";
 
-	/** Set Cash Only	  */
+	/** Set Cash Only Remittance	  */
 	public void setcashonly (boolean cashonly);
 
-	/** Get Cash Only	  */
+	/** Get Cash Only Remittance	  */
 	public boolean iscashonly();
 
     /** Column name countryf */
@@ -284,6 +284,17 @@ public interface I_s_saccoinfo
 	/** Get incomingmailserver	  */
 	public String getincomingmailserver();
 
+    /** Column name InterestReceivable_Acct */
+    public static final String COLUMNNAME_InterestReceivable_Acct = "InterestReceivable_Acct";
+
+	/** Set Interest Receivable GL A/C	  */
+	public void setInterestReceivable_Acct (int InterestReceivable_Acct);
+
+	/** Get Interest Receivable GL A/C	  */
+	public int getInterestReceivable_Acct();
+
+	public I_C_ValidCombination getInterestReceivable_A() throws RuntimeException;
+
     /** Column name IsAccrual */
     public static final String COLUMNNAME_IsAccrual = "IsAccrual";
 
@@ -408,6 +419,24 @@ public interface I_s_saccoinfo
 
 	/** Get outgoingmailserver	  */
 	public String getoutgoingmailserver();
+
+    /** Column name overdue_penalty_days */
+    public static final String COLUMNNAME_overdue_penalty_days = "overdue_penalty_days";
+
+	/** Set Overdue Penalty Days	  */
+	public void setoverdue_penalty_days (int overdue_penalty_days);
+
+	/** Get Overdue Penalty Days	  */
+	public int getoverdue_penalty_days();
+
+    /** Column name overdue_penalty_formula */
+    public static final String COLUMNNAME_overdue_penalty_formula = "overdue_penalty_formula";
+
+	/** Set Overdue Penalty Fomula	  */
+	public void setoverdue_penalty_formula (String overdue_penalty_formula);
+
+	/** Get Overdue Penalty Fomula	  */
+	public String getoverdue_penalty_formula();
 
     /** Column name provisionacc */
     public static final String COLUMNNAME_provisionacc = "provisionacc";
@@ -645,6 +674,15 @@ public interface I_s_saccoinfo
 	/** Get Sacco Name/Description	  */
 	public String getsacconame();
 
+    /** Column name saccoperiod */
+    public static final String COLUMNNAME_saccoperiod = "saccoperiod";
+
+	/** Set saccoperiod	  */
+	public void setsaccoperiod (int saccoperiod);
+
+	/** Get saccoperiod	  */
+	public int getsaccoperiod();
+
     /** Column name saccoperiod_ID */
     public static final String COLUMNNAME_saccoperiod_ID = "saccoperiod_ID";
 
@@ -654,7 +692,6 @@ public interface I_s_saccoinfo
 	/** Get Current Period	  */
 	public int getsaccoperiod_ID();
 
-	public org.compiere.model.I_C_Period getsaccoperiod() throws RuntimeException;
 
     /** Column name saccopobox */
     public static final String COLUMNNAME_saccopobox = "saccopobox";
@@ -853,6 +890,21 @@ public interface I_s_saccoinfo
 
 	/** Get transportsacco	  */
 	public int gettransportsacco();
+
+    /** Column name UnEarnedInterest_Acct */
+    public static final String COLUMNNAME_UnEarnedInterest_Acct = "UnEarnedInterest_Acct";
+
+	/** Set Unearned Interest GL A/C.
+	  * Account for unearned revenue
+	  */
+	public void setUnEarnedInterest_Acct (int UnEarnedInterest_Acct);
+
+	/** Get Unearned Interest GL A/C.
+	  * Account for unearned revenue
+	  */
+	public int getUnEarnedInterest_Acct();
+
+	public I_C_ValidCombination getUnEarnedInterest_A() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

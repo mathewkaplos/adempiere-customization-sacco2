@@ -448,6 +448,9 @@ public class SLoan extends X_s_loans {
 		return getOtherCharges("");
 	}
 
+	/**
+	 * This method sums all charges associated with loan
+	 */
 	public void updateCharges() {
 		String sql = "select SUM(amount) from adempiere.s_loan_charges WHERE s_loans_ID =" + get_ID();
 		BigDecimal totalAmt = DB.getSQLValueBD(get_TrxName(), sql);
@@ -462,6 +465,12 @@ public class SLoan extends X_s_loans {
 	private SLoan loan = null;
 	private Repayment repayment = null;
 
+	/**
+	 * new Repayments This will be used when re-financing a loan
+	 * 
+	 * @param _loan
+	 * @return
+	 */
 	public Repayment newRepayment(SLoan _loan) {
 		loan = _loan;
 		BigDecimal PaymentAmount = loan.getloanbalance();
@@ -489,6 +498,12 @@ public class SLoan extends X_s_loans {
 		return r;
 	}
 
+	/**
+	 * This will be used when re-financing a loan
+	 * 
+	 * @param _loan
+	 * @return
+	 */
 	private void reAllocateGuarantors() {
 		SLoanGuantorDetails[] details = repayment.getGuarantorDetails(loan.gets_loans_ID());
 		for (int i = 0; i < details.length; i++) {
@@ -499,6 +514,12 @@ public class SLoan extends X_s_loans {
 
 	}
 
+	/**
+	 * This will be used when re-financing a loan
+	 * 
+	 * @param _loan
+	 * @return
+	 */
 	private void updateLoanRemmittance() {
 		loan.setloanbalance(loan.getloanbalance().subtract(repayment.getPrincipal()));
 		loan.setmonthopeningbal(loan.getmonthopeningbal().subtract(repayment.getPrincipal()));
@@ -515,6 +536,9 @@ public class SLoan extends X_s_loans {
 		saveAccRecievables();
 	}
 
+	/**
+	 * I'm thinking of revisiting this someday
+	 */
 	private void saveAccRecievables() {
 		AccRecievables accRecievables = new AccRecievables(getCtx(), 0, get_TrxName());
 		accRecievables.setTransDate(DateUtil.newTimestamp());
@@ -540,10 +564,21 @@ public class SLoan extends X_s_loans {
 		accRecievables.save();
 	}
 
+	/**
+	 * I don't remember what this shit was supposed to do
+	 * 
+	 * @return
+	 */
 	private String getDescription() {
 		SLoanType loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
 		return loanType.getloantypecode() + " Loan Remmittance No: " + repayment.getDocumentNo();
 	}
+
+	/**
+	 * Get the amount of loan disbursed.. The sum of all disbursements
+	 * 
+	 * @return
+	 */
 
 	public BigDecimal getAllDisbursedAmounts() {
 		String sql = "SELECT COALESCE (SUM(disbursed_amount),0) FROM adempiere.s_loan_disbursement WHERE s_loans_ID ="
@@ -553,20 +588,51 @@ public class SLoan extends X_s_loans {
 
 	}
 
+	/**
+	 * Get the number of repayments already made for the loan. Repayments which
+	 * are complete
+	 * 
+	 * @return
+	 */
 	public int getNumberOfRepayments() {
 		String sql = "SELECT COUNT(l_repayments_ID) FROM adempiere.l_repayments WHERE is_repayment ='Y' AND isComplete='Y' AND  s_loans_ID  = "
 				+ get_ID();
 		return DB.getSQLValue(get_TrxName(), sql);
 	}
 
+	/**
+	 * this return the sum of savings used to guarantee the loan
+	 * 
+	 * @return
+	 */
 	public BigDecimal getGuaranteedAmountSum() {
 		String sql = "SELECT COALESCE(SUM(amountguaranteed),0) FROM adempiere.s_loanguantordetails WHERE s_loans_ID="
 				+ get_ID();
 		return DB.getSQLValueBD(get_TrxName(), sql);
 	}
 
+	/**
+	 * If this loan is guaranteed , then this will return the amount needed to
+	 * fully guarantee it
+	 * 
+	 * @return
+	 */
 	public BigDecimal getRemainingGuaranteedAmount() {
 
 		return getloanamount().subtract(getGuaranteedAmountSum());
+	}
+
+	/**
+	 * check if this loan is partially disbursed it has been disbursed at least
+	 * once before
+	 * 
+	 * @return
+	 */
+	public boolean isPartiallyDisbursed() {
+		String sql = "SELECT COUNT(s_loan_disbursement_ID) FROM adempiere.s_loan_disbursement WHERE s_loans_ID="
+				+ get_ID();
+		int count = DB.getSQLValue(get_TrxName(), sql);
+		System.out.println("count: " + count);
+		return count > 1;
 	}
 }

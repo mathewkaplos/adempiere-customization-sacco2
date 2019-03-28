@@ -12,6 +12,7 @@ import org.compiere.model.Payroll_Interface;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
 import org.compiere.model.STransactions;
+import org.compiere.model.Sacco;
 import org.compiere.model.ShareType;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
@@ -109,7 +110,7 @@ public class ListPayrollTransactions extends SvrProcess {
 		System.out.println(per.getName());
 		System.out.println(per.getStartDate());
 		System.out.println(per.getEndDate());
-
+		getLoanToBeDebitRaised();
 		return null;
 	}
 
@@ -146,7 +147,6 @@ public class ListPayrollTransactions extends SvrProcess {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-
 		}
 
 		memberShares = list.toArray(new MemberShares[list.size()]);
@@ -256,5 +256,10 @@ public class ListPayrollTransactions extends SvrProcess {
 			transactions.setshareloanid(loan.get_ID());
 			transactions.save();
 		}
+	}
+
+	void getLoanToBeDebitRaised() {
+		Sacco s = Sacco.getSaccco();
+		s.getLoanToBeDebitRaised();
 	}
 }

@@ -47,10 +47,12 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 
+import zenith.util.DateUtil;
+
 /**
- *  Posting Document Root.
+ * Posting Document Root.
  *
- *  <pre>
+ * <pre>
  *  Table               Base Document Types (C_DocType.DocBaseType & AD_Reference_ID=183)
  *      Class           AD_Table_ID
  *  ------------------  ------------------------------
@@ -98,13 +100,15 @@ import org.compiere.util.Trx;
  *
  *	Project Issue		PJI
  *		C_ProjectIssue	623 - DocType fixed
- *	
- *  </pre>
- *  @author Jorg Janke
- *  @author victor.perez@e-evolution.com, e-Evolution http://www.e-evolution.com
- * 				<li>FR [ 2520591 ] Support multiples calendar for Org 
- *				@see http://sourceforge.net/tracker2/?func=detail&atid=879335&aid=2520591&group_id=176962 
- *  @version  $Id: Doc.java,v 1.6 2006/07/30 00:53:33 jjanke Exp $
+ *Loan Disbursement  1000015
+ * 
+ * </pre>
+ * 
+ * @author Jorg Janke
+ * @author victor.perez@e-evolution.com, e-Evolution http://www.e-evolution.com
+ *         <li>FR [ 2520591 ] Support multiples calendar for Org
+ * @see http://sourceforge.net/tracker2/?func=detail&atid=879335&aid=2520591&group_id=176962
+ * @version $Id: Doc.java,v 1.6 2006/07/30 00:53:33 jjanke Exp $
  */
 public abstract class Doc
 {
@@ -1766,7 +1770,8 @@ public abstract class Doc
 			if (m_DateAcct != null)
 				return m_DateAcct;
 		}
-		throw new IllegalStateException("No DateAcct");
+		return DateUtil.newTimestamp();
+		//throw new IllegalStateException("No DateAcct");
 	}	//	getDateAcct
 
 	/**
@@ -1795,7 +1800,8 @@ public abstract class Doc
 			if (m_DateDoc != null)
 				return m_DateDoc;
 		}
-		throw new IllegalStateException("No DateDoc");
+		return DateUtil.newTimestamp();
+		//throw new IllegalStateException("No DateDoc");
 	}	//	getDateDoc
 	
 	/**
