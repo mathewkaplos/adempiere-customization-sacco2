@@ -2,6 +2,7 @@ package org.sacco.loan;
 
 import java.math.BigDecimal;
 import org.compiere.model.LoanSchedule;
+import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 
 import zenith.util.Util;
@@ -54,6 +55,8 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 			ls.setopenning_loanbalance(Util.round(ls.getmonthopeningbal().add(ls.getoldinterest())));
 
 			ls.save();
+
+			createPeriodRemittance(ls);
 		}
 		loan.setloaninterestamount(total_interest);
 		loan.setintbalance(total_interest);
@@ -61,10 +64,13 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 		loan.save();
 	}
 
+	private void createPeriodRemittance(LoanSchedule ls) {
+		Sacco.createReplaceRemittanceForLoan(loan, ls.getC_Period_ID(), ls.getPrincipal(),ls.getinterestamount());
+	}
+
 	public BigDecimal getExpectedInterest() {
 		double Principal = loan.getmonthopeningbal().doubleValue();
 		BigDecimal expInterest = getInterest(Principal, 1);
 		return expInterest;
 	}
-
 }

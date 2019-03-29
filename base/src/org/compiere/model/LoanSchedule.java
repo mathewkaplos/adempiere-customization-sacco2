@@ -41,4 +41,8 @@ public class LoanSchedule extends X_s_loanschedule {
 
 		return null;
 	}
+
+	public BigDecimal getPrincipal() {
+		return getprincipalrepayment();
+	}
 }

@@ -46,11 +46,14 @@ public class Schedule {
 		}
 		periods = loan.getloanrepayperiod();
 		if (loan.isnewloan() && newSchedule) {
-			P = loan.getloanamount().doubleValue();
+			if (newSchedule) {
+				P = loan.getloanamount().doubleValue();
+			} else {
+				P = loan.getloanbalance().doubleValue();
+			}
 		} else {
 			P = loan.getloanbalance().doubleValue();
 		}
-		System.out.println("P: " + P);
 		R = loan.getloaninterestrate().doubleValue();
 		T = periods;
 

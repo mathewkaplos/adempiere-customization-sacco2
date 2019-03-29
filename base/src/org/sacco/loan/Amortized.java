@@ -2,10 +2,12 @@ package org.sacco.loan;
 
 import java.math.BigDecimal;
 import org.compiere.model.LoanSchedule;
+import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 
 import z.mathew.Finance;
 import z.mathew.FinanceLib;
+import zenith.util.Util;
 
 public class Amortized extends Schedule implements InterestPayMethod {
 
@@ -38,26 +40,32 @@ public class Amortized extends Schedule implements InterestPayMethod {
 
 			BigDecimal constantRepayment = BigDecimal.valueOf(Math.round(pmt * 100D) / 100D);
 
-			ls.setmonthlyrepayment(constantRepayment.negate());
+			ls.setmonthlyrepayment(Util.round(constantRepayment.negate()));
 
 			double pv = FinanceLib.pv(r, loanSchedules.length - (i + 1), pmt, 0, false);
 			BigDecimal balance = BigDecimal.valueOf(Math.round(pv * 100D) / 100D);
 
-			ls.setloanbalance(balance);
+			ls.setloanbalance(Util.round(balance));
 			BigDecimal principalRepayment = BigDecimal.valueOf(Math.round(principal * 100D) / 100D);
-			ls.setprincipalrepayment(principalRepayment.negate());
-			ls.setinterestamount(interest.negate());
- 
+			ls.setprincipalrepayment(Util.round(principalRepayment.negate()));
+			ls.setinterestamount(Util.round(interest.negate()));
+
 			ls.save();
 			// paid amount
 			tempPaid = tempPaid.add(ls.getamountdue());
-			ls.setamountpaid(tempPaid);
-			ls.setmonthopeningbal(ls.getmonthlyrepayment().add(ls.getloanbalance()));
+			ls.setamountpaid(Util.round(tempPaid));
+			ls.setmonthopeningbal(Util.round(ls.getmonthlyrepayment().add(ls.getloanbalance())));
 
 			ls.save();
 
 			loan.setstatementbal(constantRepayment.multiply(BigDecimal.valueOf(loanSchedules.length)).abs());
 			loan.save();
+			createPeriodRemittance(ls);
+
 		}
+	}
+
+	private void createPeriodRemittance(LoanSchedule ls) {
+		Sacco.createReplaceRemittanceForLoan(loan, ls.getC_Period_ID(), ls.getPrincipal(), ls.getinterestamount());
 	}
 }
