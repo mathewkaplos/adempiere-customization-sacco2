@@ -31,7 +31,7 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190329L;
+	private static final long serialVersionUID = 20190330L;
 
     /** Standard Constructor */
     public X_s_period_remittance (Properties ctx, int s_period_remittance_ID, String trxName)
@@ -86,6 +86,23 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 	public BigDecimal getAmount () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Amount);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Balance.
+		@param Balance Balance	  */
+	public void setBalance (BigDecimal Balance)
+	{
+		set_Value (COLUMNNAME_Balance, Balance);
+	}
+
+	/** Get Balance.
+		@return Balance	  */
+	public BigDecimal getBalance () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Balance);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -146,6 +163,27 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Is Payroll.
+		@param is_payroll Is Payroll	  */
+	public void setis_payroll (boolean is_payroll)
+	{
+		set_Value (COLUMNNAME_is_payroll, Boolean.valueOf(is_payroll));
+	}
+
+	/** Get Is Payroll.
+		@return Is Payroll	  */
+	public boolean is_payroll () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_payroll);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	public I_s_loans gets_loans() throws RuntimeException

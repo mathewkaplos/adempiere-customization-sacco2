@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Properties;
 
 import org.compiere.util.AmtInWords_EN;
@@ -626,13 +627,59 @@ public class SLoan extends X_s_loans {
 	 * check if this loan is partially disbursed it has been disbursed at least
 	 * once before
 	 * 
-	 * @return
+	 * @return true if loan has at leat one disbursement
 	 */
 	public boolean isPartiallyDisbursed() {
 		String sql = "SELECT COUNT(s_loan_disbursement_ID) FROM adempiere.s_loan_disbursement WHERE s_loans_ID="
 				+ get_ID();
 		int count = DB.getSQLValue(get_TrxName(), sql);
-		System.out.println("count: " + count);
 		return count > 1;
+	}
+
+	/**
+	 * Resets all period remittances as from the period specified Used for
+	 * reducing balance
+	 * 
+	 * @param _period
+	 */
+	public void resetPeriodRemittance(MPeriod _period) {
+		int i = 0;
+
+		double loanBalance = getloanbalance().doubleValue();
+		double Principal = getloanrepayamt().doubleValue();
+		while (loanBalance > 0) {
+			if (loanBalance == 0)
+				break;
+			Timestamp ts = _period.getStartDate();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(ts);
+			cal.add(Calendar.MONTH, i++);
+			ts.setTime(cal.getTime().getTime());
+
+			MPeriod period = MPeriod.get(getCtx(), ts);
+
+			if (loanBalance < Principal) {
+				Principal = loanBalance;
+
+			} else {
+
+			}
+			double interest = loanBalance * getMonthlyRate().doubleValue() / 100;
+			Sacco.createReplaceRemittanceForLoan(this, period.get_ID(), BigDecimal.valueOf(Principal),
+					BigDecimal.valueOf(interest), BigDecimal.valueOf(loanBalance));
+			loanBalance = loanBalance - Principal;
+		}
+	}
+
+	public SLoanType getLoanType() {
+		return new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
+	}
+
+	public BigDecimal getMonthlyRate() {
+		return getLoanType().getloantypeinterestrate();
+	}
+
+	public BigDecimal getAnnualRate() {
+		return getLoanType().getannualinterest();
 	}
 }

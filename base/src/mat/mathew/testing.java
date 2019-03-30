@@ -3,9 +3,20 @@ package mat.mathew;
 public class testing {
 
 	public static void main(String[] ard) {
-		int x=10;
-		int y=20;
-		
-		System.out.println(x*y);
+		double loanBalance = 38000;
+		double Principal = 10000;
+		while (loanBalance > 0) {
+			if (loanBalance == 0)
+				break;
+
+			if (loanBalance < Principal) {
+				Principal= loanBalance;
+			} else {
+				 
+			}
+			System.out.println(Principal);
+			loanBalance = loanBalance - Principal;
+		}
+
 	}
 }

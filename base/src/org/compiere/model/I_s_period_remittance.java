@@ -75,6 +75,15 @@ public interface I_s_period_remittance
 	  */
 	public BigDecimal getAmount();
 
+    /** Column name Balance */
+    public static final String COLUMNNAME_Balance = "Balance";
+
+	/** Set Balance	  */
+	public void setBalance (BigDecimal Balance);
+
+	/** Get Balance	  */
+	public BigDecimal getBalance();
+
     /** Column name C_Period_ID */
     public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
 
@@ -121,6 +130,15 @@ public interface I_s_period_remittance
 
 	/** Get Interest	  */
 	public BigDecimal getInterest();
+
+    /** Column name is_payroll */
+    public static final String COLUMNNAME_is_payroll = "is_payroll";
+
+	/** Set Is Payroll	  */
+	public void setis_payroll (boolean is_payroll);
+
+	/** Get Is Payroll	  */
+	public boolean is_payroll();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";

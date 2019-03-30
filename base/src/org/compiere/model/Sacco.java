@@ -116,7 +116,7 @@ public class Sacco extends X_s_saccoinfo {
 	 * @param gross
 	 */
 	public static void createReplaceRemittanceForLoan(SLoan loan, int C_Period_ID, BigDecimal Amount,
-			BigDecimal Interest) {
+			BigDecimal Interest, BigDecimal balance) {
 		deletePeriodRemittanceForLoan(loan.get_ID(), C_Period_ID);
 
 		Period_remittance remittance = new Period_remittance(Env.getCtx(), 0, null);
@@ -126,7 +126,9 @@ public class Sacco extends X_s_saccoinfo {
 		remittance.setAmount(Amount);
 		remittance.setInterest(Interest);
 		remittance.setgross(Amount.add(Interest));
+		remittance.setBalance(balance);
 		remittance.setTransactionType("LOANS");
+		remittance.setis_payroll(loan.getrepaymode().equalsIgnoreCase("SALARY DEDS"));
 		remittance.save();
 	}
 
@@ -161,6 +163,35 @@ public class Sacco extends X_s_saccoinfo {
 	 * @param shares
 	 * @param Amount
 	 */
+	public Period_remittance getPeriodRemimittance(SLoan loan, int C_Period_ID) {
+		String sql = "SELECT * FROM adempiere.s_period_remittance WHERE s_loans_ID=" + loan.gets_loans_ID()
+				+ " AND C_Period_ID=" + C_Period_ID;
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			if (rs.next()) {
+				return new Period_remittance(getCtx(), rs, get_TrxName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return null;
+	}
 
 	public static void createReplaceRemittanceForSaving(int C_Period_ID, MemberShares shares, BigDecimal Amount) {
 		String sql = "DELETE FROM adempiere.s_period_remittance WHERE C_Period_ID =" + C_Period_ID
@@ -190,5 +221,4 @@ public class Sacco extends X_s_saccoinfo {
 				+ " AND s_membershares_ID=" + s_membershares_ID;
 		DB.executeUpdate(sql, null);
 	}
-
 }
