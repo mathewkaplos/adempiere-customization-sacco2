@@ -98,6 +98,15 @@ public interface I_l_repayments
 	/** Get AmountInWords	  */
 	public String getAmountInWords();
 
+    /** Column name bankaccount */
+    public static final String COLUMNNAME_bankaccount = "bankaccount";
+
+	/** Set bankaccount	  */
+	public void setbankaccount (String bankaccount);
+
+	/** Get bankaccount	  */
+	public String getbankaccount();
+
     /** Column name BankAccount_Acct */
     public static final String COLUMNNAME_BankAccount_Acct = "BankAccount_Acct";
 
@@ -177,6 +186,15 @@ public interface I_l_repayments
 	  */
 	public int getC_Period_ID();
 
+    /** Column name change_interest_if_clearing */
+    public static final String COLUMNNAME_change_interest_if_clearing = "change_interest_if_clearing";
+
+	/** Set Change Interest If Clearing Loan	  */
+	public void setchange_interest_if_clearing (boolean change_interest_if_clearing);
+
+	/** Get Change Interest If Clearing Loan	  */
+	public boolean ischange_interest_if_clearing();
+
     /** Column name ChequeNo */
     public static final String COLUMNNAME_ChequeNo = "ChequeNo";
 
@@ -232,6 +250,19 @@ public interface I_l_repayments
 
 	/** Get disp001	  */
 	public boolean isdisp001();
+
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
 
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
@@ -303,10 +334,10 @@ public interface I_l_repayments
     /** Column name interestgl_Acct */
     public static final String COLUMNNAME_interestgl_Acct = "interestgl_Acct";
 
-	/** Set Interest GL Code	  */
+	/** Set Fixed Deposit Interest GL Code	  */
 	public void setinterestgl_Acct (int interestgl_Acct);
 
-	/** Get Interest GL Code	  */
+	/** Get Fixed Deposit Interest GL Code	  */
 	public int getinterestgl_Acct();
 
 	public I_C_ValidCombination getinterestgl_A() throws RuntimeException;
@@ -557,14 +588,40 @@ public interface I_l_repayments
 
 	public I_C_ValidCombination getpenaltyglcode_A() throws RuntimeException;
 
+    /** Column name Posted */
+    public static final String COLUMNNAME_Posted = "Posted";
+
+	/** Set Posted.
+	  * Posting status
+	  */
+	public void setPosted (boolean Posted);
+
+	/** Get Posted.
+	  * Posting status
+	  */
+	public boolean isPosted();
+
     /** Column name Principal */
     public static final String COLUMNNAME_Principal = "Principal";
 
-	/** Set Expected Principal	  */
+	/** Set Principal	  */
 	public void setPrincipal (BigDecimal Principal);
 
-	/** Get Expected Principal	  */
+	/** Get Principal	  */
 	public BigDecimal getPrincipal();
+
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
+
+	/** Set Processed.
+	  * The document has been processed
+	  */
+	public void setProcessed (boolean Processed);
+
+	/** Get Processed.
+	  * The document has been processed
+	  */
+	public boolean isProcessed();
 
     /** Column name ReceiptNo */
     public static final String COLUMNNAME_ReceiptNo = "ReceiptNo";
@@ -623,6 +680,17 @@ public interface I_l_repayments
 
 	/** Get Loan Type	  */
 	public int gets_loantype_ID();
+
+    /** Column name s_member_ID */
+    public static final String COLUMNNAME_s_member_ID = "s_member_ID";
+
+	/** Set Member	  */
+	public void sets_member_ID (int s_member_ID);
+
+	/** Get Member	  */
+	public int gets_member_ID();
+
+	public I_s_member gets_member() throws RuntimeException;
 
     /** Column name serialid */
     public static final String COLUMNNAME_serialid = "serialid";
@@ -720,4 +788,24 @@ public interface I_l_repayments
 
 	/** Get Voucher No	  */
 	public String getVoucherNo();
+
+    /** Column name write_off_gl_Acct */
+    public static final String COLUMNNAME_write_off_gl_Acct = "write_off_gl_Acct";
+
+	/** Set Write-Off GL Expense Account	  */
+	public void setwrite_off_gl_Acct (int write_off_gl_Acct);
+
+	/** Get Write-Off GL Expense Account	  */
+	public int getwrite_off_gl_Acct();
+
+	public I_C_ValidCombination getwrite_off_gl_A() throws RuntimeException;
+
+    /** Column name write_off_loan */
+    public static final String COLUMNNAME_write_off_loan = "write_off_loan";
+
+	/** Set Write Off Loan	  */
+	public void setwrite_off_loan (boolean write_off_loan);
+
+	/** Get Write Off Loan	  */
+	public boolean iswrite_off_loan();
 }

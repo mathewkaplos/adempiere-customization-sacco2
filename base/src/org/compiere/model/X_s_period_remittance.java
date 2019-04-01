@@ -32,7 +32,7 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190331L;
+	private static final long serialVersionUID = 20190401L;
 
     /** Standard Constructor */
     public X_s_period_remittance (Properties ctx, int s_period_remittance_ID, String trxName)
@@ -87,6 +87,23 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 	public BigDecimal getAmount () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Amount);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Arrears.
+		@param arrears Arrears	  */
+	public void setarrears (BigDecimal arrears)
+	{
+		set_Value (COLUMNNAME_arrears, arrears);
+	}
+
+	/** Get Arrears.
+		@return Arrears	  */
+	public BigDecimal getarrears () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_arrears);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -207,6 +224,26 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 	public int gets_loans_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_loans_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Loan Type.
+		@param s_loantype_ID Loan Type	  */
+	public void sets_loantype_ID (int s_loantype_ID)
+	{
+		if (s_loantype_ID < 1) 
+			set_Value (COLUMNNAME_s_loantype_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_loantype_ID, Integer.valueOf(s_loantype_ID));
+	}
+
+	/** Get Loan Type.
+		@return Loan Type	  */
+	public int gets_loantype_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_loantype_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

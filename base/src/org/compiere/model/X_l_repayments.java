@@ -32,7 +32,7 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190127L;
+	private static final long serialVersionUID = 20190401L;
 
     /** Standard Constructor */
     public X_l_repayments (Properties ctx, int l_repayments_ID, String trxName)
@@ -44,6 +44,10 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 // N
 			setl_repayments_ID (0);
 			setLoanNo (null);
+			setPosted (false);
+// N
+			setProcessed (false);
+// N
         } */
     }
 
@@ -142,6 +146,20 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	public String getAmountInWords () 
 	{
 		return (String)get_Value(COLUMNNAME_AmountInWords);
+	}
+
+	/** Set bankaccount.
+		@param bankaccount bankaccount	  */
+	public void setbankaccount (String bankaccount)
+	{
+		set_Value (COLUMNNAME_bankaccount, bankaccount);
+	}
+
+	/** Get bankaccount.
+		@return bankaccount	  */
+	public String getbankaccount () 
+	{
+		return (String)get_Value(COLUMNNAME_bankaccount);
 	}
 
 	/** Set Bank Account.
@@ -279,6 +297,26 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Change Interest If Clearing Loan.
+		@param change_interest_if_clearing Change Interest If Clearing Loan	  */
+	public void setchange_interest_if_clearing (boolean change_interest_if_clearing)
+	{
+		throw new IllegalArgumentException ("change_interest_if_clearing is virtual column");	}
+
+	/** Get Change Interest If Clearing Loan.
+		@return Change Interest If Clearing Loan	  */
+	public boolean ischange_interest_if_clearing () 
+	{
+		Object oo = get_Value(COLUMNNAME_change_interest_if_clearing);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Cheque No.
 		@param ChequeNo Cheque No	  */
 	public void setChequeNo (String ChequeNo)
@@ -350,6 +388,50 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** DocStatus AD_Reference_ID=131 */
+	public static final int DOCSTATUS_AD_Reference_ID=131;
+	/** Drafted = DR */
+	public static final String DOCSTATUS_Drafted = "DR";
+	/** Completed = CO */
+	public static final String DOCSTATUS_Completed = "CO";
+	/** Approved = AP */
+	public static final String DOCSTATUS_Approved = "AP";
+	/** Not Approved = NA */
+	public static final String DOCSTATUS_NotApproved = "NA";
+	/** Voided = VO */
+	public static final String DOCSTATUS_Voided = "VO";
+	/** Invalid = IN */
+	public static final String DOCSTATUS_Invalid = "IN";
+	/** Reversed = RE */
+	public static final String DOCSTATUS_Reversed = "RE";
+	/** Closed = CL */
+	public static final String DOCSTATUS_Closed = "CL";
+	/** Unknown = ?? */
+	public static final String DOCSTATUS_Unknown = "??";
+	/** In Progress = IP */
+	public static final String DOCSTATUS_InProgress = "IP";
+	/** Waiting Payment = WP */
+	public static final String DOCSTATUS_WaitingPayment = "WP";
+	/** Waiting Confirmation = WC */
+	public static final String DOCSTATUS_WaitingConfirmation = "WC";
+	/** Set Document Status.
+		@param DocStatus 
+		The current status of the document
+	  */
+	public void setDocStatus (String DocStatus)
+	{
+
+		set_Value (COLUMNNAME_DocStatus, DocStatus);
+	}
+
+	/** Get Document Status.
+		@return The current status of the document
+	  */
+	public String getDocStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_DocStatus);
 	}
 
 	/** Set Document No.
@@ -473,15 +555,15 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
 			.getPO(getinterestgl_Acct(), get_TrxName());	}
 
-	/** Set Interest GL Code.
-		@param interestgl_Acct Interest GL Code	  */
+	/** Set Fixed Deposit Interest GL Code.
+		@param interestgl_Acct Fixed Deposit Interest GL Code	  */
 	public void setinterestgl_Acct (int interestgl_Acct)
 	{
 		set_Value (COLUMNNAME_interestgl_Acct, Integer.valueOf(interestgl_Acct));
 	}
 
-	/** Get Interest GL Code.
-		@return Interest GL Code	  */
+	/** Get Fixed Deposit Interest GL Code.
+		@return Fixed Deposit Interest GL Code	  */
 	public int getinterestgl_Acct () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_interestgl_Acct);
@@ -954,21 +1036,69 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Expected Principal.
-		@param Principal Expected Principal	  */
+	/** Set Posted.
+		@param Posted 
+		Posting status
+	  */
+	public void setPosted (boolean Posted)
+	{
+		set_Value (COLUMNNAME_Posted, Boolean.valueOf(Posted));
+	}
+
+	/** Get Posted.
+		@return Posting status
+	  */
+	public boolean isPosted () 
+	{
+		Object oo = get_Value(COLUMNNAME_Posted);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Principal.
+		@param Principal Principal	  */
 	public void setPrincipal (BigDecimal Principal)
 	{
 		set_Value (COLUMNNAME_Principal, Principal);
 	}
 
-	/** Get Expected Principal.
-		@return Expected Principal	  */
+	/** Get Principal.
+		@return Principal	  */
 	public BigDecimal getPrincipal () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Principal);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Processed.
+		@param Processed 
+		The document has been processed
+	  */
+	public void setProcessed (boolean Processed)
+	{
+		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
+	}
+
+	/** Get Processed.
+		@return The document has been processed
+	  */
+	public boolean isProcessed () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Receipt No.
@@ -1078,6 +1208,31 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	public int gets_loantype_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_loantype_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_s_member gets_member() throws RuntimeException
+    {
+		return (I_s_member)MTable.get(getCtx(), I_s_member.Table_Name)
+			.getPO(gets_member_ID(), get_TrxName());	}
+
+	/** Set Member.
+		@param s_member_ID Member	  */
+	public void sets_member_ID (int s_member_ID)
+	{
+		if (s_member_ID < 1) 
+			set_Value (COLUMNNAME_s_member_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_member_ID, Integer.valueOf(s_member_ID));
+	}
+
+	/** Get Member.
+		@return Member	  */
+	public int gets_member_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_member_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1222,5 +1377,48 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	public String getVoucherNo () 
 	{
 		return (String)get_Value(COLUMNNAME_VoucherNo);
+	}
+
+	public I_C_ValidCombination getwrite_off_gl_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getwrite_off_gl_Acct(), get_TrxName());	}
+
+	/** Set Write-Off GL Expense Account.
+		@param write_off_gl_Acct Write-Off GL Expense Account	  */
+	public void setwrite_off_gl_Acct (int write_off_gl_Acct)
+	{
+		set_Value (COLUMNNAME_write_off_gl_Acct, Integer.valueOf(write_off_gl_Acct));
+	}
+
+	/** Get Write-Off GL Expense Account.
+		@return Write-Off GL Expense Account	  */
+	public int getwrite_off_gl_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_write_off_gl_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Write Off Loan.
+		@param write_off_loan Write Off Loan	  */
+	public void setwrite_off_loan (boolean write_off_loan)
+	{
+		set_Value (COLUMNNAME_write_off_loan, Boolean.valueOf(write_off_loan));
+	}
+
+	/** Get Write Off Loan.
+		@return Write Off Loan	  */
+	public boolean iswrite_off_loan () 
+	{
+		Object oo = get_Value(COLUMNNAME_write_off_loan);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 }

@@ -75,6 +75,15 @@ public interface I_s_period_remittance
 	  */
 	public BigDecimal getAmount();
 
+    /** Column name arrears */
+    public static final String COLUMNNAME_arrears = "arrears";
+
+	/** Set Arrears	  */
+	public void setarrears (BigDecimal arrears);
+
+	/** Get Arrears	  */
+	public BigDecimal getarrears();
+
     /** Column name Balance */
     public static final String COLUMNNAME_Balance = "Balance";
 
@@ -163,6 +172,15 @@ public interface I_s_period_remittance
 	public int gets_loans_ID();
 
 	public I_s_loans gets_loans() throws RuntimeException;
+
+    /** Column name s_loantype_ID */
+    public static final String COLUMNNAME_s_loantype_ID = "s_loantype_ID";
+
+	/** Set Loan Type	  */
+	public void sets_loantype_ID (int s_loantype_ID);
+
+	/** Get Loan Type	  */
+	public int gets_loantype_ID();
 
     /** Column name s_member_ID */
     public static final String COLUMNNAME_s_member_ID = "s_member_ID";

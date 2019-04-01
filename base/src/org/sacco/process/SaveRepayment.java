@@ -6,9 +6,22 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.compiere.acct.Doc;
+import org.compiere.acct.DocLine;
+import org.compiere.acct.Doc_LoanDisbursement;
+import org.compiere.acct.Doc_LoanReapayment;
+import org.compiere.acct.Fact;
+import org.compiere.acct.FactLine;
 import org.compiere.model.AccRecievables;
+import org.compiere.model.LoanDisbursement;
+import org.compiere.model.MAccount;
+import org.compiere.model.MAcctSchema;
+import org.compiere.model.MBank;
+import org.compiere.model.MClient;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MemberShares;
+import org.compiere.model.PO;
+import org.compiere.model.Period_remittance;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanGuantorDetails;
@@ -17,6 +30,8 @@ import org.compiere.model.Sacco;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.AmtInWords_EN;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
+
 import zenith.util.DateUtil;
 import zenith.util.Util;
 
@@ -54,18 +69,98 @@ public class SaveRepayment extends SvrProcess {
 		}
 		repayment.getGuarantorDetails(repayment.gets_loans_ID());
 		repayment.freeTiedShares();
-		
+
 		resetPeriodRemittance();
+		post();
 		return null;
 	}
 
+	Doc doc = null;
+	PO po = null;
+	MBank bank = null;
+	SLoanType loanType = null;
+
+	private void post() {
+		MAcctSchema[] ass = { MClient.get(getCtx()).getAcctSchema() };
+		String sql = "SELECT * FROM adempiere.s_repayments WHERE s_repayments_ID ="+getRecord_ID();
+		ResultSet rs = null;
+		PreparedStatement stm = null;
+		try {
+			stm =DB.prepareStatement(sql, get_TrxName());
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		Doc_LoanReapayment repayment_Doc = new Doc_LoanReapayment(ass, Doc_LoanReapayment.class, rs, get_TrxName());
+		doc = repayment_Doc;
+
+		acctSchema = new MAcctSchema(Env.getCtx(), 101, null);
+		fact = new Fact(doc, acctSchema, "A");
+		docLine = new DocLine(po, doc);
+		postLoan();
+		repayment.setDocStatus("CO");
+		repayment.setProcessed(true);
+		repayment.setPosted(true);
+		repayment.save();
+	}
+
+	Fact fact = null;
+	DocLine docLine = null;
+	MAcctSchema acctSchema = null;
+
+	private void postLoan() {
+
+		MAccount accountDR = new MAccount(Env.getCtx(), loanType.getloantypeloangl_Acct(), get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), repayment.getPrincipal());
+		lineDR.save();
+
+		MAccount accountCR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
+				repayment.getPrincipal().negate());
+		lineCR.save();
+		postInterest();
+	}
+
+	private void postInterest() {
+		Sacco sacco = Sacco.getSaccco();
+		MAccount accountCR = new MAccount(Env.getCtx(), sacco.getInterestReceivable_Acct(), get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
+				repayment.getInterest().negate());
+		lineDR.save();
+
+		MAccount accountDR = new MAccount(Env.getCtx(), sacco.getUnEarnedInterest_Acct(), get_TrxName());
+		FactLine lineCR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), repayment.getInterest());
+		lineCR.save();
+	}
+
 	private void resetPeriodRemittance() {
-		BigDecimal loanPrincipal =loan.getloanrepayamt();
+
+		BigDecimal loanPrincipal = Env.ZERO;
+
+		@SuppressWarnings("static-access")
+		Period_remittance period_remittance = Sacco.getSaccco().getPeriodRemimittance(loan, repayment.getC_Period_ID());
+		if (period_remittance != null) {
+			loanPrincipal = period_remittance.getarrears();
+		} else {
+			loanPrincipal = loan.getloanrepayamt();
+		}
 		BigDecimal repaymentPrincipal = repayment.getPrincipal();
-		
-		BigDecimal diff =repaymentPrincipal.subtract(loanPrincipal);
-		
-		loan.resetPeriodRemittance(MPeriod.get(getCtx(),  repayment.getC_Period_ID()),diff);
+		BigDecimal diff = loanPrincipal.subtract(repaymentPrincipal);
+		Sacco.updatePeriodRemittance(loan, MPeriod.get(getCtx(), repayment.getC_Period_ID()), diff);
 	}
 
 	private void updateLoanRefund() {
@@ -120,8 +215,9 @@ public class SaveRepayment extends SvrProcess {
 		accRecievables.setpaymode(repayment.getpaymode());
 		AmtInWords_EN aiw = new AmtInWords_EN();
 		try {
-		//	String AmountInWords = aiw.getAmtInWords(repayment.getgross_amount_due().toString());
-			//accRecievables.setAmountInWords(AmountInWords);
+			// String AmountInWords =
+			// aiw.getAmtInWords(repayment.getgross_amount_due().toString());
+			// accRecievables.setAmountInWords(AmountInWords);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -261,7 +261,7 @@ public class SLoan extends X_s_loans {
 				val = schedule.getprincipalrepayment();
 			}
 		} else {
-			val = rem.getAmount();
+			val = rem.getarrears();
 		}
 		return val;
 	}
@@ -641,40 +641,8 @@ public class SLoan extends X_s_loans {
 	 * 
 	 * @param _period
 	 */
-	public void resetPeriodRemittance(MPeriod _period, BigDecimal diff) {
-		int i = 1;
-		int difference = diff.compareTo(Env.ZERO);
-		System.out.println(difference);
-		System.out.println(diff);
-		double loanBalance = getloanbalance().doubleValue();
-		double Principal = getloanrepayamt().doubleValue();
-		while (loanBalance > 0) {
-			if (difference == 0)
-				break;
-			if (loanBalance == 0)
-				break;
-
-			LocalDate effectDate = _period.getEndDate().toLocalDateTime().toLocalDate();
-			effectDate = effectDate.plusMonths(i);
-			LocalDate periodPayDate = effectDate.minusDays(1);// for February
-			Timestamp periodPayTimestamp = Timestamp.valueOf(periodPayDate.atStartOfDay());
-			MPeriod period = MPeriod.get(getCtx(), periodPayTimestamp);
-			if (loanBalance < Principal) {
-				Principal = loanBalance;
-			}
-			if (difference == -1) {
-				Principal = Principal - diff.doubleValue();
-			}
-			double interest = loanBalance * getMonthlyRate().doubleValue() / 100;
-
-			Sacco.createReplaceRemittanceForLoan(this, period, BigDecimal.valueOf(Principal),
-					BigDecimal.valueOf(interest), BigDecimal.valueOf(loanBalance));
-			loanBalance = loanBalance - Principal;
-			if (difference == -1) {
-				break;
-			}
-			i++;
-		}
+	public void resetPeriodRemittance12(MPeriod _period, BigDecimal diff) {
+		Sacco.updatePeriodRemittance(this, _period, diff);
 	}
 
 	public I_s_loantype getLoanType() {
@@ -687,5 +655,15 @@ public class SLoan extends X_s_loans {
 
 	public BigDecimal getAnnualRate() {
 		return getLoanType().getannualinterest();
+	}
+
+	/**
+	 * ONLY For reducing balance
+	 * 
+	 * @return
+	 */
+	public BigDecimal getCurrentInterest() {
+		double interest = getloanbalance().doubleValue() * getMonthlyRate().doubleValue() / 100;
+		return BigDecimal.valueOf(interest);
 	}
 }

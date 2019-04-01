@@ -53,7 +53,7 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 
 			// loan balance
 			ls.setloanbalance(Util.round(ls.getexpprincipal()));
-			//ls.setopenning_loanbalance(Util.round(ls.getmonthopeningbal().add(ls.getoldinterest())));
+			// ls.setopenning_loanbalance(Util.round(ls.getmonthopeningbal().add(ls.getoldinterest())));
 
 			ls.save();
 
@@ -66,7 +66,8 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 	}
 
 	private void createPeriodRemittance(LoanSchedule ls) {
-		Sacco.createReplaceRemittanceForLoan(loan, (MPeriod) ls.getC_Period(), ls.getPrincipal(),ls.getinterestamount(),ls.getmonthopeningbal());
+		Sacco.createReplaceRemittanceForLoan(loan, (MPeriod) ls.getC_Period(), ls.getPrincipal(),
+				ls.getinterestamount(), ls.getmonthopeningbal());
 	}
 
 	public BigDecimal getExpectedInterest() {

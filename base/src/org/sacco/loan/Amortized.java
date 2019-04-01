@@ -67,6 +67,7 @@ public class Amortized extends Schedule implements InterestPayMethod {
 	}
 
 	private void createPeriodRemittance(LoanSchedule ls) {
-		Sacco.createReplaceRemittanceForLoan(loan, (MPeriod) ls.getC_Period(), ls.getPrincipal(), ls.getinterestamount(),ls.getmonthopeningbal());
+		Sacco.createReplaceRemittanceForLoan(loan, (MPeriod) ls.getC_Period(), ls.getPrincipal(),
+				ls.getinterestamount(), ls.getmonthopeningbal());
 	}
 }
