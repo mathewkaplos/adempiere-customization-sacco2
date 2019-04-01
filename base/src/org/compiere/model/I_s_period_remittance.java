@@ -195,6 +195,19 @@ public interface I_s_period_remittance
 	/** Get s_period_remittance ID	  */
 	public int gets_period_remittance_ID();
 
+    /** Column name StartDate */
+    public static final String COLUMNNAME_StartDate = "StartDate";
+
+	/** Set Start Date.
+	  * First effective day (inclusive)
+	  */
+	public void setStartDate (Timestamp StartDate);
+
+	/** Get Start Date.
+	  * First effective day (inclusive)
+	  */
+	public Timestamp getStartDate();
+
     /** Column name TransactionType */
     public static final String COLUMNNAME_TransactionType = "TransactionType";
 

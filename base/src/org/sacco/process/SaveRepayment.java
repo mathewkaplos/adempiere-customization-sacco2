@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.compiere.model.AccRecievables;
+import org.compiere.model.MPeriod;
 import org.compiere.model.MemberShares;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
@@ -53,7 +54,18 @@ public class SaveRepayment extends SvrProcess {
 		}
 		repayment.getGuarantorDetails(repayment.gets_loans_ID());
 		repayment.freeTiedShares();
+		
+		resetPeriodRemittance();
 		return null;
+	}
+
+	private void resetPeriodRemittance() {
+		BigDecimal loanPrincipal =loan.getloanrepayamt();
+		BigDecimal repaymentPrincipal = repayment.getPrincipal();
+		
+		BigDecimal diff =repaymentPrincipal.subtract(loanPrincipal);
+		
+		loan.resetPeriodRemittance(MPeriod.get(getCtx(),  repayment.getC_Period_ID()),diff);
 	}
 
 	private void updateLoanRefund() {
@@ -108,8 +120,8 @@ public class SaveRepayment extends SvrProcess {
 		accRecievables.setpaymode(repayment.getpaymode());
 		AmtInWords_EN aiw = new AmtInWords_EN();
 		try {
-			String AmountInWords = aiw.getAmtInWords(repayment.getgross_amount_due().toString());
-			accRecievables.setAmountInWords(AmountInWords);
+		//	String AmountInWords = aiw.getAmtInWords(repayment.getgross_amount_due().toString());
+			//accRecievables.setAmountInWords(AmountInWords);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

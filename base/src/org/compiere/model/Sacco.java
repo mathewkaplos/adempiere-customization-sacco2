@@ -110,19 +110,20 @@ public class Sacco extends X_s_saccoinfo {
 	 * Creating the anticipated period remittabce for loan
 	 * 
 	 * @param loan
-	 * @param C_Period_ID
+	 * @param period
 	 * @param Amount
 	 * @param Interest
 	 * @param gross
 	 */
-	public static void createReplaceRemittanceForLoan(SLoan loan, int C_Period_ID, BigDecimal Amount,
+	public static void createReplaceRemittanceForLoan(SLoan loan, MPeriod period, BigDecimal Amount,
 			BigDecimal Interest, BigDecimal balance) {
-		deletePeriodRemittanceForLoan(loan.get_ID(), C_Period_ID);
+		deletePeriodRemittanceForLoan(loan.get_ID(), period.getC_Period_ID());
 
 		Period_remittance remittance = new Period_remittance(Env.getCtx(), 0, null);
 		remittance.sets_member_ID(loan.gets_member_ID());
 		remittance.sets_loans_ID(loan.gets_loans_ID());
-		remittance.setC_Period_ID(C_Period_ID);
+		remittance.setC_Period_ID(period.getC_Period_ID());
+		remittance.setStartDate(period.getStartDate());
 		remittance.setAmount(Amount);
 		remittance.setInterest(Interest);
 		remittance.setgross(Amount.add(Interest));

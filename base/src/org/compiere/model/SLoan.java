@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Properties;
@@ -251,11 +252,18 @@ public class SLoan extends X_s_loans {
 	}
 
 	private BigDecimal getSchedulePrincipal(int c_Period_ID) {
-		LoanSchedule schedule = getScheduleForPeriod(c_Period_ID);
-		if (schedule != null) {
-			return schedule.getprincipalrepayment();
+
+		BigDecimal val = Env.ZERO;
+		Period_remittance rem = Sacco.getSaccco().getPeriodRemimittance(this, c_Period_ID);
+		if (rem == null) {
+			LoanSchedule schedule = getScheduleForPeriod(c_Period_ID);
+			if (schedule != null) {
+				val = schedule.getprincipalrepayment();
+			}
+		} else {
+			val = rem.getAmount();
 		}
-		return Env.ZERO;
+		return val;
 	}
 
 	public BigDecimal getPeriodInterest(int C_Period_ID, Timestamp paymentDate) {
@@ -273,45 +281,38 @@ public class SLoan extends X_s_loans {
 	}
 
 	public boolean isReducingBalance() {
-		SLoanType loanType = new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
-		if (loanType.getloantypeinteresttype().equalsIgnoreCase("R"))
+		if (gets_loantype().getloantypeinteresttype().equalsIgnoreCase("R"))
 			return true;
 		return false;
 	}
 
 	public boolean isAmortized() {
-		SLoanType loanType = new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
-		if (loanType.getloantypeinteresttype().equalsIgnoreCase("A"))
+		if (gets_loantype().getloantypeinteresttype().equalsIgnoreCase("A"))
 			return true;
 		return false;
 	}
 
 	public boolean isReducingBalanceConstant() {
-		SLoanType loanType = new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
-		if (loanType.getloantypeinteresttype().equalsIgnoreCase("RC"))
+		if (gets_loantype().getloantypeinteresttype().equalsIgnoreCase("RC"))
 			return true;
 		return false;
 	}
 
 	public boolean isFixed() {
-		SLoanType loanType = new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
-		if (loanType.getloantypeinteresttype().equalsIgnoreCase("F"))
+		if (gets_loantype().getloantypeinteresttype().equalsIgnoreCase("F"))
 			return true;
 		return false;
 	}
 
 	public boolean isModifiedAmortized() {
-		SLoanType loanType = new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
-		if (loanType.getloantypeinteresttype().equalsIgnoreCase("MA"))
+		if (gets_loantype().getloantypeinteresttype().equalsIgnoreCase("MA"))
 			return true;
 		return false;
 	}
 
 	private BigDecimal getScheduleInterest(int c_Period_ID, Timestamp paymentDate) {
 		boolean hasRemittance = remittanceDoneForPeriod(c_Period_ID);
-		int s_loantype_ID = gets_loantype_ID();
-		SLoanType type = new SLoanType(getCtx(), s_loantype_ID, get_TrxName());
-		boolean dailyMode = type.getmonthlyintcalc().equalsIgnoreCase("0");
+		boolean dailyMode = gets_loantype().getmonthlyintcalc().equalsIgnoreCase("0");
 
 		if (dailyMode) {
 			long days = getLastRepayPeriodInDays(paymentDate);
@@ -319,7 +320,7 @@ public class SLoan extends X_s_loans {
 			double R = getloaninterestrate().doubleValue() * 12;
 			double yearDays = 365;
 			double T = days / yearDays;
-			String method = type.getinterestformula();
+			String method = gets_loantype().getinterestformula();
 			Formula formula = new Formula(P, R, T, method);
 			BigDecimal interet = formula.getInterest();
 			return interet;
@@ -372,8 +373,7 @@ public class SLoan extends X_s_loans {
 	}
 
 	public String getInterestPayMethodCode() {
-		SLoanType loanType = new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
-		return loanType.getloantypeinteresttype();
+		return gets_loantype().getloantypeinteresttype();
 	}
 
 	public boolean hasAdjustment(int C_Period_ID) {
@@ -475,7 +475,6 @@ public class SLoan extends X_s_loans {
 	public Repayment newRepayment(SLoan _loan) {
 		loan = _loan;
 		BigDecimal PaymentAmount = loan.getloanbalance();
-		SLoanType loanType = new SLoanType(Env.getCtx(), loan.gets_loantype_ID(), get_TrxName());
 		Repayment r = new Repayment(getCtx(), 0, get_TrxName());
 		r.sets_loans_ID(loan.get_ID());
 		r.setC_Period_ID(Sacco.getSaccco().getsaccoperiod_ID());
@@ -484,7 +483,7 @@ public class SLoan extends X_s_loans {
 		r.setPaymentDate(DateUtil.newTimestamp());
 		r.setpaymode("CASH PERMIT");
 		r.setloan_gl_Acct(loan.getloan_gl_Acct());
-		r.setinterestgl_Acct(loanType.getloantypeinterestgl_Acct());
+		r.setinterestgl_Acct(gets_loantype().getloantypeinterestgl_Acct());
 		r.save();
 		r.setReceiptNo(r.getDocumentNo());
 		r.setVoucherNo(r.getDocumentNo());
@@ -642,37 +641,44 @@ public class SLoan extends X_s_loans {
 	 * 
 	 * @param _period
 	 */
-	public void resetPeriodRemittance(MPeriod _period) {
-		int i = 0;
-
+	public void resetPeriodRemittance(MPeriod _period, BigDecimal diff) {
+		int i = 1;
+		int difference = diff.compareTo(Env.ZERO);
+		System.out.println(difference);
+		System.out.println(diff);
 		double loanBalance = getloanbalance().doubleValue();
 		double Principal = getloanrepayamt().doubleValue();
 		while (loanBalance > 0) {
+			if (difference == 0)
+				break;
 			if (loanBalance == 0)
 				break;
-			Timestamp ts = _period.getStartDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(ts);
-			cal.add(Calendar.MONTH, i++);
-			ts.setTime(cal.getTime().getTime());
 
-			MPeriod period = MPeriod.get(getCtx(), ts);
-
+			LocalDate effectDate = _period.getEndDate().toLocalDateTime().toLocalDate();
+			effectDate = effectDate.plusMonths(i);
+			LocalDate periodPayDate = effectDate.minusDays(1);// for February
+			Timestamp periodPayTimestamp = Timestamp.valueOf(periodPayDate.atStartOfDay());
+			MPeriod period = MPeriod.get(getCtx(), periodPayTimestamp);
 			if (loanBalance < Principal) {
 				Principal = loanBalance;
-
-			} else {
-
+			}
+			if (difference == -1) {
+				Principal = Principal - diff.doubleValue();
 			}
 			double interest = loanBalance * getMonthlyRate().doubleValue() / 100;
-			Sacco.createReplaceRemittanceForLoan(this, period.get_ID(), BigDecimal.valueOf(Principal),
+
+			Sacco.createReplaceRemittanceForLoan(this, period, BigDecimal.valueOf(Principal),
 					BigDecimal.valueOf(interest), BigDecimal.valueOf(loanBalance));
 			loanBalance = loanBalance - Principal;
+			if (difference == -1) {
+				break;
+			}
+			i++;
 		}
 	}
 
-	public SLoanType getLoanType() {
-		return new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
+	public I_s_loantype getLoanType() {
+		return gets_loantype();
 	}
 
 	public BigDecimal getMonthlyRate() {

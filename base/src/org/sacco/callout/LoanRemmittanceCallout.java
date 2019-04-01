@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
+import org.compiere.model.I_s_loantype;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
@@ -54,7 +55,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("s_member_ID", loan.gets_member_ID());
 
 			// interestgl_Acct
-			SLoanType loanType = new SLoanType(Env.getCtx(), loan.gets_loantype_ID(), null);
+			I_s_loantype loanType = loan.getLoanType();
 			mTab.setValue("interestgl_Acct", loanType.getloantypeinterestgl_Acct());
 			mTab.setValue("is_repayment", true);
 			mTab.setValue("Comments", "Loan Repayment");

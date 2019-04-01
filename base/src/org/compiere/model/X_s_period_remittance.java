@@ -19,6 +19,7 @@ package org.compiere.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.util.Env;
 
@@ -31,7 +32,7 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190330L;
+	private static final long serialVersionUID = 20190331L;
 
     /** Standard Constructor */
     public X_s_period_remittance (Properties ctx, int s_period_remittance_ID, String trxName)
@@ -279,6 +280,23 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Start Date.
+		@param StartDate 
+		First effective day (inclusive)
+	  */
+	public void setStartDate (Timestamp StartDate)
+	{
+		set_Value (COLUMNNAME_StartDate, StartDate);
+	}
+
+	/** Get Start Date.
+		@return First effective day (inclusive)
+	  */
+	public Timestamp getStartDate () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_StartDate);
 	}
 
 	/** TransactionType AD_Reference_ID=1000023 */

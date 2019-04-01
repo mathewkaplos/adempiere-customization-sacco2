@@ -2,6 +2,7 @@ package org.sacco.loan;
 
 import java.math.BigDecimal;
 import org.compiere.model.LoanSchedule;
+import org.compiere.model.MPeriod;
 import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 
@@ -66,6 +67,6 @@ public class Amortized extends Schedule implements InterestPayMethod {
 	}
 
 	private void createPeriodRemittance(LoanSchedule ls) {
-		Sacco.createReplaceRemittanceForLoan(loan, ls.getC_Period_ID(), ls.getPrincipal(), ls.getinterestamount(),ls.getmonthopeningbal());
+		Sacco.createReplaceRemittanceForLoan(loan, (MPeriod) ls.getC_Period(), ls.getPrincipal(), ls.getinterestamount(),ls.getmonthopeningbal());
 	}
 }
