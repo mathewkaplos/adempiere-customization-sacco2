@@ -40,4 +40,17 @@ public class AD_User extends X_AD_User {
 			return 0;
 		return ii.intValue();
 	}
+
+	/**
+	 * Get teller bank account
+	 * 
+	 * @return
+	 */
+	public int getTellerGLCode() {
+		Integer ii = (Integer) get_Value("bankgl_Acct");
+		if (ii == null)
+			return 0;
+		return ii.intValue();
+	}
+
 }

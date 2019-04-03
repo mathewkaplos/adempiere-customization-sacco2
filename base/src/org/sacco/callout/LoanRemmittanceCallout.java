@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
+import org.compiere.model.AD_User;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -49,7 +50,11 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("gross_amount_due", gross);
 			mTab.setValue("interest_due", loan.getintbalance());
 
-			mTab.setValue("bankgl_Acct", loan.getbankgl_Acct());
+			AD_User user = new AD_User(ctx, Env.getAD_User_ID(ctx), null);
+			int bankgl_Acct = user.getTellerGLCode();
+			if (bankgl_Acct > 0) {
+				mTab.setValue("bankgl_Acct", bankgl_Acct);
+			}
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
 			mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
 			mTab.setValue("s_member_ID", loan.gets_member_ID());

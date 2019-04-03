@@ -77,17 +77,22 @@ public class SaveRepayment extends SvrProcess {
 
 	Doc doc = null;
 	PO po = null;
-	MBank bank = null;
-	SLoanType loanType = null;
 
 	private void post() {
 		MAcctSchema[] ass = { MClient.get(getCtx()).getAcctSchema() };
-		String sql = "SELECT * FROM adempiere.s_repayments WHERE s_repayments_ID ="+getRecord_ID();
+		String sql = "SELECT * FROM adempiere.l_repayments WHERE l_repayments_ID =" + getRecord_ID();
 		ResultSet rs = null;
 		PreparedStatement stm = null;
 		try {
-			stm =DB.prepareStatement(sql, get_TrxName());
-			
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				Doc_LoanReapayment repayment_Doc = new Doc_LoanReapayment(ass, Repayment.class, rs, get_TrxName());
+				doc = repayment_Doc;
+
+				Repayment repayment = new Repayment(getCtx(), rs, get_TrxName());
+				po = repayment;
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,8 +110,6 @@ public class SaveRepayment extends SvrProcess {
 				e2.printStackTrace();
 			}
 		}
-		Doc_LoanReapayment repayment_Doc = new Doc_LoanReapayment(ass, Doc_LoanReapayment.class, rs, get_TrxName());
-		doc = repayment_Doc;
 
 		acctSchema = new MAcctSchema(Env.getCtx(), 101, null);
 		fact = new Fact(doc, acctSchema, "A");
@@ -123,12 +126,15 @@ public class SaveRepayment extends SvrProcess {
 	MAcctSchema acctSchema = null;
 
 	private void postLoan() {
+		// System.out.println(Env.getCtx());
 
-		MAccount accountDR = new MAccount(Env.getCtx(), loanType.getloantypeloangl_Acct(), get_TrxName());
+		System.out.println(loan.gets_loantype().getloantypeloangl_Acct());
+		System.out.println(get_TrxName());
+		MAccount accountDR = new MAccount(Env.getCtx(), loan.gets_loantype().getloantypeloangl_Acct(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), repayment.getPrincipal());
 		lineDR.save();
 
-		MAccount accountCR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
+		MAccount accountCR = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
 				repayment.getPrincipal().negate());
 		lineCR.save();
