@@ -152,7 +152,7 @@ public class SaveRepayment extends SvrProcess {
 		FactLine lineCR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), repayment.getInterest());
 		lineCR.save();
 	}
-
+ 
 	private void resetPeriodRemittance() {
 
 		BigDecimal loanPrincipal = Env.ZERO;
