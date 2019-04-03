@@ -229,7 +229,7 @@ public class SaveRepayment extends SvrProcess {
 		}
 		accRecievables.save();
 	}
-
+//update from zenith
 	private String getDescription() {
 		SLoanType loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
 		return loanType.getloantypecode() + " Loan Remmittance No: " + repayment.getDocumentNo();
