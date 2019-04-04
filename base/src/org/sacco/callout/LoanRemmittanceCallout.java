@@ -42,6 +42,9 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 			BigDecimal expectedPrincipal = Util.round(loan.getPeriodPrincipal(C_Period_ID, PaymentDate));
 			BigDecimal expectedInterest = Util.round(loan.getPeriodInterest(C_Period_ID, PaymentDate));
+			if(expectedPrincipal.compareTo(Env.ZERO)<0){
+				expectedPrincipal=Env.ZERO;
+			}
 			BigDecimal gross = expectedPrincipal.add(expectedInterest);
 
 			mTab.setValue("PaymentAmount", gross);

@@ -127,9 +127,9 @@ public class SaveRepayment extends SvrProcess {
 
 	private void postLoan() {
 		// System.out.println(Env.getCtx());
-
-		System.out.println(loan.gets_loantype().getloantypeloangl_Acct());
-		System.out.println(get_TrxName());
+		if (repayment.getPrincipal().compareTo(Env.ZERO) == 0) {
+			return;
+		}
 		MAccount accountDR = new MAccount(Env.getCtx(), loan.gets_loantype().getloantypeloangl_Acct(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), repayment.getPrincipal());
 		lineDR.save();
@@ -142,6 +142,8 @@ public class SaveRepayment extends SvrProcess {
 	}
 
 	private void postInterest() {
+		if (repayment.getInterest().compareTo(Env.ZERO) == 0)
+			return;
 		Sacco sacco = Sacco.getSaccco();
 		MAccount accountCR = new MAccount(Env.getCtx(), sacco.getInterestReceivable_Acct(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
@@ -152,7 +154,7 @@ public class SaveRepayment extends SvrProcess {
 		FactLine lineCR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), repayment.getInterest());
 		lineCR.save();
 	}
- 
+
 	private void resetPeriodRemittance() {
 
 		BigDecimal loanPrincipal = Env.ZERO;
