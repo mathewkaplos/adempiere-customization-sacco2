@@ -66,7 +66,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			I_s_loantype loanType = loan.getLoanType();
 			mTab.setValue("interestgl_Acct", loanType.getloantypeinterestgl_Acct());
 			mTab.setValue("is_repayment", true);
-			mTab.setValue("Comments", "Loan Repayment"); 
+			mTab.setValue("Comments", "Loan Repayment");  
 			//
 
 		} else if (mTab.getAD_Tab_ID() == refundTabID) {
