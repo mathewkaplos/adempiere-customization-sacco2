@@ -23,7 +23,7 @@ public class Schedule {
 
 	SLoanType loanType = null;
 	String l_type = ""; 
-
+//
 	static double P = 0;
 	static double R = 0;
 	static double T = 0;
