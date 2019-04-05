@@ -40,16 +40,22 @@ public class ListPayrollTransactions extends SvrProcess {
 	protected void prepare() {
 		init();
 		deleteExisting();
+
+	}
+
+	@Override
+	protected String doIt() throws Exception {
 		if (TransactionType == null) {
 			getShares();
 			getLoans();
 		} else if (TransactionType.equalsIgnoreCase("SHARES")) {
 			getShares();
 		} else if (TransactionType.equalsIgnoreCase("LOANS")) {
-			getLoans2();
+			getLoans();
 		}
 
 		setSerialNo();
+		return null;
 	}
 
 	int x = 0;
@@ -109,22 +115,11 @@ public class ListPayrollTransactions extends SvrProcess {
 		DB.executeUpdate(sql, get_TrxName());
 	}
 
-	@Override
-	protected String doIt() throws Exception {
-
-		MPeriod per = MPeriod.get(getCtx(), payroll_Interface.getCreated());
-		System.out.println(per.getName());
-		System.out.println(per.getStartDate());
-		System.out.println(per.getEndDate());
-		getLoanToBeDebitRaised();
-		return null;
-	}
-
 	private void getShares() {
 
 		StringBuilder sb = new StringBuilder();
 		String whereClause = "";
-		sb.append("SELECT * FROM s_membershares ms WHERE 1=1 ");
+		sb.append("SELECT * FROM s_membershares ms WHERE ms.contributionrate>0 AND ms.paymode='SALARY DEDS'");
 		if (s_sharetype_ID > 0)
 			whereClause = " AND  ms.s_sharetype_ID =" + s_sharetype_ID;
 		filter(sb, whereClause);
@@ -205,11 +200,12 @@ public class ListPayrollTransactions extends SvrProcess {
 			sb.append(whereClause);
 	}
 
-	private void getLoans2() {
+	private void getLoans() {
 		StringBuilder sb = new StringBuilder();
 		String whereClause = "";
-		sb.append("SELECT * FROM s_period_remittance rem WHERE transactiontype='LOANS' AND C_Period_ID="
-				+ payroll_Interface.getC_Period_ID());
+		sb.append(
+				"SELECT * FROM s_period_remittance rem WHERE transactiontype='LOANS' AND is_payroll='Y' AND C_Period_ID="
+						+ payroll_Interface.getC_Period_ID());
 		if (s_loantype_ID > 0)
 			whereClause = " AND  s_loantype_ID =" + s_loantype_ID;
 		filter(sb, whereClause);
@@ -223,6 +219,7 @@ public class ListPayrollTransactions extends SvrProcess {
 			while (rs.next()) {
 				Period_remittance period_remittance = new Period_remittance(getCtx(), rs, get_TrxName());
 				list.add(period_remittance);
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -264,67 +261,4 @@ public class ListPayrollTransactions extends SvrProcess {
 		}
 	}
 
-	private void getLoans() {
-		StringBuilder sb = new StringBuilder();
-		String whereClause = "";
-		sb.append("SELECT * FROM s_loans l WHERE 1=1");
-		if (s_loantype_ID > 0)
-			whereClause = " AND  s_loantype_ID =" + s_loantype_ID;
-
-		filter(sb, whereClause);
-		System.out.println(sb.toString());
-		List<SLoan> list = new ArrayList<>();
-		PreparedStatement stm = null;
-		ResultSet rs = null;
-		try {
-			stm = DB.prepareStatement(sb.toString(), get_TrxName());
-			rs = stm.executeQuery();
-			while (rs.next()) {
-				SLoan loan = new SLoan(getCtx(), rs, get_TrxName());
-				list.add(loan);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-
-			try {
-				if (stm != null)
-					stm.close();
-				if (rs != null)
-					rs.close();
-				stm = null;
-				rs = null;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		SLoan[] loans = list.toArray(new SLoan[list.size()]);
-
-		for (int i = 0; i < loans.length; i++) {
-
-			SLoan loan = loans[i];
-			SLoanType type = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
-			STransactions transactions = new STransactions(getCtx(), 0, get_TrxName());
-			transactions.sets_payrol_interface_ID(getRecord_ID());
-			transactions.sets_member_ID(loan.gets_member_ID());
-			transactions.sets_loantype_ID(type.get_ID());
-			transactions.setAmount(loan.getconstantrepayamnt());
-			// transactions.setinterestamount(interestamount);
-			// transactions.setgross(gross);
-			// transactions.setothercharges(othercharges);
-			transactions.setloan_gl_Acct(loan.getloan_gl_Acct());
-			transactions.setbefore_trans_bal(loan.getloanbalance());
-			transactions.setafter_trans_bal(loan.getloanbalance().subtract(loan.getloanrepayamt()));
-			transactions.setReference(loan.getDocumentNo());
-			transactions.setTransactionType("LOANS");
-			transactions.setshareloanid(loan.get_ID());
-			transactions.save();
-		}
-	}
-
-	void getLoanToBeDebitRaised() {
-		Sacco s = Sacco.getSaccco();
-		s.getLoanToBeDebitRaised();
-	}
 }

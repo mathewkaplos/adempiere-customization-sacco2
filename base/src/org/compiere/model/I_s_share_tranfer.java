@@ -100,6 +100,32 @@ public interface I_s_share_tranfer
 	  */
 	public int getCreatedBy();
 
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
+
+    /** Column name DocumentNo */
+    public static final String COLUMNNAME_DocumentNo = "DocumentNo";
+
+	/** Set Document No.
+	  * Document sequence number of the document
+	  */
+	public void setDocumentNo (String DocumentNo);
+
+	/** Get Document No.
+	  * Document sequence number of the document
+	  */
+	public String getDocumentNo();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -125,6 +151,32 @@ public interface I_s_share_tranfer
 	  * It is complete
 	  */
 	public boolean isComplete();
+
+    /** Column name Posted */
+    public static final String COLUMNNAME_Posted = "Posted";
+
+	/** Set Posted.
+	  * Posting status
+	  */
+	public void setPosted (boolean Posted);
+
+	/** Get Posted.
+	  * Posting status
+	  */
+	public boolean isPosted();
+
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
+
+	/** Set Processed.
+	  * The document has been processed
+	  */
+	public void setProcessed (boolean Processed);
+
+	/** Get Processed.
+	  * The document has been processed
+	  */
+	public boolean isProcessed();
 
     /** Column name s_member_receiver_ID */
     public static final String COLUMNNAME_s_member_receiver_ID = "s_member_receiver_ID";
@@ -200,6 +252,15 @@ public interface I_s_share_tranfer
 	public int gets_sharetype_sender_ID();
 
 	public I_s_sharetype gets_sharetype_sender() throws RuntimeException;
+
+    /** Column name tranferable_amount */
+    public static final String COLUMNNAME_tranferable_amount = "tranferable_amount";
+
+	/** Set Transferable Amount	  */
+	public void settranferable_amount (BigDecimal tranferable_amount);
+
+	/** Get Transferable Amount	  */
+	public BigDecimal gettranferable_amount();
 
     /** Column name transactiondate */
     public static final String COLUMNNAME_transactiondate = "transactiondate";

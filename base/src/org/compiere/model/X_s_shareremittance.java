@@ -33,7 +33,7 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190118L;
+	private static final long serialVersionUID = 20190405L;
 
     /** Standard Constructor */
     public X_s_shareremittance (Properties ctx, int s_shareremittance_ID, String trxName)
@@ -41,6 +41,12 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
       super (ctx, s_shareremittance_ID, trxName);
       /** if (s_shareremittance_ID == 0)
         {
+			setDocStatus (null);
+// DR
+			setPosted (false);
+// N
+			setProcessed (false);
+// N
 			setremittancedate (new Timestamp( System.currentTimeMillis() ));
 // @Date@
 			sets_member_ID (0);
@@ -110,6 +116,20 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public String getAmountInWords () 
 	{
 		return (String)get_Value(COLUMNNAME_AmountInWords);
+	}
+
+	/** Set bankaccount.
+		@param bankaccount bankaccount	  */
+	public void setbankaccount (String bankaccount)
+	{
+		set_Value (COLUMNNAME_bankaccount, bankaccount);
+	}
+
+	/** Get bankaccount.
+		@return bankaccount	  */
+	public String getbankaccount () 
+	{
+		return (String)get_Value(COLUMNNAME_bankaccount);
 	}
 
 	/** Set Bank Account.
@@ -284,6 +304,67 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return false;
 	}
 
+	/** DocStatus AD_Reference_ID=131 */
+	public static final int DOCSTATUS_AD_Reference_ID=131;
+	/** Drafted = DR */
+	public static final String DOCSTATUS_Drafted = "DR";
+	/** Completed = CO */
+	public static final String DOCSTATUS_Completed = "CO";
+	/** Approved = AP */
+	public static final String DOCSTATUS_Approved = "AP";
+	/** Not Approved = NA */
+	public static final String DOCSTATUS_NotApproved = "NA";
+	/** Voided = VO */
+	public static final String DOCSTATUS_Voided = "VO";
+	/** Invalid = IN */
+	public static final String DOCSTATUS_Invalid = "IN";
+	/** Reversed = RE */
+	public static final String DOCSTATUS_Reversed = "RE";
+	/** Closed = CL */
+	public static final String DOCSTATUS_Closed = "CL";
+	/** Unknown = ?? */
+	public static final String DOCSTATUS_Unknown = "??";
+	/** In Progress = IP */
+	public static final String DOCSTATUS_InProgress = "IP";
+	/** Waiting Payment = WP */
+	public static final String DOCSTATUS_WaitingPayment = "WP";
+	/** Waiting Confirmation = WC */
+	public static final String DOCSTATUS_WaitingConfirmation = "WC";
+	/** Set Document Status.
+		@param DocStatus 
+		The current status of the document
+	  */
+	public void setDocStatus (String DocStatus)
+	{
+
+		set_Value (COLUMNNAME_DocStatus, DocStatus);
+	}
+
+	/** Get Document Status.
+		@return The current status of the document
+	  */
+	public String getDocStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_DocStatus);
+	}
+
+	/** Set Document No.
+		@param DocumentNo 
+		Document sequence number of the document
+	  */
+	public void setDocumentNo (String DocumentNo)
+	{
+		set_Value (COLUMNNAME_DocumentNo, DocumentNo);
+	}
+
+	/** Get Document No.
+		@return Document sequence number of the document
+	  */
+	public String getDocumentNo () 
+	{
+		return (String)get_Value(COLUMNNAME_DocumentNo);
+	}
+
 	/** Set Interest Balance.
 		@param intbalance Interest Balance	  */
 	public void setintbalance (BigDecimal intbalance)
@@ -299,6 +380,27 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Is Supervised.
+		@param is_supervised Is Supervised	  */
+	public void setis_supervised (boolean is_supervised)
+	{
+		set_Value (COLUMNNAME_is_supervised, Boolean.valueOf(is_supervised));
+	}
+
+	/** Get Is Supervised.
+		@return Is Supervised	  */
+	public boolean is_supervised () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_supervised);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Is Withdrawal.
@@ -377,6 +479,27 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return bd;
 	}
 
+	/** Set Needs To Be Supervised.
+		@param needs_supervision Needs To Be Supervised	  */
+	public void setneeds_supervision (boolean needs_supervision)
+	{
+		set_Value (COLUMNNAME_needs_supervision, Boolean.valueOf(needs_supervision));
+	}
+
+	/** Get Needs To Be Supervised.
+		@return Needs To Be Supervised	  */
+	public boolean isneeds_supervision () 
+	{
+		Object oo = get_Value(COLUMNNAME_needs_supervision);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Other Charges.
 		@param othercharges Other Charges	  */
 	public void setothercharges (BigDecimal othercharges)
@@ -404,8 +527,18 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public static final String PAYMODE_CashCheque = "3";
 	/** FOSA = 4 */
 	public static final String PAYMODE_FOSA = "4";
-	/** Error Detection = 5 */
-	public static final String PAYMODE_ErrorDetection = "5";
+	/** Error Correction = 5 */
+	public static final String PAYMODE_ErrorCorrection = "5";
+	/** Payroll Payment = SALARY DEDS */
+	public static final String PAYMODE_PayrollPayment = "SALARY DEDS";
+	/** MPESA- Cash Remmittance = 6 */
+	public static final String PAYMODE_MPESA_CashRemmittance = "6";
+	/** MPESA- Cash Withdrawals = 7 */
+	public static final String PAYMODE_MPESA_CashWithdrawals = "7";
+	/** Title Deed = 8 */
+	public static final String PAYMODE_TitleDeed = "8";
+	/** Savings Disbursment = 9 */
+	public static final String PAYMODE_SavingsDisbursment = "9";
 	/** Set Pay Mode.
 		@param paymode Pay Mode	  */
 	public void setpaymode (String paymode)
@@ -433,6 +566,54 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public String getpayroll_no () 
 	{
 		return (String)get_Value(COLUMNNAME_payroll_no);
+	}
+
+	/** Set Posted.
+		@param Posted 
+		Posting status
+	  */
+	public void setPosted (boolean Posted)
+	{
+		set_Value (COLUMNNAME_Posted, Boolean.valueOf(Posted));
+	}
+
+	/** Get Posted.
+		@return Posting status
+	  */
+	public boolean isPosted () 
+	{
+		Object oo = get_Value(COLUMNNAME_Posted);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Processed.
+		@param Processed 
+		The document has been processed
+	  */
+	public void setProcessed (boolean Processed)
+	{
+		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
+	}
+
+	/** Get Processed.
+		@return The document has been processed
+	  */
+	public boolean isProcessed () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Receipt Amount.
@@ -754,6 +935,48 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public int getsharegl_Acct () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_sharegl_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Supervision Time.
+		@param supervision_time Supervision Time	  */
+	public void setsupervision_time (Timestamp supervision_time)
+	{
+		set_Value (COLUMNNAME_supervision_time, supervision_time);
+	}
+
+	/** Get Supervision Time.
+		@return Supervision Time	  */
+	public Timestamp getsupervision_time () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_supervision_time);
+	}
+
+	public org.compiere.model.I_AD_User getSupervisor() throws RuntimeException
+    {
+		return (org.compiere.model.I_AD_User)MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
+			.getPO(getSupervisor_ID(), get_TrxName());	}
+
+	/** Set Supervisor.
+		@param Supervisor_ID 
+		Supervisor for this user/organization - used for escalation and approval
+	  */
+	public void setSupervisor_ID (int Supervisor_ID)
+	{
+		if (Supervisor_ID < 1) 
+			set_Value (COLUMNNAME_Supervisor_ID, null);
+		else 
+			set_Value (COLUMNNAME_Supervisor_ID, Integer.valueOf(Supervisor_ID));
+	}
+
+	/** Get Supervisor.
+		@return Supervisor for this user/organization - used for escalation and approval
+	  */
+	public int getSupervisor_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Supervisor_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

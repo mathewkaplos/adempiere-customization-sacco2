@@ -80,6 +80,15 @@ public interface I_s_shareremittance
 	/** Get AmountInWords	  */
 	public String getAmountInWords();
 
+    /** Column name bankaccount */
+    public static final String COLUMNNAME_bankaccount = "bankaccount";
+
+	/** Set bankaccount	  */
+	public void setbankaccount (String bankaccount);
+
+	/** Get bankaccount	  */
+	public String getbankaccount();
+
     /** Column name BankAccount_Acct */
     public static final String COLUMNNAME_BankAccount_Acct = "BankAccount_Acct";
 
@@ -194,6 +203,32 @@ public interface I_s_shareremittance
 	/** Get disp001	  */
 	public boolean isdisp001();
 
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
+
+    /** Column name DocumentNo */
+    public static final String COLUMNNAME_DocumentNo = "DocumentNo";
+
+	/** Set Document No.
+	  * Document sequence number of the document
+	  */
+	public void setDocumentNo (String DocumentNo);
+
+	/** Get Document No.
+	  * Document sequence number of the document
+	  */
+	public String getDocumentNo();
+
     /** Column name intbalance */
     public static final String COLUMNNAME_intbalance = "intbalance";
 
@@ -202,6 +237,15 @@ public interface I_s_shareremittance
 
 	/** Get Interest Balance	  */
 	public BigDecimal getintbalance();
+
+    /** Column name is_supervised */
+    public static final String COLUMNNAME_is_supervised = "is_supervised";
+
+	/** Set Is Supervised	  */
+	public void setis_supervised (boolean is_supervised);
+
+	/** Get Is Supervised	  */
+	public boolean is_supervised();
 
     /** Column name is_withdrawal */
     public static final String COLUMNNAME_is_withdrawal = "is_withdrawal";
@@ -256,6 +300,15 @@ public interface I_s_shareremittance
 	/** Get Month Closing Balance	  */
 	public BigDecimal getmonthclosingbal();
 
+    /** Column name needs_supervision */
+    public static final String COLUMNNAME_needs_supervision = "needs_supervision";
+
+	/** Set Needs To Be Supervised	  */
+	public void setneeds_supervision (boolean needs_supervision);
+
+	/** Get Needs To Be Supervised	  */
+	public boolean isneeds_supervision();
+
     /** Column name othercharges */
     public static final String COLUMNNAME_othercharges = "othercharges";
 
@@ -282,6 +335,32 @@ public interface I_s_shareremittance
 
 	/** Get Payroll NO	  */
 	public String getpayroll_no();
+
+    /** Column name Posted */
+    public static final String COLUMNNAME_Posted = "Posted";
+
+	/** Set Posted.
+	  * Posting status
+	  */
+	public void setPosted (boolean Posted);
+
+	/** Get Posted.
+	  * Posting status
+	  */
+	public boolean isPosted();
+
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
+
+	/** Set Processed.
+	  * The document has been processed
+	  */
+	public void setProcessed (boolean Processed);
+
+	/** Get Processed.
+	  * The document has been processed
+	  */
+	public boolean isProcessed();
 
     /** Column name receiptamount */
     public static final String COLUMNNAME_receiptamount = "receiptamount";
@@ -447,6 +526,30 @@ public interface I_s_shareremittance
 	public int getsharegl_Acct();
 
 	public I_C_ValidCombination getsharegl_A() throws RuntimeException;
+
+    /** Column name supervision_time */
+    public static final String COLUMNNAME_supervision_time = "supervision_time";
+
+	/** Set Supervision Time	  */
+	public void setsupervision_time (Timestamp supervision_time);
+
+	/** Get Supervision Time	  */
+	public Timestamp getsupervision_time();
+
+    /** Column name Supervisor_ID */
+    public static final String COLUMNNAME_Supervisor_ID = "Supervisor_ID";
+
+	/** Set Supervisor.
+	  * Supervisor for this user/organization - used for escalation and approval
+	  */
+	public void setSupervisor_ID (int Supervisor_ID);
+
+	/** Get Supervisor.
+	  * Supervisor for this user/organization - used for escalation and approval
+	  */
+	public int getSupervisor_ID();
+
+	public org.compiere.model.I_AD_User getSupervisor() throws RuntimeException;
 
     /** Column name TransactionTime */
     public static final String COLUMNNAME_TransactionTime = "TransactionTime";

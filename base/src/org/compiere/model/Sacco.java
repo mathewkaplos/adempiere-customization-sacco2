@@ -35,12 +35,6 @@ public class Sacco extends X_s_saccoinfo {
 		return new TransactionSupervision(Env.getCtx(), 1000000, null);
 	}
 
-	public void getLoanToBeDebitRaised() {
-		SLoan[] loans = getAllLoans("WHERE loanbalance>0");
-		for (int i = 0; i < loans.length; i++) {
-
-		}
-	}
 
 	public SLoan[] getAllLoans(String whereClause) {
 		List<SLoan> list = new ArrayList<>();
@@ -74,37 +68,6 @@ public class Sacco extends X_s_saccoinfo {
 		return list.toArray(new SLoan[list.size()]);
 	}
 
-	public LoanSchedule[] getAllSchedules(String whereClause) {
-		List<LoanSchedule> list = new ArrayList<>();
-		String sql = "SELECT * FROM adempiere.s_loanschedule " + whereClause;
-		PreparedStatement stm = null;
-		ResultSet rs = null;
-		try {
-			stm = DB.prepareStatement(sql, get_TrxName());
-			rs = stm.executeQuery();
-			while (rs.next()) {
-				LoanSchedule loanSchdule = new LoanSchedule(getCtx(), rs, get_TrxName());
-				list.add(loanSchdule);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stm != null) {
-					stm.close();
-					stm = null;
-				}
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-		return list.toArray(new LoanSchedule[list.size()]);
-	}
 
 	/**
 	 * Creating the anticipated period remittabce for loan
@@ -192,7 +155,7 @@ public class Sacco extends X_s_saccoinfo {
 
 	/**
 	 * delete all period remittances for this loan..This will happen when a loan
-	 * is fully repaid, a loan is re-financed, or a loan is written off
+	 * is fully repaid, a loan is re-financed, re-scheduled or a loan is written off
 	 * 
 	 * @param s_loans_ID
 	 * @param andWhereClause

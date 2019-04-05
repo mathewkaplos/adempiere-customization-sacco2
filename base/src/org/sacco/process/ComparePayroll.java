@@ -21,7 +21,8 @@ import org.compiere.util.DB;
 
 public class ComparePayroll extends SvrProcess {
 	Payroll_Interface payroll_Interface = null;
-	List<STransactions> transactions = null;
+
+	List<STransactions> transactions_list = null;
 
 	List<Payroll_csv> csv_list = null;
 
@@ -32,12 +33,15 @@ public class ComparePayroll extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-		deleteExisting();
-		getList();
-		getCSVList();
+		deleteExisting();//
+
+		getList();//
+
+		getCSVList();//
 
 		for (Payroll_csv csv : csv_list) {
-			//getTransactionByPayrollNoAndType(csv.getpayroll_no(), csv.getTransactionType(), csv.getAmount());
+			// getTransactionByPayrollNoAndType(csv.getpayroll_no(),
+			// csv.getTransactionType(), csv.getAmount());
 		}
 		payroll_Interface.setcompared(true);
 		payroll_Interface.save();
@@ -54,7 +58,7 @@ public class ComparePayroll extends SvrProcess {
 		SMember member = getMember(payrollNo);
 		STransactions oneTrans = null;
 		try {
-			oneTrans = transactions.stream().filter(x -> x != null)
+			oneTrans = transactions_list.stream().filter(x -> x != null)
 
 					.filter(trans -> member.gets_member_ID() == trans.gets_member_ID())
 					.filter(trans -> trans.getTransactionType().contains(TransactionType)).findAny().orElse(null);
@@ -98,7 +102,7 @@ public class ComparePayroll extends SvrProcess {
 	}
 
 	private void getList() {
-		List<STransactions> trx = new ArrayList<>();
+		List<STransactions> list = new ArrayList<>();
 		String sql = "SELECT * FROM adempiere.s_transactions WHERE s_payrol_interface_ID=" + getRecord_ID();
 		PreparedStatement stm = null;
 		ResultSet rs = null;
@@ -107,7 +111,7 @@ public class ComparePayroll extends SvrProcess {
 			rs = stm.executeQuery();
 			while (rs.next()) {
 				STransactions tran = new STransactions(getCtx(), rs, get_TrxName());
-				trx.add(tran);
+				list.add(tran);
 
 			}
 
@@ -124,11 +128,11 @@ public class ComparePayroll extends SvrProcess {
 			}
 
 		}
-		transactions = trx;
+		transactions_list = list;
 	}
 
 	private void getCSVList() {
-		List<Payroll_csv> csvs = new ArrayList<>();
+		List<Payroll_csv> list = new ArrayList<>();
 		String sql = "SELECT * FROM adempiere.z_payroll_csv WHERE s_payrol_interface_ID=" + getRecord_ID();
 		PreparedStatement stm = null;
 		ResultSet rs = null;
@@ -137,7 +141,7 @@ public class ComparePayroll extends SvrProcess {
 			rs = stm.executeQuery();
 			while (rs.next()) {
 				Payroll_csv csv = new Payroll_csv(getCtx(), rs, get_TrxName());
-				csvs.add(csv);
+				list.add(csv);
 			}
 		} catch (Exception e) {
 
@@ -151,7 +155,7 @@ public class ComparePayroll extends SvrProcess {
 				e.printStackTrace();
 			}
 		}
-		csv_list = csvs;
+		csv_list = list;
 	}
 
 }
