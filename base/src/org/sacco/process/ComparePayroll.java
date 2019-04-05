@@ -33,10 +33,10 @@ public class ComparePayroll extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-		deleteExisting();//
+		deleteExisting();// 
 
 		getList();// 
-  
+   
 		getCSVList();//  
 
 		for (Payroll_csv csv : csv_list) {
