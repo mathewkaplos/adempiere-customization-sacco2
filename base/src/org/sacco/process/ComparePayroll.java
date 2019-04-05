@@ -36,7 +36,7 @@ public class ComparePayroll extends SvrProcess {
 		deleteExisting();//
 
 		getList();//
-
+ 
 		getCSVList();//  
 
 		for (Payroll_csv csv : csv_list) {
