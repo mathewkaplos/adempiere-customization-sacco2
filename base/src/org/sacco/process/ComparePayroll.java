@@ -35,7 +35,7 @@ public class ComparePayroll extends SvrProcess {
 	protected String doIt() throws Exception {
 		deleteExisting();//
 
-		getList();//
+		getList();// 
  
 		getCSVList();//  
 
