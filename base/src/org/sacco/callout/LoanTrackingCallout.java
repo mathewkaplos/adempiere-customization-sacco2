@@ -100,7 +100,8 @@ public class LoanTrackingCallout extends CalloutEngine {
 	public String disbursement_amount(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
-
+		if (mTab.getValue("s_loans_ID") == null)
+			return "";
 		BigDecimal pending_disbursement = (BigDecimal) mTab.getValue("pending_disbursement");
 		BigDecimal disbursement_amount = (BigDecimal) value;
 		if (pending_disbursement.compareTo(disbursement_amount) == 1) {

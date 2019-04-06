@@ -174,6 +174,7 @@ public class SaveRepayment extends SvrProcess {
 	private void updateLoanRefund() {
 		loan.setloanbalance(loan.getloanbalance().add(repayment.getPaymentAmount()));
 		loan.setmonthopeningbal(loan.getmonthopeningbal().add(repayment.getPaymentAmount()));
+		repayment.setmonthclosingbal(loan.getloanbalance());
 		loan.save();
 
 		// interest balance

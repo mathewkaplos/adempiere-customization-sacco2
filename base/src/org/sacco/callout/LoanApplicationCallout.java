@@ -97,6 +97,8 @@ public class LoanApplicationCallout extends CalloutEngine {
 
 	public String loanAmount(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		// org.sacco.callout.LoanApplicationCallout.loanAmount
+		if (1 == 1)
+			return "";
 		Integer s_loans_ID = (Integer) mTab.getValue("s_loans_ID");
 		BigDecimal amt = (BigDecimal) value;
 
@@ -118,7 +120,7 @@ public class LoanApplicationCallout extends CalloutEngine {
 		return NO_ERROR;
 	}
 
-	BigDecimal interestFormula1(SLoan loan, BigDecimal amt) {
+	private BigDecimal interestFormula1(SLoan loan, BigDecimal amt) {
 
 		BigDecimal value = Env.ZERO;
 		double P = amt.doubleValue();
@@ -135,7 +137,7 @@ public class LoanApplicationCallout extends CalloutEngine {
 		return value;
 	}
 
-	void createSchedule(SLoan loan) {
+	private void createSchedule(SLoan loan) {
 		int periods = loan.getloanrepayperiod();
 		BigDecimal outstandingLoan = loan.getappliedamount();
 		for (int i = 0; i < periods; i++) {
@@ -163,13 +165,13 @@ public class LoanApplicationCallout extends CalloutEngine {
 
 		if (val) {
 			mTab.setValue("ExistingLoan", false);
-			mTab.setValue("loanBalance", Env.ZERO);
+			mTab.setValue("loanBalance", null);
 			mTab.setValue("IntBalance", Env.ZERO);
 		}
 
 		else {
 			mTab.setValue("ExistingLoan", true);
-			mTab.setValue("loanamount", Env.ZERO);
+			mTab.setValue("loanamount", null);
 		}
 		return NO_ERROR;
 	}
@@ -179,10 +181,16 @@ public class LoanApplicationCallout extends CalloutEngine {
 		// org.sacco.callout.LoanApplicationCallout.existingLoan
 		boolean val = (Boolean) value;
 
-		if (val)
+		if (val) {
 			mTab.setValue("newLoan", false);
-		else
+			mTab.setValue("loanbalance", null);
+		}
+
+		else {
 			mTab.setValue("newLoan", true);
+			mTab.setValue("loanBalance", null);
+			mTab.setValue("IntBalance", Env.ZERO);
+		}
 
 		return NO_ERROR;
 	}
