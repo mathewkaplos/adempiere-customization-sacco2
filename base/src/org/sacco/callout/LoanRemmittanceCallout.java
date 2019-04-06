@@ -36,14 +36,20 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		Sacco sacco = Sacco.getSaccco();
 		int C_Period_ID = sacco.getsaccoperiod_ID();
 		mTab.setValue("C_Period_ID", C_Period_ID);
+		//
+		AD_User user = new AD_User(ctx, Env.getAD_User_ID(ctx), null);
+		int bankgl_Acct = user.getTellerGLCode();
+		if (bankgl_Acct > 0) {
+			mTab.setValue("bankgl_Acct", bankgl_Acct);
+		} //
 
 		if (mTab.getAD_Tab_ID() == remmittanceTabID) {
 			Timestamp PaymentDate = (Timestamp) mTab.getValue("PaymentDate");
 
 			BigDecimal expectedPrincipal = Util.round(loan.getPeriodPrincipal(C_Period_ID, PaymentDate));
 			BigDecimal expectedInterest = Util.round(loan.getPeriodInterest(C_Period_ID, PaymentDate));
-			if(expectedPrincipal.compareTo(Env.ZERO)<0){
-				expectedPrincipal=Env.ZERO;
+			if (expectedPrincipal.compareTo(Env.ZERO) < 0) {
+				expectedPrincipal = Env.ZERO;
 			}
 			BigDecimal gross = expectedPrincipal.add(expectedInterest);
 
@@ -53,20 +59,15 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("gross_amount_due", gross);
 			mTab.setValue("interest_due", loan.getintbalance());
 
-			AD_User user = new AD_User(ctx, Env.getAD_User_ID(ctx), null);
-			int bankgl_Acct = user.getTellerGLCode();
-			if (bankgl_Acct > 0) {
-				mTab.setValue("bankgl_Acct", bankgl_Acct);
-			}
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
 			mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
 			mTab.setValue("s_member_ID", loan.gets_member_ID());
 
-			// interestgl_Acct 
+			// interestgl_Acct
 			I_s_loantype loanType = loan.getLoanType();
 			mTab.setValue("interestgl_Acct", loanType.getloantypeinterestgl_Acct());
 			mTab.setValue("is_repayment", true);
-			mTab.setValue("Comments", "Loan Repayment");  
+			mTab.setValue("Comments", "Loan Repayment");
 			//
 
 		} else if (mTab.getAD_Tab_ID() == refundTabID) {

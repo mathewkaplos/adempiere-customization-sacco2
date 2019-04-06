@@ -202,6 +202,7 @@ public class SaveRepayment extends SvrProcess {
 		// interest balance
 		repayment.setloan_interest_balance(loan.getintbalance());
 		repayment.setmonthopeningbal(loan.getmonthopeningbal());
+		repayment.setmonthclosingbal(loan.getloanbalance());
 		repayment.setInterest(repayment.getexpectedinterest());
 		repayment.save();
 		saveAccRecievables();
@@ -231,7 +232,8 @@ public class SaveRepayment extends SvrProcess {
 		}
 		accRecievables.save();
 	}
-//update from zenith
+
+	// update from zenith
 	private String getDescription() {
 		SLoanType loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
 		return loanType.getloantypecode() + " Loan Remmittance No: " + repayment.getDocumentNo();

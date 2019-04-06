@@ -478,6 +478,15 @@ public interface I_l_repayments
 	/** Get memberid	  */
 	public int getmemberid();
 
+    /** Column name monthclosingbal */
+    public static final String COLUMNNAME_monthclosingbal = "monthclosingbal";
+
+	/** Set Month Closing Balance	  */
+	public void setmonthclosingbal (BigDecimal monthclosingbal);
+
+	/** Get Month Closing Balance	  */
+	public BigDecimal getmonthclosingbal();
+
     /** Column name monthopeningbal */
     public static final String COLUMNNAME_monthopeningbal = "monthopeningbal";
 

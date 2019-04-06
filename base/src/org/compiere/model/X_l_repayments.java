@@ -32,7 +32,7 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190401L;
+	private static final long serialVersionUID = 20190406L;
 
     /** Standard Constructor */
     public X_l_repayments (Properties ctx, int l_repayments_ID, String trxName)
@@ -40,6 +40,7 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
       super (ctx, l_repayments_ID, trxName);
       /** if (l_repayments_ID == 0)
         {
+			setbankgl_Acct (0);
 			setIsComplete (false);
 // N
 			setl_repayments_ID (0);
@@ -811,6 +812,23 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Month Closing Balance.
+		@param monthclosingbal Month Closing Balance	  */
+	public void setmonthclosingbal (BigDecimal monthclosingbal)
+	{
+		set_Value (COLUMNNAME_monthclosingbal, monthclosingbal);
+	}
+
+	/** Get Month Closing Balance.
+		@return Month Closing Balance	  */
+	public BigDecimal getmonthclosingbal () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_monthclosingbal);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Month Opening Bal.
