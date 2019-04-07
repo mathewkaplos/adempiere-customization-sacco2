@@ -159,7 +159,7 @@ public class ListPayrollTransactions extends SvrProcess {
 			transactions.sets_payrol_interface_ID(getRecord_ID());
 			transactions.sets_member_ID(share.gets_member_ID());
 			transactions.sets_sharetype_ID(share.gets_sharetype_ID());
-			transactions.setAmount(share.getcontributionrate());
+			transactions.setshare_contribution(share.getcontributionrate());
 			transactions.setsharegl_Acct(type.getsharegl_Acct());
 			transactions.setbefore_trans_bal(share.getsharestodate());
 			transactions.setafter_trans_bal(share.getsharestodate().add(share.getcontributionrate()));

@@ -132,10 +132,10 @@ public interface I_s_transactions
     /** Column name interestgl_Acct */
     public static final String COLUMNNAME_interestgl_Acct = "interestgl_Acct";
 
-	/** Set Interest GL Code	  */
+	/** Set Fixed Deposit Interest GL Code	  */
 	public void setinterestgl_Acct (int interestgl_Acct);
 
-	/** Get Interest GL Code	  */
+	/** Get Fixed Deposit Interest GL Code	  */
 	public int getinterestgl_Acct();
 
 	public I_C_ValidCombination getinterestgl_A() throws RuntimeException;
@@ -176,10 +176,10 @@ public interface I_s_transactions
     /** Column name othercharges_gl_Acct */
     public static final String COLUMNNAME_othercharges_gl_Acct = "othercharges_gl_Acct";
 
-	/** Set OC GL	  */
+	/** Set Charges GL Code	  */
 	public void setothercharges_gl_Acct (int othercharges_gl_Acct);
 
-	/** Get OC GL	  */
+	/** Get Charges GL Code	  */
 	public int getothercharges_gl_Acct();
 
 	public I_C_ValidCombination getothercharges_gl_A() throws RuntimeException;
@@ -263,6 +263,15 @@ public interface I_s_transactions
 
 	/** Get SerialNo	  */
 	public int getSerialNo();
+
+    /** Column name share_contribution */
+    public static final String COLUMNNAME_share_contribution = "share_contribution";
+
+	/** Set Share Contribution	  */
+	public void setshare_contribution (BigDecimal share_contribution);
+
+	/** Get Share Contribution	  */
+	public BigDecimal getshare_contribution();
 
     /** Column name sharegl_Acct */
     public static final String COLUMNNAME_sharegl_Acct = "sharegl_Acct";

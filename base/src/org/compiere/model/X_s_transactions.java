@@ -31,7 +31,7 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190125L;
+	private static final long serialVersionUID = 20190406L;
 
     /** Standard Constructor */
     public X_s_transactions (Properties ctx, int s_transactions_ID, String trxName)
@@ -169,15 +169,15 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
 			.getPO(getinterestgl_Acct(), get_TrxName());	}
 
-	/** Set Interest GL Code.
-		@param interestgl_Acct Interest GL Code	  */
+	/** Set Fixed Deposit Interest GL Code.
+		@param interestgl_Acct Fixed Deposit Interest GL Code	  */
 	public void setinterestgl_Acct (int interestgl_Acct)
 	{
 		set_Value (COLUMNNAME_interestgl_Acct, Integer.valueOf(interestgl_Acct));
 	}
 
-	/** Get Interest GL Code.
-		@return Interest GL Code	  */
+	/** Get Fixed Deposit Interest GL Code.
+		@return Fixed Deposit Interest GL Code	  */
 	public int getinterestgl_Acct () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_interestgl_Acct);
@@ -230,15 +230,15 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
 			.getPO(getothercharges_gl_Acct(), get_TrxName());	}
 
-	/** Set OC GL.
-		@param othercharges_gl_Acct OC GL	  */
+	/** Set Charges GL Code.
+		@param othercharges_gl_Acct Charges GL Code	  */
 	public void setothercharges_gl_Acct (int othercharges_gl_Acct)
 	{
 		set_Value (COLUMNNAME_othercharges_gl_Acct, Integer.valueOf(othercharges_gl_Acct));
 	}
 
-	/** Get OC GL.
-		@return OC GL	  */
+	/** Get Charges GL Code.
+		@return Charges GL Code	  */
 	public int getothercharges_gl_Acct () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_othercharges_gl_Acct);
@@ -410,6 +410,23 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Share Contribution.
+		@param share_contribution Share Contribution	  */
+	public void setshare_contribution (BigDecimal share_contribution)
+	{
+		set_Value (COLUMNNAME_share_contribution, share_contribution);
+	}
+
+	/** Get Share Contribution.
+		@return Share Contribution	  */
+	public BigDecimal getshare_contribution () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_share_contribution);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	public I_C_ValidCombination getsharegl_A() throws RuntimeException
