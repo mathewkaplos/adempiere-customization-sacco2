@@ -167,11 +167,13 @@ public class LoanApplicationCallout extends CalloutEngine {
 			mTab.setValue("ExistingLoan", false);
 			mTab.setValue("loanBalance", null);
 			mTab.setValue("IntBalance", Env.ZERO);
+			mTab.setValue("loanstatus", "PENDING");
 		}
 
 		else {
 			mTab.setValue("ExistingLoan", true);
 			mTab.setValue("loanamount", null);
+			mTab.setValue("loanstatus", "COLLECTED");
 		}
 		return NO_ERROR;
 	}
@@ -184,12 +186,15 @@ public class LoanApplicationCallout extends CalloutEngine {
 		if (val) {
 			mTab.setValue("newLoan", false);
 			mTab.setValue("loanbalance", null);
+			mTab.setValue("loanstatus", "COLLECTED");
+
 		}
 
 		else {
 			mTab.setValue("newLoan", true);
 			mTab.setValue("loanBalance", null);
 			mTab.setValue("IntBalance", Env.ZERO);
+			mTab.setValue("loanstatus", "PENDING");
 		}
 
 		return NO_ERROR;
@@ -214,7 +219,8 @@ public class LoanApplicationCallout extends CalloutEngine {
 	public String period(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
-
+		if (mTab.getValue("loanamount") == null)
+			return "";
 		double loanAmount = ((BigDecimal) mTab.getValue("loanamount")).doubleValue();
 		int periods = ((int) value);
 		if (periods > 0) {
@@ -236,7 +242,7 @@ public class LoanApplicationCallout extends CalloutEngine {
 			mTab.setValue("s_loans_refinance_ID", null);
 			// mTab.setValue(mField, null);
 		}
-//
+		//
 		return NO_ERROR;
 	}
 

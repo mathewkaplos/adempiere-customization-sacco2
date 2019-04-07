@@ -19,6 +19,10 @@ import zenith.util.DateUtil;
 public class LoanTrackingCallout extends CalloutEngine {
 
 	public String approve(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		if (mTab.getValue("s_loans_ID") == null)
+			return "";
 		boolean val = (Boolean) value;
 		if (val) {
 			Timestamp now = DateUtil.newTimestamp();
@@ -35,6 +39,10 @@ public class LoanTrackingCallout extends CalloutEngine {
 	}
 
 	public String reject(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		if (mTab.getValue("s_loans_ID") == null)
+			return "";
 		boolean val = (Boolean) value;
 		if (val) {
 			Timestamp now = DateUtil.newTimestamp();
