@@ -11,6 +11,7 @@ import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_s_loantype;
+import org.compiere.model.MBank;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
@@ -67,7 +68,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			I_s_loantype loanType = loan.getLoanType();
 			mTab.setValue("interestgl_Acct", loanType.getloantypeinterestgl_Acct());
 			mTab.setValue("is_repayment", true);
-			mTab.setValue("Comments", "Loan Repayment");
+			//mTab.setValue("Comments", "Loan Repayment");
 			//
 
 		} else if (mTab.getAD_Tab_ID() == refundTabID) {
@@ -140,12 +141,12 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 		if (val) {
 			mTab.setValue("is_topup", false);
-			mTab.setValue("Comments", "Loan Refund");
+			//mTab.setValue("Comments", "Loan Refund");
 		}
 
 		else {
 			mTab.setValue("is_topup", true);
-			mTab.setValue("Comments", "Loan Top-Up");
+			//mTab.setValue("Comments", "Loan Top-Up");
 		}
 		return NO_ERROR;
 	}
@@ -158,12 +159,12 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 		if (val) {
 			mTab.setValue("is_refund", false);
-			mTab.setValue("Comments", "Loan To-Up");
+			//mTab.setValue("Comments", "Loan To-Up");
 		}
 
 		else {
 			mTab.setValue("is_refund", true);
-			mTab.setValue("Comments", "Loan Refund");
+			//mTab.setValue("Comments", "Loan Refund");
 		}
 		return NO_ERROR;
 	}
@@ -261,4 +262,25 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 		return NO_ERROR;
 	}
+
+	// org.sacco.callout.LoanRemmittanceCallout.bank
+	public String bank(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		AD_User user = new AD_User(ctx, Env.getAD_User_ID(ctx), null);
+		int bankgl_Acct_teller = user.getTellerGLCode();
+		if (bankgl_Acct_teller > 0) {
+			return "";
+		} //
+
+		int val = (int) value;
+		MBank bank = new MBank(ctx, val, null);
+		int bankgl_Acct = bank.getGLAccount();
+		if (bankgl_Acct > 0) {
+			mTab.setValue("bankgl_Acct", bankgl_Acct);
+		}
+
+		return NO_ERROR;
+	}
+
 }

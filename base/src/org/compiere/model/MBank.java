@@ -101,4 +101,5 @@ public class MBank extends X_C_Bank {
 			return 0;
 		return ii.intValue();
 	}
+
 } // MBank
