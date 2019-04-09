@@ -17,7 +17,6 @@ import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
 import org.compiere.model.Sacco;
 import org.compiere.util.Env;
-import org.python.modules.synchronize;
 import org.sacco.loan.Formula;
 import org.sacco.loan.Penalty;
 
