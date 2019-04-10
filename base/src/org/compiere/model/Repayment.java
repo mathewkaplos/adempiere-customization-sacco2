@@ -29,11 +29,11 @@ public class Repayment extends X_l_repayments {
 		// TODO Auto-generated constructor stub
 	}
 
-	private SLoanGuantorDetails[] details = null;
+	private LoanGuarantorDetails[] details = null;
 	private double totalAmtGuranteed = 0;
 
-	public SLoanGuantorDetails[] getGuarantorDetails(int s_loans_ID) {
-		List<SLoanGuantorDetails> list = new ArrayList<>();
+	public LoanGuarantorDetails[] getGuarantorDetails(int s_loans_ID) {
+		List<LoanGuarantorDetails> list = new ArrayList<>();
 		String sql = "SELECT * FROM adempiere.s_loanguantordetails WHERE s_loans_ID= " + s_loans_ID
 				+ " AND amountguaranteed>0";
 		PreparedStatement stm = null;
@@ -42,7 +42,7 @@ public class Repayment extends X_l_repayments {
 			stm = DB.prepareStatement(sql, get_TrxName());
 			rs = stm.executeQuery();
 			while (rs.next()) {
-				SLoanGuantorDetails detail = new SLoanGuantorDetails(getCtx(), rs, get_TrxName());
+				LoanGuarantorDetails detail = new LoanGuarantorDetails(getCtx(), rs, get_TrxName());
 				totalAmtGuranteed = totalAmtGuranteed + detail.getamountguaranteed().doubleValue();
 				list.add(detail);
 			}
@@ -63,14 +63,14 @@ public class Repayment extends X_l_repayments {
 				// TODO: handle exception
 			}
 		}
-		details = list.toArray(new SLoanGuantorDetails[list.size()]);
+		details = list.toArray(new LoanGuarantorDetails[list.size()]);
 
-		return list.toArray(new SLoanGuantorDetails[list.size()]);
+		return list.toArray(new LoanGuarantorDetails[list.size()]);
 	}
 
 	public void freeTiedShares() {
 		for (int i = 0; i < details.length; i++) {
-			SLoanGuantorDetails d = details[i];
+			LoanGuarantorDetails d = details[i];
 			double dd = (d.getamountguaranteed().doubleValue() / totalAmtGuranteed) * this.getPrincipal().doubleValue();
 			int s_membershares_ID = d.gets_membershares_ID();
 			MemberShares ms = new MemberShares(getCtx(), s_membershares_ID, get_TrxName());

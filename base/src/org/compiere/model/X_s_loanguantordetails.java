@@ -31,7 +31,7 @@ public class X_s_loanguantordetails extends PO implements I_s_loanguantordetails
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190316L;
+	private static final long serialVersionUID = 20190410L;
 
     /** Standard Constructor */
     public X_s_loanguantordetails (Properties ctx, int s_loanguantordetails_ID, String trxName)
@@ -139,6 +139,23 @@ public class X_s_loanguantordetails extends PO implements I_s_loanguantordetails
 		return (String)get_Value(COLUMNNAME_mpayroll);
 	}
 
+	/** Set Proportion.
+		@param proportion Proportion	  */
+	public void setproportion (BigDecimal proportion)
+	{
+		set_Value (COLUMNNAME_proportion, proportion);
+	}
+
+	/** Get Proportion.
+		@return Proportion	  */
+	public BigDecimal getproportion () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_proportion);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set s_loanguantordetails ID.
 		@param s_loanguantordetails_ID s_loanguantordetails ID	  */
 	public void sets_loanguantordetails_ID (int s_loanguantordetails_ID)
@@ -209,6 +226,11 @@ public class X_s_loanguantordetails extends PO implements I_s_loanguantordetails
 		return ii.intValue();
 	}
 
+	public I_s_membershares gets_membershares() throws RuntimeException
+    {
+		return (I_s_membershares)MTable.get(getCtx(), I_s_membershares.Table_Name)
+			.getPO(gets_membershares_ID(), get_TrxName());	}
+
 	/** Set Member Shares.
 		@param s_membershares_ID Member Shares	  */
 	public void sets_membershares_ID (int s_membershares_ID)
@@ -227,6 +249,23 @@ public class X_s_loanguantordetails extends PO implements I_s_loanguantordetails
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Tied Shares.
+		@param tiedshares Tied Shares	  */
+	public void settiedshares (BigDecimal tiedshares)
+	{
+		set_Value (COLUMNNAME_tiedshares, tiedshares);
+	}
+
+	/** Get Tied Shares.
+		@return Tied Shares	  */
+	public BigDecimal gettiedshares () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_tiedshares);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set uuid.

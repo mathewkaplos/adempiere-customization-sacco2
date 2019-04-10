@@ -56,12 +56,21 @@ public class SMember extends X_s_member {
 	}
 
 	public BigDecimal getSavingsBal() {
-
-		String Sql = "SELECT COALESCE(SUM(sharestodate),0) " + " FROM adempiere.s_membershares  WHERE s_member_ID ="
+		String sql = "SELECT COALESCE(SUM(sharestodate),0) " + " FROM adempiere.s_membershares  WHERE s_member_ID ="
 				+ get_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
 
-		return null;
+	public BigDecimal getFreeSavingsBal() {
+		String sql = "SELECT COALESCE(SUM(tiedshares),0) " + " FROM adempiere.s_membershares  WHERE s_member_ID ="
+				+ get_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
 
+	public BigDecimal getTiedSavings() {
+		String sql = "SELECT COALESCE(SUM(freeshares),0) " + " FROM adempiere.s_membershares  WHERE s_member_ID ="
+				+ get_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
 	}
 
 	public MemberShares[] getSavings(String and_whereClause) {

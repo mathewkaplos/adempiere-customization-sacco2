@@ -3,20 +3,13 @@ package org.sacco.process;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.compiere.acct.Doc;
 import org.compiere.acct.DocLine;
-import org.compiere.acct.Doc_LoanDisbursement;
 import org.compiere.acct.Doc_LoanReapayment;
 import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
-import org.compiere.model.AccRecievables;
-import org.compiere.model.LoanDisbursement;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
-import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MemberShares;
@@ -24,11 +17,9 @@ import org.compiere.model.PO;
 import org.compiere.model.Period_remittance;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
-import org.compiere.model.SLoanGuantorDetails;
-import org.compiere.model.SLoanType;
+import org.compiere.model.LoanGuarantorDetails;
 import org.compiere.model.Sacco;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.AmtInWords_EN;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -45,13 +36,13 @@ public class SaveRepayment extends SvrProcess {
 		// TODO Auto-generated method stub
 		//
 		sacco = Sacco.getSaccco();
+
+		repayment = new Repayment(getCtx(), getRecord_ID(), get_TrxName());
+		loan = new SLoan(getCtx(), repayment.gets_loans_ID(), get_TrxName());
 	}
 
 	@Override
 	protected String doIt() throws Exception {
-		repayment = new Repayment(getCtx(), getRecord_ID(), get_TrxName());
-		loan = new SLoan(getCtx(), repayment.gets_loans_ID(), get_TrxName());
-
 		repayment.setReceiptNo(repayment.getDocumentNo());
 		repayment.setVoucherNo(repayment.getDocumentNo());
 
@@ -72,7 +63,67 @@ public class SaveRepayment extends SvrProcess {
 
 		resetPeriodRemittance();
 		post();
+		freeGuarantorShares();
 		return null;
+	}
+
+	private void freeGuarantorShares() {
+		boolean freeAll = false;
+		double loanToShareProportion = loan.getLoanToShareProportion();
+		if (loanToShareProportion <= 0.8) { // loan is less than 80%
+			freeAll = true;
+		}
+		System.out.println(freeAll);
+		String sql = "SELECT * FROM adempiere.s_loanguantordetails WHERE s_loans_ID=" + repayment.gets_loans_ID();
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				LoanGuarantorDetails details = new LoanGuarantorDetails(getCtx(), rs, get_TrxName());
+				updateGuarantor(details);
+				if (freeAll) {
+					freeGuarantor(details);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+	private void updateGuarantor(LoanGuarantorDetails details) {
+		BigDecimal guaranteeProportion = details.getproportion();
+		BigDecimal freeingAmt = Util.round(guaranteeProportion.multiply(repayment.getPrincipal()), Env.ONE);
+		MemberShares memberShares = new MemberShares(getCtx(), details.gets_membershares_ID(), get_TrxName());
+		memberShares.setfreeshares(memberShares.getfreeshares().add(freeingAmt));
+		memberShares.settiedshares(memberShares.gettiedshares().subtract(freeingAmt));
+		memberShares.save();
+		details.settiedshares(details.gettiedshares().subtract(freeingAmt));
+		details.save();
+	}
+
+	private void freeGuarantor(LoanGuarantorDetails details) {
+		BigDecimal freeingAmt = details.gettiedshares();
+		MemberShares memberShares = new MemberShares(getCtx(), details.gets_membershares_ID(), get_TrxName());
+		memberShares.setfreeshares(memberShares.getfreeshares().add(freeingAmt));
+		memberShares.settiedshares(memberShares.gettiedshares().subtract(freeingAmt));
+		memberShares.save();
+		details.settiedshares(Env.ZERO);
+		details.save();
 	}
 
 	Doc doc = null;
@@ -142,16 +193,17 @@ public class SaveRepayment extends SvrProcess {
 	}
 
 	private void postInterest() {
-		if (repayment.getInterest().compareTo(Env.ZERO) == 0)
+		BigDecimal totalInterest = repayment.getInterest().add(repayment.getExtraInterest());
+
+		if (totalInterest.compareTo(Env.ZERO) == 0)
 			return;
 		Sacco sacco = Sacco.getSaccco();
 		MAccount accountCR = new MAccount(Env.getCtx(), sacco.getInterestReceivable_Acct(), get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
-				repayment.getInterest().negate());
+		FactLine lineDR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), totalInterest.negate());
 		lineDR.save();
 
 		MAccount accountDR = new MAccount(Env.getCtx(), sacco.getUnEarnedInterest_Acct(), get_TrxName());
-		FactLine lineCR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), repayment.getInterest());
+		FactLine lineCR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), totalInterest);
 		lineCR.save();
 	}
 
@@ -182,12 +234,6 @@ public class SaveRepayment extends SvrProcess {
 		repayment.setmonthopeningbal(loan.getmonthopeningbal());
 		// repayment.setInterest(repayment.getexpectedinterest());
 		repayment.save();
-		saveAccPayables();
-
-	}
-
-	private void saveAccPayables() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -206,37 +252,5 @@ public class SaveRepayment extends SvrProcess {
 		repayment.setmonthclosingbal(loan.getloanbalance());
 		repayment.setInterest(repayment.getexpectedinterest());
 		repayment.save();
-		saveAccRecievables();
-	}
-
-	private void saveAccRecievables() {
-		AccRecievables accRecievables = new AccRecievables(getCtx(), 0, get_TrxName());
-		accRecievables.setTransDate(DateUtil.newTimestamp());
-		accRecievables.settransperiod(sacco.getsaccoperiod_ID());
-		accRecievables.setCrAmount(repayment.getgross_amount_due());
-		accRecievables.setTransAmount(repayment.getgross_amount_due());
-		accRecievables.setappliedamount(repayment.getgross_amount_due());
-		accRecievables.setComments(repayment.getComments());
-		accRecievables.setbankgl_Acct(repayment.getbankgl_Acct());
-		accRecievables.setCredit_Acct(repayment.getloan_gl_Acct());
-		accRecievables.setDescription(getDescription());
-		accRecievables.setLoanShare("Loan");
-		accRecievables.sets_member_ID(loan.gets_member_ID());
-		accRecievables.setpaymode(repayment.getpaymode());
-		AmtInWords_EN aiw = new AmtInWords_EN();
-		try {
-			// String AmountInWords =
-			// aiw.getAmtInWords(repayment.getgross_amount_due().toString());
-			// accRecievables.setAmountInWords(AmountInWords);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		accRecievables.save();
-	}
-
-	// update from zenith
-	private String getDescription() {
-		SLoanType loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
-		return loanType.getloantypecode() + " Loan Remmittance No: " + repayment.getDocumentNo();
 	}
 }

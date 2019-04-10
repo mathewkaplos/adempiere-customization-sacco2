@@ -505,9 +505,9 @@ public class SLoan extends X_s_loans {
 	 * @return
 	 */
 	private void reAllocateGuarantors() {
-		SLoanGuantorDetails[] details = repayment.getGuarantorDetails(loan.gets_loans_ID());
+		LoanGuarantorDetails[] details = repayment.getGuarantorDetails(loan.gets_loans_ID());
 		for (int i = 0; i < details.length; i++) {
-			SLoanGuantorDetails detail = details[i];
+			LoanGuarantorDetails detail = details[i];
 			detail.sets_loans_ID(this.gets_loans_ID());
 			detail.save();
 		}
@@ -701,4 +701,14 @@ public class SLoan extends X_s_loans {
 		}
 		return remittance;
 	}
+
+	public double getLoanToShareProportion() {
+		SMember member = new SMember(getCtx(), gets_member_ID(), get_TrxName());
+		double freeShares = member.getFreeSavingsBal().doubleValue();
+		double loanBalance = getloanbalance().doubleValue();
+		if (freeShares == 0)
+			return 1;
+		return loanBalance / freeShares;
+	}
+
 }

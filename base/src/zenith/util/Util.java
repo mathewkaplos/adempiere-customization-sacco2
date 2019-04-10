@@ -24,6 +24,10 @@ public final class Util {
 		return round(value, increment, RoundingMode.HALF_UP);
 	}
 
+	public static BigDecimal round(BigDecimal value, BigDecimal increment) {
+		return round(value, increment, RoundingMode.HALF_UP);
+	}
+
 	private static BigDecimal round(BigDecimal value, BigDecimal increment, RoundingMode roundingMode) {
 		if (increment.signum() == 0) {
 			// 0 increment does not make much sense, but prevent division by 0

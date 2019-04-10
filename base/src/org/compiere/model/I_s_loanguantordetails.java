@@ -127,6 +127,15 @@ public interface I_s_loanguantordetails
 	/** Get Payroll #	  */
 	public String getmpayroll();
 
+    /** Column name proportion */
+    public static final String COLUMNNAME_proportion = "proportion";
+
+	/** Set Proportion	  */
+	public void setproportion (BigDecimal proportion);
+
+	/** Get Proportion	  */
+	public BigDecimal getproportion();
+
     /** Column name s_loanguantordetails_ID */
     public static final String COLUMNNAME_s_loanguantordetails_ID = "s_loanguantordetails_ID";
 
@@ -166,6 +175,17 @@ public interface I_s_loanguantordetails
 
 	/** Get Member Shares	  */
 	public int gets_membershares_ID();
+
+	public I_s_membershares gets_membershares() throws RuntimeException;
+
+    /** Column name tiedshares */
+    public static final String COLUMNNAME_tiedshares = "tiedshares";
+
+	/** Set Tied Shares	  */
+	public void settiedshares (BigDecimal tiedshares);
+
+	/** Get Tied Shares	  */
+	public BigDecimal gettiedshares();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

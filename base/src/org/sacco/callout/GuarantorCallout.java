@@ -64,13 +64,18 @@ public class GuarantorCallout extends CalloutEngine {
 				mTab.setValue("amountguaranteed", remainingGuaranteedAmount);
 				ms.setfreeshares(ms.getfreeshares().subtract(remainingGuaranteedAmount));
 				ms.settiedshares(ms.gettiedshares().add(remainingGuaranteedAmount));
-				System.out.println(remainingGuaranteedAmount);
 			} else {
 				if (!allowZeroGurantors) {
 					ms.setfreeshares(ms.getfreeshares().subtract(amt));
 					ms.settiedshares(ms.gettiedshares().add(amt));
 				}
 			}
+			BigDecimal guaranteeingAmt = (BigDecimal) mTab.getValue("amountguaranteed");
+			double d = guaranteeingAmt.doubleValue() / loan.getloanamount().doubleValue();
+			BigDecimal proportion = BigDecimal.valueOf(d);
+			System.out.println(proportion);
+			mTab.setValue("proportion", proportion);
+			mTab.setValue("tiedshares", guaranteeingAmt);
 			ms.save();
 		}
 		return NO_ERROR;
