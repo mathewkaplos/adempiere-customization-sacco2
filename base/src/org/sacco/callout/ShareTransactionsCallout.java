@@ -13,9 +13,11 @@ import org.compiere.model.GridTab;
 import org.compiere.model.MemberShares;
 import org.compiere.model.SMember;
 import org.compiere.model.Sacco;
+import org.compiere.model.ShareRemittance;
 import org.compiere.model.ShareType;
 import org.compiere.model.TransactionSupervision;
 import org.compiere.util.AdempiereUserError;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import zenith.util.DateUtil;
@@ -124,6 +126,32 @@ public class ShareTransactionsCallout extends CalloutEngine {
 			mTab.setValue("needs_supervision", true);
 		}
 
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.ShareTransactionsCallout.applyShareTransfer
+	public String applyShareTransfer(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (mTab.getValue("s_shareremittance_ID") == null)
+			return "";
+		Object recover_from_share_transfer = mTab.getValue("recover_from_share_transfer");
+		if (recover_from_share_transfer == null)
+			return "";
+		if ((boolean) recover_from_share_transfer == true) {
+			String sql = "SELECT COALESCE(SUM(amount),0) FROM adempiere.s_share_recovery WHERE s_shareremittance_ID ="
+					+ (int) mTab.getValue("s_shareremittance_ID");
+			BigDecimal totalAmount = DB.getSQLValueBD(null, sql);
+			mTab.setValue("receiptamount", totalAmount);
+		}
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.ShareTransactionsCallout.recover_from_share_transfer
+	// recover_from_share_transfer
+	public String recover_from_share_transfer(Properties ctx, int WindowNo, GridTab mTab, GridField mField,
+			Object value) {
+		if (mTab.getValue("s_shareremittance_ID") == null)
+			return "";
+		mTab.setValue("receiptamount", Env.ZERO);
 		return NO_ERROR;
 	}
 }

@@ -3,6 +3,8 @@ package org.sacco.callout;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -16,6 +18,7 @@ import org.compiere.model.SLoanType;
 import org.compiere.model.SMember;
 import org.compiere.util.Env;
 
+import zenith.util.DateUtil;
 import zenith.util.Util;
 
 public class LoanApplicationCallout extends CalloutEngine {
@@ -33,6 +36,35 @@ public class LoanApplicationCallout extends CalloutEngine {
 		Integer loanTypeID = (Integer) mTab.getValue("s_loantype_ID");
 		if (loanTypeID != null && loanTypeID > 0)
 			loanType = getLoanType(loanTypeID);
+
+		if (loanType.getloantypeminmembership() > 0) {
+			int s_member_ID = (int) mTab.getValue("s_member_ID");
+			SMember member = new SMember(ctx, s_member_ID, null);
+			Timestamp regDate = member.getmdate();
+			Period diff = Period.between(regDate.toLocalDateTime().toLocalDate(),
+					DateUtil.newDate().toLocalDate().plusDays(1));
+			int months = diff.getMonths();
+			if (loanType.getloantypeminmembership() > months) {
+				mTab.setValue("s_loantype_ID", 0);
+				JOptionPane.showMessageDialog(null,
+						"This member cannot borrow this loan. Minimum membership period is not made!");
+
+				return "";
+			}
+		}
+		if (loanType.getminimumcontributions() > 0) {
+			int s_member_ID = (int) mTab.getValue("s_member_ID");
+			SMember member = new SMember(ctx, s_member_ID, null);
+			int months = member.numberOfContributions();
+
+			if (loanType.getminimumcontributions() > months) {
+				mTab.setValue("s_loantype_ID", 0);
+				JOptionPane.showMessageDialog(null,
+						"This member cannot borrow this loan. Minimum no of contribtions(months) is not made!");
+
+				return "";
+			}
+		}
 
 		// Initialize the Variables
 		if (loanType != null) {
@@ -250,6 +282,13 @@ public class LoanApplicationCallout extends CalloutEngine {
 	public String is_refinance(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
+		SLoanType loanType = new SLoanType(ctx, (int) mTab.getValue("s_loantype_ID"), null);
+		if (!loanType.iscan_be_refinanced()) {
+
+			JOptionPane.showMessageDialog(null, "This loan cannot be refinanced!");
+			mTab.setValue("is_refinance", false);
+		}
+
 		mTab.setValue("s_loans_refinance_ID", null);
 		return NO_ERROR;
 	}

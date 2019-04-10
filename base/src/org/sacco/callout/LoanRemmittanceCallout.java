@@ -12,6 +12,7 @@ import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_s_loantype;
 import org.compiere.model.MBank;
+import org.compiere.model.MPeriod;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
@@ -48,16 +49,21 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 			BigDecimal expectedPrincipal = Util.round(loan.getPeriodPrincipal(C_Period_ID, PaymentDate));
 			BigDecimal expectedInterest = Util.round(loan.getPeriodInterest(C_Period_ID, PaymentDate));
+			BigDecimal extraInterest = Util.round(loan.getPeriodExtraInterest(C_Period_ID));
 			if (expectedPrincipal.compareTo(Env.ZERO) < 0) {
 				expectedPrincipal = Env.ZERO;
 			}
+
 			BigDecimal gross = expectedPrincipal.add(expectedInterest);
+			if (extraInterest != null)
+				gross = gross.add(extraInterest);
 
 			mTab.setValue("PaymentAmount", gross);
 			mTab.setValue("Principal", expectedPrincipal);
 			mTab.setValue("expectedinterest", expectedInterest);
 			mTab.setValue("gross_amount_due", gross);
 			mTab.setValue("interest_due", loan.getintbalance());
+			mTab.setValue("ExtraInterest", extraInterest);
 
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
 			mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
@@ -67,7 +73,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			I_s_loantype loanType = loan.getLoanType();
 			mTab.setValue("interestgl_Acct", loanType.getloantypeinterestgl_Acct());
 			mTab.setValue("is_repayment", true);
-			//mTab.setValue("Comments", "Loan Repayment");
+			// mTab.setValue("Comments", "Loan Repayment");
 			//
 
 		} else if (mTab.getAD_Tab_ID() == refundTabID) {
@@ -82,6 +88,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 						mTab.setValue("PaymentAmount", repayment.getPaymentAmount());
 						mTab.setValue("Principal", repayment.getPrincipal());
 						mTab.setValue("interest", repayment.getInterest());
+						mTab.setValue("is_refund", true);
 					}
 				} catch (NumberFormatException e) {
 					System.out.println("This is not a number: l_repayments_ID_String");
@@ -110,9 +117,13 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			return null;
 		double gross = ((BigDecimal) value).doubleValue();
 		double interest = ((BigDecimal) mTab.getValue("expectedinterest")).doubleValue();
+		double extraInterest = 0;
+		if (mTab.getValue("ExtraInterest") != null) {
+			extraInterest = ((BigDecimal) mTab.getValue("ExtraInterest")).doubleValue();
+		}
 		// Gross = P+I
 		// P=Gross- I
-		double P = gross - interest;
+		double P = gross - (interest + extraInterest);
 		if (P > 0) {
 			mTab.setValue("Principal", BigDecimal.valueOf(P));
 		} else {
@@ -140,12 +151,12 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 		if (val) {
 			mTab.setValue("is_topup", false);
-			//mTab.setValue("Comments", "Loan Refund");
+			// mTab.setValue("Comments", "Loan Refund");
 		}
 
 		else {
 			mTab.setValue("is_topup", true);
-			//mTab.setValue("Comments", "Loan Top-Up");
+			// mTab.setValue("Comments", "Loan Top-Up");
 		}
 		return NO_ERROR;
 	}
@@ -154,16 +165,27 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 	public String isTopUp(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
+		Object record = mTab.getValue("l_repayments_ID");
+		if (record == null)
+			return "";
 		boolean val = (Boolean) value;
+		int s_loantype_ID = (int) mTab.getValue("s_loantype_ID");
+
+		SLoanType type = new SLoanType(ctx, s_loantype_ID, null);
+		if (!type.iscan_be_topped_up()) {
+			mTab.setValue("is_topup", false);
+			mTab.setValue("is_refund", true);
+			JOptionPane.showMessageDialog(null, "This loan cannot be toped up!");
+		}
 
 		if (val) {
 			mTab.setValue("is_refund", false);
-			//mTab.setValue("Comments", "Loan To-Up");
+			// mTab.setValue("Comments", "Loan To-Up");
 		}
 
 		else {
 			mTab.setValue("is_refund", true);
-			//mTab.setValue("Comments", "Loan Refund");
+			// mTab.setValue("Comments", "Loan Refund");
 		}
 		return NO_ERROR;
 	}
@@ -172,6 +194,9 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 	// org.sacco.callout.LoanRemmittanceCallout.PaymentDate
 	public String PaymentDate(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
+			return "";
+		Object record = mTab.getValue("l_repayments_ID");
+		if (record == null)
 			return "";
 		int s_loantype_ID = (int) mTab.getValue("s_loantype_ID");
 		SLoanType type = new SLoanType(ctx, s_loantype_ID, null);
@@ -258,7 +283,6 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			JOptionPane.showMessageDialog(null, "Extra interest must not exceed " + maxExtraInterest);
 			mTab.setValue("ExtraInterest", mField.getOldValue());
 		}
-
 		return NO_ERROR;
 	}
 
@@ -278,7 +302,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		if (bankgl_Acct > 0) {
 			mTab.setValue("bankgl_Acct", bankgl_Acct);
 		}
-
+		// MPeriod
 		return NO_ERROR;
 	}
 

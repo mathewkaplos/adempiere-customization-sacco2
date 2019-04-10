@@ -19,17 +19,34 @@ public class GuarantorCallout extends CalloutEngine {
 		if (value == null) {
 			return "";
 		}
+
 		BigDecimal oldVal = (BigDecimal) mField.getOldValue();
 
 		BigDecimal newVal = (BigDecimal) value;
 
 		BigDecimal amt = newVal.subtract(oldVal);
 
+		// handle self guaranteeing
+		int guarantorMember_ID = (int) mTab.getValue("s_member_ID");
+		int s_loans_ID = (int) mTab.getValue("s_loans_ID");
+		SLoan loan = new SLoan(ctx, s_loans_ID, null);
+		int loanMember_ID = loan.gets_member_ID();
+
+		if (guarantorMember_ID == loanMember_ID) {// self guaranteeing
+			BigDecimal selfGLimit = BigDecimal.valueOf(loan.gets_loantype().getselfglimit());
+			if (selfGLimit.compareTo(Env.ZERO) > 0) {
+				if (newVal.compareTo(selfGLimit) > 0) {
+					JOptionPane.showMessageDialog(null,
+							"You cannot exceed self guarantee limit of " + loan.gets_loantype().getselfglimit());
+					mTab.setValue("amountguaranteed", oldVal);
+					return "";
+				}
+			}
+		}
+
 		int s_membershares_ID = (int) mTab.getValue("s_membershares_ID");
 		MemberShares ms = new MemberShares(Env.getCtx(), s_membershares_ID, null);
 		BigDecimal freeShares = ms.getfreeshares();
-		int s_loans_ID = (int) mTab.getValue("s_loans_ID");
-		SLoan loan = new SLoan(ctx, s_loans_ID, null);
 		BigDecimal remainingGuaranteedAmount = loan.getRemainingGuaranteedAmount();
 
 		SLoanType type = new SLoanType(ctx, loan.gets_loantype_ID(), null);

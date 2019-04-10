@@ -116,4 +116,9 @@ public class SMember extends X_s_member {
 		return list.toArray(new Repayment[list.size()]);
 	}
 
+	public int numberOfContributions() {
+		String sql = "SELECT COUNT(s_shareremittance_ID) FROM adempiere.s_shareremittance WHERE is_withdrawal='N' AND isComplete='Y' AND s_member_ID="
+				+ gets_member_ID();
+		return DB.getSQLValue(get_TrxName(), sql);
+	}
 }

@@ -79,7 +79,7 @@ public class Sacco extends X_s_saccoinfo {
 	 * @param gross
 	 */
 	public static void createReplaceRemittanceForLoan(SLoan loan, MPeriod period, BigDecimal Amount,
-			BigDecimal Interest, BigDecimal balance) {
+			BigDecimal Interest, BigDecimal balance,BigDecimal othercharges) {
 
 		deletePeriodRemittanceForLoan(loan.get_ID(), period.getC_Period_ID());
 
@@ -93,6 +93,7 @@ public class Sacco extends X_s_saccoinfo {
 		remittance.setgross(Amount.add(Interest));
 		remittance.setarrears(Amount);
 		remittance.setBalance(balance);
+		remittance.setExtraInterest(othercharges);
 		remittance.setTransactionType("LOANS");
 		remittance.sets_loantype_ID(loan.gets_loantype_ID());
 		remittance.setis_payroll(loan.getrepaymode().equalsIgnoreCase("SALARY DEDS"));

@@ -1,26 +1,36 @@
 package org.sacco.loan;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.Period;
+
 import org.compiere.model.LoanSchedule;
 import org.compiere.model.MPeriod;
+import org.compiere.model.SLoan;
 import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 
 import z.mathew.Finance;
 import z.mathew.FinanceLib;
+import zenith.util.DateUtil;
 import zenith.util.Util;
 
 public class Amortized extends Schedule implements InterestPayMethod {
 
-	public Amortized(int loanID) {
-		super(loanID, newSchedule);
+	public Amortized(SLoan _loan) {
+		super(_loan, isNewSchedule);
 	}
 
 	// Amortized
 	public void execute() {
 
 		BigDecimal tempPaid = Env.ZERO;
-		System.out.println(loanSchedules);
+
+		Timestamp today = DateUtil.newTimestamp();
+		Timestamp effectDate = loan.geteffect_period().getEndDate();
+		Period period = Period.between(today.toLocalDateTime().toLocalDate(),
+				effectDate.toLocalDateTime().toLocalDate());
+
 		for (int i = 0; i < loanSchedules.length; i++) {
 			LoanSchedule ls = loanSchedules[i];
 			if (ls == null)
@@ -58,8 +68,14 @@ public class Amortized extends Schedule implements InterestPayMethod {
 			ls.setmonthopeningbal(Util.round(ls.getmonthlyrepayment().add(ls.getloanbalance())));
 
 			ls.save();
-
+			if (i == 0) {
+				if (period.getMonths() > 0) {
+					ls.setothercharges(ls.getinterestamount().multiply(BigDecimal.valueOf(period.getMonths())));
+					ls.save();
+				}
+			}
 			loan.setstatementbal(constantRepayment.multiply(BigDecimal.valueOf(loanSchedules.length)).abs());
+			loan.setloaninterestamount(Util.round(total_interest.negate()));
 			loan.save();
 			createPeriodRemittance(ls);
 
@@ -68,6 +84,6 @@ public class Amortized extends Schedule implements InterestPayMethod {
 
 	private void createPeriodRemittance(LoanSchedule ls) {
 		Sacco.createReplaceRemittanceForLoan(loan, (MPeriod) ls.getC_Period(), ls.getPrincipal(),
-				ls.getinterestamount(), ls.getmonthopeningbal());
+				ls.getinterestamount(), ls.getmonthopeningbal(), ls.getothercharges());
 	}
 }

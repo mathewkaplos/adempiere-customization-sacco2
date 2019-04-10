@@ -20,17 +20,17 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for s_period_remittance
+/** Generated Interface for s_share_recovery
  *  @author Adempiere (generated) 
  *  @version Release 3.8.0
  */
-public interface I_s_period_remittance 
+public interface I_s_share_recovery 
 {
 
-    /** TableName=s_period_remittance */
-    public static final String Table_Name = "s_period_remittance";
+    /** TableName=s_share_recovery */
+    public static final String Table_Name = "s_share_recovery";
 
-    /** AD_Table_ID=1000069 */
+    /** AD_Table_ID=1000076 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -75,37 +75,6 @@ public interface I_s_period_remittance
 	  */
 	public BigDecimal getAmount();
 
-    /** Column name arrears */
-    public static final String COLUMNNAME_arrears = "arrears";
-
-	/** Set Arrears	  */
-	public void setarrears (BigDecimal arrears);
-
-	/** Get Arrears	  */
-	public BigDecimal getarrears();
-
-    /** Column name Balance */
-    public static final String COLUMNNAME_Balance = "Balance";
-
-	/** Set Balance	  */
-	public void setBalance (BigDecimal Balance);
-
-	/** Get Balance	  */
-	public BigDecimal getBalance();
-
-    /** Column name C_Period_ID */
-    public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
-
-	/** Set Period.
-	  * Period of the Calendar
-	  */
-	public void setC_Period_ID (int C_Period_ID);
-
-	/** Get Period.
-	  * Period of the Calendar
-	  */
-	public int getC_Period_ID();
-
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -122,42 +91,6 @@ public interface I_s_period_remittance
 	  */
 	public int getCreatedBy();
 
-    /** Column name ExtraInterest */
-    public static final String COLUMNNAME_ExtraInterest = "ExtraInterest";
-
-	/** Set Extra Interest	  */
-	public void setExtraInterest (BigDecimal ExtraInterest);
-
-	/** Get Extra Interest	  */
-	public BigDecimal getExtraInterest();
-
-    /** Column name gross */
-    public static final String COLUMNNAME_gross = "gross";
-
-	/** Set Gross Amount	  */
-	public void setgross (BigDecimal gross);
-
-	/** Get Gross Amount	  */
-	public BigDecimal getgross();
-
-    /** Column name Interest */
-    public static final String COLUMNNAME_Interest = "Interest";
-
-	/** Set Interest	  */
-	public void setInterest (BigDecimal Interest);
-
-	/** Get Interest	  */
-	public BigDecimal getInterest();
-
-    /** Column name is_payroll */
-    public static final String COLUMNNAME_is_payroll = "is_payroll";
-
-	/** Set Is Payroll	  */
-	public void setis_payroll (boolean is_payroll);
-
-	/** Get Is Payroll	  */
-	public boolean is_payroll();
-
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -170,35 +103,6 @@ public interface I_s_period_remittance
 	  * The record is active in the system
 	  */
 	public boolean isActive();
-
-    /** Column name othercharges */
-    public static final String COLUMNNAME_othercharges = "othercharges";
-
-	/** Set Other Charges	  */
-	public void setothercharges (BigDecimal othercharges);
-
-	/** Get Other Charges	  */
-	public BigDecimal getothercharges();
-
-    /** Column name s_loans_ID */
-    public static final String COLUMNNAME_s_loans_ID = "s_loans_ID";
-
-	/** Set Loan Ref	  */
-	public void sets_loans_ID (int s_loans_ID);
-
-	/** Get Loan Ref	  */
-	public int gets_loans_ID();
-
-	public I_s_loans gets_loans() throws RuntimeException;
-
-    /** Column name s_loantype_ID */
-    public static final String COLUMNNAME_s_loantype_ID = "s_loantype_ID";
-
-	/** Set Loan Type	  */
-	public void sets_loantype_ID (int s_loantype_ID);
-
-	/** Get Loan Type	  */
-	public int gets_loantype_ID();
 
     /** Column name s_member_ID */
     public static final String COLUMNNAME_s_member_ID = "s_member_ID";
@@ -222,36 +126,23 @@ public interface I_s_period_remittance
 
 	public I_s_membershares gets_membershares() throws RuntimeException;
 
-    /** Column name s_period_remittance_ID */
-    public static final String COLUMNNAME_s_period_remittance_ID = "s_period_remittance_ID";
+    /** Column name s_share_recovery_ID */
+    public static final String COLUMNNAME_s_share_recovery_ID = "s_share_recovery_ID";
 
-	/** Set s_period_remittance ID	  */
-	public void sets_period_remittance_ID (int s_period_remittance_ID);
+	/** Set s_share_recovery ID	  */
+	public void sets_share_recovery_ID (int s_share_recovery_ID);
 
-	/** Get s_period_remittance ID	  */
-	public int gets_period_remittance_ID();
+	/** Get s_share_recovery ID	  */
+	public int gets_share_recovery_ID();
 
-    /** Column name StartDate */
-    public static final String COLUMNNAME_StartDate = "StartDate";
+    /** Column name s_shareremittance_ID */
+    public static final String COLUMNNAME_s_shareremittance_ID = "s_shareremittance_ID";
 
-	/** Set Start Date.
-	  * First effective day (inclusive)
-	  */
-	public void setStartDate (Timestamp StartDate);
+	/** Set s_shareremittance ID	  */
+	public void sets_shareremittance_ID (int s_shareremittance_ID);
 
-	/** Get Start Date.
-	  * First effective day (inclusive)
-	  */
-	public Timestamp getStartDate();
-
-    /** Column name TransactionType */
-    public static final String COLUMNNAME_TransactionType = "TransactionType";
-
-	/** Set Transaction Type	  */
-	public void setTransactionType (String TransactionType);
-
-	/** Get Transaction Type	  */
-	public String getTransactionType();
+	/** Get s_shareremittance ID	  */
+	public int gets_shareremittance_ID();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

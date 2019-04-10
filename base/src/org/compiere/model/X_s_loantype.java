@@ -32,7 +32,7 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190321L;
+	private static final long serialVersionUID = 20190410L;
 
     /** Standard Constructor */
     public X_s_loantype (Properties ctx, int s_loantype_ID, String trxName)
@@ -49,6 +49,8 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 			setcan_be_refinanced (false);
 // N
 			setchange_interest_if_clearing (false);
+// N
+			setcharge_int_grace_perriod (false);
 // N
 			setinterestformula (null);
 			setloan_product_type (null);
@@ -195,15 +197,15 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return bd;
 	}
 
-	/** Set MIn No Of Approving Officials.
-		@param approvingofficers MIn No Of Approving Officials	  */
+	/** Set MIn No Of Approving/Quorum Members/Officials.
+		@param approvingofficers MIn No Of Approving/Quorum Members/Officials	  */
 	public void setapprovingofficers (int approvingofficers)
 	{
 		set_Value (COLUMNNAME_approvingofficers, Integer.valueOf(approvingofficers));
 	}
 
-	/** Get MIn No Of Approving Officials.
-		@return MIn No Of Approving Officials	  */
+	/** Get MIn No Of Approving/Quorum Members/Officials.
+		@return MIn No Of Approving/Quorum Members/Officials	  */
 	public int getapprovingofficers () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_approvingofficers);
@@ -231,6 +233,20 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Change Interest Rate.
+		@param btn_newrate Change Interest Rate	  */
+	public void setbtn_newrate (String btn_newrate)
+	{
+		set_Value (COLUMNNAME_btn_newrate, btn_newrate);
+	}
+
+	/** Get Change Interest Rate.
+		@return Change Interest Rate	  */
+	public String getbtn_newrate () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_newrate);
 	}
 
 	/** Set Calculate Interest On Original Period.
@@ -317,6 +333,27 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return false;
 	}
 
+	/** Set Charge Interest During Grace Period.
+		@param charge_int_grace_perriod Charge Interest During Grace Period	  */
+	public void setcharge_int_grace_perriod (boolean charge_int_grace_perriod)
+	{
+		set_Value (COLUMNNAME_charge_int_grace_perriod, Boolean.valueOf(charge_int_grace_perriod));
+	}
+
+	/** Get Charge Interest During Grace Period.
+		@return Charge Interest During Grace Period	  */
+	public boolean ischarge_int_grace_perriod () 
+	{
+		Object oo = get_Value(COLUMNNAME_charge_int_grace_perriod);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Transaction Charges Apply When Transacting.
 		@param charges_apply_when_transacting Transaction Charges Apply When Transacting	  */
 	public void setcharges_apply_when_transacting (boolean charges_apply_when_transacting)
@@ -392,6 +429,27 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	public boolean isdisp002 () 
 	{
 		Object oo = get_Value(COLUMNNAME_disp002);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set disp003.
+		@param disp003 disp003	  */
+	public void setdisp003 (boolean disp003)
+	{
+		set_Value (COLUMNNAME_disp003, Boolean.valueOf(disp003));
+	}
+
+	/** Get disp003.
+		@return disp003	  */
+	public boolean isdisp003 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp003);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -1121,6 +1179,29 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return bd;
 	}
 
+	/** Set Product.
+		@param M_Product_ID 
+		Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID)
+	{
+		if (M_Product_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+	}
+
+	/** Get Product.
+		@return Product, Service, Item
+	  */
+	public int getM_Product_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Maximum Grace Period(Months).
 		@param max_grace_period Maximum Grace Period(Months)	  */
 	public void setmax_grace_period (int max_grace_period)
@@ -1161,6 +1242,8 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	public static final String MONTHLYINTCALC_Daily = "0";
 	/** Monthly = 1 */
 	public static final String MONTHLYINTCALC_Monthly = "1";
+	/** One Off = 2 */
+	public static final String MONTHLYINTCALC_OneOff = "2";
 	/** Set Interest Mode.
 		@param monthlyintcalc Interest Mode	  */
 	public void setmonthlyintcalc (String monthlyintcalc)
@@ -1195,6 +1278,37 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Overdue Penalty Days.
+		@param overdue_penalty_days Overdue Penalty Days	  */
+	public void setoverdue_penalty_days (int overdue_penalty_days)
+	{
+		set_Value (COLUMNNAME_overdue_penalty_days, Integer.valueOf(overdue_penalty_days));
+	}
+
+	/** Get Overdue Penalty Days.
+		@return Overdue Penalty Days	  */
+	public int getoverdue_penalty_days () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_overdue_penalty_days);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Overdue Penalty Fomula.
+		@param overdue_penalty_formula Overdue Penalty Fomula	  */
+	public void setoverdue_penalty_formula (String overdue_penalty_formula)
+	{
+		set_Value (COLUMNNAME_overdue_penalty_formula, overdue_penalty_formula);
+	}
+
+	/** Get Overdue Penalty Fomula.
+		@return Overdue Penalty Fomula	  */
+	public String getoverdue_penalty_formula () 
+	{
+		return (String)get_Value(COLUMNNAME_overdue_penalty_formula);
 	}
 
 	/** Set penaltyprc.

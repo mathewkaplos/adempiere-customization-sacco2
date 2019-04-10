@@ -3,6 +3,8 @@ package org.sacco.process;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -21,6 +23,7 @@ import org.compiere.model.PO;
 import org.compiere.model.Repayment;
 import org.compiere.model.Sacco;
 import org.compiere.model.ShareRemittance;
+import org.compiere.model.Share_recovery;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -52,7 +55,51 @@ public class SaveShareRemittance extends SvrProcess {
 		shareRemittance.save();
 
 		post();
+
+		if (shareRemittance.isrecover_from_share_transfer()) {
+			List<Share_recovery> list = new ArrayList<>();
+			String sql = "SELECT * FROM adempiere.s_share_recovery WHERE s_shareremittance_ID=" + getRecord_ID();
+			PreparedStatement stm = null;
+			ResultSet rs = null;
+			try {
+				stm = DB.prepareStatement(sql, get_TrxName());
+				rs = stm.executeQuery();
+				while (rs.next()) {
+					Share_recovery recovery = new Share_recovery(getCtx(), rs, get_TrxName());
+					list.add(recovery);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (stm != null) {
+						stm.close();
+						stm = null;
+					}
+					if (rs != null) {
+						rs.close();
+						rs = null;
+					}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			Share_recovery[] arr = list.toArray(new Share_recovery[list.size()]);
+			update(arr);
+		}
 		return null;
+	}
+
+	private void update(Share_recovery[] _arr) {
+		Share_recovery[] arr = _arr;
+		for (int i = 0; i < arr.length; i++) {
+			Share_recovery recovery = arr[i];
+			int s_membershares_ID = recovery.gets_membershares_ID();
+			MemberShares memberShares = new MemberShares(getCtx(), s_membershares_ID, get_TrxName());
+			memberShares.setsharestodate(memberShares.getsharestodate().subtract(recovery.getAmount()));
+			memberShares.setfreeshares(memberShares.getfreeshares().subtract(recovery.getAmount()));
+			memberShares.save();
+		}
 	}
 
 	Doc doc = null;

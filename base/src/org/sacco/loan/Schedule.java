@@ -3,6 +3,9 @@ package org.sacco.loan;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+
+import org.compiere.model.I_C_Period;
+import org.compiere.model.I_s_loantype;
 import org.compiere.model.LoanSchedule;
 import org.compiere.model.MPeriod;
 import org.compiere.model.SLoan;
@@ -21,32 +24,30 @@ public class Schedule {
 	private static String formula = "";
 	static int periods = 0;
 
-	SLoanType loanType = null;
-	String l_type = ""; 
-//
+	I_s_loantype loanType = null;
+	String l_type = "";
+	//
 	static double P = 0;
 	static double R = 0;
 	static double T = 0;
-	static boolean newSchedule;
+	static boolean isNewSchedule;
 
 	BigDecimal monthlyAmt = Env.ZERO;
 
-	public Schedule(int loanID, boolean ns) {
-		newSchedule = ns;
-		loan = new SLoan(Env.getCtx(), loanID, get_TrxName());
-		if (!loan.isseen_documents()) {
-			javax.swing.JOptionPane.showMessageDialog(null,
-					"Please confirm that you have seen and checked all supporting documents first..");
-			return;
+	public Schedule(SLoan _loan, boolean _isNewSchedule) {
+		isNewSchedule = _isNewSchedule;
+		loan = _loan;
+
+		loanType = loan.gets_loantype();
+		if (loanType.isrecoveryyear()) {
+			int monthValue = loan.geteffect_period().getEndDate().toLocalDateTime().toLocalDate().getMonthValue();
+			periods = 13 - monthValue; // recover loan in the current year
+		} else {
+			periods = loan.getloanrepayperiod();
 		}
 
-		int loanTypeID = loan.gets_loantype_ID();
-		if (loanTypeID > 0) {
-			loanType = new SLoanType(Env.getCtx(), loanTypeID, get_TrxName());
-		}
-		periods = loan.getloanrepayperiod();
-		if (loan.isnewloan() && newSchedule) {
-			if (newSchedule) {
+		if (loan.isnewloan() && isNewSchedule) {
+			if (isNewSchedule) {
 				P = loan.getloanamount().doubleValue();
 			} else {
 				P = loan.getloanbalance().doubleValue();
@@ -83,16 +84,12 @@ public class Schedule {
 		createSchedules();
 		if (loanType.getloantypeinteresttype().equalsIgnoreCase("A")) {
 
-			Schedule amortized = new Amortized(loan.get_ID());
+			Schedule amortized = new Amortized(loan);
 			amortized.execute();
 		} else {
-			Schedule interestPayMethod = new ReducingBalance(loan.get_ID());
+			Schedule interestPayMethod = new ReducingBalance(loan);
 			interestPayMethod.execute();
 		}
-	}
-
-	private String get_TrxName() {
-		return null;
 	}
 
 	protected BigDecimal getInterest(double P, double T) {
@@ -133,7 +130,7 @@ public class Schedule {
 		if (loan.isopen_repay_amount())
 			monthlyAmt = loan.getconstantrepayamnt();
 		else
-			monthlyAmt = loan.getloanrepayamt();
+			monthlyAmt = BigDecimal.valueOf(totalAmount.doubleValue() / (loan.getloanrepayperiod()));
 
 		loanSchedules = new LoanSchedule[periods];
 		for (int i = 0; i < periods; i++) {
@@ -168,7 +165,7 @@ public class Schedule {
 			ls.save();
 			totalAmount = totalAmount.subtract(monthlyAmt);
 
-			MPeriod period = new MPeriod(Env.getCtx(), loan.geteffect_period_ID(), null);
+			I_C_Period period = loan.geteffect_period();
 			LocalDate effectDate = period.getEndDate().toLocalDateTime().toLocalDate();
 			effectDate = effectDate.plusMonths(i);
 
@@ -191,7 +188,7 @@ public class Schedule {
 	private void deleteExistingSchedules() {
 		int effectPeriod_ID = loan.geteffect_period_ID();
 		String sql = "DELETE FROM adempiere.s_loanschedule WHERE s_loans_ID =" + loan.gets_loans_ID();
-		if (!newSchedule)
+		if (!isNewSchedule)
 			sql = sql + " AND C_Period_ID>=" + effectPeriod_ID;
 		DB.executeUpdate(sql, null);
 	}

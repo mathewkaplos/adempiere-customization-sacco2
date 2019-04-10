@@ -32,7 +32,7 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190401L;
+	private static final long serialVersionUID = 20190410L;
 
     /** Standard Constructor */
     public X_s_period_remittance (Properties ctx, int s_period_remittance_ID, String trxName)
@@ -149,6 +149,23 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 		return ii.intValue();
 	}
 
+	/** Set Extra Interest.
+		@param ExtraInterest Extra Interest	  */
+	public void setExtraInterest (BigDecimal ExtraInterest)
+	{
+		set_Value (COLUMNNAME_ExtraInterest, ExtraInterest);
+	}
+
+	/** Get Extra Interest.
+		@return Extra Interest	  */
+	public BigDecimal getExtraInterest () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ExtraInterest);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Gross Amount.
 		@param gross Gross Amount	  */
 	public void setgross (BigDecimal gross)
@@ -202,6 +219,23 @@ public class X_s_period_remittance extends PO implements I_s_period_remittance, 
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Other Charges.
+		@param othercharges Other Charges	  */
+	public void setothercharges (BigDecimal othercharges)
+	{
+		set_Value (COLUMNNAME_othercharges, othercharges);
+	}
+
+	/** Get Other Charges.
+		@return Other Charges	  */
+	public BigDecimal getothercharges () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_othercharges);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	public I_s_loans gets_loans() throws RuntimeException

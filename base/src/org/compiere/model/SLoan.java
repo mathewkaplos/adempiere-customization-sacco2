@@ -336,7 +336,7 @@ public class SLoan extends X_s_loans {
 	}
 
 	private BigDecimal getReducingBalanceInterest() {
-		ReducingBalance reducingBalance = new ReducingBalance(get_ID());
+		ReducingBalance reducingBalance = new ReducingBalance(this);
 		return reducingBalance.getExpectedInterest();
 	}
 
@@ -589,8 +589,8 @@ public class SLoan extends X_s_loans {
 	}
 
 	/**
-	 * Get the number of repayments already made for the loan. Repayments which
-	 * are complete
+	 * Get the number of repayments already made for the loan. Repayments which are
+	 * complete
 	 * 
 	 * @return
 	 */
@@ -612,8 +612,8 @@ public class SLoan extends X_s_loans {
 	}
 
 	/**
-	 * If this loan is guaranteed , then this will return the amount needed to
-	 * fully guarantee it
+	 * If this loan is guaranteed , then this will return the amount needed to fully
+	 * guarantee it
 	 * 
 	 * @return
 	 */
@@ -623,8 +623,8 @@ public class SLoan extends X_s_loans {
 	}
 
 	/**
-	 * check if this loan is partially disbursed it has been disbursed at least
-	 * once before
+	 * check if this loan is partially disbursed it has been disbursed at least once
+	 * before
 	 * 
 	 * @return true if loan has at leat one disbursement
 	 */
@@ -636,12 +636,12 @@ public class SLoan extends X_s_loans {
 	}
 
 	/**
-	 * Resets all period remittances as from the period specified Used for
+	 * Resets all period remittances as from the period specified --Used for
 	 * reducing balance
 	 * 
 	 * @param _period
 	 */
-	public void resetPeriodRemittance12(MPeriod _period, BigDecimal diff) {
+	public void resetPeriodRemittance122(MPeriod _period, BigDecimal diff) {
 		Sacco.updatePeriodRemittance(this, _period, diff);
 	}
 
@@ -665,5 +665,40 @@ public class SLoan extends X_s_loans {
 	public BigDecimal getCurrentInterest() {
 		double interest = getloanbalance().doubleValue() * getMonthlyRate().doubleValue() / 100;
 		return BigDecimal.valueOf(interest);
+	}
+
+	public BigDecimal getPeriodExtraInterest(int c_Period_ID) {
+		boolean hasRemittance = remittanceDoneForPeriod(c_Period_ID);
+		boolean dailyMode = gets_loantype().getmonthlyintcalc().equalsIgnoreCase("0");
+
+		if (dailyMode) {
+			// do nothing
+		} else {
+			if (hasRemittance)// has remittance for this month
+				return Env.ZERO;
+			Period_remittance remittance = getPeriod_remittance(c_Period_ID);
+			if (remittance != null) {
+				return remittance.getExtraInterest();
+			}
+		}
+		return Env.ZERO;
+	}
+
+	public Period_remittance getPeriod_remittance(int C_Period_ID) {
+		Period_remittance remittance = null;
+		String sql = "SELECT * FROM adempiere.s_period_remittance WHERE s_loans_ID=" + get_ID() + " AND C_Period_ID="
+				+ C_Period_ID + " ORDER BY created DESC";
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			if (rs.next()) {
+				remittance = new Period_remittance(getCtx(), rs, get_TrxName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return remittance;
 	}
 }

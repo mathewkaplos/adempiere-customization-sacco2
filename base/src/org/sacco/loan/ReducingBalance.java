@@ -1,21 +1,32 @@
 package org.sacco.loan;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.Period;
+
 import org.compiere.model.LoanSchedule;
 import org.compiere.model.MPeriod;
+import org.compiere.model.SLoan;
 import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 
+import zenith.util.DateUtil;
 import zenith.util.Util;
 
 public class ReducingBalance extends Schedule implements InterestPayMethod {
 
-	public ReducingBalance(int loanID) {
-		super(loanID, newSchedule);
+	public ReducingBalance(SLoan _loan) {
+		super(_loan, isNewSchedule);
 	}
 
 	public void execute() {
 		BigDecimal tempPaid = Env.ZERO;
+
+		Timestamp today = DateUtil.newTimestamp();
+		Timestamp effectDate = loan.geteffect_period().getEndDate();
+		Period period = Period.between(today.toLocalDateTime().toLocalDate(),
+				effectDate.toLocalDateTime().toLocalDate());
+
 		for (int i = 0; i < loanSchedules.length; i++) {
 			LoanSchedule ls = loanSchedules[i];
 			if (ls == null)
@@ -32,6 +43,14 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 			ls.setamountpaid(Util.round(tempPaid));
 
 			ls.save();
+
+			if (i == 0) {
+				if (loanType.ischarge_int_grace_perriod())
+					if (period.getMonths() > 0) {
+						ls.setothercharges(ls.getinterestamount().multiply(BigDecimal.valueOf(period.getMonths())));
+						ls.save();
+					}
+			}
 		}
 
 		// BigDecimal initialAmt = Env.ZERO;
@@ -67,7 +86,7 @@ public class ReducingBalance extends Schedule implements InterestPayMethod {
 
 	private void createPeriodRemittance(LoanSchedule ls) {
 		Sacco.createReplaceRemittanceForLoan(loan, (MPeriod) ls.getC_Period(), ls.getPrincipal(),
-				ls.getinterestamount(), ls.getmonthopeningbal());
+				ls.getinterestamount(), ls.getmonthopeningbal(), ls.getothercharges());
 	}
 
 	public BigDecimal getExpectedInterest() {

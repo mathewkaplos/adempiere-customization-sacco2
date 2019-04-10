@@ -110,10 +110,10 @@ public interface I_s_loantype
     /** Column name approvingofficers */
     public static final String COLUMNNAME_approvingofficers = "approvingofficers";
 
-	/** Set MIn No Of Approving Officials	  */
+	/** Set MIn No Of Approving/Quorum Members/Officials	  */
 	public void setapprovingofficers (int approvingofficers);
 
-	/** Get MIn No Of Approving Officials	  */
+	/** Get MIn No Of Approving/Quorum Members/Officials	  */
 	public int getapprovingofficers();
 
     /** Column name blocked */
@@ -124,6 +124,15 @@ public interface I_s_loantype
 
 	/** Get Blocked	  */
 	public boolean isblocked();
+
+    /** Column name btn_newrate */
+    public static final String COLUMNNAME_btn_newrate = "btn_newrate";
+
+	/** Set Change Interest Rate	  */
+	public void setbtn_newrate (String btn_newrate);
+
+	/** Get Change Interest Rate	  */
+	public String getbtn_newrate();
 
     /** Column name calculateonperiod */
     public static final String COLUMNNAME_calculateonperiod = "calculateonperiod";
@@ -160,6 +169,15 @@ public interface I_s_loantype
 
 	/** Get Change Interest If Clearing Loan	  */
 	public boolean ischange_interest_if_clearing();
+
+    /** Column name charge_int_grace_perriod */
+    public static final String COLUMNNAME_charge_int_grace_perriod = "charge_int_grace_perriod";
+
+	/** Set Charge Interest During Grace Period	  */
+	public void setcharge_int_grace_perriod (boolean charge_int_grace_perriod);
+
+	/** Get Charge Interest During Grace Period	  */
+	public boolean ischarge_int_grace_perriod();
 
     /** Column name charges_apply_when_transacting */
     public static final String COLUMNNAME_charges_apply_when_transacting = "charges_apply_when_transacting";
@@ -212,6 +230,15 @@ public interface I_s_loantype
 
 	/** Get disp002	  */
 	public boolean isdisp002();
+
+    /** Column name disp003 */
+    public static final String COLUMNNAME_disp003 = "disp003";
+
+	/** Set disp003	  */
+	public void setdisp003 (boolean disp003);
+
+	/** Get disp003	  */
+	public boolean isdisp003();
 
     /** Column name fortyfivedaysrule */
     public static final String COLUMNNAME_fortyfivedaysrule = "fortyfivedaysrule";
@@ -583,6 +610,19 @@ public interface I_s_loantype
 	/** Get Savings Factor	  */
 	public BigDecimal getloantypesharesfactor();
 
+    /** Column name M_Product_ID */
+    public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
+
+	/** Set Product.
+	  * Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID);
+
+	/** Get Product.
+	  * Product, Service, Item
+	  */
+	public int getM_Product_ID();
+
     /** Column name max_grace_period */
     public static final String COLUMNNAME_max_grace_period = "max_grace_period";
 
@@ -618,6 +658,24 @@ public interface I_s_loantype
 
 	/** Get Overdue Penalty	  */
 	public boolean isoverdue_penalty();
+
+    /** Column name overdue_penalty_days */
+    public static final String COLUMNNAME_overdue_penalty_days = "overdue_penalty_days";
+
+	/** Set Overdue Penalty Days	  */
+	public void setoverdue_penalty_days (int overdue_penalty_days);
+
+	/** Get Overdue Penalty Days	  */
+	public int getoverdue_penalty_days();
+
+    /** Column name overdue_penalty_formula */
+    public static final String COLUMNNAME_overdue_penalty_formula = "overdue_penalty_formula";
+
+	/** Set Overdue Penalty Fomula	  */
+	public void setoverdue_penalty_formula (String overdue_penalty_formula);
+
+	/** Get Overdue Penalty Fomula	  */
+	public String getoverdue_penalty_formula();
 
     /** Column name penaltyprc */
     public static final String COLUMNNAME_penaltyprc = "penaltyprc";
