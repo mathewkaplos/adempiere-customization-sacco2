@@ -18,5 +18,5 @@ public class testing {
 			loanBalance = loanBalance - Principal;
 		}
 
-	}
+	} 
 }
