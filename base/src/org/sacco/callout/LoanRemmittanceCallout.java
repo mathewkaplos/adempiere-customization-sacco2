@@ -258,7 +258,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		}
 		return NO_ERROR;
 	}
-
+ 
 	// org.sacco.callout.LoanRemmittanceCallout.extraInterest
 	public String extraInterest(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
