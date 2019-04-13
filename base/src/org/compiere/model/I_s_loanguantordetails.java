@@ -109,6 +109,24 @@ public interface I_s_loanguantordetails
 	  */
 	public boolean isActive();
 
+    /** Column name loan_approved */
+    public static final String COLUMNNAME_loan_approved = "loan_approved";
+
+	/** Set Loan Approved	  */
+	public void setloan_approved (boolean loan_approved);
+
+	/** Get Loan Approved	  */
+	public boolean isloan_approved();
+
+    /** Column name loan_rejected */
+    public static final String COLUMNNAME_loan_rejected = "loan_rejected";
+
+	/** Set Loan Rejected	  */
+	public void setloan_rejected (boolean loan_rejected);
+
+	/** Get Loan Rejected	  */
+	public boolean isloan_rejected();
+
     /** Column name member_no */
     public static final String COLUMNNAME_member_no = "member_no";
 

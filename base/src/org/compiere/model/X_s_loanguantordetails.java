@@ -41,6 +41,10 @@ public class X_s_loanguantordetails extends PO implements I_s_loanguantordetails
         {
 			setamountguaranteed (Env.ZERO);
 			setid (0);
+			setloan_approved (false);
+// N
+			setloan_rejected (false);
+// N
 			sets_loanguantordetails_ID (0);
 			sets_loans_ID (0);
 			sets_member_ID (0);
@@ -109,6 +113,48 @@ public class X_s_loanguantordetails extends PO implements I_s_loanguantordetails
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Loan Approved.
+		@param loan_approved Loan Approved	  */
+	public void setloan_approved (boolean loan_approved)
+	{
+		set_Value (COLUMNNAME_loan_approved, Boolean.valueOf(loan_approved));
+	}
+
+	/** Get Loan Approved.
+		@return Loan Approved	  */
+	public boolean isloan_approved () 
+	{
+		Object oo = get_Value(COLUMNNAME_loan_approved);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Loan Rejected.
+		@param loan_rejected Loan Rejected	  */
+	public void setloan_rejected (boolean loan_rejected)
+	{
+		set_Value (COLUMNNAME_loan_rejected, Boolean.valueOf(loan_rejected));
+	}
+
+	/** Get Loan Rejected.
+		@return Loan Rejected	  */
+	public boolean isloan_rejected () 
+	{
+		Object oo = get_Value(COLUMNNAME_loan_rejected);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Member NO.

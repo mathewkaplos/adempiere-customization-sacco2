@@ -29,7 +29,7 @@ public class LoanTrackingCallout extends CalloutEngine {
 			BigDecimal loanAmount = (BigDecimal) mTab.getValue("loanamount");
 			BigDecimal loanBalance = (BigDecimal) mTab.getValue("loanbalance");
 
-			mTab.setValue("approvedamount", loanAmount.add(loanBalance));
+			//mTab.setValue("approvedamount", loanAmount.add(loanBalance));
 			mTab.setValue("approveddate", now);
 		} else {
 			mTab.setValue("approvedamount", null);

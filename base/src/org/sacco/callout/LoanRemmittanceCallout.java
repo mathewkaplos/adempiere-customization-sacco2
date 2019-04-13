@@ -12,7 +12,6 @@ import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_s_loantype;
 import org.compiere.model.MBank;
-import org.compiere.model.MPeriod;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
@@ -64,6 +63,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("gross_amount_due", gross);
 			mTab.setValue("interest_due", loan.getintbalance());
 			mTab.setValue("ExtraInterest", extraInterest);
+			mTab.setValue("monthopeningbal", loan.getloanbalance());
 
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
 			mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
@@ -305,5 +305,4 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		// MPeriod
 		return NO_ERROR;
 	}
-
 }

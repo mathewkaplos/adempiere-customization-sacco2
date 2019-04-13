@@ -1,9 +1,15 @@
 package org.sacco.process;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
+import org.compiere.model.LoanGuarantorDetails;
+import org.compiere.model.MemberShares;
 import org.compiere.model.SLoan;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
 import org.sacco.loan.ApplyLoanCharges;
 
 public class SaveApproveReject extends SvrProcess {
@@ -31,10 +37,81 @@ public class SaveApproveReject extends SvrProcess {
 
 				loan.setappliedamount(appliedamount);
 				loan.save();
+			} else if (loan.isrejected()) {
+				updateGuarantorsOnRejection();
 			}
-			//addCharges();
+			updateGuarantorsOnApproval();
+			// addCharges();
 		}
 		return null;
+	}
+
+	private void updateGuarantorsOnApproval() {
+		String sql = "SELECT * FROM adempiere.s_loanguantordetails WHERE s_loans_ID=" + getRecord_ID();
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				LoanGuarantorDetails details = new LoanGuarantorDetails(getCtx(), rs, get_TrxName());
+				details.setloan_approved(true);
+				details.save();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+	}
+
+	private void updateGuarantorsOnRejection() {
+		String sql = "SELECT * FROM adempiere.s_loanguantordetails WHERE s_loans_ID=" + getRecord_ID();
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				LoanGuarantorDetails details = new LoanGuarantorDetails(getCtx(), rs, get_TrxName());
+				details.settiedshares(Env.ZERO);
+				details.setloan_rejected(true);
+				details.save();
+
+				MemberShares memberShares = new MemberShares(getCtx(), details.gets_membershares_ID(), get_TrxName());
+				memberShares.setfreeshares(memberShares.getfreeshares().add(details.getamountguaranteed()));
+				memberShares.settiedshares(memberShares.gettiedshares().subtract(details.getamountguaranteed()));
+				memberShares.save();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
 	}
 
 	private void addCharges() {
