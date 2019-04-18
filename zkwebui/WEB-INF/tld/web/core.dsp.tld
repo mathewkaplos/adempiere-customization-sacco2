@@ -15,7 +15,8 @@
 	<!-- -->
 	<tag>
 		<description>
-			Provides the context for mutually exclusive conditional execution.
+			Provides the context for mutually exclusive conditional
+			execution.
 		</description>
 		<name>choose</name>
 		<tag-class>org.zkoss.web.servlet.dsp.action.Choose</tag-class>
@@ -29,7 +30,8 @@
 	</tag>
 	<tag>
 		<description>
-			Tests whether an condition is true and render the child only
+			Tests whether an condition is true and render the child
+			only
 			if the condition is true.
 		</description>
 		<name>if</name>
@@ -162,9 +164,11 @@
 		<function-signature>boolean isInstance(java.lang.Object,
 			java.lang.Object)</function-signature>
 		<description>
-			Tests whether an object (the second argument) is an instance of a class
+			Tests whether an object (the second argument) is an
+			instance of a class
 			(the first argument).
-			You could specify a class or the class name as the first argument.
+			You could specify a class or
+			the class name as the first argument.
 		</description>
 	</function>
 	<function>
@@ -181,7 +185,8 @@
 		<function-signature>java.lang.Object new_(java.lang.Object)</function-signature>
 		<description>
 			Instantiates the specified class.
-			The argument could be either a string (class name) or a Class instance.
+			The argument could be
+			either a string (class name) or a Class instance.
 		</description>
 	</function>
 
@@ -212,14 +217,16 @@
 			java.lang.String eatQuot(java.lang.String)
 		</function-signature>
 		<description>
-			Eliminates single and double quotations to avoid JavaScript injection.
+			Eliminates single and double quotations to avoid
+			JavaScript injection.
 		</description>
 	</function>
 	<function>
 		<name>cat</name>
 		<function-class>org.zkoss.xel.fn.StringFns</function-class>
 		<function-signature>
-			java.lang.String cat(java.lang.String, java.lang.String)
+			java.lang.String cat(java.lang.String,
+			java.lang.String)
 		</function-signature>
 		<description>
 			Catenates two strings. Note: null is considered as empty.
@@ -229,42 +236,51 @@
 		<name>cat3</name>
 		<function-class>org.zkoss.xel.fn.StringFns</function-class>
 		<function-signature>
-			java.lang.String cat3(java.lang.String, java.lang.String, java.lang.String)
+			java.lang.String cat3(java.lang.String,
+			java.lang.String, java.lang.String)
 		</function-signature>
 		<description>
-			Catenates three strings. Note: null is considered as empty.
+			Catenates three strings. Note: null is considered as
+			empty.
 		</description>
 	</function>
 	<function>
 		<name>cat4</name>
 		<function-class>org.zkoss.xel.fn.StringFns</function-class>
 		<function-signature>
-			java.lang.String cat4(java.lang.String, java.lang.String, java.lang.String,
+			java.lang.String cat4(java.lang.String,
+			java.lang.String, java.lang.String,
 			java.lang.String)
 		</function-signature>
 		<description>
-			Catenates four strings. Note: null is considered as empty.
+			Catenates four strings. Note: null is considered as
+			empty.
 		</description>
 	</function>
 	<function>
 		<name>cat5</name>
 		<function-class>org.zkoss.xel.fn.StringFns</function-class>
 		<function-signature>
-			java.lang.String cat5(java.lang.String, java.lang.String, java.lang.String,
-			java.lang.String, java.lang.String)
+			java.lang.String cat5(java.lang.String,
+			java.lang.String, java.lang.String,
+			java.lang.String,
+			java.lang.String)
 		</function-signature>
 		<description>
-			Catenates five strings. Note: null is considered as empty.
+			Catenates five strings. Note: null is considered as
+			empty.
 		</description>
 	</function>
 	<function>
 		<name>replace</name>
 		<function-class>org.zkoss.xel.fn.StringFns</function-class>
 		<function-signature>
-			java.lang.String replace(java.lang.String, java.lang.String, java.lang.String)
+			java.lang.String replace(java.lang.String,
+			java.lang.String, java.lang.String)
 		</function-signature>
 		<description>
-			Replaces all occurenances of the second argument with the third argument.
+			Replaces all occurenances of the second argument with the
+			third argument.
 		</description>
 	</function>
 
@@ -282,7 +298,8 @@
 		<function-signature>java.lang.String getLabel(java.lang.String,
 			java.lang.Object[])</function-signature>
 		<description>
-			Returns the label of the specified key, and formats with the specified
+			Returns the label of the specified key, and formats with
+			the specified
 			argument.
 		</description>
 	</function>
@@ -294,11 +311,13 @@
 		<name>attr</name>
 		<function-class>org.zkoss.xel.fn.XmlFns</function-class>
 		<function-signature>
-			java.lang.String attr(java.lang.String, java.lang.Object)
+			java.lang.String attr(java.lang.String,
+			java.lang.Object)
 		</function-signature>
 		<description>
 			Generates an attribute for HTML/XML, name="value".
-			If value is null or empty (if String), "" is generated.
+			If
+			value is null or empty (if String), "" is generated.
 		</description>
 	</function>
 
@@ -312,9 +331,11 @@
 			java.lang.String encodeURL(java.lang.String)
 		</function-signature>
 		<description>
-			Encoding URL to prefix the context path and to provide session info,
+			Encoding URL to prefix the context path and to provide
+			session info,
 			if necessary
-			If URI contains "*", it is resolved to the current Locale and
+			If URI contains "*", it is resolved to the
+			current Locale and
 			the browser code.
 		</description>
 	</function>
@@ -322,7 +343,8 @@
 		<name>encodeURIComponent</name>
 		<function-class>org.zkoss.web.servlet.http.Encodes</function-class>
 		<function-signature>
-			java.lang.String encodeURIComponent(java.lang.String)
+			java.lang.String
+			encodeURIComponent(java.lang.String)
 		</function-signature>
 		<description>
 			Encoding a string to be used as a query name or value.
@@ -336,7 +358,8 @@
 			java.lang.String escapeXML(java.lang.String)
 		</function-signature>
 		<description>
-			Encodes a string that special characters are quoted to be compatible
+			Encodes a string that special characters are quoted to be
+			compatible
 			with HTML/XML.
 		</description>
 	</function>
@@ -352,8 +375,10 @@
 			specified
 			type.
 			@param type the type of the browser.
-			Allowed values include "robot", "ie", "ie6", "ie6-", "ie7", "ie8",
-			"ie7-", "gecko", "gecko2", "gecko3", "gecko2-",
+			Allowed values
+			include "robot", "ie", "ie6", "ie6-", "ie7", "ie8",
+			"ie7-", "gecko",
+			"gecko2", "gecko3", "gecko2-",
 			"opara", "safari",
 			"mil", "hil", "mil-".
 			<br />
@@ -368,7 +393,8 @@
 			boolean isExplorer()
 		</function-signature>
 		<description>
-			Whether the current request is coming from Internet Explorer.
+			Whether the current request is coming from Internet
+			Explorer.
 		</description>
 	</function>
 	<function>
@@ -378,7 +404,8 @@
 			boolean isExplorer7()
 		</function-signature>
 		<description>
-			Whether the current request is coming from Internet Explorer 7 or later.
+			Whether the current request is coming from Internet
+			Explorer 7 or later.
 		</description>
 	</function>
 	<function>
@@ -388,7 +415,8 @@
 			boolean isGecko()
 		</function-signature>
 		<description>
-			Whether the current request is coming from a Gecko-based browser,
+			Whether the current request is coming from a Gecko-based
+			browser,
 			such as Mozilla, Firefox and Camino.
 		</description>
 	</function>
@@ -399,7 +427,8 @@
 			boolean isGecko3()
 		</function-signature>
 		<description>
-			Whether the current request is coming from a Gecko 3-based browser,
+			Whether the current request is coming from a Gecko
+			3-based browser,
 			such as Firefox 3.
 		</description>
 	</function>
@@ -428,7 +457,8 @@
 		<name>render</name>
 		<function-class>org.zkoss.web.fn.ServletFns</function-class>
 		<function-signature>
-			void render(org.zkoss.web.servlet.dsp.action.ActionContext)
+			void
+			render(org.zkoss.web.servlet.dsp.action.ActionContext)
 		</function-signature>
 		<description>
 			Renders a DSP fragment.
@@ -449,14 +479,18 @@
 		<name>testCurrentLocale</name>
 		<function-class>org.zkoss.util.Locales</function-class>
 		<function-signature>
-			boolean testCurrent(java.lang.String, java.lang.String)
+			boolean testCurrent(java.lang.String,
+			java.lang.String)
 		</function-signature>
 		<description>
-			Returns whether the current locale belongs to the specified
+			Returns whether the current locale belongs to the
+			specified
 			language and/or country.
 
-			@param lang the language code, e.g., en and zh. Ignored if null.
-			@param country the country code, e.g., US. Ignored if null.
+			@param lang the language code, e.g.,
+			en and zh. Ignored if null.
+			@param country the country code, e.g., US.
+			Ignored if null.
 			If empty, it means no country code at all.
 		</description>
 	</function>

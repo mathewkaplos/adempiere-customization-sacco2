@@ -5,7 +5,8 @@
 
 <project name="ZkWebUI" default="dist" basedir=".">
 	<description>
-		This buildfile is used to build the Zk WebUI client for a custom
+		This buildfile is used to build the Zk WebUI client for a
+		custom
 		project.
 		The main adempiere project should be identified in the
 		properties.

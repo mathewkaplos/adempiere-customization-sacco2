@@ -8,7 +8,8 @@
 	<description>
 		This buildfile is used to build the base subproject within
 		an ADempiere customization project. It is a modified version
-		of build.xml in the Adempiere project base directory
+		of
+		build.xml in the Adempiere project base directory
 	</description>
 
 	<!-- set global properties for this build -->

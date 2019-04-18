@@ -214,6 +214,15 @@ public interface I_s_loans
 	/** Get Add Charges (Cheque Writing)	  */
 	public String getbtn_cheque_witing_OC();
 
+    /** Column name btn_convert */
+    public static final String COLUMNNAME_btn_convert = "btn_convert";
+
+	/** Set Loan Conversion	  */
+	public void setbtn_convert (String btn_convert);
+
+	/** Get Loan Conversion	  */
+	public String getbtn_convert();
+
     /** Column name btn_partial_disbur_OC */
     public static final String COLUMNNAME_btn_partial_disbur_OC = "btn_partial_disbur_OC";
 
@@ -581,6 +590,15 @@ public interface I_s_loans
 	/** Get Disbursed Amount	  */
 	public BigDecimal getdisbursed_amount();
 
+    /** Column name disbursement_date */
+    public static final String COLUMNNAME_disbursement_date = "disbursement_date";
+
+	/** Set Disbursement Date	  */
+	public void setdisbursement_date (Timestamp disbursement_date);
+
+	/** Get Disbursement Date	  */
+	public Timestamp getdisbursement_date();
+
     /** Column name disbursement_installments */
     public static final String COLUMNNAME_disbursement_installments = "disbursement_installments";
 
@@ -659,13 +677,22 @@ public interface I_s_loans
 	/** Get Existing Loan	  */
 	public boolean isexistingloan();
 
+    /** Column name expected_completion_date */
+    public static final String COLUMNNAME_expected_completion_date = "expected_completion_date";
+
+	/** Set Expected Completion Date	  */
+	public void setexpected_completion_date (Timestamp expected_completion_date);
+
+	/** Get Expected Completion Date	  */
+	public Timestamp getexpected_completion_date();
+
     /** Column name expectedrepaydate */
     public static final String COLUMNNAME_expectedrepaydate = "expectedrepaydate";
 
-	/** Set Expected Repay Date	  */
+	/** Set First Repay Date	  */
 	public void setexpectedrepaydate (Timestamp expectedrepaydate);
 
-	/** Get Expected Repay Date	  */
+	/** Get First Repay Date	  */
 	public Timestamp getexpectedrepaydate();
 
     /** Column name freeshares */
@@ -1101,6 +1128,15 @@ public interface I_s_loans
 	/** Get Member NO	  */
 	public String getmember_no();
 
+    /** Column name member_userid */
+    public static final String COLUMNNAME_member_userid = "member_userid";
+
+	/** Set member_userid	  */
+	public void setmember_userid (int member_userid);
+
+	/** Get member_userid	  */
+	public int getmember_userid();
+
     /** Column name membershares */
     public static final String COLUMNNAME_membershares = "membershares";
 
@@ -1294,6 +1330,19 @@ public interface I_s_loans
 	/** Get Post To GL	  */
 	public boolean ispostgl();
 
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
+
+	/** Set Processed.
+	  * The document has been processed
+	  */
+	public void setProcessed (boolean Processed);
+
+	/** Get Processed.
+	  * The document has been processed
+	  */
+	public boolean isProcessed();
+
     /** Column name readycheque */
     public static final String COLUMNNAME_readycheque = "readycheque";
 
@@ -1368,6 +1417,17 @@ public interface I_s_loans
 
 	public I_s_branch gets_branch() throws RuntimeException;
 
+    /** Column name s_disbursement_mode_ID */
+    public static final String COLUMNNAME_s_disbursement_mode_ID = "s_disbursement_mode_ID";
+
+	/** Set Disbursement Mode	  */
+	public void sets_disbursement_mode_ID (int s_disbursement_mode_ID);
+
+	/** Get Disbursement Mode	  */
+	public int gets_disbursement_mode_ID();
+
+	public I_s_payment_mode gets_disbursement_mode() throws RuntimeException;
+
     /** Column name s_loanpurpose_ID */
     public static final String COLUMNNAME_s_loanpurpose_ID = "s_loanpurpose_ID";
 
@@ -1432,6 +1492,17 @@ public interface I_s_loans
 
 	public I_s_membershares gets_membershares() throws RuntimeException;
 
+    /** Column name s_payment_mode_ID */
+    public static final String COLUMNNAME_s_payment_mode_ID = "s_payment_mode_ID";
+
+	/** Set Repayment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID);
+
+	/** Get Repayment Mode	  */
+	public int gets_payment_mode_ID();
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException;
+
     /** Column name s_shamba_ID */
     public static final String COLUMNNAME_s_shamba_ID = "s_shamba_ID";
 
@@ -1453,6 +1524,24 @@ public interface I_s_loans
 	public int gets_shamba_plot_ID();
 
 	public I_s_shamba_plot gets_shamba_plot() throws RuntimeException;
+
+    /** Column name save_loan */
+    public static final String COLUMNNAME_save_loan = "save_loan";
+
+	/** Set Save Loan	  */
+	public void setsave_loan (String save_loan);
+
+	/** Get Save Loan	  */
+	public String getsave_loan();
+
+    /** Column name saved */
+    public static final String COLUMNNAME_saved = "saved";
+
+	/** Set Saved	  */
+	public void setsaved (boolean saved);
+
+	/** Get Saved	  */
+	public boolean issaved();
 
     /** Column name schedule_adjusted */
     public static final String COLUMNNAME_schedule_adjusted = "schedule_adjusted";

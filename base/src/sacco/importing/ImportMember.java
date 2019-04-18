@@ -5,8 +5,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.compiere.process.SvrProcess;
+
+import sacco.Test;
+
+//import importation.Test;
+
 
 public class ImportMember extends SvrProcess {
 
@@ -58,7 +62,10 @@ public class ImportMember extends SvrProcess {
 	}
 
 	public static void main(String[] args) {
-		copy();
+		//copy();
+		Test test = new Test();
+		test.main(null);
+		test.getList();
 	}
 
 }

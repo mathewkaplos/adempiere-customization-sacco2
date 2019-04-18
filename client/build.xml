@@ -6,7 +6,8 @@
 <project name="client" default="dist" basedir=".">
 
 	<description>
-		This buildfile is used to build the custom client subproject within
+		This buildfile is used to build the custom client
+		subproject within
 		the Adempiere project.
 	</description>
 

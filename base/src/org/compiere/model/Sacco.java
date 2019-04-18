@@ -35,7 +35,6 @@ public class Sacco extends X_s_saccoinfo {
 		return new TransactionSupervision(Env.getCtx(), 1000000, null);
 	}
 
-
 	public SLoan[] getAllLoans(String whereClause) {
 		List<SLoan> list = new ArrayList<>();
 		String sql = "SELECT * FROM adempiere.s_loans " + whereClause;
@@ -68,7 +67,6 @@ public class Sacco extends X_s_saccoinfo {
 		return list.toArray(new SLoan[list.size()]);
 	}
 
-
 	/**
 	 * Creating the anticipated period remittabce for loan
 	 * 
@@ -79,7 +77,7 @@ public class Sacco extends X_s_saccoinfo {
 	 * @param gross
 	 */
 	public static void createReplaceRemittanceForLoan(SLoan loan, MPeriod period, BigDecimal Amount,
-			BigDecimal Interest, BigDecimal balance,BigDecimal othercharges) {
+			BigDecimal Interest, BigDecimal balance, BigDecimal othercharges) {
 
 		deletePeriodRemittanceForLoan(loan.get_ID(), period.getC_Period_ID());
 
@@ -96,7 +94,8 @@ public class Sacco extends X_s_saccoinfo {
 		remittance.setExtraInterest(othercharges);
 		remittance.setTransactionType("LOANS");
 		remittance.sets_loantype_ID(loan.gets_loantype_ID());
-		remittance.setis_payroll(loan.getrepaymode().equalsIgnoreCase("SALARY DEDS"));
+		remittance.setis_payroll(loan.gets_payment_mode_ID() == 10);
+
 		remittance.save();
 	}
 
@@ -156,7 +155,8 @@ public class Sacco extends X_s_saccoinfo {
 
 	/**
 	 * delete all period remittances for this loan..This will happen when a loan
-	 * is fully repaid, a loan is re-financed, re-scheduled or a loan is written off
+	 * is fully repaid, a loan is re-financed, re-scheduled or a loan is written
+	 * off
 	 * 
 	 * @param s_loans_ID
 	 * @param andWhereClause

@@ -5,7 +5,8 @@
 
 <project name="BuildCustomizations" default="dist" basedir=".">
 	<description>
-		Create cusomization jars. Expand this file to include other sections
+		Create cusomization jars. Expand this file to include
+		other sections
 		as they are required.
 	</description>
 

@@ -33,7 +33,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190321L;
+	private static final long serialVersionUID = 20190418L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -63,11 +63,15 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 			setopen_repay_period (false);
 			setpartial_disbursement (false);
 // N
-			setrepaymode (null);
+			setProcessed (false);
+// N
 			sets_loanpurpose_ID (0);
 			sets_loans_ID (0);
 			sets_loantype_ID (0);
 			sets_member_ID (0);
+			sets_payment_mode_ID (0);
+			setsaved (false);
+// N
         } */
     }
 
@@ -372,6 +376,20 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public String getbtn_cheque_witing_OC () 
 	{
 		return (String)get_Value(COLUMNNAME_btn_cheque_witing_OC);
+	}
+
+	/** Set Loan Conversion.
+		@param btn_convert Loan Conversion	  */
+	public void setbtn_convert (String btn_convert)
+	{
+		set_Value (COLUMNNAME_btn_convert, btn_convert);
+	}
+
+	/** Get Loan Conversion.
+		@return Loan Conversion	  */
+	public String getbtn_convert () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_convert);
 	}
 
 	/** Set Add Charges (Partial Disbursement).
@@ -1008,6 +1026,20 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
+	/** Set Disbursement Date.
+		@param disbursement_date Disbursement Date	  */
+	public void setdisbursement_date (Timestamp disbursement_date)
+	{
+		set_Value (COLUMNNAME_disbursement_date, disbursement_date);
+	}
+
+	/** Get Disbursement Date.
+		@return Disbursement Date	  */
+	public Timestamp getdisbursement_date () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_disbursement_date);
+	}
+
 	/** Set Disbursement Installments.
 		@param disbursement_installments Disbursement Installments	  */
 	public void setdisbursement_installments (int disbursement_installments)
@@ -1172,15 +1204,29 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return false;
 	}
 
-	/** Set Expected Repay Date.
-		@param expectedrepaydate Expected Repay Date	  */
+	/** Set Expected Completion Date.
+		@param expected_completion_date Expected Completion Date	  */
+	public void setexpected_completion_date (Timestamp expected_completion_date)
+	{
+		set_Value (COLUMNNAME_expected_completion_date, expected_completion_date);
+	}
+
+	/** Get Expected Completion Date.
+		@return Expected Completion Date	  */
+	public Timestamp getexpected_completion_date () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_expected_completion_date);
+	}
+
+	/** Set First Repay Date.
+		@param expectedrepaydate First Repay Date	  */
 	public void setexpectedrepaydate (Timestamp expectedrepaydate)
 	{
 		set_Value (COLUMNNAME_expectedrepaydate, expectedrepaydate);
 	}
 
-	/** Get Expected Repay Date.
-		@return Expected Repay Date	  */
+	/** Get First Repay Date.
+		@return First Repay Date	  */
 	public Timestamp getexpectedrepaydate () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_expectedrepaydate);
@@ -1963,6 +2009,23 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return (String)get_Value(COLUMNNAME_member_no);
 	}
 
+	/** Set member_userid.
+		@param member_userid member_userid	  */
+	public void setmember_userid (int member_userid)
+	{
+		set_Value (COLUMNNAME_member_userid, Integer.valueOf(member_userid));
+	}
+
+	/** Get member_userid.
+		@return member_userid	  */
+	public int getmember_userid () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_member_userid);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Member Shares.
 		@param membershares Member Shares	  */
 	public void setmembershares (BigDecimal membershares)
@@ -2360,6 +2423,30 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return false;
 	}
 
+	/** Set Processed.
+		@param Processed 
+		The document has been processed
+	  */
+	public void setProcessed (boolean Processed)
+	{
+		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
+	}
+
+	/** Get Processed.
+		@return The document has been processed
+	  */
+	public boolean isProcessed () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Ready Cheque.
 		@param readycheque Ready Cheque	  */
 	public void setreadycheque (boolean readycheque)
@@ -2508,6 +2595,31 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return ii.intValue();
 	}
 
+	public I_s_payment_mode gets_disbursement_mode() throws RuntimeException
+    {
+		return (I_s_payment_mode)MTable.get(getCtx(), I_s_payment_mode.Table_Name)
+			.getPO(gets_disbursement_mode_ID(), get_TrxName());	}
+
+	/** Set Disbursement Mode.
+		@param s_disbursement_mode_ID Disbursement Mode	  */
+	public void sets_disbursement_mode_ID (int s_disbursement_mode_ID)
+	{
+		if (s_disbursement_mode_ID < 1) 
+			set_Value (COLUMNNAME_s_disbursement_mode_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_disbursement_mode_ID, Integer.valueOf(s_disbursement_mode_ID));
+	}
+
+	/** Get Disbursement Mode.
+		@return Disbursement Mode	  */
+	public int gets_disbursement_mode_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_disbursement_mode_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_s_loanpurpose gets_loanpurpose() throws RuntimeException
     {
 		return (I_s_loanpurpose)MTable.get(getCtx(), I_s_loanpurpose.Table_Name)
@@ -2588,9 +2700,9 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	public void sets_loantype_ID (int s_loantype_ID)
 	{
 		if (s_loantype_ID < 1) 
-			set_Value (COLUMNNAME_s_loantype_ID, null);
+			set_ValueNoCheck (COLUMNNAME_s_loantype_ID, null);
 		else 
-			set_Value (COLUMNNAME_s_loantype_ID, Integer.valueOf(s_loantype_ID));
+			set_ValueNoCheck (COLUMNNAME_s_loantype_ID, Integer.valueOf(s_loantype_ID));
 	}
 
 	/** Get Loan Type.
@@ -2661,6 +2773,31 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return ii.intValue();
 	}
 
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException
+    {
+		return (I_s_payment_mode)MTable.get(getCtx(), I_s_payment_mode.Table_Name)
+			.getPO(gets_payment_mode_ID(), get_TrxName());	}
+
+	/** Set Repayment Mode.
+		@param s_payment_mode_ID Repayment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID)
+	{
+		if (s_payment_mode_ID < 1) 
+			set_Value (COLUMNNAME_s_payment_mode_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_payment_mode_ID, Integer.valueOf(s_payment_mode_ID));
+	}
+
+	/** Get Repayment Mode.
+		@return Repayment Mode	  */
+	public int gets_payment_mode_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_payment_mode_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_s_shamba gets_shamba() throws RuntimeException
     {
 		return (I_s_shamba)MTable.get(getCtx(), I_s_shamba.Table_Name)
@@ -2709,6 +2846,41 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Save Loan.
+		@param save_loan Save Loan	  */
+	public void setsave_loan (String save_loan)
+	{
+		set_Value (COLUMNNAME_save_loan, save_loan);
+	}
+
+	/** Get Save Loan.
+		@return Save Loan	  */
+	public String getsave_loan () 
+	{
+		return (String)get_Value(COLUMNNAME_save_loan);
+	}
+
+	/** Set Saved.
+		@param saved Saved	  */
+	public void setsaved (boolean saved)
+	{
+		set_Value (COLUMNNAME_saved, Boolean.valueOf(saved));
+	}
+
+	/** Get Saved.
+		@return Saved	  */
+	public boolean issaved () 
+	{
+		Object oo = get_Value(COLUMNNAME_saved);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Schedule Adjusted.

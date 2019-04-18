@@ -8,5 +8,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/adempiere"/>
+	<classpathentry kind="lib" path="E:/380_sacco/mine.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jpa">
+		<attributes>
+			<attribute name="owner.project.facets" value="jpt.jpa;#system#"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

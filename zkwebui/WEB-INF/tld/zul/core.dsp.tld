@@ -25,20 +25,24 @@
 		<name>getColAttrs</name>
 		<function-class>org.zkoss.zul.fn.ZulFns</function-class>
 		<function-signature>
-			java.lang.String getColAttrs(org.zkoss.zul.Row, int)
+			java.lang.String getColAttrs(org.zkoss.zul.Row,
+			int)
 		</function-signature>
 		<description>
-			Returns the attribute used for the cell of the specified row and index.
+			Returns the attribute used for the cell of the specified
+			row and index.
 		</description>
 	</function>
 	<function>
 		<name>getBoxChildOuterAttrs</name>
 		<function-class>org.zkoss.zul.fn.ZulFns</function-class>
 		<function-signature>
-			java.lang.String getBoxChildOuterAttrs(org.zkoss.zk.ui.Component)
+			java.lang.String
+			getBoxChildOuterAttrs(org.zkoss.zk.ui.Component)
 		</function-signature>
 		<description>
-			Returns the inner attributes used for the cell of the specified child
+			Returns the inner attributes used for the cell of the
+			specified child
 			when it is placed inside of hbox/vbox.
 		</description>
 	</function>
@@ -46,10 +50,12 @@
 		<name>getBoxChildInnerAttrs</name>
 		<function-class>org.zkoss.zul.fn.ZulFns</function-class>
 		<function-signature>
-			java.lang.String getBoxChildInnerAttrs(org.zkoss.zk.ui.Component)
+			java.lang.String
+			getBoxChildInnerAttrs(org.zkoss.zk.ui.Component)
 		</function-signature>
 		<description>
-			Returns the outer attributes used for the cell of the specified child
+			Returns the outer attributes used for the cell of the
+			specified child
 			when it is placed inside of hbox/vbox.
 		</description>
 	</function>
@@ -77,7 +83,8 @@
 		<name>shallVisitTree</name>
 		<function-class>org.zkoss.zul.fn.ZulFns</function-class>
 		<function-signature>
-			boolean shallVisitTree(org.zkoss.zul.Tree, org.zkoss.zk.ui.Component)
+			boolean shallVisitTree(org.zkoss.zul.Tree,
+			org.zkoss.zk.ui.Component)
 		</function-signature>
 		<description>
 			Returns whether the specified tree should be visited.
@@ -100,7 +107,8 @@
 			void clearTreeRenderInfo(org.zkoss.zul.Tree)
 		</function-signature>
 		<description>
-			Clears up the info stored in attributes that are used to render
+			Clears up the info stored in attributes that are used to
+			render
 			a tree in the paging mold.
 		</description>
 	</function>

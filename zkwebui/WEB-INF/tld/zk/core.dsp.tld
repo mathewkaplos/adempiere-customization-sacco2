@@ -25,7 +25,8 @@
 		<name>redraw</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			void redraw(org.zkoss.zk.ui.Component, java.io.Writer)
+			void redraw(org.zkoss.zk.ui.Component,
+			java.io.Writer)
 		</function-signature>
 		<description>
 			Redraw the specified component.
@@ -36,7 +37,8 @@
 		<name>outResponseJavaScripts</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outResponseJavaScripts(java.util.Collection);
+			java.lang.String
+			outResponseJavaScripts(java.util.Collection);
 		</function-signature>
 		<description>
 			Returns javascript to handle the specified responses.
@@ -47,11 +49,14 @@
 		<name>outLangJavaScripts</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outLangJavaScripts(java.lang.String)
+			java.lang.String
+			outLangJavaScripts(java.lang.String)
 		</function-signature>
 		<description>
-			Returns HTML tags to include all JavaScripts used by all languages.
-			The argument is ignored (since 3.5.0; reserved for backward compatible).
+			Returns HTML tags to include all JavaScripts used by all
+			languages.
+			The argument is ignored (since 3.5.0; reserved for backward
+			compatible).
 		</description>
 	</function>
 	<function>
@@ -61,8 +66,10 @@
 			java.lang.String outLangStyleSheets()
 		</function-signature>
 		<description>
-			Returns HTML tags to include all style sheets used by all languages.
-			Note: it cannot be called without current execution. In other words,
+			Returns HTML tags to include all style sheets used by all
+			languages.
+			Note: it cannot be called without current execution. In
+			other words,
 			it is used to design component templates.
 		</description>
 	</function>
@@ -70,7 +77,8 @@
 		<name>outHtmlUnavailable</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outHtmlUnavailable(org.zkoss.zk.ui.Page)
+			java.lang.String
+			outHtmlUnavailable(org.zkoss.zk.ui.Page)
 		</function-signature>
 		<description>
 			Generates the unavailable message in HTML tags, if any.
@@ -80,10 +88,12 @@
 		<name>outHeaders</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outHeaders(org.zkoss.zk.ui.Page, boolean)
+			java.lang.String outHeaders(org.zkoss.zk.ui.Page,
+			boolean)
 		</function-signature>
 		<description>
-			Returns the content that will be placed inside the header element
+			Returns the content that will be placed inside the header
+			element
 			of the specified page.
 		</description>
 	</function>
@@ -91,10 +101,12 @@
 		<name>outRootAttributes</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outRootAttributes(org.zkoss.zk.ui.Page)
+			java.lang.String
+			outRootAttributes(org.zkoss.zk.ui.Page)
 		</function-signature>
 		<description>
-			Returns the content that will be placed as the attributes of
+			Returns the content that will be placed as the attributes
+			of
 			the root element of the specified page.
 		</description>
 	</function>
@@ -102,7 +114,8 @@
 		<name>outContentType</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outContentType(org.zkoss.zk.ui.Page)
+			java.lang.String
+			outContentType(org.zkoss.zk.ui.Page)
 		</function-signature>
 		<description>
 			Returns the content type.
@@ -122,7 +135,8 @@
 		<name>outFirstLine</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outFirstLine(org.zkoss.zk.ui.Page)
+			java.lang.String
+			outFirstLine(org.zkoss.zk.ui.Page)
 		</function-signature>
 		<description>
 			Returns the first line to be generated to the output.
@@ -133,11 +147,13 @@
 		<name>toAbsoluteURI</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String toAbsoluteURI(java.lang.String, boolean)
+			java.lang.String toAbsoluteURI(java.lang.String,
+			boolean)
 		</function-signature>
 		<description>
 			Converts the specified URI to abolute if necessary.
-			Note: it doesn't convert if this page is included by another page.
+			Note:
+			it doesn't convert if this page is included by another page.
 		</description>
 	</function>
 
@@ -145,7 +161,8 @@
 		<name>outPageAttrs</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outPageAttrs(org.zkoss.zk.ui.Page)
+			java.lang.String
+			outPageAttrs(org.zkoss.zk.ui.Page)
 		</function-signature>
 		<description>
 			Returns the attributes to render a page.
@@ -166,10 +183,12 @@
 		<name>outZkHeadHtmlTags</name>
 		<function-class>org.zkoss.zk.fn.ZkFns</function-class>
 		<function-signature>
-			java.lang.String outZkHeadHtmlTags(org.zkoss.zk.ui.Page)
+			java.lang.String
+			outZkHeadHtmlTags(org.zkoss.zk.ui.Page)
 		</function-signature>
 		<description>
-			Returns the ZK specific HTML tags including the headers defined in the page,
+			Returns the ZK specific HTML tags including the headers
+			defined in the page,
 			if not generated yet
 		</description>
 	</function>
@@ -181,7 +200,8 @@
 			java.lang.String noCSSAttrs(java.lang.String)
 		</function-signature>
 		<description>
-			Removes the class and style attributes from the specified one.
+			Removes the class and style attributes from the specified
+			one.
 		</description>
 	</function>
 	<function>
@@ -191,7 +211,8 @@
 			java.lang.String outCSSAttrs(java.lang.String)
 		</function-signature>
 		<description>
-			Returns only the class and style attributes from the specified one.
+			Returns only the class and style attributes from the
+			specified one.
 		</description>
 	</function>
 
@@ -209,13 +230,17 @@
 		<name>outDeviceStyleSheets</name>
 		<function-class>org.zkoss.zk.fn.DspFns</function-class>
 		<function-signature>
-			java.lang.String outDeviceStyleSheets(java.lang.String)
+			java.lang.String
+			outDeviceStyleSheets(java.lang.String)
 		</function-signature>
 		<description>
-			Returns HTML tags to include all style sheets used by the specified device.
-			Note: unlike outLangStyleSheets, it can be called without current
+			Returns HTML tags to include all style sheets used by the
+			specified device.
+			Note: unlike outLangStyleSheets, it can be called
+			without current
 			execution.
-			@param deviceType the device type. If null, "ajax" is assumed.
+			@param deviceType the device type. If null,
+			"ajax" is assumed.
 		</description>
 	</function>
 
@@ -226,7 +251,8 @@
 			void setCacheControl(java.lang.String, int)
 		</function-signature>
 		<description>
-			Sets the Cache-Control and Expires headers for the current request.
+			Sets the Cache-Control and Expires headers for the
+			current request.
 		</description>
 	</function>
 	<function>
@@ -236,7 +262,8 @@
 			void setCSSCacheControl()
 		</function-signature>
 		<description>
-			Sets the Cache-Control and Expires headers for the CSS file
+			Sets the Cache-Control and Expires headers for the CSS
+			file
 			from class Web resource for the current request.
 		</description>
 	</function>
@@ -248,7 +275,8 @@
 		</function-signature>
 		<description>
 			Sets the Cache-Control and Expires headers for
-			class Web resource for the current request.
+			class Web
+			resource for the current request.
 		</description>
 	</function>
 </taglib>

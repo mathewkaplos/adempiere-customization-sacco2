@@ -32,7 +32,8 @@ public class SavePaymentMode extends SvrProcess {
 
 	private SLoan loan = null;
 
-	private String payMode = null;
+	// private String payMode = null;
+	int s_disbursement_mode_ID = 0;
 	private int C_Bank_ID = 0;
 	Doc doc = null;
 	PO po = null;
@@ -56,25 +57,25 @@ public class SavePaymentMode extends SvrProcess {
 
 		loan = new SLoan(getCtx(), getRecord_ID(), get_TrxName());
 		loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
-		payMode = loan.getpaymode();
+		s_disbursement_mode_ID = loan.gets_disbursement_mode_ID();
 		bank = new MBank(getCtx(), C_Bank_ID, get_TrxName());
 	}
 
 	@Override
 	protected String doIt() throws Exception {
-		if (loan.getNumberOfRepayments() == 1) {
+		//if (loan.getNumberOfRepayments() == 1) {
 			loan.setmonthopeningbal(loan.getappliedamount());
 			loan.setloanpaymode_done(true);
 			loan.setintbalance(loan.getloaninterestamount());
 			loan.setloanbalance(loan.getappliedamount());
 			loan.save();
-		}
+		//}
 		if (loan.is_refinance()) {
 			repayOldLoan();
 		}
-		if (payMode.equalsIgnoreCase("8")) {
+		if (s_disbursement_mode_ID == 8) {
 			updateShambaPlot();
-		} else if (payMode.equalsIgnoreCase("9")) {
+		} else if (s_disbursement_mode_ID == 9) {
 			updateSavings();
 		}
 		saveDisbursement();
@@ -154,6 +155,9 @@ public class SavePaymentMode extends SvrProcess {
 	}
 
 	private void postInterest() {
+		if (loan.getloaninterestamount().compareTo(Env.ZERO) < 1) {
+			return;
+		}
 		Sacco sacco = Sacco.getSaccco();
 		MAccount accountDR = new MAccount(Env.getCtx(), sacco.getInterestReceivable_Acct(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),

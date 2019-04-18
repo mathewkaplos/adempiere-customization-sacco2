@@ -24,7 +24,8 @@
 		</function-signature>
 		<description>
 			Returns the desktop info to render a desktop.
-			It is required only if outPageAttrs might not be called
+			It is
+			required only if outPageAttrs might not be called
 		</description>
 	</function>
 
@@ -32,12 +33,16 @@
 		<name>outDeviceStyleSheets</name>
 		<function-class>org.zkoss.zk.fn.JspFns</function-class>
 		<function-signature>
-			java.lang.String outDeviceStyleSheets(ServletContext,
-			HttpServletRequest, HttpServletResponse, String)
+			java.lang.String
+			outDeviceStyleSheets(ServletContext,
+			HttpServletRequest,
+			HttpServletResponse, String)
 		</function-signature>
 		<description>
-			Returns HTML tags to include all style sheets used by the specified device.
-			Note: unlike outLangStyleSheets, it can be called without current
+			Returns HTML tags to include all style sheets used by the
+			specified device.
+			Note: unlike outLangStyleSheets, it can be called
+			without current
 			execution.
 		</description>
 	</function>
@@ -46,10 +51,12 @@
 		<name>setCacheControl</name>
 		<function-class>org.zkoss.zk.fn.JspFns</function-class>
 		<function-signature>
-			void setCacheControl(HttpServletResponse, java.lang.String, int)
+			void setCacheControl(HttpServletResponse,
+			java.lang.String, int)
 		</function-signature>
 		<description>
-			Sets the Cache-Control and Expires headers for the current request.
+			Sets the Cache-Control and Expires headers for the
+			current request.
 		</description>
 	</function>
 	<function>
@@ -59,7 +66,8 @@
 			void setCSSCacheControl(HttpServletResponse)
 		</function-signature>
 		<description>
-			Sets the Cache-Control and Expires headers for the CSS file
+			Sets the Cache-Control and Expires headers for the CSS
+			file
 			from class Web resource for the current request.
 		</description>
 	</function>
@@ -71,7 +79,8 @@
 		</function-signature>
 		<description>
 			Sets the Cache-Control and Expires headers for
-			class Web resource for the current request.
+			class Web
+			resource for the current request.
 		</description>
 	</function>
 </taglib>

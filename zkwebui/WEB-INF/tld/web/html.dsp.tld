@@ -15,7 +15,8 @@
 	<!-- -->
 	<tag>
 		<description>
-			Display a box that has a caption and a border enclosing other tags.
+			Display a box that has a caption and a border enclosing
+			other tags.
 		</description>
 		<name>box</name>
 		<tag-class>org.zkoss.web.servlet.dsp.action.html.Box</tag-class>

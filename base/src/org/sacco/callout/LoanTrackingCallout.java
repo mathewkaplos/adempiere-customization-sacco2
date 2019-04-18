@@ -29,7 +29,7 @@ public class LoanTrackingCallout extends CalloutEngine {
 			BigDecimal loanAmount = (BigDecimal) mTab.getValue("loanamount");
 			BigDecimal loanBalance = (BigDecimal) mTab.getValue("loanbalance");
 
-			//mTab.setValue("approvedamount", loanAmount.add(loanBalance));
+			// mTab.setValue("approvedamount", loanAmount.add(loanBalance));
 			mTab.setValue("approveddate", now);
 		} else {
 			mTab.setValue("approvedamount", null);
@@ -57,13 +57,14 @@ public class LoanTrackingCallout extends CalloutEngine {
 	public String paymode(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
-		String val = (String) value;
-		if (val.equals("3")) {
+		Integer val = (Integer) value;
+		if (val == 3) {
 			mTab.setValue("cashamount", null);
 		} else {
 
 		}
-		mTab.setValue("appliedamount", null);
+		BigDecimal approvedamount = (BigDecimal) mTab.getValue("approvedamount");
+		mTab.setValue("appliedamount", approvedamount);
 		mTab.setValue("s_shamba_ID", null);
 		mTab.setValue("s_shamba_plot_ID", null);
 		mTab.setValue("s_membershares_ID", null);
