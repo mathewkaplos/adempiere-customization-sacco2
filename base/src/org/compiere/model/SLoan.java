@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Properties;
@@ -17,6 +16,7 @@ import org.compiere.util.Env;
 import org.sacco.loan.Formula;
 import org.sacco.loan.ReducingBalance;
 
+import z.mathew.Finance;
 import zenith.util.DateUtil;
 
 public class SLoan extends X_s_loans {
@@ -551,7 +551,7 @@ public class SLoan extends X_s_loans {
 		accRecievables.setCredit_Acct(repayment.getloan_gl_Acct());
 		accRecievables.setDescription(getDescription());
 		accRecievables.setLoanShare("Loan");
-		accRecievables.sets_member_ID(loan.gets_member_ID());
+		accRecievables.sets_member_ID(gets_member_ID());
 		accRecievables.setpaymode(repayment.getpaymode());
 		AmtInWords_EN aiw = new AmtInWords_EN();
 		try {
@@ -570,7 +570,7 @@ public class SLoan extends X_s_loans {
 	 * @return
 	 */
 	private String getDescription() {
-		SLoanType loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
+		SLoanType loanType = new SLoanType(getCtx(), gets_loantype_ID(), get_TrxName());
 		return loanType.getloantypecode() + " Loan Remmittance No: " + repayment.getDocumentNo();
 	}
 
@@ -715,6 +715,90 @@ public class SLoan extends X_s_loans {
 		String sql = "SELECT COUNT(s_loanguantordetails_ID) FROM adempiere.s_loanguantordetails WHERE isActive='Y' AND s_loans_ID="
 				+ get_ID();
 		return DB.getSQLValue(get_TrxName(), sql);
-
 	}
+
+	/**
+	 * Check only savings linked to the loan type
+	 * 
+	 * @return Savings factor amount
+	 */
+	public BigDecimal getSavingsFactorAmount() {
+		String sql = "SELECT COALESCE(SUM(freeshares),0) FROM adempiere.s_membershares WHERE "
+				+ " s_sharetype_ID IN(SELECT s_sharetype_ID FROM  adempiere.s_linked_savings WHERE s_loantype_ID="
+				+ gets_loantype_ID() + ")" + " AND s_member_ID=" + gets_member_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
+
+	public boolean fullyGuaranteed() {
+		return getRemainingGuaranteedAmount().compareTo(Env.ZERO) < 1;
+	}
+
+	public boolean hasEnoughGuarantors() {
+		return getGuarantorNumber() >= gets_loantype().getloantypeminguarantors();
+	}
+
+	public boolean incomeFactorOk() {
+		BigDecimal incomeFactor = gets_loantype().getloantypeincomefactor();
+		if (incomeFactor.compareTo(Env.ZERO) == 0)
+			return true;
+
+		double pmt = Finance.pmt(getloaninterestrate().doubleValue() / 100, getloanrepayperiod(),
+				getloanamount().doubleValue());
+		double averageRepay = Math.abs(pmt);
+		double minIncome = averageRepay / incomeFactor.doubleValue();
+		I_s_member member = gets_member();
+		BigDecimal nettIncome = member.getmnett() == null ? Env.ZERO : member.getmnett();
+		return nettIncome.doubleValue() >= minIncome;
+	}
+
+	public boolean isWithinLimit() {
+		BigDecimal maxAmount = gets_loantype().getloantypemaxamount();
+		if (maxAmount.compareTo(Env.ZERO) == 0)
+			return true;
+		return getloanamount().compareTo(maxAmount) < 1;
+	}
+
+	public boolean membershipPeriodOk() {
+		int minContr = gets_loantype().getminimumcontributions();
+		if (minContr == 0)
+			return true;
+		int s_member_ID = gets_member_ID();
+		SMember member = new SMember(getCtx(), s_member_ID, null);
+		int months = member.numberOfContributions();
+		return months > minContr;
+	}
+
+	public boolean shareSavingFactorOk() {
+		BigDecimal savingFactor = gets_loantype().getloantypesharesfactor();
+		if (savingFactor.compareTo(Env.ZERO) == 0)
+			return true;
+		BigDecimal memberFreeShares = getSavingsFactorAmount();
+		BigDecimal maxAmt = memberFreeShares.multiply(savingFactor);
+		return getloanamount().compareTo(maxAmt) < 1;
+	}
+
+	public boolean retirementAgeOK() {
+		// Check Retirement age
+		I_s_member member = gets_member();
+		if (member.gets_employers_ID() == 0)
+			return true;
+		// now member has employer at this point
+		I_s_employers empl = member.gets_employers();
+		int retirementAgeInMonths = empl.getretirement_age() * 12;
+		if (retirementAgeInMonths < 1)
+			return true;
+		// now retirement age set in the employers setup
+		if (member.getmdob() == null)
+			return true;
+		Timestamp ts = member.getmdob();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(ts);
+		cal.add(Calendar.MONTH, 0 - getloanrepayperiod());
+		ts.setTime(cal.getTime().getTime());
+
+		long ageAtLastRepayment = Sacco.calculateAgeInMonths(ts, DateUtil.newTimestamp());
+		// now member has age..i.e not null.. do the checking
+		return ageAtLastRepayment <= retirementAgeInMonths;
+	}
+
 }

@@ -32,7 +32,7 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190410L;
+	private static final long serialVersionUID = 20190422L;
 
     /** Standard Constructor */
     public X_s_loantype (Properties ctx, int s_loantype_ID, String trxName)
@@ -652,15 +652,36 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return false;
 	}
 
-	/** Set Linked To Saving Type.
-		@param linkedgl Linked To Saving Type	  */
+	/** Set Linked To Savings Type.
+		@param linked_to_savings_type Linked To Savings Type	  */
+	public void setlinked_to_savings_type (boolean linked_to_savings_type)
+	{
+		set_Value (COLUMNNAME_linked_to_savings_type, Boolean.valueOf(linked_to_savings_type));
+	}
+
+	/** Get Linked To Savings Type.
+		@return Linked To Savings Type	  */
+	public boolean islinked_to_savings_type () 
+	{
+		Object oo = get_Value(COLUMNNAME_linked_to_savings_type);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set linkedgl.
+		@param linkedgl linkedgl	  */
 	public void setlinkedgl (String linkedgl)
 	{
 		set_Value (COLUMNNAME_linkedgl, linkedgl);
 	}
 
-	/** Get Linked To Saving Type.
-		@return Linked To Saving Type	  */
+	/** Get linkedgl.
+		@return linkedgl	  */
 	public String getlinkedgl () 
 	{
 		return (String)get_Value(COLUMNNAME_linkedgl);
@@ -739,6 +760,23 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
     {
         return new KeyNamePair(get_ID(), getloantypecode());
     }
+
+	/** Set loantypeid.
+		@param loantypeid loantypeid	  */
+	public void setloantypeid (int loantypeid)
+	{
+		set_Value (COLUMNNAME_loantypeid, Integer.valueOf(loantypeid));
+	}
+
+	/** Get loantypeid.
+		@return loantypeid	  */
+	public int getloantypeid () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_loantypeid);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	/** Set Income Factor.
 		@param loantypeincomefactor Income Factor	  */
@@ -1402,6 +1440,25 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Record ID.
+		@param Record_ID 
+		Direct internal record ID
+	  */
+	public void setRecord_ID (int Record_ID)
+	{
+		throw new IllegalArgumentException ("Record_ID is virtual column");	}
+
+	/** Get Record ID.
+		@return Direct internal record ID
+	  */
+	public int getRecord_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Record_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Recover In Current Year.

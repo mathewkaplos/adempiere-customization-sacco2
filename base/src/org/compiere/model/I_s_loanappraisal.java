@@ -266,6 +266,15 @@ public interface I_s_loanappraisal
 	/** Get Loan Amount	  */
 	public BigDecimal getloanamount();
 
+    /** Column name loanappdate */
+    public static final String COLUMNNAME_loanappdate = "loanappdate";
+
+	/** Set Application Date:	  */
+	public void setloanappdate (Timestamp loanappdate);
+
+	/** Get Application Date:	  */
+	public Timestamp getloanappdate();
+
     /** Column name loancode */
     public static final String COLUMNNAME_loancode = "loancode";
 
@@ -377,10 +386,10 @@ public interface I_s_loanappraisal
     /** Column name s_loanappraisal_ID */
     public static final String COLUMNNAME_s_loanappraisal_ID = "s_loanappraisal_ID";
 
-	/** Set s_loanappraisal ID	  */
+	/** Set Loan Appraisal	  */
 	public void sets_loanappraisal_ID (int s_loanappraisal_ID);
 
-	/** Get s_loanappraisal ID	  */
+	/** Get Loan Appraisal	  */
 	public int gets_loanappraisal_ID();
 
     /** Column name s_loans_ID */

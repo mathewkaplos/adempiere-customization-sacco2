@@ -32,7 +32,7 @@ public class X_s_loanappraisal extends PO implements I_s_loanappraisal, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190409L;
+	private static final long serialVersionUID = 20190420L;
 
     /** Standard Constructor */
     public X_s_loanappraisal (Properties ctx, int s_loanappraisal_ID, String trxName)
@@ -393,6 +393,20 @@ public class X_s_loanappraisal extends PO implements I_s_loanappraisal, I_Persis
 		return bd;
 	}
 
+	/** Set Application Date:.
+		@param loanappdate Application Date:	  */
+	public void setloanappdate (Timestamp loanappdate)
+	{
+		set_Value (COLUMNNAME_loanappdate, loanappdate);
+	}
+
+	/** Get Application Date:.
+		@return Application Date:	  */
+	public Timestamp getloanappdate () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_loanappdate);
+	}
+
 	/** Set Ref #.
 		@param loancode Ref #	  */
 	public void setloancode (String loancode)
@@ -529,17 +543,10 @@ public class X_s_loanappraisal extends PO implements I_s_loanappraisal, I_Persis
 		return false;
 	}
 
-	/** paymethod AD_Reference_ID=1000006 */
-	public static final int PAYMETHOD_AD_Reference_ID=1000006;
-	/** Cash = Cash */
-	public static final String PAYMETHOD_Cash = "Cash";
-	/** Cheque = Cheque */
-	public static final String PAYMETHOD_Cheque = "Cheque";
 	/** Set Payment Method.
 		@param paymethod Payment Method	  */
 	public void setpaymethod (String paymethod)
 	{
-
 		set_Value (COLUMNNAME_paymethod, paymethod);
 	}
 
@@ -578,8 +585,8 @@ public class X_s_loanappraisal extends PO implements I_s_loanappraisal, I_Persis
 		return (String)get_Value(COLUMNNAME_reasons);
 	}
 
-	/** Set s_loanappraisal ID.
-		@param s_loanappraisal_ID s_loanappraisal ID	  */
+	/** Set Loan Appraisal.
+		@param s_loanappraisal_ID Loan Appraisal	  */
 	public void sets_loanappraisal_ID (int s_loanappraisal_ID)
 	{
 		if (s_loanappraisal_ID < 1) 
@@ -588,8 +595,8 @@ public class X_s_loanappraisal extends PO implements I_s_loanappraisal, I_Persis
 			set_ValueNoCheck (COLUMNNAME_s_loanappraisal_ID, Integer.valueOf(s_loanappraisal_ID));
 	}
 
-	/** Get s_loanappraisal ID.
-		@return s_loanappraisal ID	  */
+	/** Get Loan Appraisal.
+		@return Loan Appraisal	  */
 	public int gets_loanappraisal_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_loanappraisal_ID);

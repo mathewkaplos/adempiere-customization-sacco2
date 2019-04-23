@@ -29,7 +29,7 @@ public class X_s_payment_mode extends PO implements I_s_payment_mode, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190418L;
+	private static final long serialVersionUID = 20190420L;
 
     /** Standard Constructor */
     public X_s_payment_mode (Properties ctx, int s_payment_mode_ID, String trxName)

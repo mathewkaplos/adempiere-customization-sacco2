@@ -3,6 +3,9 @@ package org.compiere.model;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -230,5 +233,25 @@ public class Sacco extends X_s_saccoinfo {
 		String sql = "DELETE FROM adempiere.s_period_remittance WHERE C_Period_ID =" + C_Period_ID
 				+ " AND s_membershares_ID=" + s_membershares_ID;
 		DB.executeUpdate(sql, null);
+	}
+
+	public static long calculateAgeInYears(Timestamp birthDate, Timestamp currentDate) {
+		if ((birthDate != null) && (currentDate != null)) {
+			return Period
+					.between(birthDate.toLocalDateTime().toLocalDate(), currentDate.toLocalDateTime().toLocalDate())
+					.getYears();
+		} else {
+			return 0;
+		}
+	}
+
+	public static long calculateAgeInMonths(Timestamp birthDate, Timestamp currentDate) {
+		if ((birthDate != null) && (currentDate != null)) {
+			return Period
+					.between(birthDate.toLocalDateTime().toLocalDate(), currentDate.toLocalDateTime().toLocalDate())
+					.toTotalMonths();
+		} else {
+			return 0;
+		}
 	}
 }

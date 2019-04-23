@@ -37,35 +37,6 @@ public class LoanApplicationCallout extends CalloutEngine {
 		if (loanTypeID != null && loanTypeID > 0)
 			loanType = getLoanType(loanTypeID);
 
-		if (loanType.getloantypeminmembership() > 0) {
-			int s_member_ID = (int) mTab.getValue("s_member_ID");
-			SMember member = new SMember(ctx, s_member_ID, null);
-			Timestamp regDate = member.getmdate();
-			Period diff = Period.between(regDate.toLocalDateTime().toLocalDate(),
-					DateUtil.newDate().toLocalDate().plusDays(1));
-			int months = diff.getMonths();
-			if (loanType.getloantypeminmembership() > months) {
-				mTab.setValue("s_loantype_ID", 0);
-				JOptionPane.showMessageDialog(null,
-						"This member cannot borrow this loan. Minimum membership period is not made!");
-
-				return "";
-			}
-		}
-		if (loanType.getminimumcontributions() > 0) {
-			int s_member_ID = (int) mTab.getValue("s_member_ID");
-			SMember member = new SMember(ctx, s_member_ID, null);
-			int months = member.numberOfContributions();
-
-			if (loanType.getminimumcontributions() > months) {
-				mTab.setValue("s_loantype_ID", 0);
-				JOptionPane.showMessageDialog(null,
-						"This member cannot borrow this loan. Minimum no of contribtions(months) is not made!");
-
-				return "";
-			}
-		}
-
 		// Initialize the Variables
 		if (loanType != null) {
 			repayPeriod = loanType.getloantypemaxperiod();
@@ -73,6 +44,11 @@ public class LoanApplicationCallout extends CalloutEngine {
 			maximumloan = loanType.getloantypemaxamount();
 			interestRate = loanType.getloantypeinterestrate();
 			loanGLCode = loanType.getloantypeloangl_Acct();
+
+			if (loanType.isrecoveryyear()) {
+				int monthValue = DateUtil.newTimestamp().toLocalDateTime().toLocalDate().getMonthValue();
+				repayPeriod = 13 - monthValue; // recover loan in the current
+			}
 		}
 		// Set Values to fields
 		mTab.setValue("loanrepayperiod", repayPeriod);

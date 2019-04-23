@@ -18,7 +18,6 @@ package org.compiere.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for s_employers
@@ -153,10 +152,10 @@ public interface I_s_employers
     /** Column name employer */
     public static final String COLUMNNAME_employer = "employer";
 
-	/** Set Description	  */
+	/** Set Employer	  */
 	public void setemployer (String employer);
 
-	/** Get Description	  */
+	/** Get Employer	  */
 	public String getemployer();
 
     /** Column name Fax */
@@ -220,6 +219,15 @@ public interface I_s_employers
 
 	/** Get province	  */
 	public String getprovince();
+
+    /** Column name retirement_age */
+    public static final String COLUMNNAME_retirement_age = "retirement_age";
+
+	/** Set Retirement Age	  */
+	public void setretirement_age (int retirement_age);
+
+	/** Get Retirement Age	  */
+	public int getretirement_age();
 
     /** Column name s_employers_ID */
     public static final String COLUMNNAME_s_employers_ID = "s_employers_ID";

@@ -39,12 +39,7 @@ public class Schedule {
 		loan = _loan;
 
 		loanType = loan.gets_loantype();
-		if (loanType.isrecoveryyear()) {
-			int monthValue = loan.geteffect_period().getEndDate().toLocalDateTime().toLocalDate().getMonthValue();
-			periods = 13 - monthValue; // recover loan in the current year
-		} else {
-			periods = loan.getloanrepayperiod();
-		}
+		periods = loan.getloanrepayperiod();
 
 		if (loan.isnewloan() && isNewSchedule) {
 			if (isNewSchedule) {

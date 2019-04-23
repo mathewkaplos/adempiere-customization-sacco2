@@ -19,4 +19,13 @@ public class LoanAppraisal extends X_s_loanappraisal {
 		// TODO Auto-generated constructor stub
 	}
 
+	public void refresh() {
+		SLoan loan = new SLoan(getCtx(), gets_loans_ID(), get_TrxName());
+		setguarantors(loan.hasEnoughGuarantors());
+		setincomefactor(loan.incomeFactorOk());
+		setiswithinlimit(loan.isWithinLimit());
+		setmperiodok(loan.membershipPeriodOk());
+		setsharefactor(loan.shareSavingFactorOk());
+		save();
+	}
 }

@@ -19,7 +19,6 @@ package org.compiere.model;
 
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Model for s_employers
@@ -31,7 +30,7 @@ public class X_s_employers extends PO implements I_s_employers, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20181218L;
+	private static final long serialVersionUID = 20190419L;
 
     /** Standard Constructor */
     public X_s_employers (Properties ctx, int s_employers_ID, String trxName)
@@ -198,15 +197,15 @@ public class X_s_employers extends PO implements I_s_employers, I_Persistent
         return new KeyNamePair(get_ID(), getempcode());
     }
 
-	/** Set Description.
-		@param employer Description	  */
+	/** Set Employer.
+		@param employer Employer	  */
 	public void setemployer (String employer)
 	{
 		set_Value (COLUMNNAME_employer, employer);
 	}
 
-	/** Get Description.
-		@return Description	  */
+	/** Get Employer.
+		@return Employer	  */
 	public String getemployer () 
 	{
 		return (String)get_Value(COLUMNNAME_employer);
@@ -283,6 +282,23 @@ public class X_s_employers extends PO implements I_s_employers, I_Persistent
 	public String getprovince () 
 	{
 		return (String)get_Value(COLUMNNAME_province);
+	}
+
+	/** Set Retirement Age.
+		@param retirement_age Retirement Age	  */
+	public void setretirement_age (int retirement_age)
+	{
+		set_Value (COLUMNNAME_retirement_age, Integer.valueOf(retirement_age));
+	}
+
+	/** Get Retirement Age.
+		@return Retirement Age	  */
+	public int getretirement_age () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_retirement_age);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Employer.

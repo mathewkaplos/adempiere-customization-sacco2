@@ -343,13 +343,22 @@ public interface I_s_loantype
 	/** Get Is FOSA	  */
 	public boolean isfosa();
 
+    /** Column name linked_to_savings_type */
+    public static final String COLUMNNAME_linked_to_savings_type = "linked_to_savings_type";
+
+	/** Set Linked To Savings Type	  */
+	public void setlinked_to_savings_type (boolean linked_to_savings_type);
+
+	/** Get Linked To Savings Type	  */
+	public boolean islinked_to_savings_type();
+
     /** Column name linkedgl */
     public static final String COLUMNNAME_linkedgl = "linkedgl";
 
-	/** Set Linked To Saving Type	  */
+	/** Set linkedgl	  */
 	public void setlinkedgl (String linkedgl);
 
-	/** Get Linked To Saving Type	  */
+	/** Get linkedgl	  */
 	public String getlinkedgl();
 
     /** Column name loan_product_type */
@@ -387,6 +396,15 @@ public interface I_s_loantype
 
 	/** Get Ref # / Code	  */
 	public String getloantypecode();
+
+    /** Column name loantypeid */
+    public static final String COLUMNNAME_loantypeid = "loantypeid";
+
+	/** Set loantypeid	  */
+	public void setloantypeid (int loantypeid);
+
+	/** Get loantypeid	  */
+	public int getloantypeid();
 
     /** Column name loantypeincomefactor */
     public static final String COLUMNNAME_loantypeincomefactor = "loantypeincomefactor";
@@ -729,6 +747,19 @@ public interface I_s_loantype
 
 	/** Get Rate Based	  */
 	public boolean isratebased();
+
+    /** Column name Record_ID */
+    public static final String COLUMNNAME_Record_ID = "Record_ID";
+
+	/** Set Record ID.
+	  * Direct internal record ID
+	  */
+	public void setRecord_ID (int Record_ID);
+
+	/** Get Record ID.
+	  * Direct internal record ID
+	  */
+	public int getRecord_ID();
 
     /** Column name recoveryyear */
     public static final String COLUMNNAME_recoveryyear = "recoveryyear";

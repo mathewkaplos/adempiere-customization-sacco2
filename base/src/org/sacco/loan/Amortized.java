@@ -48,7 +48,6 @@ public class Amortized extends Schedule implements InterestPayMethod {
 
 			double principal = Finance.ppmt(r, i + 1, loanSchedules.length, p, 0, 0);
 			double pmt = Finance.pmt(r, loanSchedules.length, p);
-
 			BigDecimal constantRepayment = BigDecimal.valueOf(Math.round(pmt * 100D) / 100D);
 
 			ls.setmonthlyrepayment(Util.round(constantRepayment.negate()));
