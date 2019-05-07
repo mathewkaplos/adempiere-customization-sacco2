@@ -16,7 +16,7 @@ public class testing {
 			}
 			System.out.println(Principal);
 			loanBalance = loanBalance - Principal;
-		}
+		} 
 
 	} 
 }
