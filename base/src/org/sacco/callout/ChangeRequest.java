@@ -75,4 +75,4 @@ public class ChangeRequest extends CalloutEngine {
 			mTab.setValue("select_next_of_kin", true);
 		return NO_ERROR;
 	}
-}
+} 
