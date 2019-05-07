@@ -35,7 +35,7 @@ public class SaveLoan extends SvrProcess {
 	@Override
 	protected String doIt() throws Exception {
 		saveIt();
-		
+
 		return null;
 	}
 	// 1. Guaranteers- fully guaranteed
@@ -45,6 +45,7 @@ public class SaveLoan extends SvrProcess {
 	// 5. Membership period
 	// 6. Share saving factor
 	// 7. Retirement age
+	// 7. Loan Factor -maximum number of loan balance
 
 	int WindowNo = 2;
 	Container c = null;
@@ -166,8 +167,25 @@ public class SaveLoan extends SvrProcess {
 				return;
 			}
 		}
+		if (!loan.loanFactorOK()) {
+			// Loan factor not OK
+			if (!hasRights) {
+				ADialog.error(WindowNo, c, "This loans factor for this loan is not attained!", "You cannot proceed");
+				return;
+			}
+			boolean val = ADialog.ask(WindowNo, c, "This loans  factor for this loan is not attained!",
+					"Do you want to proceed with saving the loan?");
+			if (!val) {
+				return;
+			}
+		}
+		// generate loan schedule
+		String msg = Generate.generate(getRecord_ID());
+		if (msg != null)
+			return;
 
 		loan.setsaved(true);
 		loan.save();
+
 	}
 }

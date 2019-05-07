@@ -180,6 +180,15 @@ public interface I_s_accountsetup
 	  */
 	public String getDescription();
 
+    /** Column name glcode */
+    public static final String COLUMNNAME_glcode = "glcode";
+
+	/** Set glcode	  */
+	public void setglcode (String glcode);
+
+	/** Get glcode	  */
+	public String getglcode();
+
     /** Column name glcode_Acct */
     public static final String COLUMNNAME_glcode_Acct = "glcode_Acct";
 
@@ -230,6 +239,15 @@ public interface I_s_accountsetup
 
 	/** Get Operator	  */
 	public String getoperator();
+
+    /** Column name overdue_penalty_formula */
+    public static final String COLUMNNAME_overdue_penalty_formula = "overdue_penalty_formula";
+
+	/** Set Overdue Penalty Fomula	  */
+	public void setoverdue_penalty_formula (String overdue_penalty_formula);
+
+	/** Get Overdue Penalty Fomula	  */
+	public String getoverdue_penalty_formula();
 
     /** Column name s_accountsetup_ID */
     public static final String COLUMNNAME_s_accountsetup_ID = "s_accountsetup_ID";

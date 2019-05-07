@@ -29,7 +29,7 @@ public class LoanTrackingCallout extends CalloutEngine {
 			BigDecimal loanAmount = (BigDecimal) mTab.getValue("loanamount");
 			BigDecimal loanBalance = (BigDecimal) mTab.getValue("loanbalance");
 
-			// mTab.setValue("approvedamount", loanAmount.add(loanBalance));
+			mTab.setValue("approvedamount", loanAmount);
 			mTab.setValue("approveddate", now);
 		} else {
 			mTab.setValue("approvedamount", null);
@@ -68,6 +68,7 @@ public class LoanTrackingCallout extends CalloutEngine {
 		mTab.setValue("s_shamba_ID", null);
 		mTab.setValue("s_shamba_plot_ID", null);
 		mTab.setValue("s_membershares_ID", null);
+		
 		return NO_ERROR;
 	}
 

@@ -213,6 +213,15 @@ public interface I_s_loantype
 	  */
 	public int getCreatedBy();
 
+    /** Column name disbursed */
+    public static final String COLUMNNAME_disbursed = "disbursed";
+
+	/** Set Disbursed	  */
+	public void setdisbursed (boolean disbursed);
+
+	/** Get Disbursed	  */
+	public boolean isdisbursed();
+
     /** Column name disp001 */
     public static final String COLUMNNAME_disp001 = "disp001";
 

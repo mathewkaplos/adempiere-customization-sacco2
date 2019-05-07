@@ -22,29 +22,29 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import org.compiere.util.Env;
 
-/** Generated Model for s_loan_charges
+/** Generated Model for s_saving_withdrawal_charges
  *  @author Adempiere (generated) 
  *  @version Release 3.8.0 - $Id$ */
-public class X_s_loan_charges extends PO implements I_s_loan_charges, I_Persistent 
+public class X_s_saving_withdrawal_charges extends PO implements I_s_saving_withdrawal_charges, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190505L;
+	private static final long serialVersionUID = 20190506L;
 
     /** Standard Constructor */
-    public X_s_loan_charges (Properties ctx, int s_loan_charges_ID, String trxName)
+    public X_s_saving_withdrawal_charges (Properties ctx, int s_saving_withdrawal_charges_ID, String trxName)
     {
-      super (ctx, s_loan_charges_ID, trxName);
-      /** if (s_loan_charges_ID == 0)
+      super (ctx, s_saving_withdrawal_charges_ID, trxName);
+      /** if (s_saving_withdrawal_charges_ID == 0)
         {
-			sets_loan_charges_ID (0);
+			sets_saving_withdrawal_charges_ID (0);
         } */
     }
 
     /** Load Constructor */
-    public X_s_loan_charges (Properties ctx, ResultSet rs, String trxName)
+    public X_s_saving_withdrawal_charges (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -66,27 +66,10 @@ public class X_s_loan_charges extends PO implements I_s_loan_charges, I_Persiste
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_s_loan_charges[")
+      StringBuffer sb = new StringBuffer ("X_s_saving_withdrawal_charges[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
-
-	/** Set Additional Amount.
-		@param additionalamt Additional Amount	  */
-	public void setadditionalamt (BigDecimal additionalamt)
-	{
-		set_Value (COLUMNNAME_additionalamt, additionalamt);
-	}
-
-	/** Get Additional Amount.
-		@return Additional Amount	  */
-	public BigDecimal getadditionalamt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_additionalamt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
 
 	/** Set Amount.
 		@param Amount 
@@ -108,20 +91,6 @@ public class X_s_loan_charges extends PO implements I_s_loan_charges, I_Persiste
 		return bd;
 	}
 
-	/** Set Change Amount.
-		@param btn_change Change Amount	  */
-	public void setbtn_change (String btn_change)
-	{
-		set_Value (COLUMNNAME_btn_change, btn_change);
-	}
-
-	/** Get Change Amount.
-		@return Change Amount	  */
-	public String getbtn_change () 
-	{
-		return (String)get_Value(COLUMNNAME_btn_change);
-	}
-
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -138,6 +107,11 @@ public class X_s_loan_charges extends PO implements I_s_loan_charges, I_Persiste
 	{
 		return (String)get_Value(COLUMNNAME_Description);
 	}
+
+	public I_s_accountsetup gets_accountsetup() throws RuntimeException
+    {
+		return (I_s_accountsetup)MTable.get(getCtx(), I_s_accountsetup.Table_Name)
+			.getPO(gets_accountsetup_ID(), get_TrxName());	}
 
 	/** Set Other Charge.
 		@param s_accountsetup_ID Other Charge	  */
@@ -159,46 +133,41 @@ public class X_s_loan_charges extends PO implements I_s_loan_charges, I_Persiste
 		return ii.intValue();
 	}
 
-	/** Set s_loan_charges ID.
-		@param s_loan_charges_ID s_loan_charges ID	  */
-	public void sets_loan_charges_ID (int s_loan_charges_ID)
+	/** Set s_saving_withdrawal_charges ID.
+		@param s_saving_withdrawal_charges_ID s_saving_withdrawal_charges ID	  */
+	public void sets_saving_withdrawal_charges_ID (int s_saving_withdrawal_charges_ID)
 	{
-		if (s_loan_charges_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_s_loan_charges_ID, null);
+		if (s_saving_withdrawal_charges_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_s_saving_withdrawal_charges_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_s_loan_charges_ID, Integer.valueOf(s_loan_charges_ID));
+			set_ValueNoCheck (COLUMNNAME_s_saving_withdrawal_charges_ID, Integer.valueOf(s_saving_withdrawal_charges_ID));
 	}
 
-	/** Get s_loan_charges ID.
-		@return s_loan_charges ID	  */
-	public int gets_loan_charges_ID () 
+	/** Get s_saving_withdrawal_charges ID.
+		@return s_saving_withdrawal_charges ID	  */
+	public int gets_saving_withdrawal_charges_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_s_loan_charges_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_saving_withdrawal_charges_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
 	}
 
-	public I_s_loans gets_loans() throws RuntimeException
-    {
-		return (I_s_loans)MTable.get(getCtx(), I_s_loans.Table_Name)
-			.getPO(gets_loans_ID(), get_TrxName());	}
-
-	/** Set Loan Ref.
-		@param s_loans_ID Loan Ref	  */
-	public void sets_loans_ID (int s_loans_ID)
+	/** Set s_shareremittance ID.
+		@param s_shareremittance_ID s_shareremittance ID	  */
+	public void sets_shareremittance_ID (int s_shareremittance_ID)
 	{
-		if (s_loans_ID < 1) 
-			set_Value (COLUMNNAME_s_loans_ID, null);
+		if (s_shareremittance_ID < 1) 
+			set_Value (COLUMNNAME_s_shareremittance_ID, null);
 		else 
-			set_Value (COLUMNNAME_s_loans_ID, Integer.valueOf(s_loans_ID));
+			set_Value (COLUMNNAME_s_shareremittance_ID, Integer.valueOf(s_shareremittance_ID));
 	}
 
-	/** Get Loan Ref.
-		@return Loan Ref	  */
-	public int gets_loans_ID () 
+	/** Get s_shareremittance ID.
+		@return s_shareremittance ID	  */
+	public int gets_shareremittance_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_s_loans_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_shareremittance_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

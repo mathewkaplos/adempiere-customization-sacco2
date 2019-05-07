@@ -137,4 +137,9 @@ public class SMember extends X_s_member {
 				+ gets_member_ID();
 		return DB.getSQLValue(get_TrxName(), sql);
 	}
+
+	public BigDecimal getCurrentLoanceBalance() {
+		String sql = "SELECT COALESCE(SUM(loanbalance),0) FROM adempiere.s_loans WHERE s_member_ID=" + gets_member_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
 }

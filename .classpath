@@ -1,3 +1,4 @@
+<<<<<<< Upstream, based on origin/master
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="base/src"/>
@@ -14,3 +15,21 @@
 	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="base/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jpa">
+		<attributes>
+			<attribute name="owner.project.facets" value="jpt.jpa;#system#"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/adempiere"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
+>>>>>>> 0c98e42 7.5.19

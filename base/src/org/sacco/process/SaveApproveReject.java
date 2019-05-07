@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.compiere.model.LoanGuarantorDetails;
+import org.compiere.model.LoanSchedule;
 import org.compiere.model.MemberShares;
 import org.compiere.model.SLoan;
 import org.compiere.process.SvrProcess;
@@ -41,6 +42,13 @@ public class SaveApproveReject extends SvrProcess {
 				updateGuarantorsOnRejection();
 			}
 			updateGuarantorsOnApproval();
+
+			int firsScheduleID = loan.getFirstScheduleID();
+			if (firsScheduleID > 0) {
+				LoanSchedule ls = new LoanSchedule(getCtx(), firsScheduleID, get_TrxName());
+				loan.setexpectedrepaydate(ls.getloanpaydate());
+				loan.save();
+			}
 			// addCharges();
 		}
 		return null;

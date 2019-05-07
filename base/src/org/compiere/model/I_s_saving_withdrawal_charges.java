@@ -20,17 +20,17 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for s_loan_charges
+/** Generated Interface for s_saving_withdrawal_charges
  *  @author Adempiere (generated) 
  *  @version Release 3.8.0
  */
-public interface I_s_loan_charges 
+public interface I_s_saving_withdrawal_charges 
 {
 
-    /** TableName=s_loan_charges */
-    public static final String Table_Name = "s_loan_charges";
+    /** TableName=s_saving_withdrawal_charges */
+    public static final String Table_Name = "s_saving_withdrawal_charges";
 
-    /** AD_Table_ID=1000039 */
+    /** AD_Table_ID=1000083 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -62,15 +62,6 @@ public interface I_s_loan_charges
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name additionalamt */
-    public static final String COLUMNNAME_additionalamt = "additionalamt";
-
-	/** Set Additional Amount	  */
-	public void setadditionalamt (BigDecimal additionalamt);
-
-	/** Get Additional Amount	  */
-	public BigDecimal getadditionalamt();
-
     /** Column name Amount */
     public static final String COLUMNNAME_Amount = "Amount";
 
@@ -83,15 +74,6 @@ public interface I_s_loan_charges
 	  * Amount in a defined currency
 	  */
 	public BigDecimal getAmount();
-
-    /** Column name btn_change */
-    public static final String COLUMNNAME_btn_change = "btn_change";
-
-	/** Set Change Amount	  */
-	public void setbtn_change (String btn_change);
-
-	/** Get Change Amount	  */
-	public String getbtn_change();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -144,25 +126,25 @@ public interface I_s_loan_charges
 	/** Get Other Charge	  */
 	public int gets_accountsetup_ID();
 
-    /** Column name s_loan_charges_ID */
-    public static final String COLUMNNAME_s_loan_charges_ID = "s_loan_charges_ID";
+	public I_s_accountsetup gets_accountsetup() throws RuntimeException;
 
-	/** Set s_loan_charges ID	  */
-	public void sets_loan_charges_ID (int s_loan_charges_ID);
+    /** Column name s_saving_withdrawal_charges_ID */
+    public static final String COLUMNNAME_s_saving_withdrawal_charges_ID = "s_saving_withdrawal_charges_ID";
 
-	/** Get s_loan_charges ID	  */
-	public int gets_loan_charges_ID();
+	/** Set s_saving_withdrawal_charges ID	  */
+	public void sets_saving_withdrawal_charges_ID (int s_saving_withdrawal_charges_ID);
 
-    /** Column name s_loans_ID */
-    public static final String COLUMNNAME_s_loans_ID = "s_loans_ID";
+	/** Get s_saving_withdrawal_charges ID	  */
+	public int gets_saving_withdrawal_charges_ID();
 
-	/** Set Loan Ref	  */
-	public void sets_loans_ID (int s_loans_ID);
+    /** Column name s_shareremittance_ID */
+    public static final String COLUMNNAME_s_shareremittance_ID = "s_shareremittance_ID";
 
-	/** Get Loan Ref	  */
-	public int gets_loans_ID();
+	/** Set s_shareremittance ID	  */
+	public void sets_shareremittance_ID (int s_shareremittance_ID);
 
-	public I_s_loans gets_loans() throws RuntimeException;
+	/** Get s_shareremittance ID	  */
+	public int gets_shareremittance_ID();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

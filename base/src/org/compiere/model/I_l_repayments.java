@@ -140,6 +140,15 @@ public interface I_l_repayments
 	  */
 	public int getBranchID();
 
+    /** Column name btn_add_charge */
+    public static final String COLUMNNAME_btn_add_charge = "btn_add_charge";
+
+	/** Set Add Charge	  */
+	public void setbtn_add_charge (String btn_add_charge);
+
+	/** Get Add Charge	  */
+	public String getbtn_add_charge();
+
     /** Column name btn_save */
     public static final String COLUMNNAME_btn_save = "btn_save";
 
@@ -251,6 +260,15 @@ public interface I_l_repayments
 	/** Get disp001	  */
 	public boolean isdisp001();
 
+    /** Column name disp002 */
+    public static final String COLUMNNAME_disp002 = "disp002";
+
+	/** Set disp002	  */
+	public void setdisp002 (boolean disp002);
+
+	/** Get disp002	  */
+	public boolean isdisp002();
+
     /** Column name DocStatus */
     public static final String COLUMNNAME_DocStatus = "DocStatus";
 
@@ -334,10 +352,10 @@ public interface I_l_repayments
     /** Column name interestgl_Acct */
     public static final String COLUMNNAME_interestgl_Acct = "interestgl_Acct";
 
-	/** Set Fixed Deposit Interest GL Code	  */
+	/** Set Interest GL Code	  */
 	public void setinterestgl_Acct (int interestgl_Acct);
 
-	/** Get Fixed Deposit Interest GL Code	  */
+	/** Get Interest GL Code	  */
 	public int getinterestgl_Acct();
 
 	public I_C_ValidCombination getinterestgl_A() throws RuntimeException;
@@ -661,14 +679,23 @@ public interface I_l_repayments
 
 	public org.compiere.model.I_AD_User getrefund_approvedby() throws RuntimeException;
 
+    /** Column name Reverse */
+    public static final String COLUMNNAME_Reverse = "Reverse";
+
+	/** Set Reverse	  */
+	public void setReverse (String Reverse);
+
+	/** Get Reverse	  */
+	public String getReverse();
+
     /** Column name Reversed */
     public static final String COLUMNNAME_Reversed = "Reversed";
 
 	/** Set Reversed	  */
-	public void setReversed (String Reversed);
+	public void setReversed (boolean Reversed);
 
 	/** Get Reversed	  */
-	public String getReversed();
+	public boolean isReversed();
 
     /** Column name s_loans_ID */
     public static final String COLUMNNAME_s_loans_ID = "s_loans_ID";

@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 import org.compiere.util.Env;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Model for s_accountsetup
  *  @author Adempiere (generated) 
@@ -31,7 +32,7 @@ public class X_s_accountsetup extends PO implements I_s_accountsetup, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190224L;
+	private static final long serialVersionUID = 20190505L;
 
     /** Standard Constructor */
     public X_s_accountsetup (Properties ctx, int s_accountsetup_ID, String trxName)
@@ -126,6 +127,14 @@ public class X_s_accountsetup extends PO implements I_s_accountsetup, I_Persiste
 			 return Env.ZERO;
 		return bd;
 	}
+
+    /** Get Record ID/ColumnName
+        @return ID/ColumnName pair
+      */
+    public KeyNamePair getKeyNamePair() 
+    {
+        return new KeyNamePair(get_ID(), String.valueOf(getAmount()));
+    }
 
 	/** Set Blocked.
 		@param blocked Blocked	  */
@@ -238,6 +247,20 @@ public class X_s_accountsetup extends PO implements I_s_accountsetup, I_Persiste
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	/** Set glcode.
+		@param glcode glcode	  */
+	public void setglcode (String glcode)
+	{
+		set_Value (COLUMNNAME_glcode, glcode);
+	}
+
+	/** Get glcode.
+		@return glcode	  */
+	public String getglcode () 
+	{
+		return (String)get_Value(COLUMNNAME_glcode);
+	}
+
 	public I_C_ValidCombination getglcode_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
@@ -314,6 +337,20 @@ public class X_s_accountsetup extends PO implements I_s_accountsetup, I_Persiste
 	public String getoperator () 
 	{
 		return (String)get_Value(COLUMNNAME_operator);
+	}
+
+	/** Set Overdue Penalty Fomula.
+		@param overdue_penalty_formula Overdue Penalty Fomula	  */
+	public void setoverdue_penalty_formula (String overdue_penalty_formula)
+	{
+		set_Value (COLUMNNAME_overdue_penalty_formula, overdue_penalty_formula);
+	}
+
+	/** Get Overdue Penalty Fomula.
+		@return Overdue Penalty Fomula	  */
+	public String getoverdue_penalty_formula () 
+	{
+		return (String)get_Value(COLUMNNAME_overdue_penalty_formula);
 	}
 
 	/** Set Other Charge.

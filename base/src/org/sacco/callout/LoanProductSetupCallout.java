@@ -20,7 +20,7 @@ public class LoanProductSetupCallout extends CalloutEngine {
 		double monthlyRate = annualRate.doubleValue() / months;
 
 		BigDecimal decimal = BigDecimal.valueOf(monthlyRate);
-		mTab.setValue("loantypeinterestrate", Util.round(decimal));
+		mTab.setValue("loantypeinterestrate", decimal);
 		return NO_ERROR;
 	}
 

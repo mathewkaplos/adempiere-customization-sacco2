@@ -32,7 +32,7 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190422L;
+	private static final long serialVersionUID = 20190505L;
 
     /** Standard Constructor */
     public X_s_loantype (Properties ctx, int s_loantype_ID, String trxName)
@@ -40,8 +40,8 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
       super (ctx, s_loantype_ID, trxName);
       /** if (s_loantype_ID == 0)
         {
-			setadjustable_interest_rates (false);
-// N
+			setadjustable_interest_rates (true);
+// Y
 			setallow_partial_dispursement (false);
 // N
 			setallow_zero_value_guarantors (false);
@@ -52,12 +52,13 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 // N
 			setcharge_int_grace_perriod (false);
 // N
+			setdisbursed (false);
+// N
 			setinterestformula (null);
 			setloan_product_type (null);
 // 1
 			setloantypeinteresttype (null);
 			setloantypename (null);
-			setloantypepaymentfrequency (null);
 			setloantypepaymentmethod (null);
 			setmonthlyintcalc (null);
 			setoverdue_penalty (false);
@@ -387,6 +388,27 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	public boolean isconsidertiedshares () 
 	{
 		Object oo = get_Value(COLUMNNAME_considertiedshares);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Disbursed.
+		@param disbursed Disbursed	  */
+	public void setdisbursed (boolean disbursed)
+	{
+		set_Value (COLUMNNAME_disbursed, Boolean.valueOf(disbursed));
+	}
+
+	/** Get Disbursed.
+		@return Disbursed	  */
+	public boolean isdisbursed () 
+	{
+		Object oo = get_Value(COLUMNNAME_disbursed);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

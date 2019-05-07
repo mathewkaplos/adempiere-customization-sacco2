@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 import org.compiere.util.Env;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Model for s_sharetype
  *  @author Adempiere (generated) 
@@ -31,7 +32,7 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190117L;
+	private static final long serialVersionUID = 20190504L;
 
     /** Standard Constructor */
     public X_s_sharetype (Properties ctx, int s_sharetype_ID, String trxName)
@@ -39,9 +40,27 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
       super (ctx, s_sharetype_ID, trxName);
       /** if (s_sharetype_ID == 0)
         {
+			setcan_be_overdrawn (false);
+// N
+			setcan_be_transferred (false);
+// N
+			setcharge_defaulters (false);
+// N
+			setdisplay_in_statement (false);
+// N
+			setis_benevolent (false);
+// N
+			setis_default_share_account (false);
+// N
+			setmust_be_contributed_monthly (false);
+// N
+			setrecovery_prioroty (0);
+// 0
 			sets_sharetype_ID (0);
 			setsharecode (null);
 			setsharename (null);
+			setuse_for_sms (false);
+// N
         } */
     }
 
@@ -73,6 +92,30 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
       return sb.toString();
     }
 
+	/** Set Allow Multiple Accounts For Same Member.
+		@param allow_multiple_accounts 
+		Allow Multiple Accounts For Same Member
+	  */
+	public void setallow_multiple_accounts (boolean allow_multiple_accounts)
+	{
+		set_Value (COLUMNNAME_allow_multiple_accounts, Boolean.valueOf(allow_multiple_accounts));
+	}
+
+	/** Get Allow Multiple Accounts For Same Member.
+		@return Allow Multiple Accounts For Same Member
+	  */
+	public boolean isallow_multiple_accounts () 
+	{
+		Object oo = get_Value(COLUMNNAME_allow_multiple_accounts);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Annual Interest Rate.
 		@param annualinterestrate Annual Interest Rate	  */
 	public void setannualinterestrate (int annualinterestrate)
@@ -102,6 +145,48 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 	public boolean isblocked () 
 	{
 		Object oo = get_Value(COLUMNNAME_blocked);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Can Be Overdrawn.
+		@param can_be_overdrawn Can Be Overdrawn	  */
+	public void setcan_be_overdrawn (boolean can_be_overdrawn)
+	{
+		set_Value (COLUMNNAME_can_be_overdrawn, Boolean.valueOf(can_be_overdrawn));
+	}
+
+	/** Get Can Be Overdrawn.
+		@return Can Be Overdrawn	  */
+	public boolean iscan_be_overdrawn () 
+	{
+		Object oo = get_Value(COLUMNNAME_can_be_overdrawn);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Can Be Transferred.
+		@param can_be_transferred Can Be Transferred	  */
+	public void setcan_be_transferred (boolean can_be_transferred)
+	{
+		set_Value (COLUMNNAME_can_be_transferred, Boolean.valueOf(can_be_transferred));
+	}
+
+	/** Get Can Be Transferred.
+		@return Can Be Transferred	  */
+	public boolean iscan_be_transferred () 
+	{
+		Object oo = get_Value(COLUMNNAME_can_be_transferred);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -195,6 +280,44 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return false;
 	}
 
+	/** Set Charge Amount.
+		@param charge_amount Charge Amount	  */
+	public void setcharge_amount (BigDecimal charge_amount)
+	{
+		set_Value (COLUMNNAME_charge_amount, charge_amount);
+	}
+
+	/** Get Charge Amount.
+		@return Charge Amount	  */
+	public BigDecimal getcharge_amount () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_charge_amount);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Charge Defaulters.
+		@param charge_defaulters Charge Defaulters	  */
+	public void setcharge_defaulters (boolean charge_defaulters)
+	{
+		set_Value (COLUMNNAME_charge_defaulters, Boolean.valueOf(charge_defaulters));
+	}
+
+	/** Get Charge Defaulters.
+		@return Charge Defaulters	  */
+	public boolean ischarge_defaulters () 
+	{
+		Object oo = get_Value(COLUMNNAME_charge_defaulters);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set chargecode.
 		@param chargecode chargecode	  */
 	public void setchargecode (String chargecode)
@@ -207,6 +330,27 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 	public String getchargecode () 
 	{
 		return (String)get_Value(COLUMNNAME_chargecode);
+	}
+
+	/** Set Transaction Charges Apply When Transacting.
+		@param charges_apply_when_transacting Transaction Charges Apply When Transacting	  */
+	public void setcharges_apply_when_transacting (boolean charges_apply_when_transacting)
+	{
+		set_Value (COLUMNNAME_charges_apply_when_transacting, Boolean.valueOf(charges_apply_when_transacting));
+	}
+
+	/** Get Transaction Charges Apply When Transacting.
+		@return Transaction Charges Apply When Transacting	  */
+	public boolean ischarges_apply_when_transacting () 
+	{
+		Object oo = get_Value(COLUMNNAME_charges_apply_when_transacting);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Cheque Days.
@@ -224,6 +368,44 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Denomination.
+		@param denomination Denomination	  */
+	public void setdenomination (BigDecimal denomination)
+	{
+		set_Value (COLUMNNAME_denomination, denomination);
+	}
+
+	/** Get Denomination.
+		@return Denomination	  */
+	public BigDecimal getdenomination () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_denomination);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set disp001.
+		@param disp001 disp001	  */
+	public void setdisp001 (boolean disp001)
+	{
+		set_Value (COLUMNNAME_disp001, Boolean.valueOf(disp001));
+	}
+
+	/** Get disp001.
+		@return disp001	  */
+	public boolean isdisp001 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp001);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Display In Statement.
@@ -247,20 +429,85 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return false;
 	}
 
+	/** Set Display In Statement.
+		@param display_in_statement Display In Statement	  */
+	public void setdisplay_in_statement (boolean display_in_statement)
+	{
+		set_Value (COLUMNNAME_display_in_statement, Boolean.valueOf(display_in_statement));
+	}
+
+	/** Get Display In Statement.
+		@return Display In Statement	  */
+	public boolean isdisplay_in_statement () 
+	{
+		Object oo = get_Value(COLUMNNAME_display_in_statement);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	public I_C_ValidCombination getdividend_paid_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getdividend_paid_Acct(), get_TrxName());	}
+
+	/** Set Dividend Paid GL Code.
+		@param dividend_paid_Acct Dividend Paid GL Code	  */
+	public void setdividend_paid_Acct (int dividend_paid_Acct)
+	{
+		set_Value (COLUMNNAME_dividend_paid_Acct, Integer.valueOf(dividend_paid_Acct));
+	}
+
+	/** Get Dividend Paid GL Code.
+		@return Dividend Paid GL Code	  */
+	public int getdividend_paid_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_dividend_paid_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_ValidCombination getdividend_payable_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getdividend_payable_Acct(), get_TrxName());	}
+
+	/** Set Dividend Payable GL Code.
+		@param dividend_payable_Acct Dividend Payable GL Code	  */
+	public void setdividend_payable_Acct (int dividend_payable_Acct)
+	{
+		set_Value (COLUMNNAME_dividend_payable_Acct, Integer.valueOf(dividend_payable_Acct));
+	}
+
+	/** Get Dividend Payable GL Code.
+		@return Dividend Payable GL Code	  */
+	public int getdividend_payable_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_dividend_payable_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_C_ValidCombination getdividendgl_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
 			.getPO(getdividendgl_Acct(), get_TrxName());	}
 
-	/** Set Dividen GL Code.
-		@param dividendgl_Acct Dividen GL Code	  */
+	/** Set Dividend/Interest GL Code.
+		@param dividendgl_Acct Dividend/Interest GL Code	  */
 	public void setdividendgl_Acct (int dividendgl_Acct)
 	{
 		set_Value (COLUMNNAME_dividendgl_Acct, Integer.valueOf(dividendgl_Acct));
 	}
 
-	/** Get Dividen GL Code.
-		@return Dividen GL Code	  */
+	/** Get Dividend/Interest GL Code.
+		@return Dividend/Interest GL Code	  */
 	public int getdividendgl_Acct () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_dividendgl_Acct);
@@ -311,6 +558,50 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return false;
 	}
 
+	public I_C_ValidCombination getinterest_paid_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getinterest_paid_Acct(), get_TrxName());	}
+
+	/** Set Interest Paid GL Code.
+		@param interest_paid_Acct Interest Paid GL Code	  */
+	public void setinterest_paid_Acct (int interest_paid_Acct)
+	{
+		set_Value (COLUMNNAME_interest_paid_Acct, Integer.valueOf(interest_paid_Acct));
+	}
+
+	/** Get Interest Paid GL Code.
+		@return Interest Paid GL Code	  */
+	public int getinterest_paid_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_interest_paid_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_ValidCombination getinterest_payable_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getinterest_payable_Acct(), get_TrxName());	}
+
+	/** Set Interest Payable GL Code.
+		@param interest_payable_Acct Interest Payable GL Code	  */
+	public void setinterest_payable_Acct (int interest_payable_Acct)
+	{
+		set_Value (COLUMNNAME_interest_payable_Acct, Integer.valueOf(interest_payable_Acct));
+	}
+
+	/** Get Interest Payable GL Code.
+		@return Interest Payable GL Code	  */
+	public int getinterest_payable_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_interest_payable_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_C_ValidCombination getinterestgl_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
@@ -352,33 +643,33 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 
 	/** Set Interest Rate(PM).
 		@param intrate Interest Rate(PM)	  */
-	public void setintrate (int intrate)
+	public void setintrate (BigDecimal intrate)
 	{
-		set_Value (COLUMNNAME_intrate, Integer.valueOf(intrate));
+		set_Value (COLUMNNAME_intrate, intrate);
 	}
 
 	/** Get Interest Rate(PM).
 		@return Interest Rate(PM)	  */
-	public int getintrate () 
+	public BigDecimal getintrate () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_intrate);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_intrate);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Is Benevolent.
-		@param isbenevolent Is Benevolent	  */
-	public void setisbenevolent (boolean isbenevolent)
+		@param is_benevolent Is Benevolent	  */
+	public void setis_benevolent (boolean is_benevolent)
 	{
-		set_Value (COLUMNNAME_isbenevolent, Boolean.valueOf(isbenevolent));
+		set_Value (COLUMNNAME_is_benevolent, Boolean.valueOf(is_benevolent));
 	}
 
 	/** Get Is Benevolent.
 		@return Is Benevolent	  */
-	public boolean isbenevolent () 
+	public boolean is_benevolent () 
 	{
-		Object oo = get_Value(COLUMNNAME_isbenevolent);
+		Object oo = get_Value(COLUMNNAME_is_benevolent);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -388,18 +679,18 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return false;
 	}
 
-	/** Set Is Default Account.
-		@param isdefaultaccount Is Default Account	  */
-	public void setisdefaultaccount (boolean isdefaultaccount)
+	/** Set Is Default Share Account.
+		@param is_default_share_account Is Default Share Account	  */
+	public void setis_default_share_account (boolean is_default_share_account)
 	{
-		set_Value (COLUMNNAME_isdefaultaccount, Boolean.valueOf(isdefaultaccount));
+		set_Value (COLUMNNAME_is_default_share_account, Boolean.valueOf(is_default_share_account));
 	}
 
-	/** Get Is Default Account.
-		@return Is Default Account	  */
-	public boolean isdefaultaccount () 
+	/** Get Is Default Share Account.
+		@return Is Default Share Account	  */
+	public boolean is_default_share_account () 
 	{
-		Object oo = get_Value(COLUMNNAME_isdefaultaccount);
+		Object oo = get_Value(COLUMNNAME_is_default_share_account);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -451,6 +742,46 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return false;
 	}
 
+	/** Set Product.
+		@param M_Product_ID 
+		Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID)
+	{
+		if (M_Product_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+	}
+
+	/** Get Product.
+		@return Product, Service, Item
+	  */
+	public int getM_Product_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Maximum Beneficiaries Count.
+		@param maximum_beneficiaries_count Maximum Beneficiaries Count	  */
+	public void setmaximum_beneficiaries_count (int maximum_beneficiaries_count)
+	{
+		set_Value (COLUMNNAME_maximum_beneficiaries_count, Integer.valueOf(maximum_beneficiaries_count));
+	}
+
+	/** Get Maximum Beneficiaries Count.
+		@return Maximum Beneficiaries Count	  */
+	public int getmaximum_beneficiaries_count () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_maximum_beneficiaries_count);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Minimum Balance.
 		@param minbalance Minimum Balance	  */
 	public void setminbalance (BigDecimal minbalance)
@@ -485,6 +816,23 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return bd;
 	}
 
+	/** Set Minimum Count.
+		@param minimum_count Minimum Count	  */
+	public void setminimum_count (int minimum_count)
+	{
+		set_Value (COLUMNNAME_minimum_count, Integer.valueOf(minimum_count));
+	}
+
+	/** Get Minimum Count.
+		@return Minimum Count	  */
+	public int getminimum_count () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_minimum_count);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Minimum Shares.
 		@param minshares Minimum Shares	  */
 	public void setminshares (BigDecimal minshares)
@@ -502,6 +850,27 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return bd;
 	}
 
+	/** Set Must Be Contributed Monthly.
+		@param must_be_contributed_monthly Must Be Contributed Monthly	  */
+	public void setmust_be_contributed_monthly (boolean must_be_contributed_monthly)
+	{
+		set_Value (COLUMNNAME_must_be_contributed_monthly, Boolean.valueOf(must_be_contributed_monthly));
+	}
+
+	/** Get Must Be Contributed Monthly.
+		@return Must Be Contributed Monthly	  */
+	public boolean ismust_be_contributed_monthly () 
+	{
+		Object oo = get_Value(COLUMNNAME_must_be_contributed_monthly);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Notice Days.
 		@param noticedays Notice Days	  */
 	public void setnoticedays (int noticedays)
@@ -514,6 +883,28 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 	public int getnoticedays () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_noticedays);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_ValidCombination getothercharges_gl_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getothercharges_gl_Acct(), get_TrxName());	}
+
+	/** Set Charges GL Code.
+		@param othercharges_gl_Acct Charges GL Code	  */
+	public void setothercharges_gl_Acct (int othercharges_gl_Acct)
+	{
+		set_Value (COLUMNNAME_othercharges_gl_Acct, Integer.valueOf(othercharges_gl_Acct));
+	}
+
+	/** Get Charges GL Code.
+		@return Charges GL Code	  */
+	public int getothercharges_gl_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_othercharges_gl_Acct);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -536,6 +927,23 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Prefix.
+		@param Prefix 
+		Prefix before the sequence number
+	  */
+	public void setPrefix (String Prefix)
+	{
+		set_Value (COLUMNNAME_Prefix, Prefix);
+	}
+
+	/** Get Prefix.
+		@return Prefix before the sequence number
+	  */
+	public String getPrefix () 
+	{
+		return (String)get_Value(COLUMNNAME_Prefix);
+	}
+
 	/** Set priority_.
 		@param priority_ priority_	  */
 	public void setpriority_ (int priority_)
@@ -548,6 +956,42 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 	public int getpriority_ () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_priority_);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Record ID.
+		@param Record_ID 
+		Direct internal record ID
+	  */
+	public void setRecord_ID (int Record_ID)
+	{
+		throw new IllegalArgumentException ("Record_ID is virtual column");	}
+
+	/** Get Record ID.
+		@return Direct internal record ID
+	  */
+	public int getRecord_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Record_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Recovery Priority.
+		@param recovery_prioroty Recovery Priority	  */
+	public void setrecovery_prioroty (int recovery_prioroty)
+	{
+		set_Value (COLUMNNAME_recovery_prioroty, Integer.valueOf(recovery_prioroty));
+	}
+
+	/** Get Recovery Priority.
+		@return Recovery Priority	  */
+	public int getrecovery_prioroty () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_recovery_prioroty);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -594,6 +1038,49 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return ii.intValue();
 	}
 
+	public I_C_ValidCombination getsaving_gl_code_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getsaving_gl_code_Acct(), get_TrxName());	}
+
+	/** Set Savig GL Code.
+		@param saving_gl_code_Acct Savig GL Code	  */
+	public void setsaving_gl_code_Acct (int saving_gl_code_Acct)
+	{
+		set_Value (COLUMNNAME_saving_gl_code_Acct, Integer.valueOf(saving_gl_code_Acct));
+	}
+
+	/** Get Savig GL Code.
+		@return Savig GL Code	  */
+	public int getsaving_gl_code_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_saving_gl_code_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** share_saving AD_Reference_ID=1000040 */
+	public static final int SHARE_SAVING_AD_Reference_ID=1000040;
+	/** Saving = saving */
+	public static final String SHARE_SAVING_Saving = "saving";
+	/** Share = share */
+	public static final String SHARE_SAVING_Share = "share";
+	/** Set Product Type.
+		@param share_saving Product Type	  */
+	public void setshare_saving (String share_saving)
+	{
+
+		set_Value (COLUMNNAME_share_saving, share_saving);
+	}
+
+	/** Get Product Type.
+		@return Product Type	  */
+	public String getshare_saving () 
+	{
+		return (String)get_Value(COLUMNNAME_share_saving);
+	}
+
 	/** Set Share Capital.
 		@param sharecapital Share Capital	  */
 	public void setsharecapital (BigDecimal sharecapital)
@@ -625,15 +1112,15 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return (String)get_Value(COLUMNNAME_sharecode);
 	}
 
-	/** Set Dividen Rate.
-		@param sharedividendrate Dividen Rate	  */
+	/** Set Last Dividend/Interest Rate.
+		@param sharedividendrate Last Dividend/Interest Rate	  */
 	public void setsharedividendrate (int sharedividendrate)
 	{
 		set_Value (COLUMNNAME_sharedividendrate, Integer.valueOf(sharedividendrate));
 	}
 
-	/** Get Dividen Rate.
-		@return Dividen Rate	  */
+	/** Get Last Dividend/Interest Rate.
+		@return Last Dividend/Interest Rate	  */
 	public int getsharedividendrate () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_sharedividendrate);
@@ -695,6 +1182,14 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return (String)get_Value(COLUMNNAME_sharename);
 	}
 
+    /** Get Record ID/ColumnName
+        @return ID/ColumnName pair
+      */
+    public KeyNamePair getKeyNamePair() 
+    {
+        return new KeyNamePair(get_ID(), getsharename());
+    }
+
 	/** Set Withholding Tax %.
 		@param sharewithholdingtax Withholding Tax %	  */
 	public void setsharewithholdingtax (int sharewithholdingtax)
@@ -712,23 +1207,45 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_C_ValidCombination getsmschargecode_A() throws RuntimeException
+	public I_C_ValidCombination getsms_charge_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-			.getPO(getsmschargecode_Acct(), get_TrxName());	}
+			.getPO(getsms_charge_Acct(), get_TrxName());	}
 
-	/** Set SMS Charge GL Code.
-		@param smschargecode_Acct SMS Charge GL Code	  */
-	public void setsmschargecode_Acct (int smschargecode_Acct)
+	/** Set SMS Charge Code GL.
+		@param sms_charge_Acct SMS Charge Code GL	  */
+	public void setsms_charge_Acct (int sms_charge_Acct)
 	{
-		set_Value (COLUMNNAME_smschargecode_Acct, Integer.valueOf(smschargecode_Acct));
+		set_Value (COLUMNNAME_sms_charge_Acct, Integer.valueOf(sms_charge_Acct));
 	}
 
-	/** Get SMS Charge GL Code.
-		@return SMS Charge GL Code	  */
-	public int getsmschargecode_Acct () 
+	/** Get SMS Charge Code GL.
+		@return SMS Charge Code GL	  */
+	public int getsms_charge_Acct () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_smschargecode_Acct);
+		Integer ii = (Integer)get_Value(COLUMNNAME_sms_charge_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_ValidCombination getsms_income_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getsms_income_Acct(), get_TrxName());	}
+
+	/** Set SMS Income Account.
+		@param sms_income_Acct SMS Income Account	  */
+	public void setsms_income_Acct (int sms_income_Acct)
+	{
+		set_Value (COLUMNNAME_sms_income_Acct, Integer.valueOf(sms_income_Acct));
+	}
+
+	/** Get SMS Income Account.
+		@return SMS Income Account	  */
+	public int getsms_income_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_sms_income_Acct);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -756,18 +1273,18 @@ public class X_s_sharetype extends PO implements I_s_sharetype, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Use For SMS.
-		@param useforsms Use For SMS	  */
-	public void setuseforsms (boolean useforsms)
+	/** Set Use for SMS.
+		@param use_for_sms Use for SMS	  */
+	public void setuse_for_sms (boolean use_for_sms)
 	{
-		set_Value (COLUMNNAME_useforsms, Boolean.valueOf(useforsms));
+		set_Value (COLUMNNAME_use_for_sms, Boolean.valueOf(use_for_sms));
 	}
 
-	/** Get Use For SMS.
-		@return Use For SMS	  */
-	public boolean isuseforsms () 
+	/** Get Use for SMS.
+		@return Use for SMS	  */
+	public boolean isuse_for_sms () 
 	{
-		Object oo = get_Value(COLUMNNAME_useforsms);
+		Object oo = get_Value(COLUMNNAME_use_for_sms);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

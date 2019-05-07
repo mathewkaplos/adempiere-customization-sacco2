@@ -10,6 +10,7 @@ import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
+import org.compiere.model.MAcctSchemaDefault;
 import org.compiere.model.MClient;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MemberShares;
@@ -17,8 +18,12 @@ import org.compiere.model.PO;
 import org.compiere.model.Period_remittance;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
+import org.compiere.model.I_s_loantype;
+import org.compiere.model.LoanCharges;
 import org.compiere.model.LoanGuarantorDetails;
+import org.compiere.model.LoanRepaymentCharge;
 import org.compiere.model.Sacco;
+import org.compiere.model.TransactionChargeSetup;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -29,16 +34,16 @@ import zenith.util.Util;
 public class SaveRepayment extends SvrProcess {
 	private Repayment repayment = null;
 	private SLoan loan = null;
-	private Sacco sacco = null;
+	I_s_loantype loantype = null;
 
 	@Override
 	protected void prepare() {
 		// TODO Auto-generated method stub
 		//
-		sacco = Sacco.getSaccco();
 
 		repayment = new Repayment(getCtx(), getRecord_ID(), get_TrxName());
 		loan = new SLoan(getCtx(), repayment.gets_loans_ID(), get_TrxName());
+		loantype = loan.gets_loantype();
 	}
 
 	@Override
@@ -163,8 +168,10 @@ public class SaveRepayment extends SvrProcess {
 		}
 
 		acctSchema = new MAcctSchema(Env.getCtx(), 101, null);
+		acctSchemaDefault = MAcctSchemaDefault.get(getCtx(), acctSchema.get_ID());
 		fact = new Fact(doc, acctSchema, "A");
 		docLine = new DocLine(po, doc);
+		postLoanCharges();
 		postLoan();
 		repayment.setDocStatus("CO");
 		repayment.setProcessed(true);
@@ -175,19 +182,22 @@ public class SaveRepayment extends SvrProcess {
 	Fact fact = null;
 	DocLine docLine = null;
 	MAcctSchema acctSchema = null;
+	MAcctSchemaDefault acctSchemaDefault = null;
 
+	/*
+	 * Bank is always debited
+	 */
 	private void postLoan() {
-		// System.out.println(Env.getCtx());
 		if (repayment.getPrincipal().compareTo(Env.ZERO) == 0) {
 			return;
 		}
 		MAccount accountDR = new MAccount(Env.getCtx(), loan.gets_loantype().getloantypeloangl_Acct(), get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), repayment.getPrincipal());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
+				repayment.getPrincipal().negate());
 		lineDR.save();
 
 		MAccount accountCR = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
-		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
-				repayment.getPrincipal().negate());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), repayment.getPrincipal());
 		lineCR.save();
 		postInterest();
 	}
@@ -197,13 +207,71 @@ public class SaveRepayment extends SvrProcess {
 
 		if (totalInterest.compareTo(Env.ZERO) == 0)
 			return;
-		Sacco sacco = Sacco.getSaccco();
-		MAccount accountCR = new MAccount(Env.getCtx(), sacco.getInterestReceivable_Acct(), get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), totalInterest.negate());
+		MAccount accountCR = new MAccount(Env.getCtx(), acctSchemaDefault.getInterestReceivable_Acct(), get_TrxName());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), totalInterest.negate());
+		lineCR.save();
+
+		MAccount accountDR = new MAccount(Env.getCtx(), acctSchemaDefault.getUnEarnedInterest_Acct(), get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), totalInterest);
 		lineDR.save();
 
-		MAccount accountDR = new MAccount(Env.getCtx(), sacco.getUnEarnedInterest_Acct(), get_TrxName());
-		FactLine lineCR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), totalInterest);
+		MAccount accountCR2 = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
+		FactLine lineCR2 = fact.createLine(docLine, accountCR2, acctSchema.getC_Currency_ID(), totalInterest);
+		lineCR2.save();
+
+		MAccount accountDR2 = new MAccount(Env.getCtx(), loantype.getloantypeinterestgl_Acct(), get_TrxName());
+		FactLine lineDR2 = fact.createLine(docLine, accountDR2, acctSchema.getC_Currency_ID(), totalInterest.negate());
+		lineDR2.save();
+
+	}
+
+	private void postLoanCharges() {
+		String sql = "SELECT * FROM adempiere.s_loan_repay_charges WHERE l_repayments_ID =" + getRecord_ID();
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				LoanRepaymentCharge charge = new LoanRepaymentCharge(getCtx(), rs, get_TrxName());
+				postCharge(charge);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+	static BigDecimal totalCharge = Env.ZERO;
+
+	private void postCharge(LoanRepaymentCharge charge) {
+
+		int chargeSetupID = charge.gets_accountsetup_ID();
+		if (chargeSetupID < 1)
+			return;
+		totalCharge = totalCharge.add(charge.getAmount());
+		TransactionChargeSetup chargeSetup = new TransactionChargeSetup(Env.getCtx(), chargeSetupID, get_TrxName());
+
+		MAccount accountDR = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), charge.getAmount());
+		lineDR.save();
+
+		MAccount accountCR = new MAccount(Env.getCtx(), chargeSetup.getglcode_Acct(), get_TrxName());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
+				charge.getAmount().negate());
 		lineCR.save();
 	}
 

@@ -33,7 +33,7 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190405L;
+	private static final long serialVersionUID = 20190506L;
 
     /** Standard Constructor */
     public X_s_shareremittance (Properties ctx, int s_shareremittance_ID, String trxName)
@@ -49,6 +49,8 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 // N
 			setremittancedate (new Timestamp( System.currentTimeMillis() ));
 // @Date@
+			setReversed (false);
+// N
 			sets_member_ID (0);
 			sets_membershares_ID (0);
 			sets_shareremittance_ID (0);
@@ -118,6 +120,20 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return (String)get_Value(COLUMNNAME_AmountInWords);
 	}
 
+	/** Set Refresh Share Transfer.
+		@param apply_share_transfer Refresh Share Transfer	  */
+	public void setapply_share_transfer (String apply_share_transfer)
+	{
+		set_Value (COLUMNNAME_apply_share_transfer, apply_share_transfer);
+	}
+
+	/** Get Refresh Share Transfer.
+		@return Refresh Share Transfer	  */
+	public String getapply_share_transfer () 
+	{
+		return (String)get_Value(COLUMNNAME_apply_share_transfer);
+	}
+
 	/** Set bankaccount.
 		@param bankaccount bankaccount	  */
 	public void setbankaccount (String bankaccount)
@@ -144,6 +160,20 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public String getBankAccount_Acct () 
 	{
 		return (String)get_Value(COLUMNNAME_BankAccount_Acct);
+	}
+
+	/** Set Add Charge.
+		@param btn_add_charge Add Charge	  */
+	public void setbtn_add_charge (String btn_add_charge)
+	{
+		set_Value (COLUMNNAME_btn_add_charge, btn_add_charge);
+	}
+
+	/** Get Add Charge.
+		@return Add Charge	  */
+	public String getbtn_add_charge () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_add_charge);
 	}
 
 	/** Set Save.
@@ -682,6 +712,22 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return false;
 	}
 
+	/** Set Recovery Amount.
+		@param recovery_amount Recovery Amount	  */
+	public void setrecovery_amount (BigDecimal recovery_amount)
+	{
+		throw new IllegalArgumentException ("recovery_amount is virtual column");	}
+
+	/** Get Recovery Amount.
+		@return Recovery Amount	  */
+	public BigDecimal getrecovery_amount () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_recovery_amount);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Remarks.
 		@param Remarks 
 		Remarks
@@ -759,6 +805,41 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Reverse.
+		@param Reverse Reverse	  */
+	public void setReverse (String Reverse)
+	{
+		set_Value (COLUMNNAME_Reverse, Reverse);
+	}
+
+	/** Get Reverse.
+		@return Reverse	  */
+	public String getReverse () 
+	{
+		return (String)get_Value(COLUMNNAME_Reverse);
+	}
+
+	/** Set Reversed.
+		@param Reversed Reversed	  */
+	public void setReversed (boolean Reversed)
+	{
+		set_Value (COLUMNNAME_Reversed, Boolean.valueOf(Reversed));
+	}
+
+	/** Get Reversed.
+		@return Reversed	  */
+	public boolean isReversed () 
+	{
+		Object oo = get_Value(COLUMNNAME_Reversed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Member Branch.

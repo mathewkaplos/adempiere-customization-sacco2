@@ -50,7 +50,7 @@ public class AddCharges extends SvrProcess {
 			amt = chargeSetup.getAmount();
 		}
 		// add();
-		ApplyLoanCharges applyLoanCharges = new ApplyLoanCharges(loan, "aaaaaa", loanAmt);
+		ApplyLoanCharges applyLoanCharges = new ApplyLoanCharges(loan, Description, loanAmt);
 		applyLoanCharges.generate();
 		return null;
 	}

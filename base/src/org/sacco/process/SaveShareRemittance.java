@@ -5,25 +5,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.swing.JOptionPane;
 
 import org.compiere.acct.Doc;
 import org.compiere.acct.DocLine;
-import org.compiere.acct.Doc_LoanReapayment;
 import org.compiere.acct.Doc_ShareRemittance;
 import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
+import org.compiere.model.I_s_sharetype;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAcctSchemaDefault;
+import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
-import org.compiere.model.Repayment;
-import org.compiere.model.Sacco;
 import org.compiere.model.ShareRemittance;
 import org.compiere.model.Share_recovery;
+import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -33,10 +34,26 @@ import zenith.util.DateUtil;
 public class SaveShareRemittance extends SvrProcess {
 
 	ShareRemittance shareRemittance = null;
+	private int C_Bank_ID = 0;
+	private MBank bank = null;
+	private I_s_sharetype shareType = null;
 
 	@Override
 	protected void prepare() {
+		ProcessInfoParameter[] para = getParameter();
+		for (int i = 0; i < para.length; i++) {
+			String name = para[i].getParameterName();
+			if (para[i].getParameter() == null)
+				;
+			else if (name.equals("C_Bank_ID"))
+				C_Bank_ID = para[i].getParameterAsInt();
+			else
+				log.log(Level.SEVERE, "Unknown Parameter: " + name);
+		}
+
+		bank = new MBank(getCtx(), C_Bank_ID, get_TrxName());
 		shareRemittance = new ShareRemittance(getCtx(), getRecord_ID(), get_TrxName());
+		shareType = shareRemittance.gets_sharetype();
 	}
 
 	@Override
@@ -157,16 +174,20 @@ public class SaveShareRemittance extends SvrProcess {
 		if (shareRemittance.getreceiptamount().compareTo(Env.ZERO) == 0) {
 			return;
 		}
-		MAcctSchemaDefault acctSchemaDefault = MAcctSchemaDefault.get(getCtx(), acctSchema.get_ID());
-		MAccount accountDR = new MAccount(Env.getCtx(), shareRemittance.gets_sharetype().getsharegl_Acct(),
-				get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
-				shareRemittance.getreceiptamount());
-		lineDR.save();
+		int share_saving_gl = 0;
+		if (shareType.getshare_saving().equals("saving"))
+			share_saving_gl = shareType.getinterestgl_Acct();
+		else
+			share_saving_gl = shareType.getdividendgl_Acct();
 
-		MAccount accountCR = new MAccount(Env.getCtx(), acctSchemaDefault.getV_Liability_Acct(), get_TrxName());
+		MAccount accountCR = new MAccount(Env.getCtx(), share_saving_gl, get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
 				shareRemittance.getreceiptamount().negate());
 		lineCR.save();
+
+		MAccount accountDR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
+				shareRemittance.getreceiptamount());
+		lineDR.save();
 	}
 }

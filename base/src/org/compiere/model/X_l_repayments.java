@@ -32,7 +32,7 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190406L;
+	private static final long serialVersionUID = 20190506L;
 
     /** Standard Constructor */
     public X_l_repayments (Properties ctx, int l_repayments_ID, String trxName)
@@ -48,6 +48,8 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 			setPosted (false);
 // N
 			setProcessed (false);
+// N
+			setReversed (false);
 // N
         } */
     }
@@ -217,6 +219,20 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Add Charge.
+		@param btn_add_charge Add Charge	  */
+	public void setbtn_add_charge (String btn_add_charge)
+	{
+		set_Value (COLUMNNAME_btn_add_charge, btn_add_charge);
+	}
+
+	/** Get Add Charge.
+		@return Add Charge	  */
+	public String getbtn_add_charge () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_add_charge);
 	}
 
 	/** Set Save.
@@ -391,6 +407,27 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return false;
 	}
 
+	/** Set disp002.
+		@param disp002 disp002	  */
+	public void setdisp002 (boolean disp002)
+	{
+		set_Value (COLUMNNAME_disp002, Boolean.valueOf(disp002));
+	}
+
+	/** Get disp002.
+		@return disp002	  */
+	public boolean isdisp002 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp002);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** DocStatus AD_Reference_ID=131 */
 	public static final int DOCSTATUS_AD_Reference_ID=131;
 	/** Drafted = DR */
@@ -556,15 +593,15 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
 			.getPO(getinterestgl_Acct(), get_TrxName());	}
 
-	/** Set Fixed Deposit Interest GL Code.
-		@param interestgl_Acct Fixed Deposit Interest GL Code	  */
+	/** Set Interest GL Code.
+		@param interestgl_Acct Interest GL Code	  */
 	public void setinterestgl_Acct (int interestgl_Acct)
 	{
 		set_Value (COLUMNNAME_interestgl_Acct, Integer.valueOf(interestgl_Acct));
 	}
 
-	/** Get Fixed Deposit Interest GL Code.
-		@return Fixed Deposit Interest GL Code	  */
+	/** Get Interest GL Code.
+		@return Interest GL Code	  */
 	public int getinterestgl_Acct () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_interestgl_Acct);
@@ -1172,18 +1209,39 @@ public class X_l_repayments extends PO implements I_l_repayments, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Reverse.
+		@param Reverse Reverse	  */
+	public void setReverse (String Reverse)
+	{
+		set_Value (COLUMNNAME_Reverse, Reverse);
+	}
+
+	/** Get Reverse.
+		@return Reverse	  */
+	public String getReverse () 
+	{
+		return (String)get_Value(COLUMNNAME_Reverse);
+	}
+
 	/** Set Reversed.
 		@param Reversed Reversed	  */
-	public void setReversed (String Reversed)
+	public void setReversed (boolean Reversed)
 	{
-		set_Value (COLUMNNAME_Reversed, Reversed);
+		set_Value (COLUMNNAME_Reversed, Boolean.valueOf(Reversed));
 	}
 
 	/** Get Reversed.
 		@return Reversed	  */
-	public String getReversed () 
+	public boolean isReversed () 
 	{
-		return (String)get_Value(COLUMNNAME_Reversed);
+		Object oo = get_Value(COLUMNNAME_Reversed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	public I_s_loans gets_loans() throws RuntimeException

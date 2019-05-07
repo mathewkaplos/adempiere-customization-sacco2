@@ -31,7 +31,7 @@ public class ApplyLoanCharges {
 		this.stage = _stage;
 		this.amt = _amt;
 
-		clear();
+		//clear();
 	}
 
 	private void clear() {

@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 
 import org.compiere.util.AmtInWords_EN;
@@ -780,7 +782,7 @@ public class SLoan extends X_s_loans {
 	public boolean retirementAgeOK() {
 		// Check Retirement age
 		I_s_member member = gets_member();
-		if (member.gets_employers_ID() == 0)
+		if (member.gets_employers_ID() < 1)
 			return true;
 		// now member has employer at this point
 		I_s_employers empl = member.gets_employers();
@@ -799,6 +801,63 @@ public class SLoan extends X_s_loans {
 		long ageAtLastRepayment = Sacco.calculateAgeInMonths(ts, DateUtil.newTimestamp());
 		// now member has age..i.e not null.. do the checking
 		return ageAtLastRepayment <= retirementAgeInMonths;
+	}
+
+	public int getFirstScheduleID() {
+		String sql = "SELECT COALESCE(MIN(s_loanschedule_ID),0) FROM adempiere.s_loanschedule WHERE s_loans_ID="
+				+ gets_loans_ID();
+		return DB.getSQLValue(get_TrxName(), sql);
+	}
+
+	public boolean loanFactorOK() {
+		BigDecimal loansFactor = gets_loantype().getloansfactor() != null ? gets_loantype().getloansfactor() : Env.ZERO;
+
+		if (loansFactor.compareTo(Env.ZERO) < 1) {
+			return true;
+		}
+		SMember member = new SMember(getCtx(), gets_member_ID(), get_TrxName());
+		BigDecimal currentLoanBalance = member.getCurrentLoanceBalance();
+		BigDecimal balanceAfterThisLoan = currentLoanBalance.add(getloanamount() != null ? getloanamount() : Env.ZERO);
+		if (loansFactor.compareTo(balanceAfterThisLoan) >= 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public LoanDisbursement[] getDisbursements() {
+		List<LoanDisbursement> list = new ArrayList<>();
+		String sql = "SELECT * FROM adempiere.s_loan_disbursement WHERE s_loans_ID =" + get_ID();
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			if (rs.next()) {
+				LoanDisbursement d = new LoanDisbursement(getCtx(), rs, get_TrxName());
+				list.add(d);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list.toArray(new LoanDisbursement[list.size()]);
+
 	}
 
 }

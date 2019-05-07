@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import org.codehaus.groovy.classgen.GeneratorContext;
+import org.compiere.acct.FactLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.sacco.loan.Schedule;
@@ -252,6 +253,31 @@ public class Sacco extends X_s_saccoinfo {
 					.toTotalMonths();
 		} else {
 			return 0;
+		}
+	}
+
+	public static void deactivateTransactions(int ad_table_id, int record_id, String trxName) {
+		String sql = "select * from adempiere.fact_acct where ad_table_id =" + ad_table_id + " and record_id ="
+				+ record_id;
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, trxName);
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				FactLine line = new FactLine(Env.getCtx(), rs, trxName);
+				line.setIsActive(false);
+				line.save();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 	}
 }

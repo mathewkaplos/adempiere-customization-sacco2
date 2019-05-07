@@ -11,6 +11,7 @@ import org.compiere.acct.Doc_LoanDisbursement;
 import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
 import org.compiere.model.LoanDisbursement;
+import org.compiere.model.LoanSchedule;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MBank;
@@ -35,11 +36,8 @@ public class SavePaymentMode extends SvrProcess {
 	// private String payMode = null;
 	int s_disbursement_mode_ID = 0;
 	private int C_Bank_ID = 0;
-	Doc doc = null;
-	PO po = null;
-	LoanDisbursement disbursement = null;
 	MBank bank = null;
-	SLoanType loanType = null;
+	// SLoanType loanType = null;
 
 	@Override
 	protected void prepare() {
@@ -56,20 +54,20 @@ public class SavePaymentMode extends SvrProcess {
 		}
 
 		loan = new SLoan(getCtx(), getRecord_ID(), get_TrxName());
-		loanType = new SLoanType(getCtx(), loan.gets_loantype_ID(), get_TrxName());
+
 		s_disbursement_mode_ID = loan.gets_disbursement_mode_ID();
 		bank = new MBank(getCtx(), C_Bank_ID, get_TrxName());
 	}
 
 	@Override
 	protected String doIt() throws Exception {
-		//if (loan.getNumberOfRepayments() == 1) {
-			loan.setmonthopeningbal(loan.getappliedamount());
-			loan.setloanpaymode_done(true);
-			loan.setintbalance(loan.getloaninterestamount());
-			loan.setloanbalance(loan.getappliedamount());
-			loan.save();
-		//}
+		// if (loan.getNumberOfRepayments() == 1) {
+		loan.setmonthopeningbal(loan.getappliedamount());
+		loan.setloanpaymode_done(true);
+		loan.setintbalance(loan.getloaninterestamount());
+		loan.setloanbalance(loan.getappliedamount());
+		loan.save();
+		// }
 		if (loan.is_refinance()) {
 			repayOldLoan();
 		}
@@ -78,112 +76,20 @@ public class SavePaymentMode extends SvrProcess {
 		} else if (s_disbursement_mode_ID == 9) {
 			updateSavings();
 		}
-		saveDisbursement();
-		post();
+		if (s_disbursement_mode_ID == 2 || s_disbursement_mode_ID == 3) { // cheque
+			loan.setwritingdate(DateUtil.newTimestamp());
+			loan.save();
+		}
+
+		if (s_disbursement_mode_ID != 2) {
+			PostLoanDisbursement postLoanDisbursement = new PostLoanDisbursement( bank, get_TrxName(),
+					loan);
+			postLoanDisbursement.post();
+		}
 		return null;
 	}
 
-	private void post() {
-		MAcctSchema[] ass = { MClient.get(getCtx()).getAcctSchema() };
-		ResultSet rs = null;
-		PreparedStatement stm = null;
-		try {
-
-			String sql = "SELECT * FROM adempiere.s_loan_disbursement WHERE s_loan_disbursement_ID="
-					+ disbursement.get_ID();
-			stm = DB.prepareStatement(sql, get_TrxName());
-			rs = stm.executeQuery();
-			while (rs.next()) {
-				Doc_LoanDisbursement disbursement = new Doc_LoanDisbursement(ass, LoanDisbursement.class, rs,
-						get_TrxName());
-				doc = disbursement;
-
-				LoanDisbursement loanDisbursement = new LoanDisbursement(getCtx(), rs, get_TrxName());
-				po = loanDisbursement;
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stm != null) {
-					stm.close();
-					stm = null;
-				}
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-
-			} catch (Exception e2) {
-			}
-		}
-		acctSchema = new MAcctSchema(Env.getCtx(), 101, null);
-		fact = new Fact(doc, acctSchema, "A");
-		docLine = new DocLine(po, doc);
-		postLoan();
-		disbursement.setDocStatus("CO");
-		disbursement.setProcessed(true);
-		disbursement.setPosted(true);
-		disbursement.save();
-	}
-
-	Fact fact = null;
-	DocLine docLine = null;
-	MAcctSchema acctSchema = null;
-
-	private void postLoan() {
-
-		MAccount accountDR = new MAccount(Env.getCtx(), loanType.getloantypeloangl_Acct(), get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
-				disbursement.getdisbursed_amount());
-		lineDR.save();
-
-		MAccount accountCR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
-		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
-				disbursement.getdisbursed_amount().negate());
-		lineCR.save();
-		if (loan.ispartial_disbursement()) {
-			if (loan.isPartiallyDisbursed()) {
-				// NEVER TODO
-			} else {
-				postInterest();
-			}
-		} else {
-			postInterest();
-		}
-	}
-
-	private void postInterest() {
-		if (loan.getloaninterestamount().compareTo(Env.ZERO) < 1) {
-			return;
-		}
-		Sacco sacco = Sacco.getSaccco();
-		MAccount accountDR = new MAccount(Env.getCtx(), sacco.getInterestReceivable_Acct(), get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
-				loan.getloaninterestamount());
-		lineDR.save();
-
-		MAccount accountCR = new MAccount(Env.getCtx(), sacco.getUnEarnedInterest_Acct(), get_TrxName());
-		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
-				loan.getloaninterestamount().negate());
-		lineCR.save();
-	}
-
-	private void saveDisbursement() {
-		disbursement = new LoanDisbursement(getCtx(), 0, get_TrxName());
-		disbursement.sets_loans_ID(getRecord_ID());
-		disbursement.setAmount(loan.getappliedamount());
-		if (loan.ispartial_disbursement()) {
-			disbursement.setdisbursed_amount(loan.getdisbursed_amount());
-		} else {
-			disbursement.setdisbursed_amount(loan.getappliedamount());
-		}
-		disbursement.settransactiondate(DateUtil.newTimestamp());
-		disbursement.save();
-		loan.setdisbursed_amount(Env.ZERO);
-		loan.save();
-	}
+	
 
 	private void updateSavings() {
 		int s_membershares_ID = loan.gets_membershares_ID();

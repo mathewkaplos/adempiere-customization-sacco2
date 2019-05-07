@@ -10,6 +10,7 @@ import org.compiere.model.AD_User;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
+import org.compiere.model.I_s_sharetype;
 import org.compiere.model.MemberShares;
 import org.compiere.model.SMember;
 import org.compiere.model.Sacco;
@@ -101,7 +102,14 @@ public class ShareTransactionsCallout extends CalloutEngine {
 		mTab.setValue("ShareBalance", memberShares.getfreeshares());
 
 		ShareType shareType = new ShareType(Env.getCtx(), s_sharetype_ID, null);
-		mTab.setValue("sharegl_Acct", shareType.getsharegl_Acct());
+	
+		
+		int share_saving_gl = 0;
+		if (shareType.getshare_saving().equals("saving"))
+			share_saving_gl = shareType.getinterestgl_Acct();
+		else
+			share_saving_gl = shareType.getdividendgl_Acct();
+		mTab.setValue("sharegl_Acct", share_saving_gl);
 
 		return NO_ERROR;
 	}

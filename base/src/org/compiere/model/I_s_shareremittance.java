@@ -80,6 +80,15 @@ public interface I_s_shareremittance
 	/** Get AmountInWords	  */
 	public String getAmountInWords();
 
+    /** Column name apply_share_transfer */
+    public static final String COLUMNNAME_apply_share_transfer = "apply_share_transfer";
+
+	/** Set Refresh Share Transfer	  */
+	public void setapply_share_transfer (String apply_share_transfer);
+
+	/** Get Refresh Share Transfer	  */
+	public String getapply_share_transfer();
+
     /** Column name bankaccount */
     public static final String COLUMNNAME_bankaccount = "bankaccount";
 
@@ -97,6 +106,15 @@ public interface I_s_shareremittance
 
 	/** Get Bank Account	  */
 	public String getBankAccount_Acct();
+
+    /** Column name btn_add_charge */
+    public static final String COLUMNNAME_btn_add_charge = "btn_add_charge";
+
+	/** Set Add Charge	  */
+	public void setbtn_add_charge (String btn_add_charge);
+
+	/** Get Add Charge	  */
+	public String getbtn_add_charge();
 
     /** Column name btn_save_deposit */
     public static final String COLUMNNAME_btn_save_deposit = "btn_save_deposit";
@@ -398,6 +416,15 @@ public interface I_s_shareremittance
 	/** Get Recover Total Amount From Share Transfer	  */
 	public boolean isrecover_from_share_transfer();
 
+    /** Column name recovery_amount */
+    public static final String COLUMNNAME_recovery_amount = "recovery_amount";
+
+	/** Set Recovery Amount	  */
+	public void setrecovery_amount (BigDecimal recovery_amount);
+
+	/** Get Recovery Amount	  */
+	public BigDecimal getrecovery_amount();
+
     /** Column name Remarks */
     public static final String COLUMNNAME_Remarks = "Remarks";
 
@@ -446,6 +473,24 @@ public interface I_s_shareremittance
 
 	/** Get Remittance Year	  */
 	public int getremittanceyear();
+
+    /** Column name Reverse */
+    public static final String COLUMNNAME_Reverse = "Reverse";
+
+	/** Set Reverse	  */
+	public void setReverse (String Reverse);
+
+	/** Get Reverse	  */
+	public String getReverse();
+
+    /** Column name Reversed */
+    public static final String COLUMNNAME_Reversed = "Reversed";
+
+	/** Set Reversed	  */
+	public void setReversed (boolean Reversed);
+
+	/** Get Reversed	  */
+	public boolean isReversed();
 
     /** Column name s_branch_ID */
     public static final String COLUMNNAME_s_branch_ID = "s_branch_ID";
