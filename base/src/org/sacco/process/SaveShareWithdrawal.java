@@ -38,6 +38,10 @@ public class SaveShareWithdrawal extends SvrProcess {
 	private MBank bank = null;
 	private I_s_sharetype shareType = null;
 
+	private BigDecimal amount = Env.ZERO;
+	private BigDecimal interest = Env.ZERO;
+	private boolean isfixeddeposit = true;
+
 	@Override
 	protected void prepare() {
 		ProcessInfoParameter[] para = getParameter();
@@ -58,7 +62,14 @@ public class SaveShareWithdrawal extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-		BigDecimal receiptAmt = shareRemittance.getreceiptamount();
+		isfixeddeposit = shareRemittance.isfixeddeposit();
+		if (isfixeddeposit) {
+			interest = shareRemittance.getInterestAmt();
+			MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(),
+					get_TrxName());
+			amount = memberShares.getsharestodate();
+		} else
+			amount = shareRemittance.getreceiptamount();
 
 		shareRemittance.setIsComplete(true);
 		shareRemittance.setreceiptamount(shareRemittance.getreceiptamount().negate());
@@ -113,6 +124,8 @@ public class SaveShareWithdrawal extends SvrProcess {
 		docLine = new DocLine(po, doc);
 		postShareCharges();
 		postSahre();
+		if (isfixeddeposit)
+			postInterest();
 		updateMemberShare();
 		shareRemittance.setDocStatus("CO");
 		shareRemittance.setProcessed(true);
@@ -122,13 +135,12 @@ public class SaveShareWithdrawal extends SvrProcess {
 	}
 
 	private void updateMemberShare() {
-		BigDecimal withrawalAmt = shareRemittance.getreceiptamount();
 		if (totalCharge.compareTo(Env.ZERO) == 1)
-			withrawalAmt.abs().add(totalCharge);
+			amount.abs().add(totalCharge);
 
 		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
-		memberShares.setsharestodate(memberShares.getsharestodate().subtract(withrawalAmt));
-		memberShares.setfreeshares(memberShares.getfreeshares().subtract(withrawalAmt));
+		memberShares.setsharestodate(memberShares.getsharestodate().subtract(amount));
+		memberShares.setfreeshares(memberShares.getfreeshares().subtract(amount));
 		memberShares.save();
 	}
 
@@ -142,19 +154,37 @@ public class SaveShareWithdrawal extends SvrProcess {
 		}
 		int share_saving_gl = 0;
 		if (shareType.getshare_saving().equals("saving"))
-			share_saving_gl = shareType.getinterestgl_Acct();
+			share_saving_gl = shareType.getsaving_gl_code_Acct();
 		else
-			share_saving_gl = shareType.getdividendgl_Acct();
+			share_saving_gl = shareType.getsharegl_Acct();
 
 		MAccount accountCR = new MAccount(Env.getCtx(), share_saving_gl, get_TrxName());
-		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
-				shareRemittance.getreceiptamount().negate());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), amount);
 		lineCR.save();
 
 		MAccount accountDR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
-				shareRemittance.getreceiptamount());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), amount.negate());
 		lineDR.save();
+	}
+
+	private void postInterest() {
+		if (interest.compareTo(Env.ZERO) == 0) {
+			return;
+		}
+		int interest_gl = 0;
+		if (shareType.getshare_saving().equals("saving"))
+			interest_gl = shareType.getinterest_paid_Acct();
+		else
+			interest_gl = shareType.getdividend_paid_Acct();
+
+		MAccount accountCR = new MAccount(Env.getCtx(), interest_gl, get_TrxName());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), interest);
+		lineCR.save();
+
+		MAccount accountDR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), interest.negate());
+		lineDR.save();
+
 	}
 
 	private void postShareCharges() {

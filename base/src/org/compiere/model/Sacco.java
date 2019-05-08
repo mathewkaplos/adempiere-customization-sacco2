@@ -280,4 +280,19 @@ public class Sacco extends X_s_saccoinfo {
 			}
 		}
 	}
+
+	/**
+	 * For fixed deposit interest calculation
+	 * 
+	 * @param months
+	 * @param frequency
+	 * @return frequency months
+	 */
+	public static int getFrequencyMonths(int months, int frequency) {
+		if (frequency == 0)
+			return months;
+		double x = frequency * (Math.floor(Math.abs(months / frequency)));
+		int y = (int) x;
+		return y;
+	}
 }

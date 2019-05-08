@@ -14,6 +14,7 @@ import org.compiere.acct.DocLine;
 import org.compiere.acct.Doc_ShareRemittance;
 import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
+import org.compiere.apps.ADialog;
 import org.compiere.model.I_s_sharetype;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
@@ -56,10 +57,18 @@ public class SaveShareRemittance extends SvrProcess {
 		shareType = shareRemittance.gets_sharetype();
 	}
 
+	MemberShares memberShares = null;
+
 	@Override
 	protected String doIt() throws Exception {
+		memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
+		if (isFixedDepositAndHasBalance()) {
+			ADialog.error(2, null, "This share type is a fixed deposit and it has balance!", "You cannot proceed");
+		return null;
+		}
+
 		BigDecimal receiptAmt = shareRemittance.getreceiptamount();
-		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
+
 		memberShares.setsharestodate(memberShares.getsharestodate().add(receiptAmt));
 		memberShares.setfreeshares(memberShares.getfreeshares().add(receiptAmt));
 		memberShares.save();
@@ -105,6 +114,15 @@ public class SaveShareRemittance extends SvrProcess {
 			update(arr);
 		}
 		return null;
+	}
+
+	private boolean isFixedDepositAndHasBalance() {
+		if (shareType.isfixeddeposit())
+			if (memberShares.getsharestodate().compareTo(Env.ZERO) == 1) {
+				return true;
+			}
+
+		return false;
 	}
 
 	private void update(Share_recovery[] _arr) {

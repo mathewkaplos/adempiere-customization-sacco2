@@ -33,7 +33,7 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190506L;
+	private static final long serialVersionUID = 20190508L;
 
     /** Standard Constructor */
     public X_s_shareremittance (Properties ctx, int s_shareremittance_ID, String trxName)
@@ -43,6 +43,8 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
         {
 			setDocStatus (null);
 // DR
+			setisfixeddeposit (false);
+// N
 			setPosted (false);
 // N
 			setProcessed (false);
@@ -412,6 +414,26 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return bd;
 	}
 
+	/** Set Interest Amount.
+		@param InterestAmt 
+		Interest Amount
+	  */
+	public void setInterestAmt (BigDecimal InterestAmt)
+	{
+		set_Value (COLUMNNAME_InterestAmt, InterestAmt);
+	}
+
+	/** Get Interest Amount.
+		@return Interest Amount
+	  */
+	public BigDecimal getInterestAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_InterestAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Is Supervised.
 		@param is_supervised Is Supervised	  */
 	public void setis_supervised (boolean is_supervised)
@@ -469,6 +491,27 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public boolean isComplete () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsComplete);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Is Fixed Deposit.
+		@param isfixeddeposit Is Fixed Deposit	  */
+	public void setisfixeddeposit (boolean isfixeddeposit)
+	{
+		set_Value (COLUMNNAME_isfixeddeposit, Boolean.valueOf(isfixeddeposit));
+	}
+
+	/** Get Is Fixed Deposit.
+		@return Is Fixed Deposit	  */
+	public boolean isfixeddeposit () 
+	{
+		Object oo = get_Value(COLUMNNAME_isfixeddeposit);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -821,6 +864,20 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return (String)get_Value(COLUMNNAME_Reverse);
 	}
 
+	/** Set Reverse Remittance.
+		@param reverse_remittance Reverse Remittance	  */
+	public void setreverse_remittance (String reverse_remittance)
+	{
+		set_Value (COLUMNNAME_reverse_remittance, reverse_remittance);
+	}
+
+	/** Get Reverse Remittance.
+		@return Reverse Remittance	  */
+	public String getreverse_remittance () 
+	{
+		return (String)get_Value(COLUMNNAME_reverse_remittance);
+	}
+
 	/** Set Reversed.
 		@param Reversed Reversed	  */
 	public void setReversed (boolean Reversed)
@@ -894,11 +951,6 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
     {
         return new KeyNamePair(get_ID(), String.valueOf(gets_member_ID()));
     }
-
-	public I_s_membershares gets_membershares() throws RuntimeException
-    {
-		return (I_s_membershares)MTable.get(getCtx(), I_s_membershares.Table_Name)
-			.getPO(gets_membershares_ID(), get_TrxName());	}
 
 	/** Set Member Shares.
 		@param s_membershares_ID Member Shares	  */
@@ -982,15 +1034,15 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return ii.intValue();
 	}
 
-	/** Set Share Balance.
-		@param ShareBalance Share Balance	  */
+	/** Set Share Balance(Free).
+		@param ShareBalance Share Balance(Free)	  */
 	public void setShareBalance (BigDecimal ShareBalance)
 	{
 		set_Value (COLUMNNAME_ShareBalance, ShareBalance);
 	}
 
-	/** Get Share Balance.
-		@return Share Balance	  */
+	/** Get Share Balance(Free).
+		@return Share Balance(Free)	  */
 	public BigDecimal getShareBalance () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ShareBalance);
@@ -1019,6 +1071,23 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Share Balance(Total).
+		@param ShareTotal Share Balance(Total)	  */
+	public void setShareTotal (BigDecimal ShareTotal)
+	{
+		set_Value (COLUMNNAME_ShareTotal, ShareTotal);
+	}
+
+	/** Get Share Balance(Total).
+		@return Share Balance(Total)	  */
+	public BigDecimal getShareTotal () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ShareTotal);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Supervision Time.

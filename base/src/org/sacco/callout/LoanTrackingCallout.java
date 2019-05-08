@@ -68,7 +68,7 @@ public class LoanTrackingCallout extends CalloutEngine {
 		mTab.setValue("s_shamba_ID", null);
 		mTab.setValue("s_shamba_plot_ID", null);
 		mTab.setValue("s_membershares_ID", null);
-		
+
 		return NO_ERROR;
 	}
 
@@ -120,6 +120,24 @@ public class LoanTrackingCallout extends CalloutEngine {
 			JOptionPane.showMessageDialog(null, "Disbursement cannot be more than Pendiing amount!");
 			mTab.setValue("disbursed_amount", Env.ZERO);
 		}
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.LoanTrackingCallout.plot_cost
+	public String plot_cost(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		if (mTab.getValue("s_loans_ID") == null)
+			return "";
+
+		BigDecimal val = (BigDecimal) value;
+		
+		BigDecimal loanAmount = (BigDecimal) mTab.getValue("appliedamount");
+		System.out.println(loanAmount);
+
+		BigDecimal netGain = loanAmount.subtract(val);
+		mTab.setValue("plot_gain", netGain);
+
 		return NO_ERROR;
 	}
 }

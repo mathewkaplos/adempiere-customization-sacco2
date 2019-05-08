@@ -2,6 +2,7 @@ package org.sacco.callout;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -63,10 +64,13 @@ public class ShareTransactionsCallout extends CalloutEngine {
 		int withdrawal_Tab_ID = 1000048;
 		int deposit_Tab_ID = 1000047;
 		BigDecimal val = (BigDecimal) value;
+		int s_sharetype_ID = (int) mTab.getValue("s_sharetype_ID");
+		ShareType shareType = new ShareType(Env.getCtx(), s_sharetype_ID, null);
+		boolean isfixeddeposit = shareType.isfixeddeposit();
 		if (withdrawal_Tab_ID == mTab.getAD_Tab_ID()) {
 
 			BigDecimal bal = (BigDecimal) mTab.getValue("ShareBalance");
-			if (val.compareTo(bal) > 0) {
+			if (val.compareTo(bal) > 0 && !isfixeddeposit) {
 				mTab.setValue("receiptamount", null);
 				JOptionPane.showMessageDialog(null, "Share free balance is: " + bal.setScale(2, RoundingMode.UP));
 			}
@@ -100,10 +104,33 @@ public class ShareTransactionsCallout extends CalloutEngine {
 		mTab.setValue("s_sharetype_ID", s_sharetype_ID);
 		mTab.setValue("contributionrate", memberShares.getcontributionrate());
 		mTab.setValue("ShareBalance", memberShares.getfreeshares());
+		mTab.setValue("ShareTotal", memberShares.getsharestodate());
 
 		ShareType shareType = new ShareType(Env.getCtx(), s_sharetype_ID, null);
-	
-		
+		if (shareType.isfixeddeposit()) {
+			mTab.setValue("isfixeddeposit", true);
+			BigDecimal receiptamount = memberShares.getsharestodate();
+
+			Timestamp effectDate = memberShares.getshareeffectdate();
+			Timestamp WithdrawalDate = (Timestamp) mTab.getValue("remittancedate");
+			System.out.println(effectDate);
+			System.out.println(WithdrawalDate);
+			int months = (int) Sacco.calculateAgeInMonths(effectDate, WithdrawalDate);
+			int freq = shareType.getintfrequency();
+			int freqMonths = Sacco.getFrequencyMonths(months, freq);
+			System.out.println(months);
+			System.out.println(freq);
+			System.out.println(freqMonths);
+
+			double rate = shareType.getintrate().doubleValue() / 100;
+			double interest = rate * freqMonths * receiptamount.doubleValue();
+
+			mTab.setValue("InterestAmt", BigDecimal.valueOf(interest));
+
+			mTab.setValue("receiptamount", receiptamount.add(BigDecimal.valueOf(interest)));
+		}
+		// isfixeddeposit
+
 		int share_saving_gl = 0;
 		if (shareType.getshare_saving().equals("saving"))
 			share_saving_gl = shareType.getinterestgl_Acct();

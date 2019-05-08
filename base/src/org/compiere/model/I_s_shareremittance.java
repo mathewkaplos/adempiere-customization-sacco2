@@ -256,6 +256,19 @@ public interface I_s_shareremittance
 	/** Get Interest Balance	  */
 	public BigDecimal getintbalance();
 
+    /** Column name InterestAmt */
+    public static final String COLUMNNAME_InterestAmt = "InterestAmt";
+
+	/** Set Interest Amount.
+	  * Interest Amount
+	  */
+	public void setInterestAmt (BigDecimal InterestAmt);
+
+	/** Get Interest Amount.
+	  * Interest Amount
+	  */
+	public BigDecimal getInterestAmt();
+
     /** Column name is_supervised */
     public static final String COLUMNNAME_is_supervised = "is_supervised";
 
@@ -299,6 +312,15 @@ public interface I_s_shareremittance
 	  * It is complete
 	  */
 	public boolean isComplete();
+
+    /** Column name isfixeddeposit */
+    public static final String COLUMNNAME_isfixeddeposit = "isfixeddeposit";
+
+	/** Set Is Fixed Deposit	  */
+	public void setisfixeddeposit (boolean isfixeddeposit);
+
+	/** Get Is Fixed Deposit	  */
+	public boolean isfixeddeposit();
 
     /** Column name mcode */
     public static final String COLUMNNAME_mcode = "mcode";
@@ -483,6 +505,15 @@ public interface I_s_shareremittance
 	/** Get Reverse	  */
 	public String getReverse();
 
+    /** Column name reverse_remittance */
+    public static final String COLUMNNAME_reverse_remittance = "reverse_remittance";
+
+	/** Set Reverse Remittance	  */
+	public void setreverse_remittance (String reverse_remittance);
+
+	/** Get Reverse Remittance	  */
+	public String getreverse_remittance();
+
     /** Column name Reversed */
     public static final String COLUMNNAME_Reversed = "Reversed";
 
@@ -521,8 +552,6 @@ public interface I_s_shareremittance
 	/** Get Member Shares	  */
 	public int gets_membershares_ID();
 
-	public I_s_membershares gets_membershares() throws RuntimeException;
-
     /** Column name s_shareremittance_ID */
     public static final String COLUMNNAME_s_shareremittance_ID = "s_shareremittance_ID";
 
@@ -555,10 +584,10 @@ public interface I_s_shareremittance
     /** Column name ShareBalance */
     public static final String COLUMNNAME_ShareBalance = "ShareBalance";
 
-	/** Set Share Balance	  */
+	/** Set Share Balance(Free)	  */
 	public void setShareBalance (BigDecimal ShareBalance);
 
-	/** Get Share Balance	  */
+	/** Get Share Balance(Free)	  */
 	public BigDecimal getShareBalance();
 
     /** Column name sharegl_Acct */
@@ -571,6 +600,15 @@ public interface I_s_shareremittance
 	public int getsharegl_Acct();
 
 	public I_C_ValidCombination getsharegl_A() throws RuntimeException;
+
+    /** Column name ShareTotal */
+    public static final String COLUMNNAME_ShareTotal = "ShareTotal";
+
+	/** Set Share Balance(Total)	  */
+	public void setShareTotal (BigDecimal ShareTotal);
+
+	/** Get Share Balance(Total)	  */
+	public BigDecimal getShareTotal();
 
     /** Column name supervision_time */
     public static final String COLUMNNAME_supervision_time = "supervision_time";
