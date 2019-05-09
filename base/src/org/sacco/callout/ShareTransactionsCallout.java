@@ -133,9 +133,9 @@ public class ShareTransactionsCallout extends CalloutEngine {
 
 		int share_saving_gl = 0;
 		if (shareType.getshare_saving().equals("saving"))
-			share_saving_gl = shareType.getinterestgl_Acct();
+			share_saving_gl = shareType.getsaving_gl_code_Acct();
 		else
-			share_saving_gl = shareType.getdividendgl_Acct();
+			share_saving_gl = shareType.getsharegl_Acct();
 		mTab.setValue("sharegl_Acct", share_saving_gl);
 
 		return NO_ERROR;

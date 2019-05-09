@@ -64,13 +64,15 @@ public class SaveShareRemittance extends SvrProcess {
 		memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
 		if (isFixedDepositAndHasBalance()) {
 			ADialog.error(2, null, "This share type is a fixed deposit and it has balance!", "You cannot proceed");
-		return null;
+			return null;
 		}
 
 		BigDecimal receiptAmt = shareRemittance.getreceiptamount();
 
 		memberShares.setsharestodate(memberShares.getsharestodate().add(receiptAmt));
+
 		memberShares.setfreeshares(memberShares.getfreeshares().add(receiptAmt));
+		memberShares.setshareeffectdate(shareRemittance.getremittancedate());
 		memberShares.save();
 
 		JOptionPane.showMessageDialog(null, "Saved Successfully");
@@ -194,9 +196,9 @@ public class SaveShareRemittance extends SvrProcess {
 		}
 		int share_saving_gl = 0;
 		if (shareType.getshare_saving().equals("saving"))
-			share_saving_gl = shareType.getinterestgl_Acct();
+			share_saving_gl = shareType.getsaving_gl_code_Acct();
 		else
-			share_saving_gl = shareType.getdividendgl_Acct();
+			share_saving_gl = shareType.getsharegl_Acct();
 
 		MAccount accountCR = new MAccount(Env.getCtx(), share_saving_gl, get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),

@@ -65,9 +65,9 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 			setmonthlyintcalc (null);
 			setoverdue_penalty (false);
 // N
+			sets_loantype_ID (0);
 			setshould_be_guaranteed (false);
 // N
-			sets_loantype_ID (0);
         } */
     }
 
@@ -627,6 +627,28 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return (String)get_Value(COLUMNNAME_interestprc);
 	}
 
+	public I_C_ValidCombination getInterestReceivable_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getInterestReceivable_Acct(), get_TrxName());	}
+
+	/** Set Interest Receivable GL A/C.
+		@param InterestReceivable_Acct Interest Receivable GL A/C	  */
+	public void setInterestReceivable_Acct (int InterestReceivable_Acct)
+	{
+		set_Value (COLUMNNAME_InterestReceivable_Acct, Integer.valueOf(InterestReceivable_Acct));
+	}
+
+	/** Get Interest Receivable GL A/C.
+		@return Interest Receivable GL A/C	  */
+	public int getInterestReceivable_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_InterestReceivable_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set intreceivableasset.
 		@param intreceivableasset intreceivableasset	  */
 	public void setintreceivableasset (String intreceivableasset)
@@ -697,20 +719,6 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return false;
 	}
 
-	/** Set linkedgl.
-		@param linkedgl linkedgl	  */
-	public void setlinkedgl (String linkedgl)
-	{
-		set_Value (COLUMNNAME_linkedgl, linkedgl);
-	}
-
-	/** Get linkedgl.
-		@return linkedgl	  */
-	public String getlinkedgl () 
-	{
-		return (String)get_Value(COLUMNNAME_linkedgl);
-	}
-
 	/** Set Linked To Savings Type.
 		@param linked_to_savings_type Linked To Savings Type	  */
 	public void setlinked_to_savings_type (boolean linked_to_savings_type)
@@ -732,18 +740,18 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return false;
 	}
 
-	/** Set loanprc.
-		@param loanprc loanprc	  */
-	public void setloanprc (String loanprc)
+	/** Set linkedgl.
+		@param linkedgl linkedgl	  */
+	public void setlinkedgl (String linkedgl)
 	{
-		set_Value (COLUMNNAME_loanprc, loanprc);
+		set_Value (COLUMNNAME_linkedgl, linkedgl);
 	}
 
-	/** Get loanprc.
-		@return loanprc	  */
-	public String getloanprc () 
+	/** Get linkedgl.
+		@return linkedgl	  */
+	public String getlinkedgl () 
 	{
-		return (String)get_Value(COLUMNNAME_loanprc);
+		return (String)get_Value(COLUMNNAME_linkedgl);
 	}
 
 	/** loan_product_type AD_Reference_ID=1000026 */
@@ -765,6 +773,20 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	public String getloan_product_type () 
 	{
 		return (String)get_Value(COLUMNNAME_loan_product_type);
+	}
+
+	/** Set loanprc.
+		@param loanprc loanprc	  */
+	public void setloanprc (String loanprc)
+	{
+		set_Value (COLUMNNAME_loanprc, loanprc);
+	}
+
+	/** Get loanprc.
+		@return loanprc	  */
+	public String getloanprc () 
+	{
+		return (String)get_Value(COLUMNNAME_loanprc);
 	}
 
 	/** Set Loans Factor.
@@ -1262,6 +1284,29 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return bd;
 	}
 
+	/** Set Product.
+		@param M_Product_ID 
+		Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID)
+	{
+		if (M_Product_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+	}
+
+	/** Get Product.
+		@return Product, Service, Item
+	  */
+	public int getM_Product_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Maximum Grace Period(Months).
 		@param max_grace_period Maximum Grace Period(Months)	  */
 	public void setmax_grace_period (int max_grace_period)
@@ -1317,29 +1362,6 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 	public String getmonthlyintcalc () 
 	{
 		return (String)get_Value(COLUMNNAME_monthlyintcalc);
-	}
-
-	/** Set Product.
-		@param M_Product_ID 
-		Product, Service, Item
-	  */
-	public void setM_Product_ID (int M_Product_ID)
-	{
-		if (M_Product_ID < 1) 
-			set_Value (COLUMNNAME_M_Product_ID, null);
-		else 
-			set_Value (COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-	}
-
-	/** Get Product.
-		@return Product, Service, Item
-	  */
-	public int getM_Product_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 
 	/** Set Overdue Penalty.
@@ -1527,6 +1549,26 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return false;
 	}
 
+	/** Set Loan Type.
+		@param s_loantype_ID Loan Type	  */
+	public void sets_loantype_ID (int s_loantype_ID)
+	{
+		if (s_loantype_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_s_loantype_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_s_loantype_ID, Integer.valueOf(s_loantype_ID));
+	}
+
+	/** Get Loan Type.
+		@return Loan Type	  */
+	public int gets_loantype_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_loantype_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Self Guarantee Limit.
 		@param selfglimit Self Guarantee Limit	  */
 	public void setselfglimit (int selfglimit)
@@ -1603,21 +1645,26 @@ public class X_s_loantype extends PO implements I_s_loantype, I_Persistent
 		return false;
 	}
 
-	/** Set Loan Type.
-		@param s_loantype_ID Loan Type	  */
-	public void sets_loantype_ID (int s_loantype_ID)
+	public I_C_ValidCombination getUnEarnedInterest_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getUnEarnedInterest_Acct(), get_TrxName());	}
+
+	/** Set Unearned Interest GL A/C.
+		@param UnEarnedInterest_Acct 
+		Account for unearned revenue
+	  */
+	public void setUnEarnedInterest_Acct (int UnEarnedInterest_Acct)
 	{
-		if (s_loantype_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_s_loantype_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_s_loantype_ID, Integer.valueOf(s_loantype_ID));
+		set_Value (COLUMNNAME_UnEarnedInterest_Acct, Integer.valueOf(UnEarnedInterest_Acct));
 	}
 
-	/** Get Loan Type.
-		@return Loan Type	  */
-	public int gets_loantype_ID () 
+	/** Get Unearned Interest GL A/C.
+		@return Account for unearned revenue
+	  */
+	public int getUnEarnedInterest_Acct () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_s_loantype_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_UnEarnedInterest_Acct);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

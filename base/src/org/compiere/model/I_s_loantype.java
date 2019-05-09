@@ -58,15 +58,6 @@ public interface I_s_loantype
 	  */
 	public int getAD_Client_ID();
 
-    /** Column name adjustable_interest_rates */
-    public static final String COLUMNNAME_adjustable_interest_rates = "adjustable_interest_rates";
-
-	/** Set Adjustable Interest Rates	  */
-	public void setadjustable_interest_rates (boolean adjustable_interest_rates);
-
-	/** Get Adjustable Interest Rates	  */
-	public boolean isadjustable_interest_rates();
-
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
 
@@ -79,6 +70,15 @@ public interface I_s_loantype
 	  * Organizational entity within client
 	  */
 	public int getAD_Org_ID();
+
+    /** Column name adjustable_interest_rates */
+    public static final String COLUMNNAME_adjustable_interest_rates = "adjustable_interest_rates";
+
+	/** Set Adjustable Interest Rates	  */
+	public void setadjustable_interest_rates (boolean adjustable_interest_rates);
+
+	/** Get Adjustable Interest Rates	  */
+	public boolean isadjustable_interest_rates();
 
     /** Column name allow_partial_dispursement */
     public static final String COLUMNNAME_allow_partial_dispursement = "allow_partial_dispursement";
@@ -312,6 +312,17 @@ public interface I_s_loantype
 	/** Get interestprc	  */
 	public String getinterestprc();
 
+    /** Column name InterestReceivable_Acct */
+    public static final String COLUMNNAME_InterestReceivable_Acct = "InterestReceivable_Acct";
+
+	/** Set Interest Receivable GL A/C	  */
+	public void setInterestReceivable_Acct (int InterestReceivable_Acct);
+
+	/** Get Interest Receivable GL A/C	  */
+	public int getInterestReceivable_Acct();
+
+	public I_C_ValidCombination getInterestReceivable_A() throws RuntimeException;
+
     /** Column name intreceivableasset */
     public static final String COLUMNNAME_intreceivableasset = "intreceivableasset";
 
@@ -361,15 +372,6 @@ public interface I_s_loantype
 	/** Get Is FOSA	  */
 	public boolean isfosa();
 
-    /** Column name linkedgl */
-    public static final String COLUMNNAME_linkedgl = "linkedgl";
-
-	/** Set linkedgl	  */
-	public void setlinkedgl (String linkedgl);
-
-	/** Get linkedgl	  */
-	public String getlinkedgl();
-
     /** Column name linked_to_savings_type */
     public static final String COLUMNNAME_linked_to_savings_type = "linked_to_savings_type";
 
@@ -379,14 +381,14 @@ public interface I_s_loantype
 	/** Get Linked To Savings Type	  */
 	public boolean islinked_to_savings_type();
 
-    /** Column name loanprc */
-    public static final String COLUMNNAME_loanprc = "loanprc";
+    /** Column name linkedgl */
+    public static final String COLUMNNAME_linkedgl = "linkedgl";
 
-	/** Set loanprc	  */
-	public void setloanprc (String loanprc);
+	/** Set linkedgl	  */
+	public void setlinkedgl (String linkedgl);
 
-	/** Get loanprc	  */
-	public String getloanprc();
+	/** Get linkedgl	  */
+	public String getlinkedgl();
 
     /** Column name loan_product_type */
     public static final String COLUMNNAME_loan_product_type = "loan_product_type";
@@ -396,6 +398,15 @@ public interface I_s_loantype
 
 	/** Get Loan Product Type	  */
 	public String getloan_product_type();
+
+    /** Column name loanprc */
+    public static final String COLUMNNAME_loanprc = "loanprc";
+
+	/** Set loanprc	  */
+	public void setloanprc (String loanprc);
+
+	/** Get loanprc	  */
+	public String getloanprc();
 
     /** Column name loansfactor */
     public static final String COLUMNNAME_loansfactor = "loansfactor";
@@ -646,6 +657,19 @@ public interface I_s_loantype
 	/** Get Savings Factor	  */
 	public BigDecimal getloantypesharesfactor();
 
+    /** Column name M_Product_ID */
+    public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
+
+	/** Set Product.
+	  * Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID);
+
+	/** Get Product.
+	  * Product, Service, Item
+	  */
+	public int getM_Product_ID();
+
     /** Column name max_grace_period */
     public static final String COLUMNNAME_max_grace_period = "max_grace_period";
 
@@ -672,19 +696,6 @@ public interface I_s_loantype
 
 	/** Get Interest Mode	  */
 	public String getmonthlyintcalc();
-
-    /** Column name M_Product_ID */
-    public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
-
-	/** Set Product.
-	  * Product, Service, Item
-	  */
-	public void setM_Product_ID (int M_Product_ID);
-
-	/** Get Product.
-	  * Product, Service, Item
-	  */
-	public int getM_Product_ID();
 
     /** Column name overdue_penalty */
     public static final String COLUMNNAME_overdue_penalty = "overdue_penalty";
@@ -788,6 +799,15 @@ public interface I_s_loantype
 	/** Get Recover In Current Year	  */
 	public boolean isrecoveryyear();
 
+    /** Column name s_loantype_ID */
+    public static final String COLUMNNAME_s_loantype_ID = "s_loantype_ID";
+
+	/** Set Loan Type	  */
+	public void sets_loantype_ID (int s_loantype_ID);
+
+	/** Get Loan Type	  */
+	public int gets_loantype_ID();
+
     /** Column name selfglimit */
     public static final String COLUMNNAME_selfglimit = "selfglimit";
 
@@ -824,14 +844,20 @@ public interface I_s_loantype
 	/** Get showonstatement	  */
 	public boolean isshowonstatement();
 
-    /** Column name s_loantype_ID */
-    public static final String COLUMNNAME_s_loantype_ID = "s_loantype_ID";
+    /** Column name UnEarnedInterest_Acct */
+    public static final String COLUMNNAME_UnEarnedInterest_Acct = "UnEarnedInterest_Acct";
 
-	/** Set Loan Type	  */
-	public void sets_loantype_ID (int s_loantype_ID);
+	/** Set Unearned Interest GL A/C.
+	  * Account for unearned revenue
+	  */
+	public void setUnEarnedInterest_Acct (int UnEarnedInterest_Acct);
 
-	/** Get Loan Type	  */
-	public int gets_loantype_ID();
+	/** Get Unearned Interest GL A/C.
+	  * Account for unearned revenue
+	  */
+	public int getUnEarnedInterest_Acct();
+
+	public I_C_ValidCombination getUnEarnedInterest_A() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

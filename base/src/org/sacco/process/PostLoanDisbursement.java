@@ -172,12 +172,12 @@ public class PostLoanDisbursement {
 			return;
 		}
 		Sacco sacco = Sacco.getSaccco();
-		MAccount accountDR = new MAccount(Env.getCtx(), sacco.getInterestReceivable_Acct(), trxName);
+		MAccount accountDR = new MAccount(Env.getCtx(), loanType.getInterestReceivable_Acct(), trxName);
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
 				loan.getloaninterestamount());
 		lineDR.save();
 
-		MAccount accountCR = new MAccount(Env.getCtx(), sacco.getUnEarnedInterest_Acct(), trxName);
+		MAccount accountCR = new MAccount(Env.getCtx(), loanType.getUnEarnedInterest_Acct(), trxName);
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
 				loan.getloaninterestamount().negate());
 		lineCR.save();
