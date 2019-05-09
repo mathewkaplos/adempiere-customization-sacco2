@@ -139,5 +139,5 @@ public class LoanTrackingCallout extends CalloutEngine {
 		mTab.setValue("plot_gain", netGain);
 
 		return NO_ERROR;
-	} 
+	}  
 }   
