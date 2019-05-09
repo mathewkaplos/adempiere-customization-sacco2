@@ -109,6 +109,55 @@ public interface I_s_shamba
 	/** Get Location	  */
 	public String getlocation();
 
+    /** Column name net_gain_gl_Acct */
+    public static final String COLUMNNAME_net_gain_gl_Acct = "net_gain_gl_Acct";
+
+	/** Set Net Gain GL Account	  */
+	public void setnet_gain_gl_Acct (int net_gain_gl_Acct);
+
+	/** Get Net Gain GL Account	  */
+	public int getnet_gain_gl_Acct();
+
+	public I_C_ValidCombination getnet_gain_gl_A() throws RuntimeException;
+
+    /** Column name number_of_plots */
+    public static final String COLUMNNAME_number_of_plots = "number_of_plots";
+
+	/** Set Number of Plots	  */
+	public void setnumber_of_plots (int number_of_plots);
+
+	/** Get Number of Plots	  */
+	public int getnumber_of_plots();
+
+    /** Column name numbering_sequence */
+    public static final String COLUMNNAME_numbering_sequence = "numbering_sequence";
+
+	/** Set Numbering Sequence(start number)	  */
+	public void setnumbering_sequence (int numbering_sequence);
+
+	/** Get Numbering Sequence(start number)	  */
+	public int getnumbering_sequence();
+
+    /** Column name plot_gl_Acct */
+    public static final String COLUMNNAME_plot_gl_Acct = "plot_gl_Acct";
+
+	/** Set Asset GL Account	  */
+	public void setplot_gl_Acct (int plot_gl_Acct);
+
+	/** Get Asset GL Account	  */
+	public int getplot_gl_Acct();
+
+	public I_C_ValidCombination getplot_gl_A() throws RuntimeException;
+
+    /** Column name plots_sold */
+    public static final String COLUMNNAME_plots_sold = "plots_sold";
+
+	/** Set Plots Sold	  */
+	public void setplots_sold (int plots_sold);
+
+	/** Get Plots Sold	  */
+	public int getplots_sold();
+
     /** Column name s_shamba_ID */
     public static final String COLUMNNAME_s_shamba_ID = "s_shamba_ID";
 
@@ -126,6 +175,24 @@ public interface I_s_shamba
 
 	/** Get Size (Hectares)	  */
 	public BigDecimal getsize();
+
+    /** Column name total_purchase_price */
+    public static final String COLUMNNAME_total_purchase_price = "total_purchase_price";
+
+	/** Set Total Purchase Price	  */
+	public void settotal_purchase_price (BigDecimal total_purchase_price);
+
+	/** Get Total Purchase Price	  */
+	public BigDecimal gettotal_purchase_price();
+
+    /** Column name total_selling_price */
+    public static final String COLUMNNAME_total_selling_price = "total_selling_price";
+
+	/** Set Total Selling Price	  */
+	public void settotal_selling_price (BigDecimal total_selling_price);
+
+	/** Get Total Selling Price	  */
+	public BigDecimal gettotal_selling_price();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

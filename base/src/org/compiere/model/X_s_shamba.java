@@ -31,7 +31,7 @@ public class X_s_shamba extends PO implements I_s_shamba, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190320L;
+	private static final long serialVersionUID = 20190509L;
 
     /** Standard Constructor */
     public X_s_shamba (Properties ctx, int s_shamba_ID, String trxName)
@@ -108,6 +108,101 @@ public class X_s_shamba extends PO implements I_s_shamba, I_Persistent
 		return (String)get_Value(COLUMNNAME_location);
 	}
 
+	public I_C_ValidCombination getnet_gain_gl_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getnet_gain_gl_Acct(), get_TrxName());	}
+
+	/** Set Net Gain GL Account.
+		@param net_gain_gl_Acct Net Gain GL Account	  */
+	public void setnet_gain_gl_Acct (int net_gain_gl_Acct)
+	{
+		set_Value (COLUMNNAME_net_gain_gl_Acct, Integer.valueOf(net_gain_gl_Acct));
+	}
+
+	/** Get Net Gain GL Account.
+		@return Net Gain GL Account	  */
+	public int getnet_gain_gl_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_net_gain_gl_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Number of Plots.
+		@param number_of_plots Number of Plots	  */
+	public void setnumber_of_plots (int number_of_plots)
+	{
+		set_Value (COLUMNNAME_number_of_plots, Integer.valueOf(number_of_plots));
+	}
+
+	/** Get Number of Plots.
+		@return Number of Plots	  */
+	public int getnumber_of_plots () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_number_of_plots);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Numbering Sequence(start number).
+		@param numbering_sequence Numbering Sequence(start number)	  */
+	public void setnumbering_sequence (int numbering_sequence)
+	{
+		set_Value (COLUMNNAME_numbering_sequence, Integer.valueOf(numbering_sequence));
+	}
+
+	/** Get Numbering Sequence(start number).
+		@return Numbering Sequence(start number)	  */
+	public int getnumbering_sequence () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_numbering_sequence);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_ValidCombination getplot_gl_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getplot_gl_Acct(), get_TrxName());	}
+
+	/** Set Asset GL Account.
+		@param plot_gl_Acct Asset GL Account	  */
+	public void setplot_gl_Acct (int plot_gl_Acct)
+	{
+		set_Value (COLUMNNAME_plot_gl_Acct, Integer.valueOf(plot_gl_Acct));
+	}
+
+	/** Get Asset GL Account.
+		@return Asset GL Account	  */
+	public int getplot_gl_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_plot_gl_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Plots Sold.
+		@param plots_sold Plots Sold	  */
+	public void setplots_sold (int plots_sold)
+	{
+		set_Value (COLUMNNAME_plots_sold, Integer.valueOf(plots_sold));
+	}
+
+	/** Get Plots Sold.
+		@return Plots Sold	  */
+	public int getplots_sold () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_plots_sold);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Shamba.
 		@param s_shamba_ID Shamba	  */
 	public void sets_shamba_ID (int s_shamba_ID)
@@ -140,6 +235,40 @@ public class X_s_shamba extends PO implements I_s_shamba, I_Persistent
 	public BigDecimal getsize () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_size);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Total Purchase Price.
+		@param total_purchase_price Total Purchase Price	  */
+	public void settotal_purchase_price (BigDecimal total_purchase_price)
+	{
+		set_Value (COLUMNNAME_total_purchase_price, total_purchase_price);
+	}
+
+	/** Get Total Purchase Price.
+		@return Total Purchase Price	  */
+	public BigDecimal gettotal_purchase_price () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_total_purchase_price);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Total Selling Price.
+		@param total_selling_price Total Selling Price	  */
+	public void settotal_selling_price (BigDecimal total_selling_price)
+	{
+		set_Value (COLUMNNAME_total_selling_price, total_selling_price);
+	}
+
+	/** Get Total Selling Price.
+		@return Total Selling Price	  */
+	public BigDecimal gettotal_selling_price () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_total_selling_price);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
