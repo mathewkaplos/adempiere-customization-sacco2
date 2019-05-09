@@ -2486,7 +2486,6 @@ public class GridTab implements DataStatusListener, Evaluatee, Serializable
 				// The state of the context can be undefined when setCurrentRow is
 				// called which can result in unpredictable behaviour.  On record
 				// insertion, the call to mField.validateValue() happens later in
-				// dataNew() function.  Thanks to Angelo Dabalà for catching
 				// and diagnosing the issue.
 //				if (m_mTable.isInserting())		//	set invalid values to null
 //					mField.validateValue();

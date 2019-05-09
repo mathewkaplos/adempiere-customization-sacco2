@@ -35,13 +35,18 @@ public class PostLoanDisbursement {
 	Doc doc = null; //
 	PO po = null; //
 	SLoanType loanType = null;//
+	int disbursement_ID = 0;
+	boolean chargesAddedToLoan = false;
 
 	public PostLoanDisbursement(MBank bank, String trxName, SLoan loan) {
 		totalCharge = Env.ZERO;
 		this.bank = bank;
 		this.trxName = trxName;
 		this.loan = loan;
+		this.disbursement_ID = loan.gets_disbursement_mode_ID();
 		loanType = new SLoanType(Env.getCtx(), loan.gets_loantype_ID(), trxName);
+
+		chargesAddedToLoan = loanType.ischarges_added_to_loan();
 		saveDisbursement();
 	}
 
@@ -83,6 +88,7 @@ public class PostLoanDisbursement {
 		fact = new Fact(doc, acctSchema, "A");
 		docLine = new DocLine(po, doc);
 		postLoanCharges();
+		prePostLoan();
 		postLoan();
 		disbursement.setDocStatus("CO");
 		disbursement.setProcessed(true);
@@ -90,20 +96,64 @@ public class PostLoanDisbursement {
 		disbursement.save();
 	}
 
+	BigDecimal loanPostingAMount = Env.ZERO;
+
+	private void prePostLoan() {
+		if (chargesAddedToLoan) {
+			loanPostingAMount = disbursement.getdisbursed_amount();
+			loan.setloanbalance(loan.getloanbalance().add(totalCharge));
+			loan.save();
+
+		} else {
+			// charges deducted from cheque
+			loanPostingAMount = disbursement.getdisbursed_amount().subtract(totalCharge);
+		}
+	}
+
 	Fact fact = null;
 	DocLine docLine = null;
 	MAcctSchema acctSchema = null;
 
 	private void postLoan() {
-		BigDecimal disbursementAmount = disbursement.getdisbursed_amount().subtract(totalCharge);
-		MAccount accountDR = new MAccount(Env.getCtx(), loanType.getloantypeloangl_Acct(), trxName);
-		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), disbursementAmount);
+
+		int debitGL = loanType.getloantypeloangl_Acct();
+		int creditGL = 0;
+
+		BigDecimal debitAmount = loanPostingAMount;
+		BigDecimal crditAmount = Env.ZERO;
+		if (disbursement_ID == Sacco.disbursementmode_investment) {
+			// shamba
+			creditGL = loan.gets_shamba().getplot_gl_Acct();
+			crditAmount = loan.getplot_cost();
+
+		} else if (disbursement_ID == Sacco.disbursementmode_saving) {
+			creditGL = loan.gets_membershares().gets_sharetype().getsaving_gl_code_Acct();
+			crditAmount = loanPostingAMount;
+			// Savings transfer
+		} else {
+			creditGL = bank.getGLAccount();
+			crditAmount = loanPostingAMount;
+		}
+
+		MAccount accountDR = new MAccount(Env.getCtx(), debitGL, trxName);
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), debitAmount);
 		lineDR.save();
 
-		MAccount accountCR = new MAccount(Env.getCtx(), bank.getGLAccount(), trxName);
-		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
-				disbursementAmount.negate());
+		MAccount accountCR = new MAccount(Env.getCtx(), creditGL, trxName);
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), crditAmount.negate());
 		lineCR.save();
+		if (disbursement_ID == Sacco.disbursementmode_investment) {
+			// shamba
+			int creditGL2 = loan.gets_shamba().getnet_gain_gl_Acct();
+			BigDecimal crditAmount2 = loan.getplot_gain();
+
+			MAccount accountCR2 = new MAccount(Env.getCtx(), creditGL2, trxName);
+			FactLine lineCR2 = fact.createLine(docLine, accountCR2, acctSchema.getC_Currency_ID(),
+					crditAmount2.negate());
+			lineCR2.save();
+
+		}
+
 		if (loan.ispartial_disbursement()) {
 			if (loan.isPartiallyDisbursed()) { // at least one department had
 												// taken place, so do not post

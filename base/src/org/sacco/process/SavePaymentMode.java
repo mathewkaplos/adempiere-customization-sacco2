@@ -71,9 +71,9 @@ public class SavePaymentMode extends SvrProcess {
 		if (loan.is_refinance()) {
 			repayOldLoan();
 		}
-		if (s_disbursement_mode_ID == 8) {
+		if (s_disbursement_mode_ID == Sacco.disbursementmode_investment) {
 			updateShambaPlot();
-		} else if (s_disbursement_mode_ID == 9) {
+		} else if (s_disbursement_mode_ID == Sacco.disbursementmode_saving) {
 			updateSavings();
 		}
 		if (s_disbursement_mode_ID == 2 || s_disbursement_mode_ID == 3) { // cheque
@@ -82,14 +82,11 @@ public class SavePaymentMode extends SvrProcess {
 		}
 
 		if (s_disbursement_mode_ID != 2) {
-			PostLoanDisbursement postLoanDisbursement = new PostLoanDisbursement( bank, get_TrxName(),
-					loan);
+			PostLoanDisbursement postLoanDisbursement = new PostLoanDisbursement(bank, get_TrxName(), loan);
 			postLoanDisbursement.post();
 		}
 		return null;
 	}
-
-	
 
 	private void updateSavings() {
 		int s_membershares_ID = loan.gets_membershares_ID();

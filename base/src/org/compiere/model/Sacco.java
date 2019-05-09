@@ -27,6 +27,19 @@ public class Sacco extends X_s_saccoinfo {
 		// TODO Auto-generated constructor stub
 	}
 
+	// Disbursement modes
+
+	public final static int disbursementmode_cash = 1;
+	public final static int disbursementmode_cheque = 2;
+	public final static int disbursementmode_cash_and_cheque = 3;
+	public final static int disbursementmode_FOSA = 4;
+	public final static int disbursementmode_Error_Correction = 5;
+	public final static int disbursementmode_MPESA_Remittance = 6;
+	public final static int disbursementmode_MPESA_Withdrawals = 7;
+	public final static int disbursementmode_investment = 8;
+	public final static int disbursementmode_saving = 9;
+	public final static int disbursementmode_Salary_Deduction = 10;
+
 	public static Sacco getSaccco() {
 		return new Sacco(Env.getCtx(), 1000000, null);
 	}
@@ -135,8 +148,8 @@ public class Sacco extends X_s_saccoinfo {
 
 	/**
 	 * Delete the anticipated loan remittance for a particular period This might
-	 * happen if a loan remittance is adjusted to zero, or when replacing the
-	 * period remittance
+	 * happen if a loan remittance is adjusted to zero, or when replacing the period
+	 * remittance
 	 * 
 	 * @param s_loans_ID
 	 * @param C_Period_ID
@@ -147,8 +160,8 @@ public class Sacco extends X_s_saccoinfo {
 
 	/**
 	 * Delete the anticipated loan remittance for a future periods. This might
-	 * happen if a loan remittance is adjusted to zero, or when replacing the
-	 * period remittance
+	 * happen if a loan remittance is adjusted to zero, or when replacing the period
+	 * remittance
 	 * 
 	 * @param s_loans_ID
 	 * @param C_Period_ID
@@ -158,9 +171,8 @@ public class Sacco extends X_s_saccoinfo {
 	}
 
 	/**
-	 * delete all period remittances for this loan..This will happen when a loan
-	 * is fully repaid, a loan is re-financed, re-scheduled or a loan is written
-	 * off
+	 * delete all period remittances for this loan..This will happen when a loan is
+	 * fully repaid, a loan is re-financed, re-scheduled or a loan is written off
 	 * 
 	 * @param s_loans_ID
 	 * @param andWhereClause

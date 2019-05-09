@@ -31,8 +31,6 @@
 		<!-- add others as required -->
 		<ant inheritAll="false" dir="../base" target="clean" />
 		<ant inheritAll="false" dir="../client" target="clean" />
-		<ant inheritAll="false" antfile="../zkwebui/build_custom.xml"
-			target="clean" />
 		<delete file="${dist.dir}/${adempiere.customJarFile}" />
 		<delete file="${dist.dir}/${adempiere.zkCustomJarFile}" />
 	</target>
