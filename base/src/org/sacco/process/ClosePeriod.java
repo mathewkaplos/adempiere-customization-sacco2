@@ -26,6 +26,7 @@ public class ClosePeriod extends SvrProcess {
 		period_closing.setclosed(true);
 		period_closing.save();
 
+		
 		Sacco sacco = Sacco.getSaccco();
 		sacco.setsaccoperiod_ID(period_closing.getnext_period_ID());
 		sacco.save();
