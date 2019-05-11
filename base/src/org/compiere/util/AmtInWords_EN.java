@@ -201,6 +201,7 @@ public class AmtInWords_EN implements AmtInWords
 	{
 		AmtInWords_EN aiw = new AmtInWords_EN();
 	//	aiw.print (".23");	Error
+		aiw.print ("300.50");
 		aiw.print ("0.23");
 		aiw.print ("1.23");
 		aiw.print ("12.345");

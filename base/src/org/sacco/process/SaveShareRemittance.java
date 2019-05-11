@@ -27,10 +27,12 @@ import org.compiere.model.ShareRemittance;
 import org.compiere.model.Share_recovery;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.AmtInWords_EN;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import zenith.util.DateUtil;
+import zenith.util.NumberWordConverter;
 
 public class SaveShareRemittance extends SvrProcess {
 
@@ -80,6 +82,12 @@ public class SaveShareRemittance extends SvrProcess {
 		shareRemittance.setIsComplete(true);
 		shareRemittance.setTransactionTime(DateUtil.newTimestamp());
 		shareRemittance.setTransDate(DateUtil.newTimestamp());
+
+		String amtInWords_EN = NumberWordConverter.getMoneyIntoWords(shareRemittance.getreceiptamount().doubleValue());
+
+		System.out.println(amtInWords_EN);
+		shareRemittance.setAmountInWords(amtInWords_EN);
+
 		shareRemittance.save();
 
 		post();

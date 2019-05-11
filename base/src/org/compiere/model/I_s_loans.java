@@ -259,6 +259,15 @@ public interface I_s_loans
 	/** Get Print Cheque	  */
 	public String getbtn_print_cheque();
 
+    /** Column name btn_re_schedule */
+    public static final String COLUMNNAME_btn_re_schedule = "btn_re_schedule";
+
+	/** Set RE-SCHEDULE LOAN	  */
+	public void setbtn_re_schedule (String btn_re_schedule);
+
+	/** Get RE-SCHEDULE LOAN	  */
+	public String getbtn_re_schedule();
+
     /** Column name btn_repaymode_reverse */
     public static final String COLUMNNAME_btn_repaymode_reverse = "btn_repaymode_reverse";
 
@@ -276,15 +285,6 @@ public interface I_s_loans
 
 	/** Get Save [Payment Mode]	  */
 	public String getbtn_repaymode_save();
-
-    /** Column name btn_re_schedule */
-    public static final String COLUMNNAME_btn_re_schedule = "btn_re_schedule";
-
-	/** Set RE-SCHEDULE LOAN	  */
-	public void setbtn_re_schedule (String btn_re_schedule);
-
-	/** Get RE-SCHEDULE LOAN	  */
-	public String getbtn_re_schedule();
 
     /** Column name btn_reverse_cheque_collection */
     public static final String COLUMNNAME_btn_reverse_cheque_collection = "btn_reverse_cheque_collection";
@@ -349,15 +349,6 @@ public interface I_s_loans
 	/** Get Cash Amount	  */
 	public BigDecimal getcashamount();
 
-    /** Column name chequeamount */
-    public static final String COLUMNNAME_chequeamount = "chequeamount";
-
-	/** Set Cheque Amount	  */
-	public void setchequeamount (BigDecimal chequeamount);
-
-	/** Get Cheque Amount	  */
-	public BigDecimal getchequeamount();
-
     /** Column name cheque_collection_date */
     public static final String COLUMNNAME_cheque_collection_date = "cheque_collection_date";
 
@@ -385,15 +376,6 @@ public interface I_s_loans
 	/** Get cheque_collector_changed	  */
 	public boolean ischeque_collector_changed();
 
-    /** Column name chequetype */
-    public static final String COLUMNNAME_chequetype = "chequetype";
-
-	/** Set Cheque Type	  */
-	public void setchequetype (String chequetype);
-
-	/** Get Cheque Type	  */
-	public String getchequetype();
-
     /** Column name cheque_writing_done */
     public static final String COLUMNNAME_cheque_writing_done = "cheque_writing_done";
 
@@ -411,6 +393,24 @@ public interface I_s_loans
 
 	/** Get Other Charges(cheque writing)	  */
 	public BigDecimal getcheque_writing_oc();
+
+    /** Column name chequeamount */
+    public static final String COLUMNNAME_chequeamount = "chequeamount";
+
+	/** Set Cheque Amount	  */
+	public void setchequeamount (BigDecimal chequeamount);
+
+	/** Get Cheque Amount	  */
+	public BigDecimal getchequeamount();
+
+    /** Column name chequetype */
+    public static final String COLUMNNAME_chequetype = "chequetype";
+
+	/** Set Cheque Type	  */
+	public void setchequetype (String chequetype);
+
+	/** Get Cheque Type	  */
+	public String getchequetype();
 
     /** Column name collectcash */
     public static final String COLUMNNAME_collectcash = "collectcash";
@@ -644,6 +644,19 @@ public interface I_s_loans
 	/** Get Display In Statement	  */
 	public boolean isdisplay();
 
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
+
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
 
@@ -740,15 +753,6 @@ public interface I_s_loans
 	/** Get Interest Balance	  */
 	public BigDecimal getintbalance();
 
-    /** Column name interestpaid */
-    public static final String COLUMNNAME_interestpaid = "interestpaid";
-
-	/** Set Interest Paid	  */
-	public void setinterestpaid (BigDecimal interestpaid);
-
-	/** Get Interest Paid	  */
-	public BigDecimal getinterestpaid();
-
     /** Column name interest_recovery */
     public static final String COLUMNNAME_interest_recovery = "interest_recovery";
 
@@ -757,6 +761,15 @@ public interface I_s_loans
 
 	/** Get Int. Recovery Mode	  */
 	public String getinterest_recovery();
+
+    /** Column name interestpaid */
+    public static final String COLUMNNAME_interestpaid = "interestpaid";
+
+	/** Set Interest Paid	  */
+	public void setinterestpaid (BigDecimal interestpaid);
+
+	/** Get Interest Paid	  */
+	public BigDecimal getinterestpaid();
 
     /** Column name interesttype */
     public static final String COLUMNNAME_interesttype = "interesttype";
@@ -785,6 +798,15 @@ public interface I_s_loans
 	/** Get Repay Period	  */
 	public int getintperiod();
 
+    /** Column name is_refinance */
+    public static final String COLUMNNAME_is_refinance = "is_refinance";
+
+	/** Set Is Refinance	  */
+	public void setis_refinance (boolean is_refinance);
+
+	/** Get Is Refinance	  */
+	public boolean is_refinance();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -811,14 +833,18 @@ public interface I_s_loans
 	  */
 	public boolean isApproved();
 
-    /** Column name is_refinance */
-    public static final String COLUMNNAME_is_refinance = "is_refinance";
+    /** Column name IsComplete */
+    public static final String COLUMNNAME_IsComplete = "IsComplete";
 
-	/** Set Is Refinance	  */
-	public void setis_refinance (boolean is_refinance);
+	/** Set Complete.
+	  * It is complete
+	  */
+	public void setIsComplete (boolean IsComplete);
 
-	/** Get Is Refinance	  */
-	public boolean is_refinance();
+	/** Get Complete.
+	  * It is complete
+	  */
+	public boolean isComplete();
 
     /** Column name isrefinancing */
     public static final String COLUMNNAME_isrefinancing = "isrefinancing";
@@ -873,6 +899,17 @@ public interface I_s_loans
 
 	/** Get Last Rescheduled Year	  */
 	public int getlastrescheduledyear();
+
+    /** Column name loan_gl_Acct */
+    public static final String COLUMNNAME_loan_gl_Acct = "loan_gl_Acct";
+
+	/** Set Loan GL Code	  */
+	public void setloan_gl_Acct (int loan_gl_Acct);
+
+	/** Get Loan GL Code	  */
+	public int getloan_gl_Acct();
+
+	public I_C_ValidCombination getloan_gl_A() throws RuntimeException;
 
     /** Column name loanamount */
     public static final String COLUMNNAME_loanamount = "loanamount";
@@ -936,17 +973,6 @@ public interface I_s_loans
 
 	/** Get loanenddate	  */
 	public Timestamp getloanenddate();
-
-    /** Column name loan_gl_Acct */
-    public static final String COLUMNNAME_loan_gl_Acct = "loan_gl_Acct";
-
-	/** Set Loan GL Code	  */
-	public void setloan_gl_Acct (int loan_gl_Acct);
-
-	/** Get Loan GL Code	  */
-	public int getloan_gl_Acct();
-
-	public I_C_ValidCombination getloan_gl_A() throws RuntimeException;
 
     /** Column name loangrosspay */
     public static final String COLUMNNAME_loangrosspay = "loangrosspay";
@@ -1128,15 +1154,6 @@ public interface I_s_loans
 	/** Get Maximum Loan	  */
 	public BigDecimal getmaximumloan();
 
-    /** Column name memberid */
-    public static final String COLUMNNAME_memberid = "memberid";
-
-	/** Set memberid	  */
-	public void setmemberid (int memberid);
-
-	/** Get memberid	  */
-	public int getmemberid();
-
     /** Column name member_no */
     public static final String COLUMNNAME_member_no = "member_no";
 
@@ -1146,15 +1163,6 @@ public interface I_s_loans
 	/** Get Member NO	  */
 	public String getmember_no();
 
-    /** Column name membershares */
-    public static final String COLUMNNAME_membershares = "membershares";
-
-	/** Set Member Shares	  */
-	public void setmembershares (BigDecimal membershares);
-
-	/** Get Member Shares	  */
-	public BigDecimal getmembershares();
-
     /** Column name member_userid */
     public static final String COLUMNNAME_member_userid = "member_userid";
 
@@ -1163,6 +1171,24 @@ public interface I_s_loans
 
 	/** Get member_userid	  */
 	public int getmember_userid();
+
+    /** Column name memberid */
+    public static final String COLUMNNAME_memberid = "memberid";
+
+	/** Set memberid	  */
+	public void setmemberid (int memberid);
+
+	/** Get memberid	  */
+	public int getmemberid();
+
+    /** Column name membershares */
+    public static final String COLUMNNAME_membershares = "membershares";
+
+	/** Set Member Shares	  */
+	public void setmembershares (BigDecimal membershares);
+
+	/** Get Member Shares	  */
+	public BigDecimal getmembershares();
 
     /** Column name minimumloan */
     public static final String COLUMNNAME_minimumloan = "minimumloan";
@@ -1442,24 +1468,6 @@ public interface I_s_loans
 	/** Get Repay Mode	  */
 	public String getrepaymode();
 
-    /** Column name saved */
-    public static final String COLUMNNAME_saved = "saved";
-
-	/** Set Saved	  */
-	public void setsaved (boolean saved);
-
-	/** Get Saved	  */
-	public boolean issaved();
-
-    /** Column name save_loan */
-    public static final String COLUMNNAME_save_loan = "save_loan";
-
-	/** Set Save Loan	  */
-	public void setsave_loan (String save_loan);
-
-	/** Get Save Loan	  */
-	public String getsave_loan();
-
     /** Column name s_branch_ID */
     public static final String COLUMNNAME_s_branch_ID = "s_branch_ID";
 
@@ -1471,15 +1479,6 @@ public interface I_s_loans
 
 	public I_s_branch gets_branch() throws RuntimeException;
 
-    /** Column name schedule_adjusted */
-    public static final String COLUMNNAME_schedule_adjusted = "schedule_adjusted";
-
-	/** Set Schedule Adjusted	  */
-	public void setschedule_adjusted (boolean schedule_adjusted);
-
-	/** Get Schedule Adjusted	  */
-	public boolean isschedule_adjusted();
-
     /** Column name s_disbursement_mode_ID */
     public static final String COLUMNNAME_s_disbursement_mode_ID = "s_disbursement_mode_ID";
 
@@ -1490,24 +1489,6 @@ public interface I_s_loans
 	public int gets_disbursement_mode_ID();
 
 	public I_s_payment_mode gets_disbursement_mode() throws RuntimeException;
-
-    /** Column name seen_documents */
-    public static final String COLUMNNAME_seen_documents = "seen_documents";
-
-	/** Set Seen And Checked All Supporting Documents	  */
-	public void setseen_documents (boolean seen_documents);
-
-	/** Get Seen And Checked All Supporting Documents	  */
-	public boolean isseen_documents();
-
-    /** Column name serialid */
-    public static final String COLUMNNAME_serialid = "serialid";
-
-	/** Set serialid	  */
-	public void setserialid (int serialid);
-
-	/** Get serialid	  */
-	public int getserialid();
 
     /** Column name s_loanpurpose_ID */
     public static final String COLUMNNAME_s_loanpurpose_ID = "s_loanpurpose_ID";
@@ -1576,10 +1557,10 @@ public interface I_s_loans
     /** Column name s_payment_mode_ID */
     public static final String COLUMNNAME_s_payment_mode_ID = "s_payment_mode_ID";
 
-	/** Set Repayment Mode	  */
+	/** Set Payment Mode	  */
 	public void sets_payment_mode_ID (int s_payment_mode_ID);
 
-	/** Get Repayment Mode	  */
+	/** Get Payment Mode	  */
 	public int gets_payment_mode_ID();
 
 	public I_s_payment_mode gets_payment_mode() throws RuntimeException;
@@ -1605,6 +1586,51 @@ public interface I_s_loans
 	public int gets_shamba_plot_ID();
 
 	public I_s_shamba_plot gets_shamba_plot() throws RuntimeException;
+
+    /** Column name save_loan */
+    public static final String COLUMNNAME_save_loan = "save_loan";
+
+	/** Set Save Loan	  */
+	public void setsave_loan (String save_loan);
+
+	/** Get Save Loan	  */
+	public String getsave_loan();
+
+    /** Column name saved */
+    public static final String COLUMNNAME_saved = "saved";
+
+	/** Set Saved	  */
+	public void setsaved (boolean saved);
+
+	/** Get Saved	  */
+	public boolean issaved();
+
+    /** Column name schedule_adjusted */
+    public static final String COLUMNNAME_schedule_adjusted = "schedule_adjusted";
+
+	/** Set Schedule Adjusted	  */
+	public void setschedule_adjusted (boolean schedule_adjusted);
+
+	/** Get Schedule Adjusted	  */
+	public boolean isschedule_adjusted();
+
+    /** Column name seen_documents */
+    public static final String COLUMNNAME_seen_documents = "seen_documents";
+
+	/** Set Seen And Checked All Supporting Documents	  */
+	public void setseen_documents (boolean seen_documents);
+
+	/** Get Seen And Checked All Supporting Documents	  */
+	public boolean isseen_documents();
+
+    /** Column name serialid */
+    public static final String COLUMNNAME_serialid = "serialid";
+
+	/** Set serialid	  */
+	public void setserialid (int serialid);
+
+	/** Get serialid	  */
+	public int getserialid();
 
     /** Column name statementbal */
     public static final String COLUMNNAME_statementbal = "statementbal";

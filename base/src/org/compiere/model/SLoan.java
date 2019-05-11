@@ -591,8 +591,8 @@ public class SLoan extends X_s_loans {
 	}
 
 	/**
-	 * Get the number of repayments already made for the loan. Repayments which
-	 * are complete
+	 * Get the number of repayments already made for the loan. Repayments which are
+	 * complete
 	 * 
 	 * @return
 	 */
@@ -614,8 +614,8 @@ public class SLoan extends X_s_loans {
 	}
 
 	/**
-	 * If this loan is guaranteed , then this will return the amount needed to
-	 * fully guarantee it
+	 * If this loan is guaranteed , then this will return the amount needed to fully
+	 * guarantee it
 	 * 
 	 * @return
 	 */
@@ -625,8 +625,8 @@ public class SLoan extends X_s_loans {
 	}
 
 	/**
-	 * check if this loan is partially disbursed it has been disbursed at least
-	 * once before
+	 * check if this loan is partially disbursed it has been disbursed at least once
+	 * before
 	 * 
 	 * @return true if loan has at leat one disbursement
 	 */
@@ -860,4 +860,8 @@ public class SLoan extends X_s_loans {
 
 	}
 
+	public BigDecimal getLoanInterestToday() {
+		String sql = "select adempiere.getloaninterest(" + get_ID() + ")";
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
 }
