@@ -62,6 +62,8 @@ public class SaveShareWithdrawal extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
+		
+		
 		isfixeddeposit = shareRemittance.isfixeddeposit();
 		if (isfixeddeposit) {
 			interest = shareRemittance.getInterestAmt();
@@ -173,9 +175,9 @@ public class SaveShareWithdrawal extends SvrProcess {
 		}
 		int interest_gl = 0;
 		if (shareType.getshare_saving().equals("saving"))
-			interest_gl = shareType.getinterest_paid_Acct();
+			interest_gl = shareType.getinterest_payable_Acct();
 		else
-			interest_gl = shareType.getdividend_paid_Acct();
+			interest_gl = shareType.getdividend_payable_Acct();
 
 		MAccount accountCR = new MAccount(Env.getCtx(), interest_gl, get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), interest);

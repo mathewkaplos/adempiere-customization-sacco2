@@ -33,7 +33,7 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190316L;
+	private static final long serialVersionUID = 20190511L;
 
     /** Standard Constructor */
     public X_s_membershares (Properties ctx, int s_membershares_ID, String trxName)
@@ -41,7 +41,14 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
       super (ctx, s_membershares_ID, trxName);
       /** if (s_membershares_ID == 0)
         {
-			setpaymode (null);
+			setDocStatus (null);
+// DR
+			setIsComplete (false);
+// N
+			setlinked_to_dependants (false);
+// N
+			setPosted (false);
+// N
 			sets_member_ID (0);
 			sets_membershares_ID (0);
 			sets_sharetype_ID (0);
@@ -138,6 +145,92 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return false;
 	}
 
+	/** Set disp002.
+		@param disp002 disp002	  */
+	public void setdisp002 (boolean disp002)
+	{
+		set_Value (COLUMNNAME_disp002, Boolean.valueOf(disp002));
+	}
+
+	/** Get disp002.
+		@return disp002	  */
+	public boolean isdisp002 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp002);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set disp003.
+		@param disp003 disp003	  */
+	public void setdisp003 (boolean disp003)
+	{
+		set_Value (COLUMNNAME_disp003, Boolean.valueOf(disp003));
+	}
+
+	/** Get disp003.
+		@return disp003	  */
+	public boolean isdisp003 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp003);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** DocStatus AD_Reference_ID=131 */
+	public static final int DOCSTATUS_AD_Reference_ID=131;
+	/** Drafted = DR */
+	public static final String DOCSTATUS_Drafted = "DR";
+	/** Completed = CO */
+	public static final String DOCSTATUS_Completed = "CO";
+	/** Approved = AP */
+	public static final String DOCSTATUS_Approved = "AP";
+	/** Not Approved = NA */
+	public static final String DOCSTATUS_NotApproved = "NA";
+	/** Voided = VO */
+	public static final String DOCSTATUS_Voided = "VO";
+	/** Invalid = IN */
+	public static final String DOCSTATUS_Invalid = "IN";
+	/** Reversed = RE */
+	public static final String DOCSTATUS_Reversed = "RE";
+	/** Closed = CL */
+	public static final String DOCSTATUS_Closed = "CL";
+	/** Unknown = ?? */
+	public static final String DOCSTATUS_Unknown = "??";
+	/** In Progress = IP */
+	public static final String DOCSTATUS_InProgress = "IP";
+	/** Waiting Payment = WP */
+	public static final String DOCSTATUS_WaitingPayment = "WP";
+	/** Waiting Confirmation = WC */
+	public static final String DOCSTATUS_WaitingConfirmation = "WC";
+	/** Set Document Status.
+		@param DocStatus 
+		The current status of the document
+	  */
+	public void setDocStatus (String DocStatus)
+	{
+
+		set_Value (COLUMNNAME_DocStatus, DocStatus);
+	}
+
+	/** Get Document Status.
+		@return The current status of the document
+	  */
+	public String getDocStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_DocStatus);
+	}
+
 	/** Set Document No.
 		@param DocumentNo 
 		Document sequence number of the document
@@ -189,6 +282,30 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return bd;
 	}
 
+	/** Set Complete.
+		@param IsComplete 
+		It is complete
+	  */
+	public void setIsComplete (boolean IsComplete)
+	{
+		set_Value (COLUMNNAME_IsComplete, Boolean.valueOf(IsComplete));
+	}
+
+	/** Get Complete.
+		@return It is complete
+	  */
+	public boolean isComplete () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsComplete);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Is Fixed Deposit.
 		@param isfixeddeposit Is Fixed Deposit	  */
 	public void setisfixeddeposit (boolean isfixeddeposit)
@@ -210,6 +327,61 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return false;
 	}
 
+	/** Set Last Deposit Date.
+		@param last_deposit_date Last Deposit Date	  */
+	public void setlast_deposit_date (Timestamp last_deposit_date)
+	{
+		set_Value (COLUMNNAME_last_deposit_date, last_deposit_date);
+	}
+
+	/** Get Last Deposit Date.
+		@return Last Deposit Date	  */
+	public Timestamp getlast_deposit_date () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_last_deposit_date);
+	}
+
+	/** Set Linked to Dependants/Next of kin.
+		@param linked_to_dependants Linked to Dependants/Next of kin	  */
+	public void setlinked_to_dependants (boolean linked_to_dependants)
+	{
+		set_Value (COLUMNNAME_linked_to_dependants, Boolean.valueOf(linked_to_dependants));
+	}
+
+	/** Get Linked to Dependants/Next of kin.
+		@return Linked to Dependants/Next of kin	  */
+	public boolean islinked_to_dependants () 
+	{
+		Object oo = get_Value(COLUMNNAME_linked_to_dependants);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Next Of Kin.
+		@param m_memberkin_ID Next Of Kin	  */
+	public void setm_memberkin_ID (int m_memberkin_ID)
+	{
+		if (m_memberkin_ID < 1) 
+			set_Value (COLUMNNAME_m_memberkin_ID, null);
+		else 
+			set_Value (COLUMNNAME_m_memberkin_ID, Integer.valueOf(m_memberkin_ID));
+	}
+
+	/** Get Next Of Kin.
+		@return Next Of Kin	  */
+	public int getm_memberkin_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_m_memberkin_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Member NO.
 		@param member_no Member NO	  */
 	public void setmember_no (String member_no)
@@ -222,6 +394,23 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	public String getmember_no () 
 	{
 		return (String)get_Value(COLUMNNAME_member_no);
+	}
+
+	/** Set member_userid.
+		@param member_userid member_userid	  */
+	public void setmember_userid (int member_userid)
+	{
+		set_ValueNoCheck (COLUMNNAME_member_userid, Integer.valueOf(member_userid));
+	}
+
+	/** Get member_userid.
+		@return member_userid	  */
+	public int getmember_userid () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_member_userid);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Month Closing Balance.
@@ -276,7 +465,7 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		@param openingshares Opening Shares	  */
 	public void setopeningshares (BigDecimal openingshares)
 	{
-		set_Value (COLUMNNAME_openingshares, openingshares);
+		set_ValueNoCheck (COLUMNNAME_openingshares, openingshares);
 	}
 
 	/** Get Opening Shares.
@@ -326,6 +515,30 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	public String getpayroll_no () 
 	{
 		return (String)get_Value(COLUMNNAME_payroll_no);
+	}
+
+	/** Set Posted.
+		@param Posted 
+		Posting status
+	  */
+	public void setPosted (boolean Posted)
+	{
+		set_Value (COLUMNNAME_Posted, Boolean.valueOf(Posted));
+	}
+
+	/** Get Posted.
+		@return Posting status
+	  */
+	public boolean isPosted () 
+	{
+		Object oo = get_Value(COLUMNNAME_Posted);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Refrence.
@@ -407,6 +620,31 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	public int gets_membershares_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_membershares_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException
+    {
+		return (I_s_payment_mode)MTable.get(getCtx(), I_s_payment_mode.Table_Name)
+			.getPO(gets_payment_mode_ID(), get_TrxName());	}
+
+	/** Set Payment Mode.
+		@param s_payment_mode_ID Payment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID)
+	{
+		if (s_payment_mode_ID < 1) 
+			set_Value (COLUMNNAME_s_payment_mode_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_payment_mode_ID, Integer.valueOf(s_payment_mode_ID));
+	}
+
+	/** Get Payment Mode.
+		@return Payment Mode	  */
+	public int gets_payment_mode_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_payment_mode_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

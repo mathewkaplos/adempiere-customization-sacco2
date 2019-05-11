@@ -74,7 +74,7 @@ public class SaveShareRemittance extends SvrProcess {
 		memberShares.setsharestodate(memberShares.getsharestodate().add(receiptAmt));
 
 		memberShares.setfreeshares(memberShares.getfreeshares().add(receiptAmt));
-		memberShares.setshareeffectdate(shareRemittance.getremittancedate());
+		memberShares.setlast_deposit_date(shareRemittance.getlast_deposit_date());
 		memberShares.save();
 
 		JOptionPane.showMessageDialog(null, "Saved Successfully");

@@ -33,7 +33,7 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190508L;
+	private static final long serialVersionUID = 20190511L;
 
     /** Standard Constructor */
     public X_s_shareremittance (Properties ctx, int s_shareremittance_ID, String trxName)
@@ -176,6 +176,48 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public String getbtn_add_charge () 
 	{
 		return (String)get_Value(COLUMNNAME_btn_add_charge);
+	}
+
+	/** Set Print.
+		@param btn_print Print	  */
+	public void setbtn_print (String btn_print)
+	{
+		set_Value (COLUMNNAME_btn_print, btn_print);
+	}
+
+	/** Get Print.
+		@return Print	  */
+	public String getbtn_print () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_print);
+	}
+
+	/** Set Print Deposit(A4).
+		@param btn_print_depositA4 Print Deposit(A4)	  */
+	public void setbtn_print_depositA4 (String btn_print_depositA4)
+	{
+		set_Value (COLUMNNAME_btn_print_depositA4, btn_print_depositA4);
+	}
+
+	/** Get Print Deposit(A4).
+		@return Print Deposit(A4)	  */
+	public String getbtn_print_depositA4 () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_print_depositA4);
+	}
+
+	/** Set Print Withdrawal(A4).
+		@param btn_print_withdrawaltA4 Print Withdrawal(A4)	  */
+	public void setbtn_print_withdrawaltA4 (String btn_print_withdrawaltA4)
+	{
+		set_Value (COLUMNNAME_btn_print_withdrawaltA4, btn_print_withdrawaltA4);
+	}
+
+	/** Get Print Withdrawal(A4).
+		@return Print Withdrawal(A4)	  */
+	public String getbtn_print_withdrawaltA4 () 
+	{
+		return (String)get_Value(COLUMNNAME_btn_print_withdrawaltA4);
 	}
 
 	/** Set Save.
@@ -519,6 +561,20 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Last Deposit Date.
+		@param last_deposit_date Last Deposit Date	  */
+	public void setlast_deposit_date (Timestamp last_deposit_date)
+	{
+		set_Value (COLUMNNAME_last_deposit_date, last_deposit_date);
+	}
+
+	/** Get Last Deposit Date.
+		@return Last Deposit Date	  */
+	public Timestamp getlast_deposit_date () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_last_deposit_date);
 	}
 
 	/** Set Member #.
@@ -967,6 +1023,56 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public int gets_membershares_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_membershares_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException
+    {
+		return (I_s_payment_mode)MTable.get(getCtx(), I_s_payment_mode.Table_Name)
+			.getPO(gets_payment_mode_ID(), get_TrxName());	}
+
+	/** Set Payment Mode.
+		@param s_payment_mode_ID Payment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID)
+	{
+		if (s_payment_mode_ID < 1) 
+			set_Value (COLUMNNAME_s_payment_mode_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_payment_mode_ID, Integer.valueOf(s_payment_mode_ID));
+	}
+
+	/** Get Payment Mode.
+		@return Payment Mode	  */
+	public int gets_payment_mode_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_payment_mode_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_s_payment_mode gets_payment_mode_remittance() throws RuntimeException
+    {
+		return (I_s_payment_mode)MTable.get(getCtx(), I_s_payment_mode.Table_Name)
+			.getPO(gets_payment_mode_remittance_ID(), get_TrxName());	}
+
+	/** Set Pay Mode.
+		@param s_payment_mode_remittance_ID Pay Mode	  */
+	public void sets_payment_mode_remittance_ID (int s_payment_mode_remittance_ID)
+	{
+		if (s_payment_mode_remittance_ID < 1) 
+			set_Value (COLUMNNAME_s_payment_mode_remittance_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_payment_mode_remittance_ID, Integer.valueOf(s_payment_mode_remittance_ID));
+	}
+
+	/** Get Pay Mode.
+		@return Pay Mode	  */
+	public int gets_payment_mode_remittance_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_payment_mode_remittance_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

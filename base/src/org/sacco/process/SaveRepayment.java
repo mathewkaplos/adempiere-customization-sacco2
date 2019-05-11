@@ -207,21 +207,15 @@ public class SaveRepayment extends SvrProcess {
 
 		if (totalInterest.compareTo(Env.ZERO) == 0)
 			return;
-		MAccount accountCR = new MAccount(Env.getCtx(), acctSchemaDefault.getInterestReceivable_Acct(), get_TrxName());
-		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), totalInterest.negate());
-		lineCR.save();
 
-		MAccount accountDR = new MAccount(Env.getCtx(), acctSchemaDefault.getUnEarnedInterest_Acct(), get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), totalInterest);
+		MAccount accountDR = new MAccount(Env.getCtx(),loantype.getInterestReceivable_Acct() , get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), totalInterest.negate());
 		lineDR.save();
 
 		MAccount accountCR2 = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
 		FactLine lineCR2 = fact.createLine(docLine, accountCR2, acctSchema.getC_Currency_ID(), totalInterest);
 		lineCR2.save();
 
-		MAccount accountDR2 = new MAccount(Env.getCtx(), loantype.getloantypeinterestgl_Acct(), get_TrxName());
-		FactLine lineDR2 = fact.createLine(docLine, accountDR2, acctSchema.getC_Currency_ID(), totalInterest.negate());
-		lineDR2.save();
 
 	}
 

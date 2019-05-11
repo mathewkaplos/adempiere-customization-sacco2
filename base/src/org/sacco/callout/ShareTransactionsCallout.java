@@ -111,16 +111,11 @@ public class ShareTransactionsCallout extends CalloutEngine {
 			mTab.setValue("isfixeddeposit", true);
 			BigDecimal receiptamount = memberShares.getsharestodate();
 
-			Timestamp effectDate = memberShares.getshareeffectdate();
+			Timestamp depositDate = memberShares.getlast_deposit_date();
 			Timestamp WithdrawalDate = (Timestamp) mTab.getValue("remittancedate");
-			System.out.println(effectDate);
-			System.out.println(WithdrawalDate);
-			int months = (int) Sacco.calculateAgeInMonths(effectDate, WithdrawalDate);
+			int months = (int) Sacco.calculateAgeInMonths(depositDate, WithdrawalDate);
 			int freq = shareType.getintfrequency();
 			int freqMonths = Sacco.getFrequencyMonths(months, freq);
-			System.out.println(months);
-			System.out.println(freq);
-			System.out.println(freqMonths);
 
 			double rate = shareType.getintrate().doubleValue() / 100;
 			double interest = rate * freqMonths * receiptamount.doubleValue();
@@ -187,6 +182,17 @@ public class ShareTransactionsCallout extends CalloutEngine {
 		if (mTab.getValue("s_shareremittance_ID") == null)
 			return "";
 		mTab.setValue("receiptamount", Env.ZERO);
+		return NO_ERROR;
+	}
+
+	// org.sacco.callout.ShareTransactionsCallout.openingbal
+	// recover_from_share_transfer
+	public String openingbal(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		BigDecimal val = (BigDecimal) value;
+		mTab.setValue("sharestodate", val);
+
 		return NO_ERROR;
 	}
 }

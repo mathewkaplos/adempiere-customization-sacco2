@@ -116,6 +116,33 @@ public interface I_s_shareremittance
 	/** Get Add Charge	  */
 	public String getbtn_add_charge();
 
+    /** Column name btn_print */
+    public static final String COLUMNNAME_btn_print = "btn_print";
+
+	/** Set Print	  */
+	public void setbtn_print (String btn_print);
+
+	/** Get Print	  */
+	public String getbtn_print();
+
+    /** Column name btn_print_depositA4 */
+    public static final String COLUMNNAME_btn_print_depositA4 = "btn_print_depositA4";
+
+	/** Set Print Deposit(A4)	  */
+	public void setbtn_print_depositA4 (String btn_print_depositA4);
+
+	/** Get Print Deposit(A4)	  */
+	public String getbtn_print_depositA4();
+
+    /** Column name btn_print_withdrawaltA4 */
+    public static final String COLUMNNAME_btn_print_withdrawaltA4 = "btn_print_withdrawaltA4";
+
+	/** Set Print Withdrawal(A4)	  */
+	public void setbtn_print_withdrawaltA4 (String btn_print_withdrawaltA4);
+
+	/** Get Print Withdrawal(A4)	  */
+	public String getbtn_print_withdrawaltA4();
+
     /** Column name btn_save_deposit */
     public static final String COLUMNNAME_btn_save_deposit = "btn_save_deposit";
 
@@ -321,6 +348,15 @@ public interface I_s_shareremittance
 
 	/** Get Is Fixed Deposit	  */
 	public boolean isfixeddeposit();
+
+    /** Column name last_deposit_date */
+    public static final String COLUMNNAME_last_deposit_date = "last_deposit_date";
+
+	/** Set Last Deposit Date	  */
+	public void setlast_deposit_date (Timestamp last_deposit_date);
+
+	/** Get Last Deposit Date	  */
+	public Timestamp getlast_deposit_date();
 
     /** Column name mcode */
     public static final String COLUMNNAME_mcode = "mcode";
@@ -551,6 +587,28 @@ public interface I_s_shareremittance
 
 	/** Get Member Shares	  */
 	public int gets_membershares_ID();
+
+    /** Column name s_payment_mode_ID */
+    public static final String COLUMNNAME_s_payment_mode_ID = "s_payment_mode_ID";
+
+	/** Set Payment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID);
+
+	/** Get Payment Mode	  */
+	public int gets_payment_mode_ID();
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException;
+
+    /** Column name s_payment_mode_remittance_ID */
+    public static final String COLUMNNAME_s_payment_mode_remittance_ID = "s_payment_mode_remittance_ID";
+
+	/** Set Pay Mode	  */
+	public void sets_payment_mode_remittance_ID (int s_payment_mode_remittance_ID);
+
+	/** Get Pay Mode	  */
+	public int gets_payment_mode_remittance_ID();
+
+	public I_s_payment_mode gets_payment_mode_remittance() throws RuntimeException;
 
     /** Column name s_shareremittance_ID */
     public static final String COLUMNNAME_s_shareremittance_ID = "s_shareremittance_ID";

@@ -105,6 +105,37 @@ public interface I_s_membershares
 	/** Get disp001	  */
 	public boolean isdisp001();
 
+    /** Column name disp002 */
+    public static final String COLUMNNAME_disp002 = "disp002";
+
+	/** Set disp002	  */
+	public void setdisp002 (boolean disp002);
+
+	/** Get disp002	  */
+	public boolean isdisp002();
+
+    /** Column name disp003 */
+    public static final String COLUMNNAME_disp003 = "disp003";
+
+	/** Set disp003	  */
+	public void setdisp003 (boolean disp003);
+
+	/** Get disp003	  */
+	public boolean isdisp003();
+
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
+
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
 
@@ -149,6 +180,19 @@ public interface I_s_membershares
 	  */
 	public boolean isActive();
 
+    /** Column name IsComplete */
+    public static final String COLUMNNAME_IsComplete = "IsComplete";
+
+	/** Set Complete.
+	  * It is complete
+	  */
+	public void setIsComplete (boolean IsComplete);
+
+	/** Get Complete.
+	  * It is complete
+	  */
+	public boolean isComplete();
+
     /** Column name isfixeddeposit */
     public static final String COLUMNNAME_isfixeddeposit = "isfixeddeposit";
 
@@ -158,6 +202,33 @@ public interface I_s_membershares
 	/** Get Is Fixed Deposit	  */
 	public boolean isfixeddeposit();
 
+    /** Column name last_deposit_date */
+    public static final String COLUMNNAME_last_deposit_date = "last_deposit_date";
+
+	/** Set Last Deposit Date	  */
+	public void setlast_deposit_date (Timestamp last_deposit_date);
+
+	/** Get Last Deposit Date	  */
+	public Timestamp getlast_deposit_date();
+
+    /** Column name linked_to_dependants */
+    public static final String COLUMNNAME_linked_to_dependants = "linked_to_dependants";
+
+	/** Set Linked to Dependants/Next of kin	  */
+	public void setlinked_to_dependants (boolean linked_to_dependants);
+
+	/** Get Linked to Dependants/Next of kin	  */
+	public boolean islinked_to_dependants();
+
+    /** Column name m_memberkin_ID */
+    public static final String COLUMNNAME_m_memberkin_ID = "m_memberkin_ID";
+
+	/** Set Next Of Kin	  */
+	public void setm_memberkin_ID (int m_memberkin_ID);
+
+	/** Get Next Of Kin	  */
+	public int getm_memberkin_ID();
+
     /** Column name member_no */
     public static final String COLUMNNAME_member_no = "member_no";
 
@@ -166,6 +237,15 @@ public interface I_s_membershares
 
 	/** Get Member NO	  */
 	public String getmember_no();
+
+    /** Column name member_userid */
+    public static final String COLUMNNAME_member_userid = "member_userid";
+
+	/** Set member_userid	  */
+	public void setmember_userid (int member_userid);
+
+	/** Get member_userid	  */
+	public int getmember_userid();
 
     /** Column name monthclosingbal */
     public static final String COLUMNNAME_monthclosingbal = "monthclosingbal";
@@ -221,6 +301,19 @@ public interface I_s_membershares
 	/** Get Payroll NO	  */
 	public String getpayroll_no();
 
+    /** Column name Posted */
+    public static final String COLUMNNAME_Posted = "Posted";
+
+	/** Set Posted.
+	  * Posting status
+	  */
+	public void setPosted (boolean Posted);
+
+	/** Get Posted.
+	  * Posting status
+	  */
+	public boolean isPosted();
+
     /** Column name refrence */
     public static final String COLUMNNAME_refrence = "refrence";
 
@@ -260,6 +353,17 @@ public interface I_s_membershares
 
 	/** Get Member Shares	  */
 	public int gets_membershares_ID();
+
+    /** Column name s_payment_mode_ID */
+    public static final String COLUMNNAME_s_payment_mode_ID = "s_payment_mode_ID";
+
+	/** Set Payment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID);
+
+	/** Get Payment Mode	  */
+	public int gets_payment_mode_ID();
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException;
 
     /** Column name s_sharetype_ID */
     public static final String COLUMNNAME_s_sharetype_ID = "s_sharetype_ID";

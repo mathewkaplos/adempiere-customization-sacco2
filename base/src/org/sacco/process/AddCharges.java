@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import org.compiere.model.ChargeSetup;
 import org.compiere.model.SLoan;
 import org.compiere.model.Sloan_charges;
+import org.compiere.model.X_s_other_loan_charges;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Env;
@@ -46,39 +47,31 @@ public class AddCharges extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-		if (chargeSetup != null) {
-			amt = chargeSetup.getAmount();
-		}
-		// add();
-		ApplyLoanCharges applyLoanCharges = new ApplyLoanCharges(loan, Description, loanAmt);
-		applyLoanCharges.generate();
+		addCharge();
 		return null;
 	}
 
-	private void add() {
-		String formula = chargeSetup.getchargeformula();
-		formula = formula.replace("P", loanAmt.stripTrailingZeros().toPlainString());
-		formula = formula.replace("[", "").replace("]", "");
-		double d = eval(formula);
-		BigDecimal f_amt = BigDecimal.valueOf(d);
-
-		Sloan_charges charges = new Sloan_charges(getCtx(), 0, get_TrxName());
-		charges.sets_loans_ID(getRecord_ID());
-		charges.sets_accountsetup_ID(s_accountsetup_ID);
-		charges.setDescription(Description);
-		charges.setAmount(f_amt);
+	private void addCharge() {
+		BigDecimal chargeAmt = Env.ZERO;
+		if (chargeSetup.isuseformula()) {
+			if (chargeSetup.getchargeformula() != null && !chargeSetup.getchargeformula().isEmpty()) {
+				String formula = chargeSetup.getchargeformula();
+				formula = formula.replace("P", loan.getapprovedamount().stripTrailingZeros().toPlainString());
+				formula = formula.replace("[", "").replace("]", "");
+				double d = eval(formula);
+				chargeAmt = BigDecimal.valueOf(d);
+			} else {
+				chargeAmt = chargeSetup.getAmount();
+			}
+		} else {
+			chargeAmt = chargeSetup.getAmount();
+		}
+		Sloan_charges charges = new Sloan_charges(Env.getCtx(), 0, null);
+		charges.sets_loans_ID(loan.get_ID());
+		charges.sets_accountsetup_ID(chargeSetup.gets_accountsetup_ID());
+		charges.setDescription("loan_tracking");
+		charges.setAmount(chargeAmt);
 		charges.save();
-
-	}
-
-	public static void main(String[] arg) {
-		String rr = "5%4";
-		int x = 3;
-		int y = 5;
-		double m = 0.5 * (x);
-		System.out.println(m);
-		System.out.println(rr);
-		System.out.println(Charge.eval(rr));
 
 	}
 
@@ -179,4 +172,5 @@ public class AddCharges extends SvrProcess {
 			}
 		}.parse();
 	}
+
 }

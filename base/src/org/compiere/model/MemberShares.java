@@ -2,6 +2,7 @@ package org.compiere.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 import zenith.util.DateUtil;
@@ -50,6 +51,19 @@ public class MemberShares extends X_s_membershares {
 		setsharestodate(getsharestodate().add(amount));
 		setfreeshares(getfreeshares().add(amount));
 		save();
+	}
+
+	public BigDecimal getInterestToday() {
+		Timestamp depositDate = getlast_deposit_date();
+		Timestamp WithdrawalDate = DateUtil.newTimestamp();
+		int months = (int) Sacco.calculateAgeInMonths(depositDate, WithdrawalDate);
+		int freq = gets_sharetype().getintfrequency();
+		int freqMonths = Sacco.getFrequencyMonths(months, freq);
+
+		double rate = gets_sharetype().getintrate().doubleValue() / 100;
+		double interest = rate * freqMonths * getsharestodate().doubleValue();
+		return BigDecimal.valueOf(interest);
+
 	}
 
 }

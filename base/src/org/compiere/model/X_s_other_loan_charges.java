@@ -29,7 +29,7 @@ public class X_s_other_loan_charges extends PO implements I_s_other_loan_charges
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190314L;
+	private static final long serialVersionUID = 20190511L;
 
     /** Standard Constructor */
     public X_s_other_loan_charges (Properties ctx, int s_other_loan_charges_ID, String trxName)
