@@ -9,7 +9,6 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import org.codehaus.groovy.classgen.GeneratorContext;
 import org.compiere.acct.FactLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;

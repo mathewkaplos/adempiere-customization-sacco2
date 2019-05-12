@@ -19,136 +19,153 @@ package org.compiere.swing;
 import java.awt.Container;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
-import java.sql.Timestamp;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.compiere.apps.AEnv;
-import org.compiere.apps.AMenu;
-import org.compiere.model.MSession;
 import org.compiere.model.Sacco;
 import org.compiere.util.Env;
 
-import com.sun.enterprise.tools.common.dd.ejb.Session;
-
 /**
- * Adempiere Frame
- * 
- * @author Jorg Janke
- * @version $Id: CFrame.java,v 1.2 2006/07/30 00:52:24 jjanke Exp $
+ * 	Adempiere Frame
+ *	
+ *  @author Jorg Janke
+ *  @version $Id: CFrame.java,v 1.2 2006/07/30 00:52:24 jjanke Exp $
+ *  @author Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
+ *		<li> FR [ 114 ] Change "Create From" UI for Form like Dialog in window without "hardcode"
+ *		@see https://github.com/adempiere/adempiere/issues/114
  */
-public class CFrame extends JFrame {
+public class CFrame extends JFrame
+{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6282268921005682543L;
 
 	/**
-	 * CFrame
-	 * 
-	 * @throws HeadlessException
+	 * 	CFrame
+	 *	@throws HeadlessException
 	 */
-	public CFrame() throws HeadlessException {
-		super();
-		System.out.println("111");
-	} // CFrame
+	public CFrame () throws HeadlessException
+	{
+		super ();
+	}	//	CFrame
 
 	/**
-	 * CFrame
-	 * 
-	 * @param gc
+	 * 	CFrame
+	 *	@param gc
 	 */
-	public CFrame(GraphicsConfiguration gc) {
-		super(gc);
-	} // CFrame
+	public CFrame (GraphicsConfiguration gc)
+	{
+		super (gc);
+	}	//	CFrame
 
 	/**
-	 * CFrame
-	 * 
-	 * @param title
-	 * @throws HeadlessException
+	 * 	CFrame
+	 *	@param title
+	 *	@throws HeadlessException
 	 */
-	public CFrame(String title) throws HeadlessException {
-		super(cleanup(title));
-	} // CFrame
+	public CFrame (String title) throws HeadlessException
+	{
+		super (cleanup(title));
+	}	//	CFrame
 
 	/**
-	 * CFrame
-	 * 
-	 * @param title
-	 * @param gc
+	 * 	CFrame
+	 *	@param title
+	 *	@param gc
 	 */
-	public CFrame(String title, GraphicsConfiguration gc) {
-		super(cleanup(title), gc);
-	} // CFrame
+	public CFrame (String title, GraphicsConfiguration gc)
+	{
+		super (cleanup(title), gc);
+	}	//	CFrame
 
-	/** Window ID */
-	private int p_AD_Window_ID = 0;
-
+	/** Window ID			*/
+	private int		p_AD_Window_ID = 0;
+	//	Yamel Senih FR [ 114 ]
+	/**	Form ID				*/
+	private int		p_AD_Form_ID = 0;
+	
 	/**
-	 * Frame Init. Install ALT-Pause
+	 * 	Frame Init.
+	 * 	Install ALT-Pause
 	 */
-	protected void frameInit() {
-		super.frameInit();
+	protected void frameInit ()
+	{
+		super.frameInit ();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//
 		Container c = getContentPane();
-		if (c instanceof JPanel) {
-			JPanel panel = (JPanel) c;
+		if (c instanceof JPanel)
+		{
+			JPanel panel = (JPanel)c;
 			panel.getActionMap().put(CDialog.ACTION_DISPOSE, CDialog.s_dialogAction);
 			panel.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW).put(CDialog.s_disposeKeyStroke, CDialog.ACTION_DISPOSE);
 		}
-	} // frameInit
-
+	}	//	frameInit
+	
 	/**
-	 * Cleanedup Title
-	 * 
-	 * @param title
-	 *            title
-	 * @return title w/o mn
+	 * 	Cleanedup Title
+	 *	@param title title
+	 *	@return title w/o mn
 	 */
-	private static String cleanup(String title) {
-		if (title != null) {
+	private static String cleanup (String title)
+	{
+		if (title != null)
+		{
 			int pos = title.indexOf('&');
-			if (pos != -1 && title.length() > pos) // We have a mnemonic
+			if (pos != -1 && title.length() > pos)	//	We have a mnemonic
 			{
-				int mnemonic = title.toUpperCase().charAt(pos + 1);
+				int mnemonic = title.toUpperCase().charAt(pos+1);
 				if (mnemonic != ' ')
-					title = title.substring(0, pos) + title.substring(pos + 1);
+					title = title.substring(0, pos) + title.substring(pos+1);
 			}
 		}
 		return title;
-	} // getTitle
+	}	//	getTitle
 
 	/**
-	 * Set Title
-	 * 
-	 * @param title
-	 *            title
+	 * 	Set Title
+	 *	@param title title
 	 */
-	static int i = 0;
-
-	public void setTitle(String title) {
+	public void setTitle(String title)
+	{
+		super.setTitle(cleanup(title));
 
 		Env.updateLastSeen();
 		super.setTitle(cleanup(title) + "-" + Sacco.getCurrentPeriod().getName());
-
-	} // setTitle
+	}	//	setTitle
 
 	/**
 	 * @return Returns the AD_Window_ID.
 	 */
-	public int getAD_Window_ID() {
+	public int getAD_Window_ID ()
+	{
 		return p_AD_Window_ID;
-	} // getAD_Window_ID
+	}	//	getAD_Window_ID
 
 	/**
-	 * @param window_ID
-	 *            The AD_Window_ID to set.
+	 * @param window_ID The AD_Window_ID to set.
 	 */
-	public void setAD_Window_ID(int window_ID) {
+	public void setAD_Window_ID (int window_ID)
+	{
 		p_AD_Window_ID = window_ID;
-	} // getAD_Window_ID
+	}	//	getAD_Window_ID
+	
+	/**
+	 * Get Form ID
+	 * @return
+	 */
+	public int getAD_Form_ID() {
+		return p_AD_Form_ID;
+	}
+	
+	/**
+	 * Set Form ID
+	 * @param p_AD_Form_ID
+	 */
+	public void setAD_Form_ID(int p_AD_Form_ID) {
+		this.p_AD_Form_ID = p_AD_Form_ID;
+	}
 
-} // CFrame
+}	//	CFrame
