@@ -276,7 +276,7 @@ public class Sacco extends X_s_saccoinfo {
 			stm = DB.prepareStatement(sql, trxName);
 			rs = stm.executeQuery();
 			while (rs.next()) {
-				FactLine line = new FactLine(Env.getCtx(), rs, trxName);
+				X_Fact_Acct line = new X_Fact_Acct(Env.getCtx(), rs, trxName);
 				line.setIsActive(false);
 				line.save();
 			}

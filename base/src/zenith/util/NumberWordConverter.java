@@ -24,7 +24,7 @@ public class NumberWordConverter {
 			"ninety" // 9
 	};
 
-	public static String getMoneyIntoWords(String input) {
+	private static String getMoneyIntoWords(String input) {
 		MoneyConverters converter = MoneyConverters.ENGLISH_BANKING_MONEY_VALUE;
 		return converter.asWords(new BigDecimal(input));
 	}
