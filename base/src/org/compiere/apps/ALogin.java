@@ -914,7 +914,7 @@ public final class ALogin extends CDialog implements ActionListener, ChangeListe
 		// DateField with new format
 		dateField.setFormat();
 		dateField.setValue(new Timestamp(System.currentTimeMillis()));
-		//
+		//  
 		if (m_connectionOK) {
 			this.setTitle(hostField.getDisplay());
 			statusBar.setStatusLine(txt_LoggedIn);
