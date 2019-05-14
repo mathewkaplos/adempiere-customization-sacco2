@@ -1777,7 +1777,9 @@ public abstract class Doc
 			if (m_DateAcct != null)
 				return m_DateAcct;
 		}
-		throw new IllegalStateException("No DateAcct");
+		//throw new IllegalStateException("No DateAcct");
+		return m_DateAcct;
+		
 	}	//	getDateAcct
 
 	/**
@@ -1806,7 +1808,9 @@ public abstract class Doc
 			if (m_DateDoc != null)
 				return m_DateDoc;
 		}
-		throw new IllegalStateException("No DateDoc");
+		//throw new IllegalStateException("No DateDoc");
+		return m_DateAcct;
+		
 	}	//	getDateDoc
 	
 	/**
