@@ -2,7 +2,6 @@ package zenith.util;
 
 import java.math.BigDecimal;
 
-import pl.allegro.finance.tradukisto.MoneyConverters;
 
 public class NumberWordConverter {
 
@@ -24,10 +23,6 @@ public class NumberWordConverter {
 			"ninety" // 9
 	};
 
-	private static String getMoneyIntoWords(String input) {
-		MoneyConverters converter = MoneyConverters.ENGLISH_BANKING_MONEY_VALUE;
-		return converter.asWords(new BigDecimal(input));
-	}
 
 	public static String getMoneyIntoWords(final double money) {
 		long shilling = (long) money;
