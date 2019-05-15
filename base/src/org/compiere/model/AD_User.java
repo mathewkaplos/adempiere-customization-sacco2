@@ -29,6 +29,16 @@ public class AD_User extends X_AD_User {
 		return false;
 	}
 
+	public boolean is_cashier() {
+		Object oo = get_Value("is_cashier");
+		if (oo != null) {
+			if (oo instanceof Boolean)
+				return ((Boolean) oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/**
 	 * Get Member.
 	 * 

@@ -914,13 +914,22 @@ public class Login {
 		Env.setContext(m_ctx, "#C_Country_ID", MCountry.getDefault(m_ctx).getC_Country_ID());
 		// Call ModelValidators afterLoadPreferences - teo_sarca FR [ 1670025 ]
 		ModelValidationEngine.get().afterLoadPreferences(m_ctx);
-		System.out.println("check sacco session");
-		if (!saccoSessionOK()) {
-			ADialog.error(2, null, "You cannot login at this moment. The day is not open!");
-			return null;
+		if (isTeller()) {
+			System.out.println("teller");
+			if (!saccoSessionOK()) {
+				ADialog.error(2, null, "You cannot login at this moment. The day is not open!");
+				return null;
+			}
 		}
 		return retValue;
 	} // loadPreferences
+
+	private boolean isTeller() {
+		int AD_User_ID = Env.getContextAsInt(m_ctx, "#AD_User_ID");
+		AD_User user = new AD_User(m_ctx, AD_User_ID, null);
+
+		return user.is_cashier();
+	}
 
 	private boolean saccoSessionOK() {
 		X_s_day day = getToday();
