@@ -1,0 +1,22 @@
+The following are places where GL posting are done
+
+1. Loan Disbursement  ...Credit bank , debit loan
+2. Loan Re-payment
+3. Loan Top -up
+4. Loan Refund
+
+a. Saving Deposit
+b. Saving withdrawal
+c. Saving transfer
+
+i.End of day
+ii.Start of day
+iii.End of month
+iv.Start of month
+v.End of year
+vi.Start of year
+
+
+NB:
+credit is negative value
+debit is positive value
