@@ -11,6 +11,7 @@ import org.compiere.acct.FactLine;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAcctSchemaDefault;
+import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MemberShares;
@@ -18,11 +19,14 @@ import org.compiere.model.PO;
 import org.compiere.model.Period_remittance;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
+import org.compiere.model.AD_User;
 import org.compiere.model.I_s_loantype;
+import org.compiere.model.I_s_member;
 import org.compiere.model.LoanCharges;
 import org.compiere.model.LoanGuarantorDetails;
 import org.compiere.model.LoanRepaymentCharge;
 import org.compiere.model.Sacco;
+import org.compiere.model.ShareRemittance;
 import org.compiere.model.TransactionChargeSetup;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
@@ -36,6 +40,15 @@ public class SaveRepayment extends SvrProcess {
 	private SLoan loan = null;
 	I_s_loantype loantype = null;
 
+	AD_User user = null;
+
+	String userCode = "";
+	String chequeNo = "";
+	String MemberNoDescription = "";
+	I_s_member member = null;
+
+	int C_Period_ID = 0;
+
 	@Override
 	protected void prepare() {
 		// TODO Auto-generated method stub
@@ -44,6 +57,17 @@ public class SaveRepayment extends SvrProcess {
 		repayment = new Repayment(getCtx(), getRecord_ID(), get_TrxName());
 		loan = new SLoan(getCtx(), repayment.gets_loans_ID(), get_TrxName());
 		loantype = loan.gets_loantype();
+
+		member = loan.gets_member();
+		user = new AD_User(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()), get_TrxName());
+		userCode = user.getName();
+		if (repayment.getChequeNo() != null && !repayment.getChequeNo().isEmpty())
+			chequeNo = repayment.getChequeNo();
+		else
+			chequeNo = repayment.getDocumentNo();
+		MemberNoDescription = ".Mbr. No:" + member.getDocumentNo();
+
+		C_Period_ID = Sacco.getSaccco().getsaccoperiod_ID();
 	}
 
 	@Override
@@ -199,6 +223,22 @@ public class SaveRepayment extends SvrProcess {
 		MAccount accountCR = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), repayment.getPrincipal());
 		lineCR.save();
+		
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Repayment." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription("Repayment." + MemberNoDescription);
+		lineCR.save();
+
+		
+		
 		postInterest();
 	}
 
@@ -208,13 +248,26 @@ public class SaveRepayment extends SvrProcess {
 		if (totalInterest.compareTo(Env.ZERO) == 0)
 			return;
 
-		MAccount accountDR = new MAccount(Env.getCtx(),loantype.getInterestReceivable_Acct() , get_TrxName());
+		MAccount accountDR = new MAccount(Env.getCtx(), loantype.getInterestReceivable_Acct(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), totalInterest.negate());
 		lineDR.save();
 
-		MAccount accountCR2 = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
-		FactLine lineCR2 = fact.createLine(docLine, accountCR2, acctSchema.getC_Currency_ID(), totalInterest);
-		lineCR2.save();
+		MAccount accountCR = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), totalInterest);
+		lineCR.save();
+		
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Loan Interest." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription("Loan Interest." + MemberNoDescription);
+		lineCR.save();
 
 
 	}
@@ -266,6 +319,20 @@ public class SaveRepayment extends SvrProcess {
 		MAccount accountCR = new MAccount(Env.getCtx(), chargeSetup.getglcode_Acct(), get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
 				charge.getAmount().negate());
+		lineCR.save();
+		
+		
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Charges." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription("Charges." + MemberNoDescription);
 		lineCR.save();
 	}
 

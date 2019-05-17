@@ -54,7 +54,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 	I_s_member member = null;
 
 	int C_Period_ID = 0;
- 
+
 	@Override
 	protected void prepare() {
 		ProcessInfoParameter[] para = getParameter();
@@ -75,7 +75,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 		member = shareRemittance.gets_member();
 		user = new AD_User(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()), get_TrxName());
 		userCode = user.getName();
-		if ( shareRemittance.getChequeNo() != null && !shareRemittance.getChequeNo().isEmpty())
+		if (shareRemittance.getChequeNo() != null && !shareRemittance.getChequeNo().isEmpty())
 			chequeNo = shareRemittance.getChequeNo();
 		else
 			chequeNo = shareRemittance.getDocumentNo();
@@ -174,6 +174,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 		memberShares.save();
 
 		shareRemittance.setShareBalance(memberShares.getsharestodate());
+		shareRemittance.setShareTotal(memberShares.getsharestodate());
 		shareRemittance.save();
 	}
 

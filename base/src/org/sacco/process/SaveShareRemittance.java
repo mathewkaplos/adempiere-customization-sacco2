@@ -73,7 +73,7 @@ public class SaveShareRemittance extends SvrProcess {
 		member = shareRemittance.gets_member();
 		user = new AD_User(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()), get_TrxName());
 		userCode = user.getName();
-		if (!shareRemittance.getChequeNo().isEmpty() && shareRemittance.getChequeNo() != null)
+		if (shareRemittance.getChequeNo() != null && !shareRemittance.getChequeNo().isEmpty())
 			chequeNo = shareRemittance.getChequeNo();
 		else
 			chequeNo = shareRemittance.getDocumentNo();

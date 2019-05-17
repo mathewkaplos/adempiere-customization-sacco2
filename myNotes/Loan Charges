@@ -1,0 +1,24 @@
+Deduct from cheque
+Add to loan Amount -Issue Lesser amount
+
+
+\\\GL -- 
+DR loan 800
+CR Bank 800
+DR Loan 200
+CR Charge 200
+
+
+\\\\GL--
+
+DR Loan 1000
+CR Bank 1000
+DR Loan 200
+Cr Charge 200
+
+
+
+When investment loan (e.g shamba) -> always add to Loan amount
+
+When Transfer to shares -> If add to loan then do it, otherwise deduct from amount
+going to shares

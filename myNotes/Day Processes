@@ -1,0 +1,14 @@
+START
+
+Triger sms for people with standing order
+
+Open teller accounts
+
+END
+
+Run standing orders
+Close teller accounts which has zero balance
+
+Account with balance for previous day will not open, until it is closed and reopened
+reopened again
+ Do automatic backup
