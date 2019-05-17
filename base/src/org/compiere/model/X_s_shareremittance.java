@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.compiere.model;
@@ -26,14 +26,14 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Model for s_shareremittance
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0 - $Id$ */
+ *  @version Release 3.9.2 - $Id$ */
 public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190511L;
+	private static final long serialVersionUID = 20190517L;
 
     /** Standard Constructor */
     public X_s_shareremittance (Properties ctx, int s_shareremittance_ID, String trxName)
@@ -162,6 +162,28 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public String getBankAccount_Acct () 
 	{
 		return (String)get_Value(COLUMNNAME_BankAccount_Acct);
+	}
+
+	public I_C_ValidCombination getbankgl_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getbankgl_Acct(), get_TrxName());	}
+
+	/** Set Bank GL Code.
+		@param bankgl_Acct Bank GL Code	  */
+	public void setbankgl_Acct (int bankgl_Acct)
+	{
+		set_Value (COLUMNNAME_bankgl_Acct, Integer.valueOf(bankgl_Acct));
+	}
+
+	/** Get Bank GL Code.
+		@return Bank GL Code	  */
+	public int getbankgl_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_bankgl_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Add Charge.
@@ -476,48 +498,6 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return bd;
 	}
 
-	/** Set Is Supervised.
-		@param is_supervised Is Supervised	  */
-	public void setis_supervised (boolean is_supervised)
-	{
-		set_Value (COLUMNNAME_is_supervised, Boolean.valueOf(is_supervised));
-	}
-
-	/** Get Is Supervised.
-		@return Is Supervised	  */
-	public boolean is_supervised () 
-	{
-		Object oo = get_Value(COLUMNNAME_is_supervised);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Is Withdrawal.
-		@param is_withdrawal Is Withdrawal	  */
-	public void setis_withdrawal (boolean is_withdrawal)
-	{
-		set_Value (COLUMNNAME_is_withdrawal, Boolean.valueOf(is_withdrawal));
-	}
-
-	/** Get Is Withdrawal.
-		@return Is Withdrawal	  */
-	public boolean is_withdrawal () 
-	{
-		Object oo = get_Value(COLUMNNAME_is_withdrawal);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
 	/** Set Complete.
 		@param IsComplete 
 		It is complete
@@ -554,6 +534,48 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public boolean isfixeddeposit () 
 	{
 		Object oo = get_Value(COLUMNNAME_isfixeddeposit);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Is Supervised.
+		@param is_supervised Is Supervised	  */
+	public void setis_supervised (boolean is_supervised)
+	{
+		set_Value (COLUMNNAME_is_supervised, Boolean.valueOf(is_supervised));
+	}
+
+	/** Get Is Supervised.
+		@return Is Supervised	  */
+	public boolean is_supervised () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_supervised);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Is Withdrawal.
+		@param is_withdrawal Is Withdrawal	  */
+	public void setis_withdrawal (boolean is_withdrawal)
+	{
+		set_Value (COLUMNNAME_is_withdrawal, Boolean.valueOf(is_withdrawal));
+	}
+
+	/** Get Is Withdrawal.
+		@return Is Withdrawal	  */
+	public boolean is_withdrawal () 
+	{
+		Object oo = get_Value(COLUMNNAME_is_withdrawal);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -920,20 +942,6 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return (String)get_Value(COLUMNNAME_Reverse);
 	}
 
-	/** Set Reverse Remittance.
-		@param reverse_remittance Reverse Remittance	  */
-	public void setreverse_remittance (String reverse_remittance)
-	{
-		set_Value (COLUMNNAME_reverse_remittance, reverse_remittance);
-	}
-
-	/** Get Reverse Remittance.
-		@return Reverse Remittance	  */
-	public String getreverse_remittance () 
-	{
-		return (String)get_Value(COLUMNNAME_reverse_remittance);
-	}
-
 	/** Set Reversed.
 		@param Reversed Reversed	  */
 	public void setReversed (boolean Reversed)
@@ -955,6 +963,20 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return false;
 	}
 
+	/** Set Reverse Remittance.
+		@param reverse_remittance Reverse Remittance	  */
+	public void setreverse_remittance (String reverse_remittance)
+	{
+		set_Value (COLUMNNAME_reverse_remittance, reverse_remittance);
+	}
+
+	/** Get Reverse Remittance.
+		@return Reverse Remittance	  */
+	public String getreverse_remittance () 
+	{
+		return (String)get_Value(COLUMNNAME_reverse_remittance);
+	}
+
 	/** Set Member Branch.
 		@param s_branch_ID Member Branch	  */
 	public void sets_branch_ID (int s_branch_ID)
@@ -973,6 +995,79 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set serialid.
+		@param serialid serialid	  */
+	public void setserialid (int serialid)
+	{
+		set_Value (COLUMNNAME_serialid, Integer.valueOf(serialid));
+	}
+
+	/** Get serialid.
+		@return serialid	  */
+	public int getserialid () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_serialid);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Share Balance(Free).
+		@param ShareBalance Share Balance(Free)	  */
+	public void setShareBalance (BigDecimal ShareBalance)
+	{
+		set_Value (COLUMNNAME_ShareBalance, ShareBalance);
+	}
+
+	/** Get Share Balance(Free).
+		@return Share Balance(Free)	  */
+	public BigDecimal getShareBalance () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ShareBalance);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_C_ValidCombination getsharegl_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getsharegl_Acct(), get_TrxName());	}
+
+	/** Set Share Type GL Code.
+		@param sharegl_Acct Share Type GL Code	  */
+	public void setsharegl_Acct (int sharegl_Acct)
+	{
+		set_Value (COLUMNNAME_sharegl_Acct, Integer.valueOf(sharegl_Acct));
+	}
+
+	/** Get Share Type GL Code.
+		@return Share Type GL Code	  */
+	public int getsharegl_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_sharegl_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Share Balance(Total).
+		@param ShareTotal Share Balance(Total)	  */
+	public void setShareTotal (BigDecimal ShareTotal)
+	{
+		set_Value (COLUMNNAME_ShareTotal, ShareTotal);
+	}
+
+	/** Get Share Balance(Total).
+		@return Share Balance(Total)	  */
+	public BigDecimal getShareTotal () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ShareTotal);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	public I_s_member gets_member() throws RuntimeException
@@ -1123,79 +1218,6 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 		return ii.intValue();
 	}
 
-	/** Set serialid.
-		@param serialid serialid	  */
-	public void setserialid (int serialid)
-	{
-		set_Value (COLUMNNAME_serialid, Integer.valueOf(serialid));
-	}
-
-	/** Get serialid.
-		@return serialid	  */
-	public int getserialid () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_serialid);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Share Balance(Free).
-		@param ShareBalance Share Balance(Free)	  */
-	public void setShareBalance (BigDecimal ShareBalance)
-	{
-		set_Value (COLUMNNAME_ShareBalance, ShareBalance);
-	}
-
-	/** Get Share Balance(Free).
-		@return Share Balance(Free)	  */
-	public BigDecimal getShareBalance () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ShareBalance);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	public I_C_ValidCombination getsharegl_A() throws RuntimeException
-    {
-		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-			.getPO(getsharegl_Acct(), get_TrxName());	}
-
-	/** Set Share Type GL Code.
-		@param sharegl_Acct Share Type GL Code	  */
-	public void setsharegl_Acct (int sharegl_Acct)
-	{
-		set_Value (COLUMNNAME_sharegl_Acct, Integer.valueOf(sharegl_Acct));
-	}
-
-	/** Get Share Type GL Code.
-		@return Share Type GL Code	  */
-	public int getsharegl_Acct () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_sharegl_Acct);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Share Balance(Total).
-		@param ShareTotal Share Balance(Total)	  */
-	public void setShareTotal (BigDecimal ShareTotal)
-	{
-		set_Value (COLUMNNAME_ShareTotal, ShareTotal);
-	}
-
-	/** Get Share Balance(Total).
-		@return Share Balance(Total)	  */
-	public BigDecimal getShareTotal () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ShareTotal);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
 	/** Set Supervision Time.
 		@param supervision_time Supervision Time	  */
 	public void setsupervision_time (Timestamp supervision_time)
@@ -1278,5 +1300,22 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	public Timestamp getTransDate () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_TransDate);
+	}
+
+	/** Set Immutable Universally Unique Identifier.
+		@param UUID 
+		Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID)
+	{
+		set_Value (COLUMNNAME_UUID, UUID);
+	}
+
+	/** Get Immutable Universally Unique Identifier.
+		@return Immutable Universally Unique Identifier
+	  */
+	public String getUUID () 
+	{
+		return (String)get_Value(COLUMNNAME_UUID);
 	}
 }

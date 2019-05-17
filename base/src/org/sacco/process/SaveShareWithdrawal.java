@@ -39,7 +39,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 
 	ShareRemittance shareRemittance = null;
 	private int C_Bank_ID = 0;
-	private MBank bank = null;
+
 	private I_s_sharetype shareType = null;
 
 	private BigDecimal amount = Env.ZERO;
@@ -57,18 +57,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 
 	@Override
 	protected void prepare() {
-		ProcessInfoParameter[] para = getParameter();
-		for (int i = 0; i < para.length; i++) {
-			String name = para[i].getParameterName();
-			if (para[i].getParameter() == null)
-				;
-			else if (name.equals("C_Bank_ID"))
-				C_Bank_ID = para[i].getParameterAsInt();
-			else
-				log.log(Level.SEVERE, "Unknown Parameter: " + name);
-		}
 
-		bank = new MBank(getCtx(), C_Bank_ID, get_TrxName());
 		shareRemittance = new ShareRemittance(getCtx(), getRecord_ID(), get_TrxName());
 		shareType = shareRemittance.gets_sharetype();
 
@@ -196,7 +185,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), amount);
 		lineCR.save();
 
-		MAccount accountDR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
+		MAccount accountDR = new MAccount(Env.getCtx(), shareRemittance.getbankgl_Acct(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), amount.negate());
 		lineDR.save();
 
@@ -229,7 +218,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), interest);
 		lineCR.save();
 
-		MAccount accountDR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
+		MAccount accountDR = new MAccount(Env.getCtx(), shareRemittance.getbankgl_Acct(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), interest.negate());
 		lineDR.save();
 

@@ -234,7 +234,7 @@ public class SaveRepayment extends SvrProcess {
 		lineCR.setcontra_account_id(lineDR.getAccount_ID());
 		lineCR.setUserCode(user.getName());
 		lineCR.setChequeNo(chequeNo);
-		lineDR.setDescription("Repayment." + MemberNoDescription);
+		lineCR.setDescription("Repayment." + MemberNoDescription);
 		lineCR.save();
 
 		
@@ -266,7 +266,7 @@ public class SaveRepayment extends SvrProcess {
 		lineCR.setcontra_account_id(lineDR.getAccount_ID());
 		lineCR.setUserCode(user.getName());
 		lineCR.setChequeNo(chequeNo);
-		lineDR.setDescription("Loan Interest." + MemberNoDescription);
+		lineCR.setDescription("Loan Interest." + MemberNoDescription);
 		lineCR.save();
 
 

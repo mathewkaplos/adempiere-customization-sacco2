@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.compiere.model;
 
@@ -22,7 +22,7 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for s_shareremittance
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0
+ *  @version Release 3.9.2
  */
 public interface I_s_shareremittance 
 {
@@ -106,6 +106,17 @@ public interface I_s_shareremittance
 
 	/** Get Bank Account	  */
 	public String getBankAccount_Acct();
+
+    /** Column name bankgl_Acct */
+    public static final String COLUMNNAME_bankgl_Acct = "bankgl_Acct";
+
+	/** Set Bank GL Code	  */
+	public void setbankgl_Acct (int bankgl_Acct);
+
+	/** Get Bank GL Code	  */
+	public int getbankgl_Acct();
+
+	public I_C_ValidCombination getbankgl_A() throws RuntimeException;
 
     /** Column name btn_add_charge */
     public static final String COLUMNNAME_btn_add_charge = "btn_add_charge";
@@ -296,24 +307,6 @@ public interface I_s_shareremittance
 	  */
 	public BigDecimal getInterestAmt();
 
-    /** Column name is_supervised */
-    public static final String COLUMNNAME_is_supervised = "is_supervised";
-
-	/** Set Is Supervised	  */
-	public void setis_supervised (boolean is_supervised);
-
-	/** Get Is Supervised	  */
-	public boolean is_supervised();
-
-    /** Column name is_withdrawal */
-    public static final String COLUMNNAME_is_withdrawal = "is_withdrawal";
-
-	/** Set Is Withdrawal	  */
-	public void setis_withdrawal (boolean is_withdrawal);
-
-	/** Get Is Withdrawal	  */
-	public boolean is_withdrawal();
-
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -348,6 +341,24 @@ public interface I_s_shareremittance
 
 	/** Get Is Fixed Deposit	  */
 	public boolean isfixeddeposit();
+
+    /** Column name is_supervised */
+    public static final String COLUMNNAME_is_supervised = "is_supervised";
+
+	/** Set Is Supervised	  */
+	public void setis_supervised (boolean is_supervised);
+
+	/** Get Is Supervised	  */
+	public boolean is_supervised();
+
+    /** Column name is_withdrawal */
+    public static final String COLUMNNAME_is_withdrawal = "is_withdrawal";
+
+	/** Set Is Withdrawal	  */
+	public void setis_withdrawal (boolean is_withdrawal);
+
+	/** Get Is Withdrawal	  */
+	public boolean is_withdrawal();
 
     /** Column name last_deposit_date */
     public static final String COLUMNNAME_last_deposit_date = "last_deposit_date";
@@ -541,15 +552,6 @@ public interface I_s_shareremittance
 	/** Get Reverse	  */
 	public String getReverse();
 
-    /** Column name reverse_remittance */
-    public static final String COLUMNNAME_reverse_remittance = "reverse_remittance";
-
-	/** Set Reverse Remittance	  */
-	public void setreverse_remittance (String reverse_remittance);
-
-	/** Get Reverse Remittance	  */
-	public String getreverse_remittance();
-
     /** Column name Reversed */
     public static final String COLUMNNAME_Reversed = "Reversed";
 
@@ -559,6 +561,15 @@ public interface I_s_shareremittance
 	/** Get Reversed	  */
 	public boolean isReversed();
 
+    /** Column name reverse_remittance */
+    public static final String COLUMNNAME_reverse_remittance = "reverse_remittance";
+
+	/** Set Reverse Remittance	  */
+	public void setreverse_remittance (String reverse_remittance);
+
+	/** Get Reverse Remittance	  */
+	public String getreverse_remittance();
+
     /** Column name s_branch_ID */
     public static final String COLUMNNAME_s_branch_ID = "s_branch_ID";
 
@@ -567,6 +578,44 @@ public interface I_s_shareremittance
 
 	/** Get Member Branch	  */
 	public int gets_branch_ID();
+
+    /** Column name serialid */
+    public static final String COLUMNNAME_serialid = "serialid";
+
+	/** Set serialid	  */
+	public void setserialid (int serialid);
+
+	/** Get serialid	  */
+	public int getserialid();
+
+    /** Column name ShareBalance */
+    public static final String COLUMNNAME_ShareBalance = "ShareBalance";
+
+	/** Set Share Balance(Free)	  */
+	public void setShareBalance (BigDecimal ShareBalance);
+
+	/** Get Share Balance(Free)	  */
+	public BigDecimal getShareBalance();
+
+    /** Column name sharegl_Acct */
+    public static final String COLUMNNAME_sharegl_Acct = "sharegl_Acct";
+
+	/** Set Share Type GL Code	  */
+	public void setsharegl_Acct (int sharegl_Acct);
+
+	/** Get Share Type GL Code	  */
+	public int getsharegl_Acct();
+
+	public I_C_ValidCombination getsharegl_A() throws RuntimeException;
+
+    /** Column name ShareTotal */
+    public static final String COLUMNNAME_ShareTotal = "ShareTotal";
+
+	/** Set Share Balance(Total)	  */
+	public void setShareTotal (BigDecimal ShareTotal);
+
+	/** Get Share Balance(Total)	  */
+	public BigDecimal getShareTotal();
 
     /** Column name s_member_ID */
     public static final String COLUMNNAME_s_member_ID = "s_member_ID";
@@ -629,44 +678,6 @@ public interface I_s_shareremittance
 	public int gets_sharetype_ID();
 
 	public I_s_sharetype gets_sharetype() throws RuntimeException;
-
-    /** Column name serialid */
-    public static final String COLUMNNAME_serialid = "serialid";
-
-	/** Set serialid	  */
-	public void setserialid (int serialid);
-
-	/** Get serialid	  */
-	public int getserialid();
-
-    /** Column name ShareBalance */
-    public static final String COLUMNNAME_ShareBalance = "ShareBalance";
-
-	/** Set Share Balance(Free)	  */
-	public void setShareBalance (BigDecimal ShareBalance);
-
-	/** Get Share Balance(Free)	  */
-	public BigDecimal getShareBalance();
-
-    /** Column name sharegl_Acct */
-    public static final String COLUMNNAME_sharegl_Acct = "sharegl_Acct";
-
-	/** Set Share Type GL Code	  */
-	public void setsharegl_Acct (int sharegl_Acct);
-
-	/** Get Share Type GL Code	  */
-	public int getsharegl_Acct();
-
-	public I_C_ValidCombination getsharegl_A() throws RuntimeException;
-
-    /** Column name ShareTotal */
-    public static final String COLUMNNAME_ShareTotal = "ShareTotal";
-
-	/** Set Share Balance(Total)	  */
-	public void setShareTotal (BigDecimal ShareTotal);
-
-	/** Get Share Balance(Total)	  */
-	public BigDecimal getShareTotal();
 
     /** Column name supervision_time */
     public static final String COLUMNNAME_supervision_time = "supervision_time";
@@ -734,4 +745,17 @@ public interface I_s_shareremittance
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name UUID */
+    public static final String COLUMNNAME_UUID = "UUID";
+
+	/** Set Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID);
+
+	/** Get Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public String getUUID();
 }

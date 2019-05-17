@@ -12,6 +12,7 @@ import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_s_sharetype;
+import org.compiere.model.MBank;
 import org.compiere.model.MemberShares;
 import org.compiere.model.SMember;
 import org.compiere.model.Sacco;
@@ -25,6 +26,14 @@ import org.compiere.util.Env;
 import zenith.util.DateUtil;
 
 public class ShareTransactionsCallout extends CalloutEngine {
+
+	// org.sacco.callout.ShareTransactionsCallout.newRecord
+	public String newRecord(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+	
+		return null;
+	}
 
 	// org.sacco.callout.ShareTransactionsCallout.member
 	public String member(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
@@ -49,6 +58,15 @@ public class ShareTransactionsCallout extends CalloutEngine {
 		// Set values to fields
 		mTab.setValue("mcode", member_number);
 		mTab.setValue("payroll_no", payroll_number);
+		
+		//
+		AD_User user = new AD_User(ctx, Env.getAD_User_ID(ctx), null);
+		int bankgl_Acct = user.getTellerGLCode();
+		if (bankgl_Acct > 0) {
+			mTab.setValue("bankgl_Acct", bankgl_Acct);
+			mTab.getField("C_Bank_ID").setDisplayed(false);
+		} //
+
 
 		return NO_ERROR;
 	}
@@ -193,6 +211,25 @@ public class ShareTransactionsCallout extends CalloutEngine {
 		BigDecimal val = (BigDecimal) value;
 		mTab.setValue("sharestodate", val);
 
+		return NO_ERROR;
+	}
+	// org.sacco.callout.ShareTransactionsCallout.bank
+	public String bank(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		AD_User user = new AD_User(ctx, Env.getAD_User_ID(ctx), null);
+		int bankgl_Acct_teller = user.getTellerGLCode();
+		if (bankgl_Acct_teller > 0) {
+			return "";
+		} //
+
+		int val = (int) value;
+		MBank bank = new MBank(ctx, val, null);
+		int bankgl_Acct = bank.getGLAccount();
+		if (bankgl_Acct > 0) {
+			mTab.setValue("bankgl_Acct", bankgl_Acct);
+		}
+		// MPeriod
 		return NO_ERROR;
 	}
 }
