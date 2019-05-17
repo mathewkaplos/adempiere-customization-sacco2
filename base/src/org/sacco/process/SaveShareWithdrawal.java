@@ -54,7 +54,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 	I_s_member member = null;
 
 	int C_Period_ID = 0;
-
+ 
 	@Override
 	protected void prepare() {
 		ProcessInfoParameter[] para = getParameter();
