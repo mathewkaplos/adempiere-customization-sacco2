@@ -9,6 +9,8 @@ import org.compiere.acct.DocLine;
 import org.compiere.acct.Doc_LoanDisbursement;
 import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
+import org.compiere.model.AD_User;
+import org.compiere.model.I_s_member;
 import org.compiere.model.LoanCharges;
 import org.compiere.model.LoanDisbursement;
 import org.compiere.model.MAccount;
@@ -37,8 +39,17 @@ public class PostLoanDisbursement {
 	SLoanType loanType = null;//
 	int disbursement_ID = 0;
 	boolean chargesAddedToLoan = false;
+	AD_User user = null;
+
+	String userCode = "";
+	String chequeNo = "";
+	String MemberNoDescription = "";
+	I_s_member member = null;
+
+	int C_Period_ID = 0;
 
 	public PostLoanDisbursement(MBank bank, String trxName, SLoan loan) {
+
 		totalCharge = Env.ZERO;
 		this.bank = bank;
 		this.trxName = trxName;
@@ -48,6 +59,18 @@ public class PostLoanDisbursement {
 
 		chargesAddedToLoan = loanType.ischarges_added_to_loan();
 		saveDisbursement();
+
+		member = loan.gets_member();
+		user = new AD_User(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()), null);
+		userCode = user.getName();
+		if (!loan.getreadychequeno().isEmpty() && loan.getreadychequeno() != null)
+			chequeNo = loan.getreadychequeno();
+		else
+			chequeNo = disbursement.getDocumentNo();
+		MemberNoDescription = ".Mbr. No:" + member.getDocumentNo();
+
+		C_Period_ID = Sacco.getSaccco().getsaccoperiod_ID();
+
 	}
 
 	public void post() {
@@ -137,11 +160,26 @@ public class PostLoanDisbursement {
 
 		MAccount accountDR = new MAccount(Env.getCtx(), debitGL, trxName);
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), debitAmount);
+
 		lineDR.save();
 
 		MAccount accountCR = new MAccount(Env.getCtx(), creditGL, trxName);
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), crditAmount.negate());
 		lineCR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Loan Disbursement." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineCR.setDescription("Loan Disbursement." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
+		lineCR.save();
+
 		if (disbursement_ID == Sacco.disbursementmode_investment) {
 			// shamba
 			int creditGL2 = loan.gets_shamba().getnet_gain_gl_Acct();
@@ -150,6 +188,12 @@ public class PostLoanDisbursement {
 			MAccount accountCR2 = new MAccount(Env.getCtx(), creditGL2, trxName);
 			FactLine lineCR2 = fact.createLine(docLine, accountCR2, acctSchema.getC_Currency_ID(),
 					crditAmount2.negate());
+			lineCR2.save();
+
+			lineCR2.setcontra_account_id(lineDR.getAccount_ID());
+			lineCR2.setUserCode(user.getName());
+			lineCR2.setChequeNo(chequeNo);
+			lineCR2.setDescription("Loan Disbursement." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
 			lineCR2.save();
 
 		}
@@ -181,6 +225,20 @@ public class PostLoanDisbursement {
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
 				loan.getloaninterestamount().negate());
 		lineCR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("InterestReceivable." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineCR.setDescription("UnEarnedInterest." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
+		lineCR.save();
+
 	}
 
 	private void postLoanCharges() {
@@ -231,6 +289,20 @@ public class PostLoanDisbursement {
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
 				charge.getAmount().negate());
 		lineCR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Charges." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineCR.setDescription("Charges." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
+		lineCR.save();
+
 	}
 
 	private void saveDisbursement() {

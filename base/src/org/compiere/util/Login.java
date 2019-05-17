@@ -25,6 +25,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -914,34 +915,49 @@ public class Login {
 		Env.setContext(m_ctx, "#C_Country_ID", MCountry.getDefault(m_ctx).getC_Country_ID());
 		// Call ModelValidators afterLoadPreferences - teo_sarca FR [ 1670025 ]
 		ModelValidationEngine.get().afterLoadPreferences(m_ctx);
+		initDay();
+		initUser();
 		if (isTeller()) {
-			System.out.println("teller");
-			if (!saccoSessionOK()) {
+			if (!day.isOpen()) {
 				ADialog.error(2, null, "You cannot login at this moment. The day is not open!");
 				return null;
 			}
 		}
+		if (day.isNonWorkingDay()) {
+			if (user.get_ID() == 100 || user.get_ID() == 0) {
+				// do nothing
+			} else {
+//check who logs in today
+				List<Integer> sessionUserIDs = getSessionUserIDs();
+				if (sessionUserIDs.contains(user.get_ID())) {
+
+				} else {
+					ADialog.error(2, null, "You cannot login at this moment. The is not a working day!");
+					return null;
+				}
+			}
+		}
+
 		return retValue;
 	} // loadPreferences
 
-	private boolean isTeller() {
-		int AD_User_ID = Env.getContextAsInt(m_ctx, "#AD_User_ID");
-		AD_User user = new AD_User(m_ctx, AD_User_ID, null);
+	X_s_day day = null;
 
-		return user.is_cashier();
+	private void initDay() {
+		day = getToday();
 	}
 
-	private boolean saccoSessionOK() {
-		X_s_day day = getToday();
-		if (day.isOpen()) {
-			return true;
-		}
-		if (day.isNonWorkingDay()) {
-			if (day.isOpenForSome()) {
-				// check is user is included in the session users
-			}
-		}
-		return false;
+	AD_User user = null;
+
+	private void initUser() {
+		int AD_User_ID = Env.getContextAsInt(m_ctx, "#AD_User_ID");
+		user = new AD_User(m_ctx, AD_User_ID, null);
+
+	}
+
+	private boolean isTeller() {
+
+		return user.is_cashier();
 	}
 
 	private X_s_day getToday() {
@@ -973,6 +989,39 @@ public class Login {
 			}
 		}
 		return day;
+	}
+
+	private List<Integer> getSessionUserIDs() {
+		List<Integer> list = new ArrayList<Integer>();
+		String sql = "SELECT session_user_id FROM adempiere.getsessionuserids";
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, null);
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				int session_user_id = rs.getInt(1);
+				list.add(session_user_id);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+
+		}
+		return list;
 	}
 
 	/**

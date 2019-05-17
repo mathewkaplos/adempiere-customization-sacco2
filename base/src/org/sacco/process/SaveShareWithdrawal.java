@@ -12,6 +12,8 @@ import org.compiere.acct.DocLine;
 import org.compiere.acct.Doc_ShareRemittance;
 import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
+import org.compiere.model.AD_User;
+import org.compiere.model.I_s_member;
 import org.compiere.model.I_s_sharetype;
 import org.compiere.model.LoanRepaymentCharge;
 import org.compiere.model.MAccount;
@@ -21,6 +23,7 @@ import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
+import org.compiere.model.Sacco;
 import org.compiere.model.SavingsWithdrawalCharge;
 import org.compiere.model.ShareRemittance;
 import org.compiere.model.TransactionChargeSetup;
@@ -30,6 +33,7 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import zenith.util.DateUtil;
+import zenith.util.NumberWordConverter;
 
 public class SaveShareWithdrawal extends SvrProcess {
 
@@ -41,6 +45,15 @@ public class SaveShareWithdrawal extends SvrProcess {
 	private BigDecimal amount = Env.ZERO;
 	private BigDecimal interest = Env.ZERO;
 	private boolean isfixeddeposit = true;
+
+	AD_User user = null;
+
+	String userCode = "";
+	String chequeNo = "";
+	String MemberNoDescription = "";
+	I_s_member member = null;
+
+	int C_Period_ID = 0;
 
 	@Override
 	protected void prepare() {
@@ -58,12 +71,22 @@ public class SaveShareWithdrawal extends SvrProcess {
 		bank = new MBank(getCtx(), C_Bank_ID, get_TrxName());
 		shareRemittance = new ShareRemittance(getCtx(), getRecord_ID(), get_TrxName());
 		shareType = shareRemittance.gets_sharetype();
+
+		member = shareRemittance.gets_member();
+		user = new AD_User(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()), get_TrxName());
+		userCode = user.getName();
+		if ( shareRemittance.getChequeNo() != null && !shareRemittance.getChequeNo().isEmpty())
+			chequeNo = shareRemittance.getChequeNo();
+		else
+			chequeNo = shareRemittance.getDocumentNo();
+		MemberNoDescription = ".Mbr. No:" + member.getDocumentNo();
+
+		C_Period_ID = Sacco.getSaccco().getsaccoperiod_ID();
 	}
 
 	@Override
 	protected String doIt() throws Exception {
-		
-		
+
 		isfixeddeposit = shareRemittance.isfixeddeposit();
 		if (isfixeddeposit) {
 			interest = shareRemittance.getInterestAmt();
@@ -78,6 +101,11 @@ public class SaveShareWithdrawal extends SvrProcess {
 		shareRemittance.setTransactionTime(DateUtil.newTimestamp());
 		shareRemittance.setTransDate(DateUtil.newTimestamp());
 		shareRemittance.setIsComplete(true);
+
+		String amtInWords_EN = NumberWordConverter
+				.getMoneyIntoWords(shareRemittance.getreceiptamount().abs().doubleValue());
+
+		shareRemittance.setAmountInWords(amtInWords_EN);
 		shareRemittance.save();
 		post();
 		JOptionPane.showMessageDialog(null, "Saved Successfully");
@@ -144,6 +172,9 @@ public class SaveShareWithdrawal extends SvrProcess {
 		memberShares.setsharestodate(memberShares.getsharestodate().subtract(amount));
 		memberShares.setfreeshares(memberShares.getfreeshares().subtract(amount));
 		memberShares.save();
+
+		shareRemittance.setShareBalance(memberShares.getsharestodate());
+		shareRemittance.save();
 	}
 
 	Fact fact = null;
@@ -167,6 +198,20 @@ public class SaveShareWithdrawal extends SvrProcess {
 		MAccount accountDR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), amount.negate());
 		lineDR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Saving Withdrawal." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription("Saving Withdrawal." + MemberNoDescription);
+		lineCR.save();
+
 	}
 
 	private void postInterest() {
@@ -186,6 +231,19 @@ public class SaveShareWithdrawal extends SvrProcess {
 		MAccount accountDR = new MAccount(Env.getCtx(), bank.getGLAccount(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), interest.negate());
 		lineDR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Saving Interest." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription("Saving Interest." + MemberNoDescription);
+		lineCR.save();
 
 	}
 
@@ -243,6 +301,19 @@ public class SaveShareWithdrawal extends SvrProcess {
 		MAccount accountCR = new MAccount(Env.getCtx(), chargeSetup.getglcode_Acct(), get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
 				charge.getAmount().negate());
+		lineCR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Charges." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription("Charges." + MemberNoDescription);
 		lineCR.save();
 	}
 }

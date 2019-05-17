@@ -15,6 +15,8 @@ import org.compiere.acct.Doc_ShareRemittance;
 import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
 import org.compiere.apps.ADialog;
+import org.compiere.model.AD_User;
+import org.compiere.model.I_s_member;
 import org.compiere.model.I_s_sharetype;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
@@ -23,6 +25,7 @@ import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
+import org.compiere.model.Sacco;
 import org.compiere.model.ShareRemittance;
 import org.compiere.model.Share_recovery;
 import org.compiere.process.ProcessInfoParameter;
@@ -41,6 +44,15 @@ public class SaveShareRemittance extends SvrProcess {
 	private MBank bank = null;
 	private I_s_sharetype shareType = null;
 
+	AD_User user = null;
+
+	String userCode = "";
+	String chequeNo = "";
+	String MemberNoDescription = "";
+	I_s_member member = null;
+
+	int C_Period_ID = 0;
+
 	@Override
 	protected void prepare() {
 		ProcessInfoParameter[] para = getParameter();
@@ -57,6 +69,17 @@ public class SaveShareRemittance extends SvrProcess {
 		bank = new MBank(getCtx(), C_Bank_ID, get_TrxName());
 		shareRemittance = new ShareRemittance(getCtx(), getRecord_ID(), get_TrxName());
 		shareType = shareRemittance.gets_sharetype();
+
+		member = shareRemittance.gets_member();
+		user = new AD_User(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()), get_TrxName());
+		userCode = user.getName();
+		if (!shareRemittance.getChequeNo().isEmpty() && shareRemittance.getChequeNo() != null)
+			chequeNo = shareRemittance.getChequeNo();
+		else
+			chequeNo = shareRemittance.getDocumentNo();
+		MemberNoDescription = ".Mbr. No:" + member.getDocumentNo();
+
+		C_Period_ID = Sacco.getSaccco().getsaccoperiod_ID();
 	}
 
 	MemberShares memberShares = null;
@@ -85,9 +108,8 @@ public class SaveShareRemittance extends SvrProcess {
 
 		String amtInWords_EN = NumberWordConverter.getMoneyIntoWords(shareRemittance.getreceiptamount().doubleValue());
 
-		System.out.println(amtInWords_EN);
 		shareRemittance.setAmountInWords(amtInWords_EN);
-
+		shareRemittance.setShareBalance(memberShares.getsharestodate());
 		shareRemittance.save();
 
 		post();
@@ -217,5 +239,19 @@ public class SaveShareRemittance extends SvrProcess {
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
 				shareRemittance.getreceiptamount());
 		lineDR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Saving Deposit." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription("Saving Deposit." + MemberNoDescription);
+		lineCR.save();
+
 	}
 }
