@@ -11,7 +11,6 @@ import org.compiere.acct.FactLine;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAcctSchemaDefault;
-import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MemberShares;
@@ -22,11 +21,9 @@ import org.compiere.model.SLoan;
 import org.compiere.model.AD_User;
 import org.compiere.model.I_s_loantype;
 import org.compiere.model.I_s_member;
-import org.compiere.model.LoanCharges;
 import org.compiere.model.LoanGuarantorDetails;
 import org.compiere.model.LoanRepaymentCharge;
 import org.compiere.model.Sacco;
-import org.compiere.model.ShareRemittance;
 import org.compiere.model.TransactionChargeSetup;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
@@ -90,7 +87,7 @@ public class SaveRepayment extends SvrProcess {
 		repayment.getGuarantorDetails(repayment.gets_loans_ID());
 		repayment.freeTiedShares();
 
-		resetPeriodRemittance();
+		//resetPeriodRemittance();
 		post();
 		freeGuarantorShares();
 		return null;

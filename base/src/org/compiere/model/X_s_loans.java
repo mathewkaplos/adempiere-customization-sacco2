@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.compiere.model;
@@ -26,14 +26,14 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Model for s_loans
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0 - $Id$ */
+ *  @version Release 3.9.2 - $Id$ */
 public class X_s_loans extends PO implements I_s_loans, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190511L;
+	private static final long serialVersionUID = 20190518L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -1549,6 +1549,23 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return (String)get_Value(COLUMNNAME_issuecash);
 	}
 
+	/** Set Issued Amount.
+		@param issued_amount Issued Amount	  */
+	public void setissued_amount (BigDecimal issued_amount)
+	{
+		set_Value (COLUMNNAME_issued_amount, issued_amount);
+	}
+
+	/** Get Issued Amount.
+		@return Issued Amount	  */
+	public BigDecimal getissued_amount () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_issued_amount);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Issued By.
 		@param issuedby Issued By	  */
 	public void setissuedby (String issuedby)
@@ -2542,15 +2559,15 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return false;
 	}
 
-	/** Set Post To GL.
-		@param postgl Post To GL	  */
+	/** Set Post GL.
+		@param postgl Post GL	  */
 	public void setpostgl (boolean postgl)
 	{
 		set_Value (COLUMNNAME_postgl, Boolean.valueOf(postgl));
 	}
 
-	/** Get Post To GL.
-		@return Post To GL	  */
+	/** Get Post GL.
+		@return Post GL	  */
 	public boolean ispostgl () 
 	{
 		Object oo = get_Value(COLUMNNAME_postgl);
@@ -3150,18 +3167,21 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
-	/** Set uuid.
-		@param uuid uuid	  */
-	public void setuuid (String uuid)
+	/** Set Immutable Universally Unique Identifier.
+		@param UUID 
+		Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID)
 	{
-		set_Value (COLUMNNAME_uuid, uuid);
+		set_Value (COLUMNNAME_UUID, UUID);
 	}
 
-	/** Get uuid.
-		@return uuid	  */
-	public String getuuid () 
+	/** Get Immutable Universally Unique Identifier.
+		@return Immutable Universally Unique Identifier
+	  */
+	public String getUUID () 
 	{
-		return (String)get_Value(COLUMNNAME_uuid);
+		return (String)get_Value(COLUMNNAME_UUID);
 	}
 
 	/** Set Write Off Date.

@@ -9,6 +9,7 @@ import org.compiere.model.Sloan_charges;
 import org.compiere.model.X_s_other_loan_charges;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.sacco.charge.Charge;
 import org.sacco.loan.ApplyLoanCharges;
@@ -48,7 +49,16 @@ public class AddCharges extends SvrProcess {
 	@Override
 	protected String doIt() throws Exception {
 		addCharge();
+		updateAmountToIssue();
 		return null;
+	}
+
+	private void updateAmountToIssue() {
+		String sql = "SELECT COALESCE(SUM(Amount),0) FROM s_loan_charges WHERE s_loans_id=" + loan.get_ID();
+		BigDecimal sum = DB.getSQLValueBD(get_TrxName(), sql);
+		System.out.println(sum);
+		loan.setissued_amount(loanAmt.subtract(sum));
+		loan.save();
 	}
 
 	private void addCharge() {

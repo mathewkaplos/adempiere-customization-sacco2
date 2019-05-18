@@ -154,8 +154,10 @@ public class SaveShareWithdrawal extends SvrProcess {
 	}
 
 	private void updateMemberShare() {
+		System.out.println(totalCharge);
 		if (totalCharge.compareTo(Env.ZERO) == 1)
-			amount.abs().add(totalCharge);
+			amount = amount.abs().add(totalCharge);
+	System.out.println(amount);
 
 		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
 		memberShares.setsharestodate(memberShares.getsharestodate().subtract(amount));
@@ -164,6 +166,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 
 		shareRemittance.setShareBalance(memberShares.getsharestodate());
 		shareRemittance.setShareTotal(memberShares.getsharestodate());
+		shareRemittance.setothercharges(totalCharge);
 		shareRemittance.save();
 	}
 
@@ -175,6 +178,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 		if (shareRemittance.getreceiptamount().compareTo(Env.ZERO) == 0) {
 			return;
 		}
+
 		int share_saving_gl = 0;
 		if (shareType.getshare_saving().equals("saving"))
 			share_saving_gl = shareType.getsaving_gl_code_Acct();
@@ -268,7 +272,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 		}
 	}
 
-	static BigDecimal totalCharge = Env.ZERO;
+	 BigDecimal totalCharge = Env.ZERO;
 
 	private void postCharge(SavingsWithdrawalCharge charge) {
 

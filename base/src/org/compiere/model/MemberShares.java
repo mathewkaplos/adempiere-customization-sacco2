@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
+import org.compiere.util.Env;
+
 import zenith.util.DateUtil;
 
 public class MemberShares extends X_s_membershares {
@@ -33,12 +35,15 @@ public class MemberShares extends X_s_membershares {
 		shareRemittance.setpayroll_no(member.getmpayroll());
 		shareRemittance.sets_member_ID(member.get_ID());
 		shareRemittance.setpaymode("9");
+		shareRemittance.sets_payment_mode_remittance_ID(9);
 		shareRemittance.setremittancedate(DateUtil.newTimestamp());
 		shareRemittance.sets_membershares_ID(gets_membershares_ID());
 		shareRemittance.sets_sharetype_ID(gets_sharetype_ID());
 		shareRemittance.setsharegl_Acct(shareType.getsharegl_Acct());
 		shareRemittance.setreceiptamount(appliedamount);
 		shareRemittance.setIsComplete(true);
+		shareRemittance.setothercharges(Env.ZERO);
+		shareRemittance.setShareBalance(getsharestodate().add(appliedamount));
 		shareRemittance.save();
 
 		setsharestodate(getsharestodate().add(appliedamount));

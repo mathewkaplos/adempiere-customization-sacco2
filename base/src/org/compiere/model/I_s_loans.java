@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.compiere.model;
 
@@ -22,7 +22,7 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for s_loans
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0
+ *  @version Release 3.9.2
  */
 public interface I_s_loans 
 {
@@ -864,6 +864,15 @@ public interface I_s_loans
 	/** Get Issue Cash	  */
 	public String getissuecash();
 
+    /** Column name issued_amount */
+    public static final String COLUMNNAME_issued_amount = "issued_amount";
+
+	/** Set Issued Amount	  */
+	public void setissued_amount (BigDecimal issued_amount);
+
+	/** Get Issued Amount	  */
+	public BigDecimal getissued_amount();
+
     /** Column name issuedby */
     public static final String COLUMNNAME_issuedby = "issuedby";
 
@@ -1386,10 +1395,10 @@ public interface I_s_loans
     /** Column name postgl */
     public static final String COLUMNNAME_postgl = "postgl";
 
-	/** Set Post To GL	  */
+	/** Set Post GL	  */
 	public void setpostgl (boolean postgl);
 
-	/** Get Post To GL	  */
+	/** Get Post GL	  */
 	public boolean ispostgl();
 
     /** Column name Processed */
@@ -1684,14 +1693,18 @@ public interface I_s_loans
 	  */
 	public int getUpdatedBy();
 
-    /** Column name uuid */
-    public static final String COLUMNNAME_uuid = "uuid";
+    /** Column name UUID */
+    public static final String COLUMNNAME_UUID = "UUID";
 
-	/** Set uuid	  */
-	public void setuuid (String uuid);
+	/** Set Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID);
 
-	/** Get uuid	  */
-	public String getuuid();
+	/** Get Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public String getUUID();
 
     /** Column name writeoffdate */
     public static final String COLUMNNAME_writeoffdate = "writeoffdate";

@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-
 import javax.swing.JOptionPane;
 
 import org.compiere.acct.Doc;
@@ -20,17 +18,13 @@ import org.compiere.model.I_s_member;
 import org.compiere.model.I_s_sharetype;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
-import org.compiere.model.MAcctSchemaDefault;
-import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
 import org.compiere.model.Sacco;
 import org.compiere.model.ShareRemittance;
 import org.compiere.model.Share_recovery;
-import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.AmtInWords_EN;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
