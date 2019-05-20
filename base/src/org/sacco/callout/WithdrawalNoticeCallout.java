@@ -1,6 +1,5 @@
 package org.sacco.callout;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -13,8 +12,6 @@ import org.compiere.model.GridTab;
 import org.compiere.model.I_s_sharetype;
 import org.compiere.model.MemberShares;
 import org.compiere.util.Env;
-import org.joda.time.Days;
-
 import zenith.util.DateUtil;
 
 public class WithdrawalNoticeCallout extends CalloutEngine {
