@@ -621,7 +621,7 @@ public class SLoan extends X_s_loans {
 	 */
 	public BigDecimal getRemainingGuaranteedAmount() {
 
-		return getloanamount().subtract(getGuaranteedAmountSum());
+		return getloanamount().subtract((getGuaranteedAmountSum().add(getCollateralValue())));
 	}
 
 	/**
@@ -739,6 +739,11 @@ public class SLoan extends X_s_loans {
 		return getGuarantorNumber() >= gets_loantype().getloantypeminguarantors();
 	}
 
+	public BigDecimal getCollateralValue() {
+		String sql = "select COALESCE(SUM(valuenumber),0 )from adempiere.s_collateral where s_loans_id ="+gets_loans_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
+
 	public boolean incomeFactorOk() {
 		BigDecimal incomeFactor = gets_loantype().getloantypeincomefactor();
 		if (incomeFactor.compareTo(Env.ZERO) == 0)
@@ -780,8 +785,13 @@ public class SLoan extends X_s_loans {
 	}
 
 	public boolean retirementAgeOK() {
+		if (1 == 1) {
+			return true;
+		}
 		// Check Retirement age
 		I_s_member member = gets_member();
+
+		System.out.println(member.gets_employers_ID());
 		if (member.gets_employers_ID() < 1)
 			return true;
 		// now member has employer at this point

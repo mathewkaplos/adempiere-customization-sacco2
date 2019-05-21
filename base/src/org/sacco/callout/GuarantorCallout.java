@@ -69,7 +69,7 @@ public class GuarantorCallout extends CalloutEngine {
 
 		SLoanType type = new SLoanType(ctx, loan.gets_loantype_ID(), null);
 		boolean allowZeroGurantors = type.isallow_zero_value_guarantors();
-		if (amt.compareTo(diff) == 1) {
+		if (amt.compareTo(diff) == 1 && 1==2) {
 
 			ADialog.error(WindowNo, null,
 					"Minimum free shares is:"

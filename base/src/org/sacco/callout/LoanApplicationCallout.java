@@ -70,6 +70,7 @@ public class LoanApplicationCallout extends CalloutEngine {
 		SMember member = null;
 		BigDecimal grossPay = Env.ZERO;
 		BigDecimal nettPay = Env.ZERO;
+		BigDecimal totalshares = Env.ZERO;
 		String payroll_number = "";
 		String member_number = "";
 
@@ -84,6 +85,7 @@ public class LoanApplicationCallout extends CalloutEngine {
 			nettPay = member.getmnett();
 			payroll_number = member.getmpayroll();
 			member_number = member.getDocumentNo();
+			totalshares = member.getSavingsBal();
 			int AD_User_ID = member.getAD_User_ID();
 			if (AD_User_ID > 0) {
 				mTab.setValue("member_userid", AD_User_ID);
@@ -95,6 +97,7 @@ public class LoanApplicationCallout extends CalloutEngine {
 		mTab.setValue("loannettpay", nettPay);
 		mTab.setValue("member_no", member_number);
 		mTab.setValue("payroll_no", payroll_number);
+		mTab.setValue("totalshares", totalshares);
 
 		return NO_ERROR;
 	}

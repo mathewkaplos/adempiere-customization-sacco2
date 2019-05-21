@@ -54,34 +54,36 @@ public class SaveLoan extends SvrProcess {
 	private void saveIt() {
 		// 1. Guaranteers- fully guaranteed
 		if (type.isshould_be_guaranteed()) {
-			if (!type.isallow_zero_value_guarantors()) {
-				if (!loan.fullyGuaranteed()) {
-					// loan not fully guaranteed
-					if (!hasRights) {
-						ADialog.error(WindowNo, c, "This loan is not fully guaranteed!", "You cannot proceed");
-						return;
-					}
-					boolean val = ADialog.ask(WindowNo, c, "This loan is not fully guaranteed!",
-							"Do you want to proceed with saving the loan?");
-					if (!val) {
-						return;
+			if (loan.getCollateralValue().compareTo(loan.getloanamount()) == -1) {
+				if (!type.isallow_zero_value_guarantors()) {
+					if (!loan.fullyGuaranteed()) {
+						// loan not fully guaranteed
+						if (!hasRights) {
+							ADialog.error(WindowNo, c, "This loan is not fully guaranteed!", "You cannot proceed");
+							return;
+						}
+						boolean val = ADialog.ask(WindowNo, c, "This loan is not fully guaranteed!",
+								"Do you want to proceed with saving the loan?");
+						if (!val) {
+							return;
+						}
 					}
 				}
-			}
-			// 2. Guarantees -Check the minimum number
-			int minGuar = type.getloantypeminguarantors();
-			if (minGuar > 0) { // has minimum guarantor
-								// number
-				if (!loan.hasEnoughGuarantors()) {
-					// loan has no enough guarantors
-					if (!hasRights) {
-						ADialog.error(WindowNo, c, "This loan has no enough guarantors!", "You cannot proceed");
-						return;
-					}
-					boolean val = ADialog.ask(WindowNo, c, "This loan has no enough guarantors!",
-							"Do you want to proceed with saving the loan?");
-					if (!val) {
-						return;
+				// 2. Guarantees -Check the minimum number
+				int minGuar = type.getloantypeminguarantors();
+				if (minGuar > 0) { // has minimum guarantor
+									// number
+					if (!loan.hasEnoughGuarantors()) {
+						// loan has no enough guarantors
+						if (!hasRights) {
+							ADialog.error(WindowNo, c, "This loan has no enough guarantors!", "You cannot proceed");
+							return;
+						}
+						boolean val = ADialog.ask(WindowNo, c, "This loan has no enough guarantors!",
+								"Do you want to proceed with saving the loan?");
+						if (!val) {
+							return;
+						}
 					}
 				}
 			}

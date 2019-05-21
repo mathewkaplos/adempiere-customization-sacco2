@@ -590,6 +590,15 @@ public interface I_s_loans
 	/** Get Disbursed Amount	  */
 	public BigDecimal getdisbursed_amount();
 
+    /** Column name disbursed_cheque_amount */
+    public static final String COLUMNNAME_disbursed_cheque_amount = "disbursed_cheque_amount";
+
+	/** Set Disbursed Cheque Amount	  */
+	public void setdisbursed_cheque_amount (BigDecimal disbursed_cheque_amount);
+
+	/** Get Disbursed Cheque Amount	  */
+	public BigDecimal getdisbursed_cheque_amount();
+
     /** Column name disbursement_date */
     public static final String COLUMNNAME_disbursement_date = "disbursement_date";
 
@@ -867,10 +876,10 @@ public interface I_s_loans
     /** Column name issued_amount */
     public static final String COLUMNNAME_issued_amount = "issued_amount";
 
-	/** Set Issued Amount	  */
+	/** Set Amount To Issue	  */
 	public void setissued_amount (BigDecimal issued_amount);
 
-	/** Get Issued Amount	  */
+	/** Get Amount To Issue	  */
 	public BigDecimal getissued_amount();
 
     /** Column name issuedby */

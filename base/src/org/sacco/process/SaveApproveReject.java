@@ -52,7 +52,7 @@ public class SaveApproveReject extends SvrProcess {
 				loan.setexpectedrepaydate(ls.getloanpaydate());
 				loan.save();
 			}
-			addCharges();
+			//addCharges();
 		}
 		return null;
 	}

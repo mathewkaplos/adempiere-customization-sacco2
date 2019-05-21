@@ -24,6 +24,7 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import zenith.util.DateUtil;
+import zenith.util.Util;
 
 public class ShareTransactionsCallout extends CalloutEngine {
 
@@ -31,7 +32,7 @@ public class ShareTransactionsCallout extends CalloutEngine {
 	public String newRecord(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
-	
+
 		return null;
 	}
 
@@ -58,7 +59,7 @@ public class ShareTransactionsCallout extends CalloutEngine {
 		// Set values to fields
 		mTab.setValue("mcode", member_number);
 		mTab.setValue("payroll_no", payroll_number);
-		
+
 		//
 		AD_User user = new AD_User(ctx, Env.getAD_User_ID(ctx), null);
 		int bankgl_Acct = user.getTellerGLCode();
@@ -66,7 +67,6 @@ public class ShareTransactionsCallout extends CalloutEngine {
 			mTab.setValue("bankgl_Acct", bankgl_Acct);
 			mTab.getField("C_Bank_ID").setDisplayed(false);
 		} //
-
 
 		return NO_ERROR;
 	}
@@ -138,9 +138,9 @@ public class ShareTransactionsCallout extends CalloutEngine {
 			double rate = shareType.getintrate().doubleValue() / 100;
 			double interest = rate * freqMonths * receiptamount.doubleValue();
 
-			mTab.setValue("InterestAmt", BigDecimal.valueOf(interest));
+			mTab.setValue("InterestAmt", Util.round(BigDecimal.valueOf(interest)));
 
-			mTab.setValue("receiptamount", receiptamount.add(BigDecimal.valueOf(interest)));
+			mTab.setValue("receiptamount", Util.round(receiptamount.add(BigDecimal.valueOf(interest))));
 		}
 		// isfixeddeposit
 
@@ -213,6 +213,7 @@ public class ShareTransactionsCallout extends CalloutEngine {
 
 		return NO_ERROR;
 	}
+
 	// org.sacco.callout.ShareTransactionsCallout.bank
 	public String bank(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)

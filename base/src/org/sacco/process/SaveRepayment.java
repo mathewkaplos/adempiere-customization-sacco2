@@ -30,6 +30,7 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import zenith.util.DateUtil;
+import zenith.util.NumberWordConverter;
 import zenith.util.Util;
 
 public class SaveRepayment extends SvrProcess {
@@ -84,10 +85,14 @@ public class SaveRepayment extends SvrProcess {
 			repayment.setPrincipal(repayment.getPrincipal().negate());
 			repayment.save();
 		}
+		String AmountInWords = NumberWordConverter.getMoneyIntoWords(repayment.getPaymentAmount().abs().doubleValue());
+		repayment.setAmountInWords(AmountInWords);
 		repayment.getGuarantorDetails(repayment.gets_loans_ID());
 		repayment.freeTiedShares();
 
-		//resetPeriodRemittance();
+		repayment.save();
+
+		// resetPeriodRemittance();
 		post();
 		freeGuarantorShares();
 		return null;
@@ -220,7 +225,7 @@ public class SaveRepayment extends SvrProcess {
 		MAccount accountCR = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), repayment.getPrincipal());
 		lineCR.save();
-		
+
 		// update contra -accounts , and other particulars
 		lineDR.setcontra_account_id(lineCR.getAccount_ID());
 		lineDR.setUserCode(user.getName());
@@ -234,8 +239,6 @@ public class SaveRepayment extends SvrProcess {
 		lineCR.setDescription("Repayment." + MemberNoDescription);
 		lineCR.save();
 
-		
-		
 		postInterest();
 	}
 
@@ -252,7 +255,7 @@ public class SaveRepayment extends SvrProcess {
 		MAccount accountCR = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), totalInterest);
 		lineCR.save();
-		
+
 		// update contra -accounts , and other particulars
 		lineDR.setcontra_account_id(lineCR.getAccount_ID());
 		lineDR.setUserCode(user.getName());
@@ -265,7 +268,6 @@ public class SaveRepayment extends SvrProcess {
 		lineCR.setChequeNo(chequeNo);
 		lineCR.setDescription("Loan Interest." + MemberNoDescription);
 		lineCR.save();
-
 
 	}
 
@@ -317,8 +319,7 @@ public class SaveRepayment extends SvrProcess {
 		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
 				charge.getAmount().negate());
 		lineCR.save();
-		
-		
+
 		// update contra -accounts , and other particulars
 		lineDR.setcontra_account_id(lineCR.getAccount_ID());
 		lineDR.setUserCode(user.getName());

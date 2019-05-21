@@ -36,10 +36,17 @@ public class SaveChequeWriting extends SvrProcess {
 		loan.setcheque_writing_done(true);
 		loan.save();
 		if (loan.gets_disbursement_mode_ID() == 2) {
+			clearExistingPosting();
 			PostLoanDisbursement postLoanDisbursement = new PostLoanDisbursement(bank, get_TrxName(), loan);
 			postLoanDisbursement.post();
 		}
+
 		return null;
+	}
+
+	private void clearExistingPosting() {
+	
+		
 	}
 
 }

@@ -33,7 +33,7 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190518L;
+	private static final long serialVersionUID = 20190521L;
 
     /** Standard Constructor */
     public X_s_loans (Properties ctx, int s_loans_ID, String trxName)
@@ -1030,6 +1030,23 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return bd;
 	}
 
+	/** Set Disbursed Cheque Amount.
+		@param disbursed_cheque_amount Disbursed Cheque Amount	  */
+	public void setdisbursed_cheque_amount (BigDecimal disbursed_cheque_amount)
+	{
+		set_Value (COLUMNNAME_disbursed_cheque_amount, disbursed_cheque_amount);
+	}
+
+	/** Get Disbursed Cheque Amount.
+		@return Disbursed Cheque Amount	  */
+	public BigDecimal getdisbursed_cheque_amount () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_disbursed_cheque_amount);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Disbursement Date.
 		@param disbursement_date Disbursement Date	  */
 	public void setdisbursement_date (Timestamp disbursement_date)
@@ -1549,15 +1566,15 @@ public class X_s_loans extends PO implements I_s_loans, I_Persistent
 		return (String)get_Value(COLUMNNAME_issuecash);
 	}
 
-	/** Set Issued Amount.
-		@param issued_amount Issued Amount	  */
+	/** Set Amount To Issue.
+		@param issued_amount Amount To Issue	  */
 	public void setissued_amount (BigDecimal issued_amount)
 	{
 		set_Value (COLUMNNAME_issued_amount, issued_amount);
 	}
 
-	/** Get Issued Amount.
-		@return Issued Amount	  */
+	/** Get Amount To Issue.
+		@return Amount To Issue	  */
 	public BigDecimal getissued_amount () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_issued_amount);

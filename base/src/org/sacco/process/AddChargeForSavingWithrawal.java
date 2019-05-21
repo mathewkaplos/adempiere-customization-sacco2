@@ -10,6 +10,7 @@ import org.compiere.model.ShareRemittance;
 import org.compiere.model.Sloan_charges;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 public class AddChargeForSavingWithrawal extends SvrProcess {
@@ -68,6 +69,10 @@ public class AddChargeForSavingWithrawal extends SvrProcess {
 		charge.setDescription(Description);
 		charge.sets_shareremittance_ID(getRecord_ID());
 		charge.save();
+
+		remit.setreceiptamount(remit.getreceiptamount().subtract(chargeAmt));
+		remit.setothercharges(remit.getothercharges().add(chargeAmt));
+		remit.save();
 
 	}
 

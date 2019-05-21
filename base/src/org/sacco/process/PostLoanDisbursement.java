@@ -63,9 +63,9 @@ public class PostLoanDisbursement {
 		member = loan.gets_member();
 		user = new AD_User(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()), null);
 		userCode = user.getName();
-		if (!loan.getreadychequeno().isEmpty() && loan.getreadychequeno() != null)
-			chequeNo = loan.getreadychequeno();
-		else
+		////if (!loan.getreadychequeno().isEmpty() && loan.getreadychequeno() != null)
+		//	chequeNo = loan.getreadychequeno();
+	//	else
 			chequeNo = disbursement.getDocumentNo();
 		MemberNoDescription = ".Mbr. No:" + member.getDocumentNo();
 
