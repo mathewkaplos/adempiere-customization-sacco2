@@ -354,6 +354,8 @@ public class SaveRepayment extends SvrProcess {
 		loan.setloanbalance(loan.getloanbalance().add(repayment.getPaymentAmount()));
 		loan.setmonthopeningbal(loan.getmonthopeningbal().add(repayment.getPaymentAmount()));
 		repayment.setmonthclosingbal(loan.getloanbalance());
+		loan.setappliedamount(repayment.getPaymentAmount());
+		loan.setis_topup(true);
 		loan.save();
 
 		// interest balance
@@ -370,7 +372,7 @@ public class SaveRepayment extends SvrProcess {
 		BigDecimal totalInterest = repayment.getexpectedinterest().add(repayment.getExtraInterest());
 		loan.setintbalance(loan.getintbalance().subtract(totalInterest));
 		loan.setlast_pay_date(DateUtil.newTimestamp());
-
+		loan.setis_topup(true);
 		loan.save();
 
 		// interest balance

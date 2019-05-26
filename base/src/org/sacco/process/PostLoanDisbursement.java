@@ -17,6 +17,7 @@ import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MBank;
 import org.compiere.model.MClient;
+import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
@@ -150,7 +151,8 @@ public class PostLoanDisbursement {
 			crditAmount = loan.getplot_cost();
 
 		} else if (disbursement_ID == Sacco.disbursementmode_saving) {
-			creditGL = loan.gets_membershares().gets_sharetype().getsaving_gl_code_Acct();
+			MemberShares shares = new MemberShares(Env.getCtx(), loan.gets_membershares_ID(), userCode);
+			creditGL = shares.gets_sharetype().getsaving_gl_code_Acct();
 			crditAmount = loanPostingAMount;
 			// Savings transfer
 		} else {

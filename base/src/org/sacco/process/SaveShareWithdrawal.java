@@ -38,7 +38,6 @@ import zenith.util.NumberWordConverter;
 public class SaveShareWithdrawal extends SvrProcess {
 
 	ShareRemittance shareRemittance = null;
-	private int C_Bank_ID = 0;
 
 	private I_s_sharetype shareType = null;
 
@@ -154,10 +153,8 @@ public class SaveShareWithdrawal extends SvrProcess {
 	}
 
 	private void updateMemberShare() {
-		System.out.println(totalCharge);
 		if (totalCharge.compareTo(Env.ZERO) == 1)
 			amount = amount.abs().add(totalCharge);
-	System.out.println(amount);
 
 		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
 		memberShares.setsharestodate(memberShares.getsharestodate().subtract(amount));
@@ -272,7 +269,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 		}
 	}
 
-	 BigDecimal totalCharge = Env.ZERO;
+	BigDecimal totalCharge = Env.ZERO;
 
 	private void postCharge(SavingsWithdrawalCharge charge) {
 
@@ -281,13 +278,14 @@ public class SaveShareWithdrawal extends SvrProcess {
 			return;
 		int share_saving_gl = 0;
 		if (shareType.getshare_saving().equals("saving"))
-			share_saving_gl = shareType.getinterestgl_Acct();
+			share_saving_gl = shareType.getsaving_gl_code_Acct();
 		else
-			share_saving_gl = shareType.getdividendgl_Acct();
+			share_saving_gl = shareType.getsharegl_Acct();
 
 		totalCharge = totalCharge.add(charge.getAmount());
 		TransactionChargeSetup chargeSetup = new TransactionChargeSetup(Env.getCtx(), chargeSetupID, get_TrxName());
 
+		System.out.println(share_saving_gl);
 		MAccount accountDR = new MAccount(Env.getCtx(), share_saving_gl, get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), charge.getAmount());
 		lineDR.save();
@@ -301,13 +299,13 @@ public class SaveShareWithdrawal extends SvrProcess {
 		lineDR.setcontra_account_id(lineCR.getAccount_ID());
 		lineDR.setUserCode(user.getName());
 		lineDR.setChequeNo(chequeNo);
-		lineDR.setDescription("Charges." + MemberNoDescription);
+		lineDR.setDescription(chargeSetup.getDescription() + " Charges." + MemberNoDescription);
 		lineDR.save();
 
 		lineCR.setcontra_account_id(lineDR.getAccount_ID());
 		lineCR.setUserCode(user.getName());
 		lineCR.setChequeNo(chequeNo);
-		lineDR.setDescription("Charges." + MemberNoDescription);
+		lineDR.setDescription(chargeSetup.getDescription() + " Charges." + MemberNoDescription);
 		lineCR.save();
 	}
 }

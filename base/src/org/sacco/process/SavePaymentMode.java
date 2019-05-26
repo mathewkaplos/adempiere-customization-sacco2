@@ -1,32 +1,15 @@
 package org.sacco.process;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.logging.Level;
 
-import org.compiere.acct.Doc;
-import org.compiere.acct.DocLine;
-import org.compiere.acct.Doc_LoanDisbursement;
-import org.compiere.acct.Fact;
-import org.compiere.acct.FactLine;
-import org.compiere.model.LoanDisbursement;
-import org.compiere.model.LoanSchedule;
-import org.compiere.model.MAccount;
-import org.compiere.model.MAcctSchema;
 import org.compiere.model.MBank;
-import org.compiere.model.MClient;
 import org.compiere.model.MemberShares;
-import org.compiere.model.PO;
 import org.compiere.model.SLoan;
-import org.compiere.model.SLoanType;
 import org.compiere.model.Sacco;
 import org.compiere.model.ShambaPlot;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-
 import zenith.util.DateUtil;
 
 public class SavePaymentMode extends SvrProcess {
@@ -62,11 +45,13 @@ public class SavePaymentMode extends SvrProcess {
 	@Override
 	protected String doIt() throws Exception {
 		// if (loan.getNumberOfRepayments() == 1) {
-		loan.setmonthopeningbal(loan.getappliedamount());
-		loan.setloanpaymode_done(true);
-		loan.setintbalance(loan.getloaninterestamount());
-		loan.setloanbalance(loan.getappliedamount());
-		loan.save();
+		if (!loan.is_topup()) {
+			loan.setmonthopeningbal(loan.getappliedamount());
+			loan.setloanpaymode_done(true);
+			loan.setintbalance(loan.getloaninterestamount());
+			loan.setloanbalance(loan.getappliedamount());
+			loan.save();
+		}
 		// }
 		if (loan.is_refinance()) {
 			repayOldLoan();

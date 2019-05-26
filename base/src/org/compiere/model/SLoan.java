@@ -16,6 +16,7 @@ import org.compiere.util.AmtInWords_EN;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.sacco.loan.Formula;
+import org.sacco.loan.Penalty;
 import org.sacco.loan.ReducingBalance;
 
 import z.mathew.Finance;
@@ -190,8 +191,8 @@ public class SLoan extends X_s_loans {
 	public long getLastRepayPeriodInDays(Timestamp selectedtDate) {
 		long diff = 0;
 		LocalDateTime d2 = selectedtDate.toLocalDateTime();
-		String sql = "SELECT * FROM adempiere.l_repayments WHERE isComplete ='Y' AND s_loans_ID =" + get_ID()
-				+ " ORDER BY created DESC";
+		String sql = "SELECT * FROM adempiere.l_repayments WHERE paymentAmount>0 AND isComplete ='Y' AND s_loans_ID ="
+				+ get_ID() + " ORDER BY paymentdate DESC";
 		PreparedStatement stm = null;
 		ResultSet rs = null;
 		try {
@@ -203,7 +204,7 @@ public class SLoan extends X_s_loans {
 				diff = Duration.between(d1, d2).toDays();
 
 			} else {
-				LocalDateTime d1 = this.getloanappdate().toLocalDateTime();
+				LocalDateTime d1 = this.getapproveddate().toLocalDateTime();
 				diff = Duration.between(d1, d2).toDays();
 			}
 		} catch (Exception e) {
@@ -317,15 +318,7 @@ public class SLoan extends X_s_loans {
 		boolean dailyMode = gets_loantype().getmonthlyintcalc().equalsIgnoreCase("0");
 
 		if (dailyMode) {
-			long days = getLastRepayPeriodInDays(paymentDate);
-			double P = getloanbalance().doubleValue();
-			double R = getloaninterestrate().doubleValue() * 12;
-			double yearDays = 365;
-			double T = days / yearDays;
-			String method = gets_loantype().getinterestformula();
-			Formula formula = new Formula(P, R, T, method);
-			BigDecimal interet = formula.getInterest();
-			return interet;
+			return getDailyInterest(paymentDate);
 		} else {
 			if (hasRemittance)
 				return Env.ZERO;
@@ -334,6 +327,32 @@ public class SLoan extends X_s_loans {
 				return schedule.getinterestamount();
 			}
 		}
+		return Env.ZERO;
+	}
+
+	private BigDecimal getDailyInterest(Timestamp paymentDate) {
+		long days = getLastRepayPeriodInDays(paymentDate);
+		double P = getloanbalance().doubleValue();
+		double R = getloaninterestrate().doubleValue() * 12;
+		double yearDays = 360;
+		double T = days / yearDays;
+		String method = gets_loantype().getinterestformula();
+		Formula formula = new Formula(P, R, T, method);
+		BigDecimal interet = formula.getInterest();
+		return interet;
+	}
+
+	public BigDecimal getPenalty(Timestamp paymentDate) {
+		long days = getLastRepayPeriodInDays(paymentDate);
+		// penalty
+		BigDecimal penalty = Env.ZERO;
+		if (gets_loantype().isoverdue_penalty()) {
+			BigDecimal interet = getDailyInterest(paymentDate);
+			Penalty pen = new Penalty(days, interet);
+			penalty = pen.getPenalty();
+			return penalty;
+		}
+
 		return Env.ZERO;
 	}
 
@@ -740,7 +759,8 @@ public class SLoan extends X_s_loans {
 	}
 
 	public BigDecimal getCollateralValue() {
-		String sql = "select COALESCE(SUM(valuenumber),0 )from adempiere.s_collateral where s_loans_id ="+gets_loans_ID();
+		String sql = "select COALESCE(SUM(valuenumber),0 )from adempiere.s_collateral where s_loans_id ="
+				+ gets_loans_ID();
 		return DB.getSQLValueBD(get_TrxName(), sql);
 	}
 

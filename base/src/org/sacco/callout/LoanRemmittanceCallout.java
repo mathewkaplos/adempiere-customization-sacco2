@@ -45,9 +45,8 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("bankgl_Acct", bankgl_Acct);
 			mTab.getField("C_Bank_ID").setDisplayed(false);
 		} //
-
+		Timestamp PaymentDate = (Timestamp) mTab.getValue("PaymentDate");
 		if (mTab.getAD_Tab_ID() == remmittanceTabID) {
-			Timestamp PaymentDate = (Timestamp) mTab.getValue("PaymentDate");
 
 			BigDecimal expectedPrincipal = Util.round(loan.getPeriodPrincipal(C_Period_ID, PaymentDate));
 			BigDecimal expectedInterest = Util.round(loan.getPeriodInterest(C_Period_ID, PaymentDate));
@@ -56,7 +55,9 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 				expectedPrincipal = Env.ZERO;
 			}
 
-			BigDecimal gross = expectedPrincipal.add(expectedInterest);
+			BigDecimal penalty = loan.getPenalty(PaymentDate);
+			mTab.setValue("penalty_due", penalty);
+			BigDecimal gross = expectedPrincipal.add(expectedInterest).add(penalty);
 			if (extraInterest != null)
 				gross = gross.add(extraInterest);
 
@@ -71,6 +72,8 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
 			mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
 			mTab.setValue("s_member_ID", loan.gets_member_ID());
+
+		
 
 			// interestgl_Acct
 			I_s_loantype loanType = loan.getLoanType();
@@ -107,7 +110,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			try {
 				int l_repayments_ID = Integer.parseInt(l_repayments_ID_String);
 				if (l_repayments_ID > 0) {
-					//isRefund(ctx, WindowNo, mTab, mField, true);
+					// isRefund(ctx, WindowNo, mTab, mField, true);
 					Repayment repayment = new Repayment(Env.getCtx(), l_repayments_ID, null);
 					mTab.setValue("PaymentAmount", repayment.getPaymentAmount());
 					mTab.setValue("Principal", repayment.getPrincipal());
@@ -121,7 +124,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			}
 
 		} else {
-			//updateRefundInstance(mTab);
+			// updateRefundInstance(mTab);
 		}
 	}
 
@@ -143,9 +146,13 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		if (mTab.getValue("ExtraInterest") != null) {
 			extraInterest = ((BigDecimal) mTab.getValue("ExtraInterest")).doubleValue();
 		}
+		double penalty_due = 0;
+		if (mTab.getValue("penalty_due") != null) {
+			penalty_due = ((BigDecimal) mTab.getValue("penalty_due")).doubleValue();
+		}
 		// Gross = P+I
 		// P=Gross- I
-		double P = gross - (interest + extraInterest + otherCharges);
+		double P = gross - (interest + extraInterest + otherCharges + penalty_due);
 		if (P > 0) {
 			mTab.setValue("Principal", BigDecimal.valueOf(P));
 		} else {
@@ -191,7 +198,6 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		return NO_ERROR;
 	}
 
-
 	// org.sacco.callout.LoanRemmittanceCallout.isTopUp
 	public String isTopUp(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
@@ -213,15 +219,15 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		if (val) {
 			mTab.setValue("is_refund", false);
 			// mTab.setValue("Comments", "Loan To-Up");
-		
+
 			mTab.setValue("PaymentAmount", null);
 			mTab.setValue("Principal", Env.ZERO);
 			mTab.setValue("interest", Env.ZERO);
 			mTab.setValue("othercharges", Env.ZERO);
 
-			//mTab.getField("Principal").setDisplayed(false);
-			//mTab.getField("interest").setDisplayed(false);
-			//mTab.getField("othercharges").setDisplayed(false);
+			// mTab.getField("Principal").setDisplayed(false);
+			// mTab.getField("interest").setDisplayed(false);
+			// mTab.getField("othercharges").setDisplayed(false);
 
 		}
 
@@ -245,8 +251,9 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 
 		boolean beforeOrToday = paymentDate.before(DateUtil.newTimestamp());
 		if (!beforeOrToday) {
-			ADialog.error(WindowNo, null, "The payment date cannot be greater than today!", "You cannot proceed");
-			return "";
+			// ADialog.error(WindowNo, null, "The payment date cannot be greater than
+			// today!", "You cannot proceed");
+			// return "";
 		}
 
 		int s_loantype_ID = (int) mTab.getValue("s_loantype_ID");
@@ -258,7 +265,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			long days = loan.getLastRepayPeriodInDays(paymentDate);
 			double P = loan.getloanbalance().doubleValue();
 			double R = loan.getloaninterestrate().doubleValue() * 12;
-			double yearDays = 365;
+			double yearDays = 360;
 			double T = days / yearDays;
 			System.out.println(days);
 			String method = type.getinterestformula();

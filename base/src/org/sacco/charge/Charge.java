@@ -2,19 +2,6 @@ package org.sacco.charge;
 
 public class Charge {
 	
-	
-	//Class declarations :
-	class Super {}
-	class Sub extends Super {
-		//Reference declarations :
-		void gg(){
-			Super x=null;
-			Sub y;
-			y =  (Sub) x;
-		}
-		
-	}
-
 
 	public static double eval(final String str) {
 		return new Object() {

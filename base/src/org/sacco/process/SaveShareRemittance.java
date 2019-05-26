@@ -22,8 +22,10 @@ import org.compiere.model.MClient;
 import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
 import org.compiere.model.Sacco;
+import org.compiere.model.SavingsWithdrawalCharge;
 import org.compiere.model.ShareRemittance;
 import org.compiere.model.Share_recovery;
+import org.compiere.model.TransactionChargeSetup;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -190,6 +192,7 @@ public class SaveShareRemittance extends SvrProcess {
 		acctSchema = new MAcctSchema(Env.getCtx(), 101, null);
 		fact = new Fact(doc, acctSchema, "A");
 		docLine = new DocLine(po, doc);
+		postShareCharges();
 		postSahre();
 		shareRemittance.setDocStatus("CO");
 		shareRemittance.setProcessed(true);
@@ -234,5 +237,69 @@ public class SaveShareRemittance extends SvrProcess {
 		lineDR.setDescription("Saving Deposit." + MemberNoDescription);
 		lineCR.save();
 
+	}
+	private void postShareCharges() {
+		String sql = "SELECT * FROM adempiere.s_saving_withdrawal_charges WHERE s_shareremittance_ID ="
+				+ getRecord_ID();
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				SavingsWithdrawalCharge charge = new SavingsWithdrawalCharge(getCtx(), rs, get_TrxName());
+				postCharge(charge);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+	 BigDecimal totalCharge = Env.ZERO;
+
+	private void postCharge(SavingsWithdrawalCharge charge) {
+
+		int chargeSetupID = charge.gets_accountsetup_ID();
+		if (chargeSetupID < 1)
+			return;
+
+		totalCharge = totalCharge.add(charge.getAmount());
+		TransactionChargeSetup chargeSetup = new TransactionChargeSetup(Env.getCtx(), chargeSetupID, get_TrxName());
+
+		MAccount accountDR = new MAccount(Env.getCtx(), shareRemittance.getbankgl_Acct(), get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), charge.getAmount());
+		lineDR.save();
+
+		MAccount accountCR = new MAccount(Env.getCtx(), chargeSetup.getglcode_Acct(), get_TrxName());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(),
+				charge.getAmount().negate());
+		lineCR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription(chargeSetup.getDescription()+" Charges." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription(chargeSetup.getDescription()+"Charges." + MemberNoDescription);
+		lineCR.save();
 	}
 }

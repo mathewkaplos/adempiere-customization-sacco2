@@ -66,7 +66,7 @@ public class AddCharges extends SvrProcess {
 		if (chargeSetup.isuseformula()) {
 			if (chargeSetup.getchargeformula() != null && !chargeSetup.getchargeformula().isEmpty()) {
 				String formula = chargeSetup.getchargeformula();
-				formula = formula.replace("P", loan.getapprovedamount().stripTrailingZeros().toPlainString());
+				formula = formula.replace("P", loan.getappliedamount().stripTrailingZeros().toPlainString());
 				formula = formula.replace("[", "").replace("]", "");
 				double d = eval(formula);
 				chargeAmt = BigDecimal.valueOf(d);

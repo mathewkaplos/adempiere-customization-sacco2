@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.compiere.apps.ADialog;
 import org.compiere.util.AmtInWords_EN;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -81,5 +82,17 @@ public class Repayment extends X_l_repayments {
 			ms.save();
 		}
 
+	}
+
+	@Override
+	protected boolean afterSave(boolean newRecord, boolean success) {
+		System.out.println("lllllllllllllll");
+		return super.afterSave(newRecord, success);
+	}
+
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+
+		return super.beforeSave(newRecord);
 	}
 }

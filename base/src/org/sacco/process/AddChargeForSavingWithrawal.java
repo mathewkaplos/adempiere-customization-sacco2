@@ -70,7 +70,7 @@ public class AddChargeForSavingWithrawal extends SvrProcess {
 		charge.sets_shareremittance_ID(getRecord_ID());
 		charge.save();
 
-		remit.setreceiptamount(remit.getreceiptamount().subtract(chargeAmt));
+		remit.setreceiptamount(remit.getreceiptamount());
 		remit.setothercharges(remit.getothercharges().add(chargeAmt));
 		remit.save();
 
