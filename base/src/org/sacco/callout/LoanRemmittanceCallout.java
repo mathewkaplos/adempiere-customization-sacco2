@@ -55,7 +55,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 				expectedPrincipal = Env.ZERO;
 			}
 
-			BigDecimal penalty = loan.getPenalty(PaymentDate);
+			BigDecimal penalty = Util.round(loan.getPenalty(PaymentDate));
 			mTab.setValue("penalty_due", penalty);
 			BigDecimal gross = expectedPrincipal.add(expectedInterest).add(penalty);
 			if (extraInterest != null)
@@ -270,13 +270,13 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			System.out.println(days);
 			String method = type.getinterestformula();
 			Formula formula = new Formula(P, R, T, method);
-			BigDecimal interet = formula.getInterest();
+			BigDecimal interet = Util.round(formula.getInterest());
 			BigDecimal Principal = (BigDecimal) mTab.getValue("Principal");
 			// penalty
 			BigDecimal penalty = Env.ZERO;
 			if (type.isoverdue_penalty()) {
 				Penalty pen = new Penalty(days, interet);
-				penalty = pen.getPenalty();
+				penalty = Util.round(pen.getPenalty());
 			}
 
 			mTab.setValue("expectedinterest", interet);

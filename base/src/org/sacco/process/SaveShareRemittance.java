@@ -300,6 +300,6 @@ public class SaveShareRemittance extends SvrProcess {
 		lineCR.setUserCode(user.getName());
 		lineCR.setChequeNo(chequeNo);
 		lineDR.setDescription(chargeSetup.getDescription()+"Charges." + MemberNoDescription);
-		lineCR.save();
+		lineCR.save(); 
 	}
 }

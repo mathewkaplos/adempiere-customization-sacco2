@@ -215,6 +215,7 @@ public class SaveRepayment extends SvrProcess {
 	 */
 	private void postLoan() {
 		if (repayment.getPrincipal().compareTo(Env.ZERO) == 0) {
+			postInterest();
 			return;
 		}
 		MAccount accountDR = new MAccount(Env.getCtx(), loan.gets_loantype().getloantypeloangl_Acct(), get_TrxName());
@@ -248,7 +249,7 @@ public class SaveRepayment extends SvrProcess {
 		if (totalInterest.compareTo(Env.ZERO) == 0)
 			return;
 
-		MAccount accountDR = new MAccount(Env.getCtx(), loantype.getInterestReceivable_Acct(), get_TrxName());
+		MAccount accountDR = new MAccount(Env.getCtx(), loantype.getloantypeinterestgl_Acct(), get_TrxName());
 		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), totalInterest.negate());
 		lineDR.save();
 
@@ -267,6 +268,34 @@ public class SaveRepayment extends SvrProcess {
 		lineCR.setUserCode(user.getName());
 		lineCR.setChequeNo(chequeNo);
 		lineCR.setDescription("Loan Interest." + MemberNoDescription);
+		lineCR.save();
+		postPenalty();
+	}
+	private void postPenalty() {
+		BigDecimal penalty = repayment.getpenalty_due();
+
+		if (penalty.compareTo(Env.ZERO) == 0)
+			return;
+
+		MAccount accountDR = new MAccount(Env.getCtx(), loantype.getloantypeinterestgl_Acct(), get_TrxName());
+		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(), penalty.negate());
+		lineDR.save();
+
+		MAccount accountCR = new MAccount(Env.getCtx(), repayment.getbankgl_Acct(), get_TrxName());
+		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), penalty);
+		lineCR.save();
+
+		// update contra -accounts , and other particulars
+		lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		lineDR.setUserCode(user.getName());
+		lineDR.setChequeNo(chequeNo);
+		lineDR.setDescription("Loan Penalty." + MemberNoDescription);
+		lineDR.save();
+
+		lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		lineCR.setUserCode(user.getName());
+		lineCR.setChequeNo(chequeNo);
+		lineCR.setDescription("Loan Penalty." + MemberNoDescription);
 		lineCR.save();
 
 	}

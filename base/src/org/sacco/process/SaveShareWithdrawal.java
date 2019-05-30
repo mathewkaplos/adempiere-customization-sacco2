@@ -43,7 +43,7 @@ public class SaveShareWithdrawal extends SvrProcess {
 
 	private BigDecimal amount = Env.ZERO;
 	private BigDecimal interest = Env.ZERO;
-	private boolean isfixeddeposit = true;
+	private boolean isfixeddeposit = true; 
 
 	AD_User user = null;
 
@@ -74,7 +74,6 @@ public class SaveShareWithdrawal extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-
 		isfixeddeposit = shareRemittance.isfixeddeposit();
 		if (isfixeddeposit) {
 			interest = shareRemittance.getInterestAmt();

@@ -21,7 +21,7 @@ public class AddChargeForSavingWithrawal extends SvrProcess {
 	MemberShares shares = null;
 
 	@Override
-	protected void prepare() {
+	protected void prepare() { 
 		ProcessInfoParameter[] para = getParameter();
 		for (int i = 0; i < para.length; i++) {
 			String name = para[i].getParameterName();
@@ -43,6 +43,7 @@ public class AddChargeForSavingWithrawal extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
+		System.out.println(remit.is_withdrawal());
 		addCharge();
 		return null;
 	}
