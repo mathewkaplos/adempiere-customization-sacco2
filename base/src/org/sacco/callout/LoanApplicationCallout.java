@@ -3,8 +3,6 @@ package org.sacco.callout;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -16,6 +14,7 @@ import org.compiere.model.LoanSchedule;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
 import org.compiere.model.SMember;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import zenith.util.DateUtil;
@@ -24,6 +23,8 @@ import zenith.util.Util;
 public class LoanApplicationCallout extends CalloutEngine {
 
 	public String loanType(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
 		// Declare Variables
 		int repayPeriod = 0;
 		BigDecimal minimumloan = Env.ZERO;
@@ -56,8 +57,37 @@ public class LoanApplicationCallout extends CalloutEngine {
 		mTab.setValue("maximumloan", maximumloan);
 		mTab.setValue("loaninterestrate", interestRate);
 		mTab.setValue("loan_gl_Acct", loanGLCode);
+		// get member id
+		Integer s_member_ID = (Integer) mTab.getValue("s_member_ID");
+		if (loanTypeID == 1 || loanTypeID == 3) {
+			// check if there's a running loan for the member
+			int existingLoanID= checkRunningLoan(s_member_ID);
+			if (existingLoanID > 0) {
+				final int x = yesnocancel("Member has an existing loan.Do you want to re-finance?");
+				System.out.println(x);
+				if (x == 0) {
+					mTab.setValue("is_refinance", true);
+					mTab.setValue("s_loans_refinance_ID", existingLoanID);
+					//
+				} else {
+					mTab.setValue("s_loantype_ID", null);
+				}
+			}
+		}
+
 		// loan_gl_Acct
 		return NO_ERROR;
+	}
+
+	private static int yesnocancel(final String theMessage) {
+		final int result = JOptionPane.showConfirmDialog(null, theMessage, "Alert", 1);
+		return result;
+	}
+
+	private int checkRunningLoan(Integer s_member_ID) {
+		String sql = "SELECT COALESCE(MAX(s_loans_ID),0) FROM adempiere.s_loans WHERE s_loantype_ID IN(1,3) AND loanbalance>0 AND s_member_ID ="
+				+ s_member_ID;
+		return DB.getSQLValue(null, sql);
 	}
 
 	private SLoanType getLoanType(int id) {
@@ -266,6 +296,7 @@ public class LoanApplicationCallout extends CalloutEngine {
 
 			JOptionPane.showMessageDialog(null, "This loan cannot be refinanced!");
 			mTab.setValue("is_refinance", false);
+			mTab.setValue("s_loantype_ID", null);
 		}
 
 		mTab.setValue("s_loans_refinance_ID", null);
