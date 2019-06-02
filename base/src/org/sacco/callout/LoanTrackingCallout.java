@@ -63,8 +63,6 @@ public class LoanTrackingCallout extends CalloutEngine {
 		} else {
 
 		}
-		BigDecimal approvedamount = (BigDecimal) mTab.getValue("approvedamount");
-		mTab.setValue("appliedamount", approvedamount);
 		mTab.setValue("s_shamba_ID", null);
 		mTab.setValue("s_shamba_plot_ID", null);
 		mTab.setValue("s_membershares_ID", null);

@@ -10,6 +10,8 @@ import org.compiere.model.Sacco;
 import org.compiere.model.ShambaPlot;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.DB;
+
 import zenith.util.DateUtil;
 
 public class SavePaymentMode extends SvrProcess {
@@ -49,7 +51,7 @@ public class SavePaymentMode extends SvrProcess {
 			loan.setmonthopeningbal(loan.getappliedamount());
 			loan.setloanpaymode_done(true);
 			loan.setintbalance(loan.getloaninterestamount());
-			loan.setloanbalance(loan.getappliedamount());
+			loan.setloanbalance(loan.getapprovedamount());
 			loan.save();
 		}
 		// }
@@ -70,7 +72,15 @@ public class SavePaymentMode extends SvrProcess {
 			PostLoanDisbursement postLoanDisbursement = new PostLoanDisbursement(bank, get_TrxName(), loan);
 			postLoanDisbursement.post();
 		}
+
+		clearUsedCharges();
 		return null;
+	}
+
+	private void clearUsedCharges() {
+		String sql = "DELETE FROM adempiere.s_loan_charges WHERE s_loans_id=" + loan.get_ID();
+		DB.executeUpdate(sql, get_TrxName());
+
 	}
 
 	private void updateSavings() {

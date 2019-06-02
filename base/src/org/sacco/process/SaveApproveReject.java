@@ -16,6 +16,8 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.sacco.loan.ApplyLoanCharges;
 
+import zenith.util.Util;
+
 public class SaveApproveReject extends SvrProcess {
 
 	SLoan loan = null;
@@ -36,24 +38,35 @@ public class SaveApproveReject extends SvrProcess {
 				int oldLoan_ID = loan.gets_loans_refinance_ID();
 				SLoan oldLoan = new SLoan(getCtx(), oldLoan_ID, get_TrxName());
 				BigDecimal oldLoanBal = oldLoan.getloanbalance();
-				BigDecimal approvedAmount = loan.getapprovedamount();
-				BigDecimal appliedamount = approvedAmount.subtract(oldLoanBal);
 
-				loan.setappliedamount(appliedamount);
+				BigDecimal interest = oldLoan.getLoanInterestToday();
+				BigDecimal penalty = oldLoan.getLoanPenaltyToday();
+				BigDecimal extraCharge = Util.round(interest.add(penalty));
+
+				BigDecimal approvedAmount = loan.getapprovedamount();
+				BigDecimal appliedamount = approvedAmount.subtract(oldLoanBal).subtract(extraCharge);
+
+				loan.setappliedamount(Util.round(appliedamount));
+				loan.setissued_amount(Util.round(appliedamount));
 				loan.save();
-			} else if (loan.isrejected()) {
-				updateGuarantorsOnRejection();
+
+			} else {
+				loan.setissued_amount(loan.getapprovedamount());
+				loan.save();
 			}
 			updateGuarantorsOnApproval();
-
 			int firsScheduleID = loan.getFirstScheduleID();
 			if (firsScheduleID > 0) {
 				LoanSchedule ls = new LoanSchedule(getCtx(), firsScheduleID, get_TrxName());
 				loan.setexpectedrepaydate(ls.getloanpaydate());
 				loan.save();
 			}
-			//addCharges();
+		} else if (loan.isrejected()) {
+			updateGuarantorsOnRejection();
 		}
+
+		// addCharges();
+
 		return null;
 	}
 

@@ -7,21 +7,20 @@ import org.compiere.model.ChargeSetup;
 import org.compiere.model.MemberShares;
 import org.compiere.model.SavingsWithdrawalCharge;
 import org.compiere.model.ShareRemittance;
-import org.compiere.model.Sloan_charges;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 public class AddChargeForSavingWithrawal extends SvrProcess {
 	private int s_accountsetup_ID = 0;
 	private String Description = "";
+	private BigDecimal amount = Env.ZERO;
 	private ChargeSetup chargeSetup = null;;
 	ShareRemittance remit = null;
 	MemberShares shares = null;
 
 	@Override
-	protected void prepare() { 
+	protected void prepare() {
 		ProcessInfoParameter[] para = getParameter();
 		for (int i = 0; i < para.length; i++) {
 			String name = para[i].getParameterName();
@@ -31,6 +30,8 @@ public class AddChargeForSavingWithrawal extends SvrProcess {
 				s_accountsetup_ID = para[i].getParameterAsInt();
 			else if (name.equals("Description"))
 				Description = para[i].getParameterAsString();
+			else if (name.equals("amount"))
+				amount = para[i].getParameterAsBigDecimal();
 			else
 				log.log(Level.SEVERE, "Unknown Parameter: " + name);
 		}
@@ -43,26 +44,29 @@ public class AddChargeForSavingWithrawal extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-		System.out.println(remit.is_withdrawal());
 		addCharge();
 		return null;
 	}
 
 	private void addCharge() {
 		BigDecimal chargeAmt = Env.ZERO;
-		if (chargeSetup.isuseformula()) {
-			if (chargeSetup.getchargeformula() != null && !chargeSetup.getchargeformula().isEmpty()) {
-				String formula = chargeSetup.getchargeformula();
-				formula = formula.replace("A", remit.getreceiptamount().stripTrailingZeros().toPlainString());
-				formula = formula.replace("B", shares.getsharestodate().stripTrailingZeros().toPlainString());
-				formula = formula.replace("[", "").replace("]", "");
-				double d = eval(formula);
-				chargeAmt = BigDecimal.valueOf(d);
+		if (amount.compareTo(Env.ZERO) > 0) {
+			chargeAmt = amount;
+		} else {
+			if (chargeSetup.isuseformula()) {
+				if (chargeSetup.getchargeformula() != null && !chargeSetup.getchargeformula().isEmpty()) {
+					String formula = chargeSetup.getchargeformula();
+					formula = formula.replace("A", remit.getreceiptamount().stripTrailingZeros().toPlainString());
+					formula = formula.replace("B", shares.getsharestodate().stripTrailingZeros().toPlainString());
+					formula = formula.replace("[", "").replace("]", "");
+					double d = eval(formula);
+					chargeAmt = BigDecimal.valueOf(d);
+				} else {
+					chargeAmt = chargeSetup.getAmount();
+				}
 			} else {
 				chargeAmt = chargeSetup.getAmount();
 			}
-		} else {
-			chargeAmt = chargeSetup.getAmount();
 		}
 		SavingsWithdrawalCharge charge = new SavingsWithdrawalCharge(getCtx(), 0, get_TrxName());
 		charge.sets_accountsetup_ID(s_accountsetup_ID);
@@ -70,8 +74,9 @@ public class AddChargeForSavingWithrawal extends SvrProcess {
 		charge.setDescription(Description);
 		charge.sets_shareremittance_ID(getRecord_ID());
 		charge.save();
-
-		remit.setreceiptamount(remit.getreceiptamount());
+		if (!remit.is_withdrawal()) {
+			remit.setreceiptamount(remit.getreceiptamount().subtract(chargeAmt));
+		}
 		remit.setothercharges(remit.getothercharges().add(chargeAmt));
 		remit.save();
 

@@ -6,21 +6,18 @@ import java.util.logging.Level;
 import org.compiere.model.ChargeSetup;
 import org.compiere.model.SLoan;
 import org.compiere.model.Sloan_charges;
-import org.compiere.model.X_s_other_loan_charges;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.sacco.charge.Charge;
-import org.sacco.loan.ApplyLoanCharges;
 
 public class AddCharges extends SvrProcess {
 
 	private int s_accountsetup_ID = 0;
 	private ChargeSetup chargeSetup = null;
-	private BigDecimal amt = Env.ZERO;
+	private BigDecimal amount = Env.ZERO;
 	private String Description = "";
-	private BigDecimal loanAmt = Env.ZERO;
+	private BigDecimal loanAppliedAmt = Env.ZERO;
 
 	private SLoan loan = null;
 
@@ -35,6 +32,8 @@ public class AddCharges extends SvrProcess {
 				s_accountsetup_ID = para[i].getParameterAsInt();
 			else if (name.equals("Description"))
 				Description = para[i].getParameterAsString();
+			else if (name.equals("amount"))
+				amount = para[i].getParameterAsBigDecimal();
 			else
 				log.log(Level.SEVERE, "Unknown Parameter: " + name);
 		}
@@ -42,7 +41,7 @@ public class AddCharges extends SvrProcess {
 			chargeSetup = new ChargeSetup(getCtx(), s_accountsetup_ID, get_TrxName());
 		}
 		loan = new SLoan(getCtx(), getRecord_ID(), get_TrxName());
-		loanAmt = loan.getappliedamount();
+		loanAppliedAmt = loan.getappliedamount();
 
 	}
 
@@ -56,25 +55,28 @@ public class AddCharges extends SvrProcess {
 	private void updateAmountToIssue() {
 		String sql = "SELECT COALESCE(SUM(Amount),0) FROM s_loan_charges WHERE s_loans_id=" + loan.get_ID();
 		BigDecimal sum = DB.getSQLValueBD(get_TrxName(), sql);
-		System.out.println(sum);
-		loan.setissued_amount(loanAmt.subtract(sum));
+		loan.setissued_amount(loanAppliedAmt.subtract(sum));
 		loan.save();
 	}
 
 	private void addCharge() {
 		BigDecimal chargeAmt = Env.ZERO;
-		if (chargeSetup.isuseformula()) {
-			if (chargeSetup.getchargeformula() != null && !chargeSetup.getchargeformula().isEmpty()) {
-				String formula = chargeSetup.getchargeformula();
-				formula = formula.replace("P", loan.getappliedamount().stripTrailingZeros().toPlainString());
-				formula = formula.replace("[", "").replace("]", "");
-				double d = eval(formula);
-				chargeAmt = BigDecimal.valueOf(d);
+		if (amount.compareTo(Env.ZERO) > 0) {
+			chargeAmt = amount;
+		} else {
+			if (chargeSetup.isuseformula()) {
+				if (chargeSetup.getchargeformula() != null && !chargeSetup.getchargeformula().isEmpty()) {
+					String formula = chargeSetup.getchargeformula();
+					formula = formula.replace("P", loan.getapprovedamount().stripTrailingZeros().toPlainString());
+					formula = formula.replace("[", "").replace("]", "");
+					double d = eval(formula);
+					chargeAmt = BigDecimal.valueOf(d);
+				} else {
+					chargeAmt = chargeSetup.getAmount();
+				}
 			} else {
 				chargeAmt = chargeSetup.getAmount();
 			}
-		} else {
-			chargeAmt = chargeSetup.getAmount();
 		}
 		Sloan_charges charges = new Sloan_charges(Env.getCtx(), 0, null);
 		charges.sets_loans_ID(loan.get_ID());

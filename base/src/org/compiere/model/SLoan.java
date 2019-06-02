@@ -894,4 +894,8 @@ public class SLoan extends X_s_loans {
 		String sql = "select adempiere.getloaninterest(" + get_ID() + ")";
 		return DB.getSQLValueBD(get_TrxName(), sql);
 	}
+	public BigDecimal getLoanPenaltyToday() {
+		String sql = "select adempiere.getloanpenalty(" + get_ID() + ")";
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
 }

@@ -384,6 +384,11 @@ public class SaveRepayment extends SvrProcess {
 		loan.setmonthopeningbal(loan.getmonthopeningbal().add(repayment.getPaymentAmount()));
 		repayment.setmonthclosingbal(loan.getloanbalance());
 		loan.setappliedamount(repayment.getPaymentAmount());
+		loan.setapprovedamount(repayment.getPaymentAmount());
+		loan.setapproval_done(true);
+		loan.setissued_amount(repayment.getPaymentAmount());
+		loan.save();
+		
 		loan.setis_topup(true);
 		loan.save();
 
