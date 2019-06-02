@@ -25,7 +25,7 @@ public class AddCharges extends SvrProcess {
 	protected void prepare() {
 		ProcessInfoParameter[] para = getParameter();
 		for (int i = 0; i < para.length; i++) {
-			String name = para[i].getParameterName();
+			String name = para[i].getParameterName(); 
 			if (para[i].getParameter() == null)
 				;
 			else if (name.equals("s_accountsetup_ID"))
