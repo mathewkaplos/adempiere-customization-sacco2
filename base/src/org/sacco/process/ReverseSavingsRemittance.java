@@ -17,12 +17,12 @@ public class ReverseSavingsRemittance extends SvrProcess {
 	protected void prepare() {
 		shareRemittance = new ShareRemittance(getCtx(), getRecord_ID(), get_TrxName());
 	}
-	
+
 	//
 	@Override
 	protected String doIt() throws Exception {
 
-		Sacco.deactivateTransactions(AD_Table_ID, shareRemittance.get_ID(), get_TrxName());
+		Sacco.activateOrDeactiveTransactions(AD_Table_ID, shareRemittance.get_ID(), false, get_TrxName());
 		BigDecimal receiptAmt = shareRemittance.getreceiptamount().abs();
 		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
 		memberShares.setsharestodate(memberShares.getsharestodate().subtract(receiptAmt));

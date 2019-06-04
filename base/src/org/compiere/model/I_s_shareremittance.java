@@ -41,6 +41,15 @@ public interface I_s_shareremittance
 
     /** Load Meta Data */
 
+    /** Column name activation_count */
+    public static final String COLUMNNAME_activation_count = "activation_count";
+
+	/** Set Activation Count	  */
+	public void setactivation_count (int activation_count);
+
+	/** Get Activation Count	  */
+	public int getactivation_count();
+
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
 
@@ -145,6 +154,24 @@ public interface I_s_shareremittance
 	/** Get Print Deposit(A4)	  */
 	public String getbtn_print_depositA4();
 
+    /** Column name btn_print_receipt_deposit */
+    public static final String COLUMNNAME_btn_print_receipt_deposit = "btn_print_receipt_deposit";
+
+	/** Set Print Deposit Receipt	  */
+	public void setbtn_print_receipt_deposit (String btn_print_receipt_deposit);
+
+	/** Get Print Deposit Receipt	  */
+	public String getbtn_print_receipt_deposit();
+
+    /** Column name btn_print_receipt_withdraw */
+    public static final String COLUMNNAME_btn_print_receipt_withdraw = "btn_print_receipt_withdraw";
+
+	/** Set Print Withdrawal Receipt	  */
+	public void setbtn_print_receipt_withdraw (String btn_print_receipt_withdraw);
+
+	/** Get Print Withdrawal Receipt	  */
+	public String getbtn_print_receipt_withdraw();
+
     /** Column name btn_print_withdrawaltA4 */
     public static final String COLUMNNAME_btn_print_withdrawaltA4 = "btn_print_withdrawaltA4";
 
@@ -240,6 +267,15 @@ public interface I_s_shareremittance
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name cur_balance */
+    public static final String COLUMNNAME_cur_balance = "cur_balance";
+
+	/** Set Current Balance	  */
+	public void setcur_balance (BigDecimal cur_balance);
+
+	/** Get Current Balance	  */
+	public BigDecimal getcur_balance();
 
     /** Column name DebitRaiseAffected */
     public static final String COLUMNNAME_DebitRaiseAffected = "DebitRaiseAffected";
@@ -435,6 +471,15 @@ public interface I_s_shareremittance
 	  * Posting status
 	  */
 	public boolean isPosted();
+
+    /** Column name prev_balance */
+    public static final String COLUMNNAME_prev_balance = "prev_balance";
+
+	/** Set Previous Balance	  */
+	public void setprev_balance (BigDecimal prev_balance);
+
+	/** Get Previous Balance	  */
+	public BigDecimal getprev_balance();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

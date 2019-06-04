@@ -13,10 +13,13 @@ import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_s_loantype;
 import org.compiere.model.MBank;
+import org.compiere.model.MemberShares;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
 import org.compiere.model.Sacco;
+import org.compiere.model.ShareRemittance;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.sacco.loan.Formula;
 import org.sacco.loan.Penalty;
@@ -72,8 +75,6 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("s_loantype_ID", loan.gets_loantype_ID());
 			mTab.setValue("loan_gl_Acct", loan.getloan_gl_Acct());
 			mTab.setValue("s_member_ID", loan.gets_member_ID());
-
-		
 
 			// interestgl_Acct
 			I_s_loantype loanType = loan.getLoanType();
@@ -363,4 +364,78 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		// MPeriod
 		return NO_ERROR;
 	}
+
+	// org.sacco.callout.LoanRemmittanceCallout.active
+	// recover_from_share_transfer
+	public String active(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		Object record = mTab.getValue("l_repayments_ID");
+		if (record == null)
+			return "";
+		boolean val = (boolean) value; 
+		
+		Timestamp time = (Timestamp) mTab.getValue("created");
+		String created = time.toString();
+		int s_member_ID = (int) mTab.getValue("s_member_ID");
+
+		String sql = "SELECT COUNT(*) FROM adempiere.l_repayments WHERE s_member_ID =" + s_member_ID
+				+ " AND created >'" + created + "'";
+		int count = DB.getSQLValue(null, sql);
+		if (count > 0) {
+			JOptionPane.showMessageDialog(null,
+					"You cannot reverse this transaction because it is not the last transaction of this account");
+			mTab.setValue("isActive", !val);
+			return "";
+		}
+		
+	
+		String msg = "";
+		if (val) {
+			msg = "activate ";
+		} else {
+			msg = "deactive ";
+		}
+
+		final int x = yesnocancel("Are you sure want to " + msg + "this transaction?");
+		if (x == 0) {
+			int l_repayments_ID = (int) mTab.getValue("l_repayments_ID");
+			Repayment repayment = new Repayment(ctx, l_repayments_ID, null);
+			if (repayment.getactivation_count() > 1) {
+				JOptionPane.showMessageDialog(null, "You cannot " + msg
+						+ "this transaction because you have reached the maximum number of reversals(2)");
+				mTab.setValue("isActive", !val);
+			} else {
+				mTab.setValue("activation_count", repayment.getactivation_count() + 1);
+				mTab.setValue("isActive", val);
+
+				doIt(ctx, l_repayments_ID, val);
+
+				SLoan loan = new SLoan(ctx, repayment.gets_loans_ID(), null);
+
+				BigDecimal loanBalance = loan.getloanbalance();
+				BigDecimal prev_bal = loan.getprev_balance();
+
+				loan.setprev_balance(loanBalance);
+				loan.setloanbalance(prev_bal);
+				loan.save();
+			}
+			//
+		} else {
+			mTab.setValue("isActive", !val);
+		}
+		return NO_ERROR;
+	}
+
+	private void doIt(Properties ctx, int record_id, boolean val) {
+		int AD_Table_ID = 1000015;
+		Sacco.activateOrDeactiveTransactions(AD_Table_ID, record_id, val, null);
+
+	}
+
+	private static int yesnocancel(final String theMessage) {
+		final int result = JOptionPane.showConfirmDialog(null, theMessage, "Alert", 1);
+		return result;
+	}
+
 }

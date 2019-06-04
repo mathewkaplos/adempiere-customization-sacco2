@@ -20,7 +20,7 @@ public class ReverseRepayment extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-		Sacco.deactivateTransactions(AD_Table_ID, repayment.get_ID(), get_TrxName());
+		Sacco.activateOrDeactiveTransactions(AD_Table_ID, repayment.get_ID(),false, get_TrxName());
 		loan.setloanbalance(loan.getloanbalance().add(repayment.getPrincipal()));
 		loan.setintbalance(loan.getintbalance().add(repayment.getInterest()));
 		loan.save();

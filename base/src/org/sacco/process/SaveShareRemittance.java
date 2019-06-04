@@ -74,6 +74,9 @@ public class SaveShareRemittance extends SvrProcess {
 			ADialog.error(2, null, "This share type is a fixed deposit and it has balance!", "You cannot proceed");
 			return null;
 		}
+		BigDecimal prev_bal = memberShares.getsharestodate();
+		memberShares.setprev_balance(prev_bal);
+		memberShares.save();
 
 		BigDecimal receiptAmt = shareRemittance.getreceiptamount();
 
@@ -238,6 +241,7 @@ public class SaveShareRemittance extends SvrProcess {
 		lineCR.save();
 
 	}
+
 	private void postShareCharges() {
 		String sql = "SELECT * FROM adempiere.s_saving_withdrawal_charges WHERE s_shareremittance_ID ="
 				+ getRecord_ID();
@@ -269,7 +273,7 @@ public class SaveShareRemittance extends SvrProcess {
 		}
 	}
 
-	 BigDecimal totalCharge = Env.ZERO;
+	BigDecimal totalCharge = Env.ZERO;
 
 	private void postCharge(SavingsWithdrawalCharge charge) {
 
@@ -293,13 +297,13 @@ public class SaveShareRemittance extends SvrProcess {
 		lineDR.setcontra_account_id(lineCR.getAccount_ID());
 		lineDR.setUserCode(user.getName());
 		lineDR.setChequeNo(chequeNo);
-		lineDR.setDescription(chargeSetup.getDescription()+" Charges." + MemberNoDescription);
+		lineDR.setDescription(chargeSetup.getDescription() + " Charges." + MemberNoDescription);
 		lineDR.save();
 
 		lineCR.setcontra_account_id(lineDR.getAccount_ID());
 		lineCR.setUserCode(user.getName());
 		lineCR.setChequeNo(chequeNo);
-		lineDR.setDescription(chargeSetup.getDescription()+"Charges." + MemberNoDescription);
-		lineCR.save(); 
+		lineDR.setDescription(chargeSetup.getDescription() + "Charges." + MemberNoDescription);
+		lineCR.save();
 	}
 }

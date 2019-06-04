@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.compiere.model;
 
@@ -22,7 +22,7 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for l_repayments
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0
+ *  @version Release 3.9.2
  */
 public interface I_l_repayments 
 {
@@ -41,6 +41,15 @@ public interface I_l_repayments
 
     /** Load Meta Data */
 
+    /** Column name activation_count */
+    public static final String COLUMNNAME_activation_count = "activation_count";
+
+	/** Set Activation Count	  */
+	public void setactivation_count (int activation_count);
+
+	/** Get Activation Count	  */
+	public int getactivation_count();
+
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
 
@@ -48,6 +57,15 @@ public interface I_l_repayments
 	  * Client/Tenant for this installation.
 	  */
 	public int getAD_Client_ID();
+
+    /** Column name AdditionalCharges */
+    public static final String COLUMNNAME_AdditionalCharges = "AdditionalCharges";
+
+	/** Set AdditionalCharges	  */
+	public void setAdditionalCharges (BigDecimal AdditionalCharges);
+
+	/** Get AdditionalCharges	  */
+	public BigDecimal getAdditionalCharges();
 
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
@@ -61,15 +79,6 @@ public interface I_l_repayments
 	  * Organizational entity within client
 	  */
 	public int getAD_Org_ID();
-
-    /** Column name AdditionalCharges */
-    public static final String COLUMNNAME_AdditionalCharges = "AdditionalCharges";
-
-	/** Set AdditionalCharges	  */
-	public void setAdditionalCharges (BigDecimal AdditionalCharges);
-
-	/** Get AdditionalCharges	  */
-	public BigDecimal getAdditionalCharges();
 
     /** Column name affects_debit_raise */
     public static final String COLUMNNAME_affects_debit_raise = "affects_debit_raise";
@@ -182,19 +191,6 @@ public interface I_l_repayments
 
 	public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException;
 
-    /** Column name C_Period_ID */
-    public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
-
-	/** Set Period.
-	  * Period of the Calendar
-	  */
-	public void setC_Period_ID (int C_Period_ID);
-
-	/** Get Period.
-	  * Period of the Calendar
-	  */
-	public int getC_Period_ID();
-
     /** Column name change_interest_if_clearing */
     public static final String COLUMNNAME_change_interest_if_clearing = "change_interest_if_clearing";
 
@@ -234,6 +230,19 @@ public interface I_l_repayments
 	  * Comments or additional information
 	  */
 	public String getComments();
+
+    /** Column name C_Period_ID */
+    public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
+
+	/** Set Period.
+	  * Period of the Calendar
+	  */
+	public void setC_Period_ID (int C_Period_ID);
+
+	/** Get Period.
+	  * Period of the Calendar
+	  */
+	public int getC_Period_ID();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -360,6 +369,32 @@ public interface I_l_repayments
 
 	public I_C_ValidCombination getinterestgl_A() throws RuntimeException;
 
+    /** Column name IsActive */
+    public static final String COLUMNNAME_IsActive = "IsActive";
+
+	/** Set Active.
+	  * The record is active in the system
+	  */
+	public void setIsActive (boolean IsActive);
+
+	/** Get Active.
+	  * The record is active in the system
+	  */
+	public boolean isActive();
+
+    /** Column name IsComplete */
+    public static final String COLUMNNAME_IsComplete = "IsComplete";
+
+	/** Set Complete.
+	  * It is complete
+	  */
+	public void setIsComplete (boolean IsComplete);
+
+	/** Get Complete.
+	  * It is complete
+	  */
+	public boolean isComplete();
+
     /** Column name is_refund */
     public static final String COLUMNNAME_is_refund = "is_refund";
 
@@ -387,41 +422,6 @@ public interface I_l_repayments
 	/** Get Is Top Up	  */
 	public boolean is_topup();
 
-    /** Column name IsActive */
-    public static final String COLUMNNAME_IsActive = "IsActive";
-
-	/** Set Active.
-	  * The record is active in the system
-	  */
-	public void setIsActive (boolean IsActive);
-
-	/** Get Active.
-	  * The record is active in the system
-	  */
-	public boolean isActive();
-
-    /** Column name IsComplete */
-    public static final String COLUMNNAME_IsComplete = "IsComplete";
-
-	/** Set Complete.
-	  * It is complete
-	  */
-	public void setIsComplete (boolean IsComplete);
-
-	/** Get Complete.
-	  * It is complete
-	  */
-	public boolean isComplete();
-
-    /** Column name l_repayments_ID */
-    public static final String COLUMNNAME_l_repayments_ID = "l_repayments_ID";
-
-	/** Set l_repayments ID	  */
-	public void setl_repayments_ID (int l_repayments_ID);
-
-	/** Get l_repayments ID	  */
-	public int getl_repayments_ID();
-
     /** Column name LAmount */
     public static final String COLUMNNAME_LAmount = "LAmount";
 
@@ -434,11 +434,24 @@ public interface I_l_repayments
     /** Column name last_pay_date */
     public static final String COLUMNNAME_last_pay_date = "last_pay_date";
 
-	/** Set Last Pay Date	  */
+	/** Set Last Pay Date.
+	  * (select last_pay_date from adempiere.s_loans s where s.s_loans_ID = l_repayments.s_loans_ID)
+	  */
 	public void setlast_pay_date (Timestamp last_pay_date);
 
-	/** Get Last Pay Date	  */
+	/** Get Last Pay Date.
+	  * (select last_pay_date from adempiere.s_loans s where s.s_loans_ID = l_repayments.s_loans_ID)
+	  */
 	public Timestamp getlast_pay_date();
+
+    /** Column name loanbalance */
+    public static final String COLUMNNAME_loanbalance = "loanbalance";
+
+	/** Set Loan Balance	  */
+	public void setloanbalance (BigDecimal loanbalance);
+
+	/** Get Loan Balance	  */
+	public BigDecimal getloanbalance();
 
     /** Column name loan_gl_Acct */
     public static final String COLUMNNAME_loan_gl_Acct = "loan_gl_Acct";
@@ -460,15 +473,6 @@ public interface I_l_repayments
 	/** Get Loan Interest Balance	  */
 	public BigDecimal getloan_interest_balance();
 
-    /** Column name loanbalance */
-    public static final String COLUMNNAME_loanbalance = "loanbalance";
-
-	/** Set Loan Balance	  */
-	public void setloanbalance (BigDecimal loanbalance);
-
-	/** Get Loan Balance	  */
-	public BigDecimal getloanbalance();
-
     /** Column name LoanNo */
     public static final String COLUMNNAME_LoanNo = "LoanNo";
 
@@ -486,6 +490,15 @@ public interface I_l_repayments
 
 	/** Get Loan Penalty	  */
 	public BigDecimal getloanpenalty();
+
+    /** Column name l_repayments_ID */
+    public static final String COLUMNNAME_l_repayments_ID = "l_repayments_ID";
+
+	/** Set l_repayments ID	  */
+	public void setl_repayments_ID (int l_repayments_ID);
+
+	/** Get l_repayments ID	  */
+	public int getl_repayments_ID();
 
     /** Column name memberid */
     public static final String COLUMNNAME_memberid = "memberid";
@@ -550,15 +563,6 @@ public interface I_l_repayments
 	/** Get Pay Additional Charges Only	  */
 	public boolean ispay_additional_charges_only();
 
-    /** Column name pay_penalty_only */
-    public static final String COLUMNNAME_pay_penalty_only = "pay_penalty_only";
-
-	/** Set Pay Penalty Only	  */
-	public void setpay_penalty_only (boolean pay_penalty_only);
-
-	/** Get Pay Penalty Only	  */
-	public boolean ispay_penalty_only();
-
     /** Column name PaymentAmount */
     public static final String COLUMNNAME_PaymentAmount = "PaymentAmount";
 
@@ -594,6 +598,15 @@ public interface I_l_repayments
 
 	/** Get Pay Mode	  */
 	public String getpaymode();
+
+    /** Column name pay_penalty_only */
+    public static final String COLUMNNAME_pay_penalty_only = "pay_penalty_only";
+
+	/** Set Pay Penalty Only	  */
+	public void setpay_penalty_only (boolean pay_penalty_only);
+
+	/** Get Pay Penalty Only	  */
+	public boolean ispay_penalty_only();
 
     /** Column name penalty_due */
     public static final String COLUMNNAME_penalty_due = "penalty_due";
@@ -636,6 +649,24 @@ public interface I_l_repayments
 
 	/** Get Principal	  */
 	public BigDecimal getPrincipal();
+
+    /** Column name print_a4 */
+    public static final String COLUMNNAME_print_a4 = "print_a4";
+
+	/** Set PRINT A4	  */
+	public void setprint_a4 (String print_a4);
+
+	/** Get PRINT A4	  */
+	public String getprint_a4();
+
+    /** Column name print_receipt */
+    public static final String COLUMNNAME_print_receipt = "print_receipt";
+
+	/** Set PRINT RECEIPT	  */
+	public void setprint_receipt (String print_receipt);
+
+	/** Get PRINT RECEIPT	  */
+	public String getprint_receipt();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
@@ -697,6 +728,15 @@ public interface I_l_repayments
 	/** Get Reversed	  */
 	public boolean isReversed();
 
+    /** Column name serialid */
+    public static final String COLUMNNAME_serialid = "serialid";
+
+	/** Set serialid	  */
+	public void setserialid (int serialid);
+
+	/** Get serialid	  */
+	public int getserialid();
+
     /** Column name s_loans_ID */
     public static final String COLUMNNAME_s_loans_ID = "s_loans_ID";
 
@@ -728,14 +768,16 @@ public interface I_l_repayments
 
 	public I_s_member gets_member() throws RuntimeException;
 
-    /** Column name serialid */
-    public static final String COLUMNNAME_serialid = "serialid";
+    /** Column name s_payment_mode_remittance_ID */
+    public static final String COLUMNNAME_s_payment_mode_remittance_ID = "s_payment_mode_remittance_ID";
 
-	/** Set serialid	  */
-	public void setserialid (int serialid);
+	/** Set Pay Mode	  */
+	public void sets_payment_mode_remittance_ID (int s_payment_mode_remittance_ID);
 
-	/** Get serialid	  */
-	public int getserialid();
+	/** Get Pay Mode	  */
+	public int gets_payment_mode_remittance_ID();
+
+	public I_s_payment_mode gets_payment_mode_remittance() throws RuntimeException;
 
     /** Column name total_oc_due */
     public static final String COLUMNNAME_total_oc_due = "total_oc_due";
@@ -815,6 +857,19 @@ public interface I_l_repayments
 
 	/** Get User Code	  */
 	public String getUserCode();
+
+    /** Column name UUID */
+    public static final String COLUMNNAME_UUID = "UUID";
+
+	/** Set Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID);
+
+	/** Get Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public String getUUID();
 
     /** Column name VoucherNo */
     public static final String COLUMNNAME_VoucherNo = "VoucherNo";

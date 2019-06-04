@@ -11,15 +11,14 @@ import org.compiere.model.AD_User;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
-import org.compiere.model.I_s_sharetype;
 import org.compiere.model.MBank;
 import org.compiere.model.MemberShares;
 import org.compiere.model.SMember;
 import org.compiere.model.Sacco;
+import org.compiere.model.SavingsWithdrawalCharge;
 import org.compiere.model.ShareRemittance;
 import org.compiere.model.ShareType;
 import org.compiere.model.TransactionSupervision;
-import org.compiere.util.AdempiereUserError;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -115,7 +114,6 @@ public class ShareTransactionsCallout extends CalloutEngine {
 	public String memberShare(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
 		if (value == null)
 			return "";
-
 		int s_membershares_ID = (int) value;
 		MemberShares memberShares = new MemberShares(Env.getCtx(), s_membershares_ID, null);
 		int s_sharetype_ID = memberShares.gets_sharetype_ID();
@@ -233,4 +231,78 @@ public class ShareTransactionsCallout extends CalloutEngine {
 		// MPeriod
 		return NO_ERROR;
 	}
+
+	// org.sacco.callout.ShareTransactionsCallout.active
+	// recover_from_share_transfer
+	public String active(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) {
+		if (value == null)
+			return "";
+		Object record = mTab.getValue("s_shareremittance_ID");
+		if (record == null)
+			return "";
+
+		boolean val = (boolean) value;
+
+		Timestamp time = (Timestamp) mTab.getValue("created");
+		String created = time.toString();
+		int s_member_ID = (int) mTab.getValue("s_member_ID");
+
+		String sql = "SELECT COUNT(*) FROM adempiere.s_shareremittance WHERE s_member_ID =" + s_member_ID
+				+ " AND created >'" + created + "'";
+		int count = DB.getSQLValue(null, sql);
+		if (count > 0) {
+			JOptionPane.showMessageDialog(null,
+					"You cannot reverse this transaction because it is not the last transaction of this account");
+			mTab.setValue("isActive", !val);
+			return "";
+		}
+
+		String msg = "";
+		if (val) {
+			msg = "activate ";
+		} else {
+			msg = "deactive ";
+		}
+
+		final int x = yesnocancel("Are you sure want to " + msg + "this transaction?");
+		if (x == 0) {
+			int s_shareremittance_ID = (int) mTab.getValue("s_shareremittance_ID");
+			ShareRemittance remittance = new ShareRemittance(ctx, s_shareremittance_ID, null);
+			if (remittance.getactivation_count() > 1) {
+				JOptionPane.showMessageDialog(null, "You cannot " + msg
+						+ "this transaction because you have reached the maximum number of reversals(2)");
+				mTab.setValue("isActive", !val);
+			} else {
+				mTab.setValue("activation_count", remittance.getactivation_count() + 1);
+				mTab.setValue("isActive", val);
+
+				doIt(ctx, s_shareremittance_ID, val);
+
+				MemberShares memberShares = new MemberShares(ctx, remittance.gets_membershares_ID(), null);
+
+				BigDecimal sharesToDate = memberShares.getsharestodate();
+				BigDecimal prev_bal = memberShares.getprev_balance();
+
+				memberShares.setprev_balance(sharesToDate);
+				memberShares.setsharestodate(prev_bal);
+				memberShares.save();
+			}
+			//
+		} else {
+			mTab.setValue("isActive", !val);
+		}
+		return NO_ERROR;
+	}
+
+	private void doIt(Properties ctx, int record_id, boolean val) {
+		int AD_Table_ID = 1000029;
+		Sacco.activateOrDeactiveTransactions(AD_Table_ID, record_id, val, null);
+
+	}
+
+	private static int yesnocancel(final String theMessage) {
+		final int result = JOptionPane.showConfirmDialog(null, theMessage, "Alert", 1);
+		return result;
+	}
+
 }

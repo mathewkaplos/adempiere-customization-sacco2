@@ -3,8 +3,6 @@ package org.sacco.process;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-
 import javax.swing.JOptionPane;
 
 import org.compiere.acct.Doc;
@@ -15,11 +13,8 @@ import org.compiere.acct.FactLine;
 import org.compiere.model.AD_User;
 import org.compiere.model.I_s_member;
 import org.compiere.model.I_s_sharetype;
-import org.compiere.model.LoanRepaymentCharge;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
-import org.compiere.model.MAcctSchemaDefault;
-import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
@@ -27,7 +22,6 @@ import org.compiere.model.Sacco;
 import org.compiere.model.SavingsWithdrawalCharge;
 import org.compiere.model.ShareRemittance;
 import org.compiere.model.TransactionChargeSetup;
-import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -156,6 +150,11 @@ public class SaveShareWithdrawal extends SvrProcess {
 			amount = amount.abs().add(totalCharge);
 
 		MemberShares memberShares = new MemberShares(getCtx(), shareRemittance.gets_membershares_ID(), get_TrxName());
+		
+		BigDecimal prev_bal = memberShares.getsharestodate();
+		memberShares.setprev_balance(prev_bal);
+		memberShares.save();
+		
 		memberShares.setsharestodate(memberShares.getsharestodate().subtract(amount));
 		memberShares.setfreeshares(memberShares.getfreeshares().subtract(amount));
 		memberShares.save();

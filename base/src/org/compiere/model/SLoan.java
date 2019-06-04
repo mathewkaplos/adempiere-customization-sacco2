@@ -496,6 +496,7 @@ public class SLoan extends X_s_loans {
 	public Repayment newRepayment(SLoan _loan) {
 		loan = _loan;
 		BigDecimal PaymentAmount = loan.getloanbalance();
+		
 		Repayment r = new Repayment(getCtx(), 0, get_TrxName());
 		r.sets_loans_ID(loan.get_ID());
 		r.setC_Period_ID(Sacco.getSaccco().getsaccoperiod_ID());
@@ -503,15 +504,26 @@ public class SLoan extends X_s_loans {
 		r.sets_loantype_ID(loan.gets_loantype_ID());
 		r.setPaymentDate(DateUtil.newTimestamp());
 		r.setpaymode("CASH PERMIT");
+		
 		r.setloan_gl_Acct(loan.getloan_gl_Acct());
 		r.setinterestgl_Acct(gets_loantype().getloantypeinterestgl_Acct());
+		r.setbankgl_Acct(this.getC_Bank().getGLAccount());
 		r.save();
+		
 		r.setReceiptNo(r.getDocumentNo());
 		r.setVoucherNo(r.getDocumentNo());
 		r.setPrincipal(PaymentAmount);
-		r.setPaymentAmount(PaymentAmount);
+		
+		BigDecimal interest =loan.getLoanInterestToday();
+		BigDecimal penalty =loan.getLoanPenaltyToday();
+		
+		r.setexpectedinterest(interest);
+		r.setpenalty_due(penalty);
+		
+		r.setPaymentAmount(PaymentAmount.add(interest).add(penalty));
 		r.setIsComplete(true);
 		r.setis_repayment(true);
+		r.setComments("Loan Refinanced");
 		r.save();
 		repayment = r;
 		updateLoanRemmittance();

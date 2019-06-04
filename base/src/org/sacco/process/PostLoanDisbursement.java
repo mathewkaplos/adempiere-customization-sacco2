@@ -19,6 +19,7 @@ import org.compiere.model.MBank;
 import org.compiere.model.MClient;
 import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
+import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
 import org.compiere.model.Sacco;
@@ -64,10 +65,10 @@ public class PostLoanDisbursement {
 		member = loan.gets_member();
 		user = new AD_User(Env.getCtx(), Env.getAD_User_ID(Env.getCtx()), null);
 		userCode = user.getName();
-		////if (!loan.getreadychequeno().isEmpty() && loan.getreadychequeno() != null)
-		//	chequeNo = loan.getreadychequeno();
-	//	else
-			chequeNo = disbursement.getDocumentNo();
+		//// if (!loan.getreadychequeno().isEmpty() && loan.getreadychequeno() != null)
+		// chequeNo = loan.getreadychequeno();
+		// else
+		chequeNo = disbursement.getDocumentNo();
 		MemberNoDescription = ".Mbr. No:" + member.getDocumentNo();
 
 		C_Period_ID = Sacco.getSaccco().getsaccoperiod_ID();
@@ -120,18 +121,44 @@ public class PostLoanDisbursement {
 		disbursement.save();
 	}
 
-	BigDecimal loanPostingAMount = Env.ZERO;
+	BigDecimal loanPostingAMountDR = Env.ZERO;
+	BigDecimal loanPostingAMountCR = Env.ZERO;
 
 	private void prePostLoan() {
-		if (chargesAddedToLoan) {
-			loanPostingAMount = disbursement.getdisbursed_amount();
+		if (chargesAddedToLoan) {// not added to cheque
+			loanPostingAMountDR = disbursement.getdisbursed_amount();
+			if (loan.is_refinance()) {
+				int oldLoan_ID = loan.gets_loans_refinance_ID();
+				SLoan oldLoan = new SLoan(Env.getCtx(), oldLoan_ID, trxName);
+				BigDecimal interest = oldLoan.getLoanInterestToday();
+				BigDecimal penalty = oldLoan.getLoanPenaltyToday();
+
+				loanPostingAMountCR = loan.getappliedamount().add(interest).add(penalty);
+
+			} else {
+				loanPostingAMountCR = disbursement.getdisbursed_amount();
+			}
+
 			loan.setloanbalance(loan.getloanbalance().add(totalCharge));
 			loan.save();
 
 		} else {
-			// charges deducted from cheque
-			loanPostingAMount = disbursement.getdisbursed_amount().subtract(totalCharge);
+			// charges deducted from the cheque
+			loanPostingAMountDR = disbursement.getdisbursed_amount().subtract(totalCharge);
+			if (loan.is_refinance()) {
+				int oldLoan_ID = loan.gets_loans_refinance_ID();
+				SLoan oldLoan = new SLoan(Env.getCtx(), oldLoan_ID, trxName);
+				BigDecimal interest = oldLoan.getLoanInterestToday();
+				BigDecimal penalty = oldLoan.getLoanPenaltyToday();
+
+				loanPostingAMountCR = loan.getappliedamount().add(interest).add(penalty);
+
+			} else {
+				loanPostingAMountCR = disbursement.getdisbursed_amount();
+			}
+
 		}
+
 	}
 
 	Fact fact = null;
@@ -143,7 +170,7 @@ public class PostLoanDisbursement {
 		int debitGL = loanType.getloantypeloangl_Acct();
 		int creditGL = 0;
 
-		BigDecimal debitAmount = loanPostingAMount;
+		BigDecimal debitAmount = loanPostingAMountDR;
 		BigDecimal crditAmount = Env.ZERO;
 		if (disbursement_ID == Sacco.disbursementmode_investment) {
 			// shamba
@@ -153,11 +180,11 @@ public class PostLoanDisbursement {
 		} else if (disbursement_ID == Sacco.disbursementmode_saving) {
 			MemberShares shares = new MemberShares(Env.getCtx(), loan.gets_membershares_ID(), userCode);
 			creditGL = shares.gets_sharetype().getsaving_gl_code_Acct();
-			crditAmount = loanPostingAMount;
+			crditAmount = loanPostingAMountCR;
 			// Savings transfer
 		} else {
 			creditGL = bank.getGLAccount();
-			crditAmount = loanPostingAMount;
+			crditAmount = loanPostingAMountCR;
 		}
 
 		MAccount accountDR = new MAccount(Env.getCtx(), debitGL, trxName);
@@ -198,6 +225,25 @@ public class PostLoanDisbursement {
 			lineCR2.setDescription("Loan Disbursement." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
 			lineCR2.save();
 
+		}
+		if (loan.is_refinance()) {
+			// Credit Bank
+			int creditGL2 = loan.getC_Bank().getGLAccount();
+			int oldLoan_ID = loan.gets_loans_refinance_ID();
+			SLoan oldLoan = new SLoan(Env.getCtx(), oldLoan_ID, trxName);
+			BigDecimal crditAmount2 = oldLoan.getloanbalance();
+
+			MAccount accountCR2 = new MAccount(Env.getCtx(), creditGL2, trxName);
+			FactLine lineCR2 = fact.createLine(docLine, accountCR2, acctSchema.getC_Currency_ID(),
+					crditAmount2.negate());
+			lineCR2.save();
+
+			lineCR2.setcontra_account_id(lineDR.getAccount_ID());
+			lineCR2.setUserCode(user.getName());
+			lineCR2.setChequeNo(chequeNo);
+			lineCR2.setDescription("Loan Refinance." + "Loan No. " + loan.getDocumentNo() + MemberNoDescription);
+			lineCR2.save();
+			repayOldLoan(creditGL);
 		}
 
 		if (loan.ispartial_disbursement()) {
@@ -310,11 +356,11 @@ public class PostLoanDisbursement {
 	private void saveDisbursement() {
 		disbursement = new LoanDisbursement(Env.getCtx(), 0, trxName);
 		disbursement.sets_loans_ID(loan.get_ID());
-		disbursement.setAmount(loan.getappliedamount());
+		disbursement.setAmount(loan.getapprovedamount());
 		if (loan.ispartial_disbursement()) {
 			disbursement.setdisbursed_amount(loan.getdisbursed_amount());
 		} else {
-			disbursement.setdisbursed_amount(loan.getappliedamount());
+			disbursement.setdisbursed_amount(loan.getapprovedamount());
 		}
 		disbursement.settransactiondate(DateUtil.newTimestamp());
 		disbursement.save();
@@ -325,4 +371,15 @@ public class PostLoanDisbursement {
 		loanType.save();
 	}
 
+	private void repayOldLoan(int creditGL) {
+		int oldLoan_ID = loan.gets_loans_refinance_ID();
+		SLoan oldLoan = new SLoan(Env.getCtx(), oldLoan_ID, trxName);
+
+		oldLoan.setC_Bank_ID(loan.getC_Bank_ID());
+		oldLoan.save();
+
+		Repayment newRepayment = loan.newRepayment(oldLoan);
+		PostLoanRepayment postLoanRepayment = new PostLoanRepayment(newRepayment, creditGL,trxName);
+		postLoanRepayment.post();
+	}
 }

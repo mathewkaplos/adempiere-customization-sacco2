@@ -12,7 +12,7 @@ public class ReverseLoanDisbursement extends SvrProcess {
 	@Override
 	protected void prepare() {
 	}
-	
+
 	@Override
 	protected String doIt() throws Exception {
 		SLoan loan = new SLoan(getCtx(), getRecord_ID(), get_TrxName());
@@ -26,7 +26,7 @@ public class ReverseLoanDisbursement extends SvrProcess {
 	}
 
 	private void reverse(int recordID) {
-		Sacco.deactivateTransactions(AD_Table_ID, recordID, get_TrxName());
+		Sacco.activateOrDeactiveTransactions(AD_Table_ID, recordID, false, get_TrxName());
 
 		ADialog.info(2, null, "Reversed Successfully...");
 	}

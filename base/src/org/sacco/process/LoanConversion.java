@@ -2,6 +2,8 @@ package org.sacco.process;
 
 import java.util.logging.Level;
 
+import javax.swing.JOptionPane;
+
 import org.compiere.model.ConversationHistory;
 import org.compiere.model.SLoan;
 import org.compiere.model.SLoanType;
@@ -39,6 +41,7 @@ public class LoanConversion extends SvrProcess {
 		SLoan loan = new SLoan(getCtx(), getRecord_ID(), get_TrxName());
 		loan.sets_loantype_ID(s_new_loantype_ID);
 		loan.save();
-		return null;
+		JOptionPane.showMessageDialog(null, "Converted successfully. Please Re-generate the schedule");
+		return "Converted successfully. Please Re-generate the schedule";
 	}
 }

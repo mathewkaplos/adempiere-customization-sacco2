@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.compiere.model;
 
@@ -22,7 +22,7 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for s_membershares
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0
+ *  @version Release 3.9.2
  */
 public interface I_s_membershares 
 {
@@ -40,6 +40,15 @@ public interface I_s_membershares
     BigDecimal accessLevel = BigDecimal.valueOf(7);
 
     /** Load Meta Data */
+
+    /** Column name activation_count */
+    public static final String COLUMNNAME_activation_count = "activation_count";
+
+	/** Set Activation Count	  */
+	public void setactivation_count (int activation_count);
+
+	/** Get Activation Count	  */
+	public int getactivation_count();
 
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
@@ -220,15 +229,6 @@ public interface I_s_membershares
 	/** Get Linked to Dependants/Next of kin	  */
 	public boolean islinked_to_dependants();
 
-    /** Column name m_memberkin_ID */
-    public static final String COLUMNNAME_m_memberkin_ID = "m_memberkin_ID";
-
-	/** Set Next Of Kin	  */
-	public void setm_memberkin_ID (int m_memberkin_ID);
-
-	/** Get Next Of Kin	  */
-	public int getm_memberkin_ID();
-
     /** Column name member_no */
     public static final String COLUMNNAME_member_no = "member_no";
 
@@ -246,6 +246,15 @@ public interface I_s_membershares
 
 	/** Get member_userid	  */
 	public int getmember_userid();
+
+    /** Column name m_memberkin_ID */
+    public static final String COLUMNNAME_m_memberkin_ID = "m_memberkin_ID";
+
+	/** Set Next Of Kin	  */
+	public void setm_memberkin_ID (int m_memberkin_ID);
+
+	/** Get Next Of Kin	  */
+	public int getm_memberkin_ID();
 
     /** Column name monthclosingbal */
     public static final String COLUMNNAME_monthclosingbal = "monthclosingbal";
@@ -314,6 +323,15 @@ public interface I_s_membershares
 	  */
 	public boolean isPosted();
 
+    /** Column name prev_balance */
+    public static final String COLUMNNAME_prev_balance = "prev_balance";
+
+	/** Set Previous Balance	  */
+	public void setprev_balance (BigDecimal prev_balance);
+
+	/** Get Previous Balance	  */
+	public BigDecimal getprev_balance();
+
     /** Column name refrence */
     public static final String COLUMNNAME_refrence = "refrence";
 
@@ -333,48 +351,6 @@ public interface I_s_membershares
 	public int gets_branch_ID();
 
 	public I_s_branch gets_branch() throws RuntimeException;
-
-    /** Column name s_member_ID */
-    public static final String COLUMNNAME_s_member_ID = "s_member_ID";
-
-	/** Set Member	  */
-	public void sets_member_ID (int s_member_ID);
-
-	/** Get Member	  */
-	public int gets_member_ID();
-
-	public I_s_member gets_member() throws RuntimeException;
-
-    /** Column name s_membershares_ID */
-    public static final String COLUMNNAME_s_membershares_ID = "s_membershares_ID";
-
-	/** Set Member Shares	  */
-	public void sets_membershares_ID (int s_membershares_ID);
-
-	/** Get Member Shares	  */
-	public int gets_membershares_ID();
-
-    /** Column name s_payment_mode_ID */
-    public static final String COLUMNNAME_s_payment_mode_ID = "s_payment_mode_ID";
-
-	/** Set Payment Mode	  */
-	public void sets_payment_mode_ID (int s_payment_mode_ID);
-
-	/** Get Payment Mode	  */
-	public int gets_payment_mode_ID();
-
-	public I_s_payment_mode gets_payment_mode() throws RuntimeException;
-
-    /** Column name s_sharetype_ID */
-    public static final String COLUMNNAME_s_sharetype_ID = "s_sharetype_ID";
-
-	/** Set Share Type	  */
-	public void sets_sharetype_ID (int s_sharetype_ID);
-
-	/** Get Share Type	  */
-	public int gets_sharetype_ID();
-
-	public I_s_sharetype gets_sharetype() throws RuntimeException;
 
     /** Column name share_code */
     public static final String COLUMNNAME_share_code = "share_code";
@@ -439,6 +415,48 @@ public interface I_s_membershares
 	/** Get Shares To Date In Words	  */
 	public String getsharetodateinwords();
 
+    /** Column name s_member_ID */
+    public static final String COLUMNNAME_s_member_ID = "s_member_ID";
+
+	/** Set Member	  */
+	public void sets_member_ID (int s_member_ID);
+
+	/** Get Member	  */
+	public int gets_member_ID();
+
+	public I_s_member gets_member() throws RuntimeException;
+
+    /** Column name s_membershares_ID */
+    public static final String COLUMNNAME_s_membershares_ID = "s_membershares_ID";
+
+	/** Set Member Shares	  */
+	public void sets_membershares_ID (int s_membershares_ID);
+
+	/** Get Member Shares	  */
+	public int gets_membershares_ID();
+
+    /** Column name s_payment_mode_ID */
+    public static final String COLUMNNAME_s_payment_mode_ID = "s_payment_mode_ID";
+
+	/** Set Payment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID);
+
+	/** Get Payment Mode	  */
+	public int gets_payment_mode_ID();
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException;
+
+    /** Column name s_sharetype_ID */
+    public static final String COLUMNNAME_s_sharetype_ID = "s_sharetype_ID";
+
+	/** Set Share Type	  */
+	public void sets_sharetype_ID (int s_sharetype_ID);
+
+	/** Get Share Type	  */
+	public int gets_sharetype_ID();
+
+	public I_s_sharetype gets_sharetype() throws RuntimeException;
+
     /** Column name statementbal */
     public static final String COLUMNNAME_statementbal = "statementbal";
 
@@ -491,12 +509,16 @@ public interface I_s_membershares
 	  */
 	public int getUpdatedBy();
 
-    /** Column name uuid */
-    public static final String COLUMNNAME_uuid = "uuid";
+    /** Column name UUID */
+    public static final String COLUMNNAME_UUID = "UUID";
 
-	/** Set uuid	  */
-	public void setuuid (String uuid);
+	/** Set Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID);
 
-	/** Get uuid	  */
-	public String getuuid();
+	/** Get Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public String getUUID();
 }

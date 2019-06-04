@@ -4,15 +4,12 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import org.compiere.acct.FactLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.sacco.loan.Schedule;
 
 public class Sacco extends X_s_saccoinfo {
 
@@ -267,7 +264,7 @@ public class Sacco extends X_s_saccoinfo {
 		}
 	}
 
-	public static void deactivateTransactions(int ad_table_id, int record_id, String trxName) {
+	public static void activateOrDeactiveTransactions(int ad_table_id, int record_id, boolean acction, String trxName) {
 		String sql = "select * from adempiere.fact_acct where ad_table_id =" + ad_table_id + " and record_id ="
 				+ record_id;
 		PreparedStatement stm = null;
@@ -277,7 +274,7 @@ public class Sacco extends X_s_saccoinfo {
 			rs = stm.executeQuery();
 			while (rs.next()) {
 				X_Fact_Acct line = new X_Fact_Acct(Env.getCtx(), rs, trxName);
-				line.setIsActive(false);
+				line.setIsActive(acction);
 				line.save();
 			}
 

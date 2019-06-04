@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import org.compiere.model.MBank;
 import org.compiere.model.MemberShares;
+import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.Sacco;
 import org.compiere.model.ShambaPlot;
@@ -55,9 +56,7 @@ public class SavePaymentMode extends SvrProcess {
 			loan.save();
 		}
 		// }
-		if (loan.is_refinance()) {
-			repayOldLoan();
-		}
+		
 		if (s_disbursement_mode_ID == Sacco.disbursementmode_investment) {
 			updateShambaPlot();
 		} else if (s_disbursement_mode_ID == Sacco.disbursementmode_saving) {
@@ -96,14 +95,5 @@ public class SavePaymentMode extends SvrProcess {
 		plot.save();
 	}
 
-	private void repayOldLoan() {
-		int oldLoan_ID = loan.gets_loans_refinance_ID();
-		SLoan oldLoan = new SLoan(getCtx(), oldLoan_ID, get_TrxName());
-		BigDecimal oldLoanBal = oldLoan.getloanbalance();
-		BigDecimal approvedAmount = loan.getapprovedamount();
-		BigDecimal appliedamount = approvedAmount.subtract(oldLoanBal);
-		loan.setappliedamount(appliedamount);
-		loan.save();
-		loan.newRepayment(oldLoan);
-	}
+
 }

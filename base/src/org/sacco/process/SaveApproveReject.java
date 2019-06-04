@@ -43,6 +43,7 @@ public class SaveApproveReject extends SvrProcess {
 				BigDecimal penalty = oldLoan.getLoanPenaltyToday();
 				BigDecimal extraCharge = Util.round(interest.add(penalty));
 
+				System.out.println(extraCharge);
 				BigDecimal approvedAmount = loan.getapprovedamount();
 				BigDecimal appliedamount = approvedAmount.subtract(oldLoanBal).subtract(extraCharge);
 

@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.compiere.model;
@@ -26,14 +26,14 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Model for s_membershares
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0 - $Id$ */
+ *  @version Release 3.9.2 - $Id$ */
 public class X_s_membershares extends PO implements I_s_membershares, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190511L;
+	private static final long serialVersionUID = 20190602L;
 
     /** Standard Constructor */
     public X_s_membershares (Properties ctx, int s_membershares_ID, String trxName)
@@ -49,12 +49,12 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 // N
 			setPosted (false);
 // N
-			sets_member_ID (0);
-			sets_membershares_ID (0);
-			sets_sharetype_ID (0);
 			setsharedate (new Timestamp( System.currentTimeMillis() ));
 // @Date@
 			setshareeffectdate (new Timestamp( System.currentTimeMillis() ));
+			sets_member_ID (0);
+			sets_membershares_ID (0);
+			sets_sharetype_ID (0);
         } */
     }
 
@@ -85,6 +85,23 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** Set Activation Count.
+		@param activation_count Activation Count	  */
+	public void setactivation_count (int activation_count)
+	{
+		set_Value (COLUMNNAME_activation_count, Integer.valueOf(activation_count));
+	}
+
+	/** Get Activation Count.
+		@return Activation Count	  */
+	public int getactivation_count () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_activation_count);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	/** Set Affects DR.
 		@param affectsdr Affects DR	  */
@@ -362,26 +379,6 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return false;
 	}
 
-	/** Set Next Of Kin.
-		@param m_memberkin_ID Next Of Kin	  */
-	public void setm_memberkin_ID (int m_memberkin_ID)
-	{
-		if (m_memberkin_ID < 1) 
-			set_Value (COLUMNNAME_m_memberkin_ID, null);
-		else 
-			set_Value (COLUMNNAME_m_memberkin_ID, Integer.valueOf(m_memberkin_ID));
-	}
-
-	/** Get Next Of Kin.
-		@return Next Of Kin	  */
-	public int getm_memberkin_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_m_memberkin_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	/** Set Member NO.
 		@param member_no Member NO	  */
 	public void setmember_no (String member_no)
@@ -408,6 +405,26 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 	public int getmember_userid () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_member_userid);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Next Of Kin.
+		@param m_memberkin_ID Next Of Kin	  */
+	public void setm_memberkin_ID (int m_memberkin_ID)
+	{
+		if (m_memberkin_ID < 1) 
+			set_Value (COLUMNNAME_m_memberkin_ID, null);
+		else 
+			set_Value (COLUMNNAME_m_memberkin_ID, Integer.valueOf(m_memberkin_ID));
+	}
+
+	/** Get Next Of Kin.
+		@return Next Of Kin	  */
+	public int getm_memberkin_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_m_memberkin_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -541,6 +558,23 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return false;
 	}
 
+	/** Set Previous Balance.
+		@param prev_balance Previous Balance	  */
+	public void setprev_balance (BigDecimal prev_balance)
+	{
+		set_Value (COLUMNNAME_prev_balance, prev_balance);
+	}
+
+	/** Get Previous Balance.
+		@return Previous Balance	  */
+	public BigDecimal getprev_balance () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_prev_balance);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Refrence.
 		@param refrence Refrence	  */
 	public void setrefrence (String refrence)
@@ -579,109 +613,6 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 			 return 0;
 		return ii.intValue();
 	}
-
-	public I_s_member gets_member() throws RuntimeException
-    {
-		return (I_s_member)MTable.get(getCtx(), I_s_member.Table_Name)
-			.getPO(gets_member_ID(), get_TrxName());	}
-
-	/** Set Member.
-		@param s_member_ID Member	  */
-	public void sets_member_ID (int s_member_ID)
-	{
-		if (s_member_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_s_member_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_s_member_ID, Integer.valueOf(s_member_ID));
-	}
-
-	/** Get Member.
-		@return Member	  */
-	public int gets_member_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_s_member_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Member Shares.
-		@param s_membershares_ID Member Shares	  */
-	public void sets_membershares_ID (int s_membershares_ID)
-	{
-		if (s_membershares_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_s_membershares_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_s_membershares_ID, Integer.valueOf(s_membershares_ID));
-	}
-
-	/** Get Member Shares.
-		@return Member Shares	  */
-	public int gets_membershares_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_s_membershares_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public I_s_payment_mode gets_payment_mode() throws RuntimeException
-    {
-		return (I_s_payment_mode)MTable.get(getCtx(), I_s_payment_mode.Table_Name)
-			.getPO(gets_payment_mode_ID(), get_TrxName());	}
-
-	/** Set Payment Mode.
-		@param s_payment_mode_ID Payment Mode	  */
-	public void sets_payment_mode_ID (int s_payment_mode_ID)
-	{
-		if (s_payment_mode_ID < 1) 
-			set_Value (COLUMNNAME_s_payment_mode_ID, null);
-		else 
-			set_Value (COLUMNNAME_s_payment_mode_ID, Integer.valueOf(s_payment_mode_ID));
-	}
-
-	/** Get Payment Mode.
-		@return Payment Mode	  */
-	public int gets_payment_mode_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_s_payment_mode_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public I_s_sharetype gets_sharetype() throws RuntimeException
-    {
-		return (I_s_sharetype)MTable.get(getCtx(), I_s_sharetype.Table_Name)
-			.getPO(gets_sharetype_ID(), get_TrxName());	}
-
-	/** Set Share Type.
-		@param s_sharetype_ID Share Type	  */
-	public void sets_sharetype_ID (int s_sharetype_ID)
-	{
-		if (s_sharetype_ID < 1) 
-			set_Value (COLUMNNAME_s_sharetype_ID, null);
-		else 
-			set_Value (COLUMNNAME_s_sharetype_ID, Integer.valueOf(s_sharetype_ID));
-	}
-
-	/** Get Share Type.
-		@return Share Type	  */
-	public int gets_sharetype_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_s_sharetype_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-    /** Get Record ID/ColumnName
-        @return ID/ColumnName pair
-      */
-    public KeyNamePair getKeyNamePair() 
-    {
-        return new KeyNamePair(get_ID(), String.valueOf(gets_sharetype_ID()));
-    }
 
 	/** Set Share Code.
 		@param share_code Share Code	  */
@@ -790,6 +721,109 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return (String)get_Value(COLUMNNAME_sharetodateinwords);
 	}
 
+	public I_s_member gets_member() throws RuntimeException
+    {
+		return (I_s_member)MTable.get(getCtx(), I_s_member.Table_Name)
+			.getPO(gets_member_ID(), get_TrxName());	}
+
+	/** Set Member.
+		@param s_member_ID Member	  */
+	public void sets_member_ID (int s_member_ID)
+	{
+		if (s_member_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_s_member_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_s_member_ID, Integer.valueOf(s_member_ID));
+	}
+
+	/** Get Member.
+		@return Member	  */
+	public int gets_member_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_member_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Member Shares.
+		@param s_membershares_ID Member Shares	  */
+	public void sets_membershares_ID (int s_membershares_ID)
+	{
+		if (s_membershares_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_s_membershares_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_s_membershares_ID, Integer.valueOf(s_membershares_ID));
+	}
+
+	/** Get Member Shares.
+		@return Member Shares	  */
+	public int gets_membershares_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_membershares_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException
+    {
+		return (I_s_payment_mode)MTable.get(getCtx(), I_s_payment_mode.Table_Name)
+			.getPO(gets_payment_mode_ID(), get_TrxName());	}
+
+	/** Set Payment Mode.
+		@param s_payment_mode_ID Payment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID)
+	{
+		if (s_payment_mode_ID < 1) 
+			set_Value (COLUMNNAME_s_payment_mode_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_payment_mode_ID, Integer.valueOf(s_payment_mode_ID));
+	}
+
+	/** Get Payment Mode.
+		@return Payment Mode	  */
+	public int gets_payment_mode_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_payment_mode_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_s_sharetype gets_sharetype() throws RuntimeException
+    {
+		return (I_s_sharetype)MTable.get(getCtx(), I_s_sharetype.Table_Name)
+			.getPO(gets_sharetype_ID(), get_TrxName());	}
+
+	/** Set Share Type.
+		@param s_sharetype_ID Share Type	  */
+	public void sets_sharetype_ID (int s_sharetype_ID)
+	{
+		if (s_sharetype_ID < 1) 
+			set_Value (COLUMNNAME_s_sharetype_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_sharetype_ID, Integer.valueOf(s_sharetype_ID));
+	}
+
+	/** Get Share Type.
+		@return Share Type	  */
+	public int gets_sharetype_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_sharetype_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+    /** Get Record ID/ColumnName
+        @return ID/ColumnName pair
+      */
+    public KeyNamePair getKeyNamePair() 
+    {
+        return new KeyNamePair(get_ID(), String.valueOf(gets_sharetype_ID()));
+    }
+
 	/** Set Statement Balance.
 		@param statementbal Statement Balance	  */
 	public void setstatementbal (BigDecimal statementbal)
@@ -858,17 +892,20 @@ public class X_s_membershares extends PO implements I_s_membershares, I_Persiste
 		return ii.intValue();
 	}
 
-	/** Set uuid.
-		@param uuid uuid	  */
-	public void setuuid (String uuid)
+	/** Set Immutable Universally Unique Identifier.
+		@param UUID 
+		Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID)
 	{
-		set_Value (COLUMNNAME_uuid, uuid);
+		set_Value (COLUMNNAME_UUID, UUID);
 	}
 
-	/** Get uuid.
-		@return uuid	  */
-	public String getuuid () 
+	/** Get Immutable Universally Unique Identifier.
+		@return Immutable Universally Unique Identifier
+	  */
+	public String getUUID () 
 	{
-		return (String)get_Value(COLUMNNAME_uuid);
+		return (String)get_Value(COLUMNNAME_UUID);
 	}
 }

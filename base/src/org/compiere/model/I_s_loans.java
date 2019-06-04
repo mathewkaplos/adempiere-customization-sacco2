@@ -349,6 +349,21 @@ public interface I_s_loans
 	/** Get Cash Amount	  */
 	public BigDecimal getcashamount();
 
+    /** Column name C_Bank_ID */
+    public static final String COLUMNNAME_C_Bank_ID = "C_Bank_ID";
+
+	/** Set Bank.
+	  * Bank
+	  */
+	public void setC_Bank_ID (int C_Bank_ID);
+
+	/** Get Bank.
+	  * Bank
+	  */
+	public int getC_Bank_ID();
+
+	public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException;
+
     /** Column name chequeamount */
     public static final String COLUMNNAME_chequeamount = "chequeamount";
 
@@ -1409,6 +1424,15 @@ public interface I_s_loans
 
 	/** Get Post GL	  */
 	public boolean ispostgl();
+
+    /** Column name prev_balance */
+    public static final String COLUMNNAME_prev_balance = "prev_balance";
+
+	/** Set Previous Balance	  */
+	public void setprev_balance (BigDecimal prev_balance);
+
+	/** Get Previous Balance	  */
+	public BigDecimal getprev_balance();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
