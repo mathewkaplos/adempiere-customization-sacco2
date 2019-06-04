@@ -28,7 +28,7 @@ public class LoanConversion extends SvrProcess {
 		}
 		SLoanType loanType = SLoanType.getLoanType(getRecord_ID());
 		s_old_loantype_ID = loanType.get_ID();
-	}
+	} 
 
 	@Override
 	protected String doIt() throws Exception {
