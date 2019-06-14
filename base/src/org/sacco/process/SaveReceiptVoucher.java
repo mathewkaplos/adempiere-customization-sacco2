@@ -94,7 +94,7 @@ public class SaveReceiptVoucher extends SvrProcess {
 		postPayment();
 
 	}
-
+ 
 	private void postPayment() {
 		if (receiptVoucher.getAmount().compareTo(Env.ZERO) == 0) {
 			return;
