@@ -75,6 +75,15 @@ public interface I_s_petty_cash
 	  */
 	public BigDecimal getAmount();
 
+    /** Column name AmountInWords */
+    public static final String COLUMNNAME_AmountInWords = "AmountInWords";
+
+	/** Set AmountInWords	  */
+	public void setAmountInWords (String AmountInWords);
+
+	/** Get AmountInWords	  */
+	public String getAmountInWords();
+
     /** Column name authorizedby */
     public static final String COLUMNNAME_authorizedby = "authorizedby";
 
@@ -290,15 +299,6 @@ public interface I_s_petty_cash
 	/** Get Payment Date	  */
 	public Timestamp getPaymentDate();
 
-    /** Column name paymode */
-    public static final String COLUMNNAME_paymode = "paymode";
-
-	/** Set Pay Mode	  */
-	public void setpaymode (String paymode);
-
-	/** Get Pay Mode	  */
-	public String getpaymode();
-
     /** Column name pending_disbursement */
     public static final String COLUMNNAME_pending_disbursement = "pending_disbursement";
 
@@ -320,6 +320,17 @@ public interface I_s_petty_cash
 	  * Posting status
 	  */
 	public boolean isPosted();
+
+    /** Column name s_payment_mode_ID */
+    public static final String COLUMNNAME_s_payment_mode_ID = "s_payment_mode_ID";
+
+	/** Set Payment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID);
+
+	/** Get Payment Mode	  */
+	public int gets_payment_mode_ID();
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException;
 
     /** Column name s_petty_cash_ID */
     public static final String COLUMNNAME_s_petty_cash_ID = "s_petty_cash_ID";

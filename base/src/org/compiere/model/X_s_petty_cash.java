@@ -32,7 +32,7 @@ public class X_s_petty_cash extends PO implements I_s_petty_cash, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190604L;
+	private static final long serialVersionUID = 20190606L;
 
     /** Standard Constructor */
     public X_s_petty_cash (Properties ctx, int s_petty_cash_ID, String trxName)
@@ -94,6 +94,20 @@ public class X_s_petty_cash extends PO implements I_s_petty_cash, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set AmountInWords.
+		@param AmountInWords AmountInWords	  */
+	public void setAmountInWords (String AmountInWords)
+	{
+		set_Value (COLUMNNAME_AmountInWords, AmountInWords);
+	}
+
+	/** Get AmountInWords.
+		@return AmountInWords	  */
+	public String getAmountInWords () 
+	{
+		return (String)get_Value(COLUMNNAME_AmountInWords);
 	}
 
 	/** Set authorizedby.
@@ -420,43 +434,6 @@ public class X_s_petty_cash extends PO implements I_s_petty_cash, I_Persistent
 		return (Timestamp)get_Value(COLUMNNAME_PaymentDate);
 	}
 
-	/** paymode AD_Reference_ID=1000016 */
-	public static final int PAYMODE_AD_Reference_ID=1000016;
-	/** Cash = 1 */
-	public static final String PAYMODE_Cash = "1";
-	/** Cheque = 2 */
-	public static final String PAYMODE_Cheque = "2";
-	/** Cash & Cheque = 3 */
-	public static final String PAYMODE_CashCheque = "3";
-	/** FOSA = 4 */
-	public static final String PAYMODE_FOSA = "4";
-	/** Error Correction = 5 */
-	public static final String PAYMODE_ErrorCorrection = "5";
-	/** Payroll Payment = SALARY DEDS */
-	public static final String PAYMODE_PayrollPayment = "SALARY DEDS";
-	/** MPESA- Cash Remmittance = 6 */
-	public static final String PAYMODE_MPESA_CashRemmittance = "6";
-	/** MPESA- Cash Withdrawals = 7 */
-	public static final String PAYMODE_MPESA_CashWithdrawals = "7";
-	/** Title Deed = 8 */
-	public static final String PAYMODE_TitleDeed = "8";
-	/** Savings Disbursment = 9 */
-	public static final String PAYMODE_SavingsDisbursment = "9";
-	/** Set Pay Mode.
-		@param paymode Pay Mode	  */
-	public void setpaymode (String paymode)
-	{
-
-		set_Value (COLUMNNAME_paymode, paymode);
-	}
-
-	/** Get Pay Mode.
-		@return Pay Mode	  */
-	public String getpaymode () 
-	{
-		return (String)get_Value(COLUMNNAME_paymode);
-	}
-
 	/** Set Pending Disbursement.
 		@param pending_disbursement Pending Disbursement	  */
 	public void setpending_disbursement (BigDecimal pending_disbursement)
@@ -496,6 +473,31 @@ public class X_s_petty_cash extends PO implements I_s_petty_cash, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	public I_s_payment_mode gets_payment_mode() throws RuntimeException
+    {
+		return (I_s_payment_mode)MTable.get(getCtx(), I_s_payment_mode.Table_Name)
+			.getPO(gets_payment_mode_ID(), get_TrxName());	}
+
+	/** Set Payment Mode.
+		@param s_payment_mode_ID Payment Mode	  */
+	public void sets_payment_mode_ID (int s_payment_mode_ID)
+	{
+		if (s_payment_mode_ID < 1) 
+			set_Value (COLUMNNAME_s_payment_mode_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_payment_mode_ID, Integer.valueOf(s_payment_mode_ID));
+	}
+
+	/** Get Payment Mode.
+		@return Payment Mode	  */
+	public int gets_payment_mode_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_payment_mode_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set s_petty_cash ID.

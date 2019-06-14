@@ -17,11 +17,13 @@ import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAcctSchemaDefault;
 import org.compiere.model.MClient;
+import org.compiere.model.MemberShares;
 import org.compiere.model.PO;
 import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.Sacco;
 import org.compiere.model.TransactionChargeSetup;
+import org.compiere.model.X_s_loan_recovery;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -105,12 +107,55 @@ public class PostLoanRepayment {
 		acctSchemaDefault = MAcctSchemaDefault.get(Env.getCtx(), acctSchema.get_ID());
 		fact = new Fact(doc, acctSchema, "A");
 		docLine = new DocLine(po, doc);
+		if (repayment.isoffset_from_shares()) {
+			// create a withdrawal entry
+			updateShareRecory();
+
+		}
 		postLoanCharges();
 		postLoan();
+
 		repayment.setDocStatus("CO");
 		repayment.setProcessed(true);
 		repayment.setPosted(true);
 		repayment.save();
+	}
+
+	private void updateShareRecory() {
+		String sql = "SELECT * FROM adempiere.s_loan_recovery WHERE l_repayments_ID =" + repayment.get_ID();
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, trxName);
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				X_s_loan_recovery loan_recovery = new X_s_loan_recovery(Env.getCtx(), rs, null);
+				postShareRecory(loan_recovery);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+					stm = null;
+				}
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+	}
+
+	private void postShareRecory(X_s_loan_recovery loan_recovery) {
+		MemberShares memberShares = new MemberShares(Env.getCtx(), loan_recovery.gets_membershares_ID(),null);
+		memberShares.newRemmittance(loan_recovery.getAmount().negate(),true,"Loan Offsetting, for Mbr."+loan.gets_member().getDocumentNo());
+
 	}
 
 	/*

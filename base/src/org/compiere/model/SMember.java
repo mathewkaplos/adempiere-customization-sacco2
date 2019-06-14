@@ -55,9 +55,15 @@ public class SMember extends X_s_member {
 		return val;
 	}
 
-	public BigDecimal getSavingsBal() {
+	public BigDecimal getSavingsBalAll() {
 		String sql = "SELECT COALESCE(SUM(sharestodate),0) " + " FROM adempiere.s_membershares  WHERE s_member_ID ="
 				+ get_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
+
+	public BigDecimal getSharesBal() {
+		String sql = "SELECT COALESCE(SUM(sharestodate),0) "
+				+ " FROM adempiere.s_membershares  WHERE s_sharetype_ID=1 AND s_member_ID =" + get_ID();
 		return DB.getSQLValueBD(get_TrxName(), sql);
 	}
 

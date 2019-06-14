@@ -26,7 +26,7 @@ public class MemberShares extends X_s_membershares {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void newRemmittance(BigDecimal appliedamount) {
+	public void newRemmittance(BigDecimal appliedamount, boolean is_withdrawal,String remittanceremarks) {
 		SMember member = new SMember(getCtx(), gets_member_ID(), get_TrxName());
 		ShareType shareType = new ShareType(getCtx(), gets_sharetype_ID(), get_TrxName());
 
@@ -44,6 +44,8 @@ public class MemberShares extends X_s_membershares {
 		shareRemittance.setIsComplete(true);
 		shareRemittance.setothercharges(Env.ZERO);
 		shareRemittance.setShareBalance(getsharestodate().add(appliedamount));
+		shareRemittance.setis_withdrawal(is_withdrawal);
+		shareRemittance.setremittanceremarks(remittanceremarks);
 		shareRemittance.save();
 
 		setsharestodate(getsharestodate().add(appliedamount));
@@ -51,7 +53,7 @@ public class MemberShares extends X_s_membershares {
 		save();
 
 	}
-
+ 
 	public void transfer(BigDecimal amount) {
 		setsharestodate(getsharestodate().add(amount));
 		setfreeshares(getfreeshares().add(amount));

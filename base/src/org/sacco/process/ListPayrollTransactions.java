@@ -1,20 +1,16 @@
 package org.sacco.process;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.compiere.model.I_s_loans;
-import org.compiere.model.MPeriod;
 import org.compiere.model.MemberShares;
 import org.compiere.model.Payroll_Interface;
 import org.compiere.model.Period_remittance;
-import org.compiere.model.SLoan;
-import org.compiere.model.SLoanType;
 import org.compiere.model.STransactions;
-import org.compiere.model.Sacco;
 import org.compiere.model.ShareType;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
@@ -119,7 +115,7 @@ public class ListPayrollTransactions extends SvrProcess {
 
 		StringBuilder sb = new StringBuilder();
 		String whereClause = "";
-		sb.append("SELECT * FROM s_membershares ms WHERE ms.contributionrate>0 AND ms.paymode='SALARY DEDS'");
+		sb.append("SELECT * FROM s_membershares ms WHERE ms.contributionrate>0 AND ms.s_payment_mode_ID=10");
 		if (s_sharetype_ID > 0)
 			whereClause = " AND  ms.s_sharetype_ID =" + s_sharetype_ID;
 		filter(sb, whereClause);
@@ -201,24 +197,35 @@ public class ListPayrollTransactions extends SvrProcess {
 	}
 
 	private void getLoans() {
-		StringBuilder sb = new StringBuilder();
-		String whereClause = "";
-		sb.append(
-				"SELECT * FROM s_period_remittance rem WHERE transactiontype='LOANS' AND is_payroll='Y' AND C_Period_ID="
-						+ payroll_Interface.getC_Period_ID());
-		if (s_loantype_ID > 0)
-			whereClause = " AND  s_loantype_ID =" + s_loantype_ID;
-		filter(sb, whereClause);
-		System.out.println(sb.toString());
-		List<Period_remittance> list = new ArrayList<>();
+		String sql = "SELECT s_member_ID, s_loantype_ID, reference , principal ,interest ,penalty,balance,loan_id FROM adempiere.list_payroll_loans("+getRecord_ID()+ ")";
 		PreparedStatement stm = null;
 		ResultSet rs = null;
 		try {
-			stm = DB.prepareStatement(sb.toString(), get_TrxName());
+			stm = DB.prepareStatement(sql, get_TrxName());
 			rs = stm.executeQuery();
 			while (rs.next()) {
-				Period_remittance period_remittance = new Period_remittance(getCtx(), rs, get_TrxName());
-				list.add(period_remittance);
+				int s_member_ID = rs.getInt(1);
+				int s_loantype_ID = rs.getInt(2);
+				String reference = rs.getString(3);
+				BigDecimal principal = rs.getBigDecimal(4);
+				BigDecimal interest = rs.getBigDecimal(5);
+				BigDecimal penalty = rs.getBigDecimal(6);
+				BigDecimal balance = rs.getBigDecimal(7);
+				int loan_id = rs.getInt(8);
+				STransactions transactions = new STransactions(getCtx(), 0, get_TrxName());
+				transactions.sets_payrol_interface_ID(getRecord_ID());
+				transactions.sets_member_ID(s_member_ID);
+				transactions.sets_loantype_ID(s_loantype_ID);
+				transactions.setAmount(principal);
+				transactions.setinterestamount(interest);
+				transactions.setgross((principal.add(interest).add(penalty)));
+				transactions.setothercharges(penalty);
+				transactions.setbefore_trans_bal(balance);
+				transactions.setafter_trans_bal(balance.subtract(principal));
+				transactions.setReference(reference);
+				transactions.setTransactionType("LOANS");
+				transactions.setshareloanid(loan_id);
+				transactions.save();
 
 			}
 		} catch (Exception e) {
@@ -237,28 +244,6 @@ public class ListPayrollTransactions extends SvrProcess {
 			}
 		}
 
-		period_remittances = list.toArray(new Period_remittance[list.size()]);
-
-		for (int i = 0; i < period_remittances.length; i++) {
-
-			Period_remittance period_remittance = period_remittances[i];
-			STransactions transactions = new STransactions(getCtx(), 0, get_TrxName());
-			transactions.sets_payrol_interface_ID(getRecord_ID());
-			transactions.sets_member_ID(period_remittance.gets_member_ID());
-			transactions.sets_loantype_ID(period_remittance.gets_loantype_ID());
-			transactions.setAmount(period_remittance.getAmount());
-			// transactions.setinterestamount(interestamount);
-			// transactions.setgross(gross);
-			// transactions.setothercharges(othercharges);
-			I_s_loans loan = period_remittance.gets_loans();
-			transactions.setloan_gl_Acct(loan.getloan_gl_Acct());
-			transactions.setbefore_trans_bal(loan.getloanbalance());
-			transactions.setafter_trans_bal(loan.getloanbalance().subtract(loan.getloanrepayamt()));
-			transactions.setReference(loan.getDocumentNo());
-			transactions.setTransactionType("LOANS");
-			transactions.setshareloanid(period_remittance.gets_loans_ID());
-			transactions.save();
-		}
 	}
 
 }

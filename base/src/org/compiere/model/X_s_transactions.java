@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.compiere.model;
@@ -24,14 +24,14 @@ import org.compiere.util.Env;
 
 /** Generated Model for s_transactions
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0 - $Id$ */
+ *  @version Release 3.9.2 - $Id$ */
 public class X_s_transactions extends PO implements I_s_transactions, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190406L;
+	private static final long serialVersionUID = 20190610L;
 
     /** Standard Constructor */
     public X_s_transactions (Properties ctx, int s_transactions_ID, String trxName)
@@ -125,26 +125,21 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		return bd;
 	}
 
-	public I_C_ValidCombination getgr() throws RuntimeException
-    {
-		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-			.getPO(getgross(), get_TrxName());	}
-
 	/** Set Gross Amount.
 		@param gross Gross Amount	  */
-	public void setgross (int gross)
+	public void setgross (BigDecimal gross)
 	{
-		set_Value (COLUMNNAME_gross, Integer.valueOf(gross));
+		set_Value (COLUMNNAME_gross, gross);
 	}
 
 	/** Get Gross Amount.
 		@return Gross Amount	  */
-	public int getgross () 
+	public BigDecimal getgross () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_gross);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_gross);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Interest Amount.
@@ -169,15 +164,15 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
 			.getPO(getinterestgl_Acct(), get_TrxName());	}
 
-	/** Set Fixed Deposit Interest GL Code.
-		@param interestgl_Acct Fixed Deposit Interest GL Code	  */
+	/** Set Interest GL Code.
+		@param interestgl_Acct Interest GL Code	  */
 	public void setinterestgl_Acct (int interestgl_Acct)
 	{
 		set_Value (COLUMNNAME_interestgl_Acct, Integer.valueOf(interestgl_Acct));
 	}
 
-	/** Get Fixed Deposit Interest GL Code.
-		@return Fixed Deposit Interest GL Code	  */
+	/** Get Interest GL Code.
+		@return Interest GL Code	  */
 	public int getinterestgl_Acct () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_interestgl_Acct);
@@ -262,6 +257,100 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 	public String getReference () 
 	{
 		return (String)get_Value(COLUMNNAME_Reference);
+	}
+
+	/** Set Select.
+		@param selected Select	  */
+	public void setselected (boolean selected)
+	{
+		set_Value (COLUMNNAME_selected, Boolean.valueOf(selected));
+	}
+
+	/** Get Select.
+		@return Select	  */
+	public boolean isselected () 
+	{
+		Object oo = get_Value(COLUMNNAME_selected);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set SerialNo.
+		@param SerialNo SerialNo	  */
+	public void setSerialNo (int SerialNo)
+	{
+		set_Value (COLUMNNAME_SerialNo, Integer.valueOf(SerialNo));
+	}
+
+	/** Get SerialNo.
+		@return SerialNo	  */
+	public int getSerialNo () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SerialNo);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Share Contribution.
+		@param share_contribution Share Contribution	  */
+	public void setshare_contribution (BigDecimal share_contribution)
+	{
+		set_Value (COLUMNNAME_share_contribution, share_contribution);
+	}
+
+	/** Get Share Contribution.
+		@return Share Contribution	  */
+	public BigDecimal getshare_contribution () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_share_contribution);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_C_ValidCombination getsharegl_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getsharegl_Acct(), get_TrxName());	}
+
+	/** Set Share Type GL Code.
+		@param sharegl_Acct Share Type GL Code	  */
+	public void setsharegl_Acct (int sharegl_Acct)
+	{
+		set_Value (COLUMNNAME_sharegl_Acct, Integer.valueOf(sharegl_Acct));
+	}
+
+	/** Get Share Type GL Code.
+		@return Share Type GL Code	  */
+	public int getsharegl_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_sharegl_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set shareloanid.
+		@param shareloanid shareloanid	  */
+	public void setshareloanid (int shareloanid)
+	{
+		set_Value (COLUMNNAME_shareloanid, Integer.valueOf(shareloanid));
+	}
+
+	/** Get shareloanid.
+		@return shareloanid	  */
+	public int getshareloanid () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_shareloanid);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Loan Type.
@@ -374,100 +463,6 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		return ii.intValue();
 	}
 
-	/** Set Select.
-		@param selected Select	  */
-	public void setselected (boolean selected)
-	{
-		set_Value (COLUMNNAME_selected, Boolean.valueOf(selected));
-	}
-
-	/** Get Select.
-		@return Select	  */
-	public boolean isselected () 
-	{
-		Object oo = get_Value(COLUMNNAME_selected);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set SerialNo.
-		@param SerialNo SerialNo	  */
-	public void setSerialNo (int SerialNo)
-	{
-		set_Value (COLUMNNAME_SerialNo, Integer.valueOf(SerialNo));
-	}
-
-	/** Get SerialNo.
-		@return SerialNo	  */
-	public int getSerialNo () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_SerialNo);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Share Contribution.
-		@param share_contribution Share Contribution	  */
-	public void setshare_contribution (BigDecimal share_contribution)
-	{
-		set_Value (COLUMNNAME_share_contribution, share_contribution);
-	}
-
-	/** Get Share Contribution.
-		@return Share Contribution	  */
-	public BigDecimal getshare_contribution () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_share_contribution);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	public I_C_ValidCombination getsharegl_A() throws RuntimeException
-    {
-		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-			.getPO(getsharegl_Acct(), get_TrxName());	}
-
-	/** Set Share Type GL Code.
-		@param sharegl_Acct Share Type GL Code	  */
-	public void setsharegl_Acct (int sharegl_Acct)
-	{
-		set_Value (COLUMNNAME_sharegl_Acct, Integer.valueOf(sharegl_Acct));
-	}
-
-	/** Get Share Type GL Code.
-		@return Share Type GL Code	  */
-	public int getsharegl_Acct () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_sharegl_Acct);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set shareloanid.
-		@param shareloanid shareloanid	  */
-	public void setshareloanid (int shareloanid)
-	{
-		set_Value (COLUMNNAME_shareloanid, Integer.valueOf(shareloanid));
-	}
-
-	/** Get shareloanid.
-		@return shareloanid	  */
-	public int getshareloanid () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_shareloanid);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	/** TransactionType AD_Reference_ID=1000023 */
 	public static final int TRANSACTIONTYPE_AD_Reference_ID=1000023;
 	/** LOANS = LOANS */
@@ -487,5 +482,22 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 	public String getTransactionType () 
 	{
 		return (String)get_Value(COLUMNNAME_TransactionType);
+	}
+
+	/** Set Immutable Universally Unique Identifier.
+		@param UUID 
+		Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID)
+	{
+		set_Value (COLUMNNAME_UUID, UUID);
+	}
+
+	/** Get Immutable Universally Unique Identifier.
+		@return Immutable Universally Unique Identifier
+	  */
+	public String getUUID () 
+	{
+		return (String)get_Value(COLUMNNAME_UUID);
 	}
 }

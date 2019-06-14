@@ -1,11 +1,9 @@
 package org.sacco.process;
 
-import java.math.BigDecimal;
 import java.util.logging.Level;
 
 import org.compiere.model.MBank;
 import org.compiere.model.MemberShares;
-import org.compiere.model.Repayment;
 import org.compiere.model.SLoan;
 import org.compiere.model.Sacco;
 import org.compiere.model.ShambaPlot;
@@ -85,7 +83,7 @@ public class SavePaymentMode extends SvrProcess {
 	private void updateSavings() {
 		int s_membershares_ID = loan.gets_membershares_ID();
 		MemberShares memberShares = new MemberShares(getCtx(), s_membershares_ID, get_TrxName());
-		memberShares.newRemmittance(loan.getissued_amount());
+		memberShares.newRemmittance(loan.getissued_amount(),false,"Loan Transfer, Loan No."+loan.getDocumentNo());
 	}
 
 	private void updateShambaPlot() {

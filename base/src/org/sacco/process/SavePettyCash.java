@@ -20,6 +20,8 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
+import zenith.util.NumberWordConverter;
+
 public class SavePettyCash extends SvrProcess {
 	Doc doc = null;
 	PO po = null;
@@ -27,18 +29,25 @@ public class SavePettyCash extends SvrProcess {
 	DocLine docLine = null;
 	MAcctSchema acctSchema = null;
 	MAcctSchemaDefault acctSchemaDefault = null;
-	PettyCash pettyCash =null;
+	PettyCash pettyCash = null;
+
 	@Override
 	protected void prepare() {
-
+		System.out.println("sssed");
 	}
-
+	
 	@Override
 	protected String doIt() throws Exception {
-		pettyCash	= new PettyCash(getCtx(), getRecord_ID(), get_TrxName());
+		pettyCash = new PettyCash(getCtx(), getRecord_ID(), get_TrxName());
 
 		pettyCash.setIsComplete(true);
 		pettyCash.getbtn_save();
+		pettyCash.setDocStatus("CO");
+		pettyCash.setPosted(true);
+
+		String AmountInWords = NumberWordConverter.getMoneyIntoWords(pettyCash.getAmount().abs().doubleValue());
+		pettyCash.setAmountInWords(AmountInWords);
+		pettyCash.save();
 		post();
 
 		return null;
@@ -88,30 +97,35 @@ public class SavePettyCash extends SvrProcess {
 		if (pettyCash.getAmount().compareTo(Env.ZERO) == 0) {
 			return;
 		}
-		int drAcc= 1;
-		int crAcc =2;
-		
-		MAccount accountDR = new MAccount(Env.getCtx(), 1, get_TrxName());
-		FactLine lineDR = fact.createLine(docLine, accountDR, acctSchema.getC_Currency_ID(),
-				pettyCash.getAmount().negate());
+		int drAcc = pettyCash.getDr_Acct();
+		int crAcc = pettyCash.getCr_Acct();
+
+		// MAccount accountDR = new MAccount(Env.getCtx(), 1, get_TrxName());
+		MAccount DR = new MAccount(acctSchema);
+		DR.setAccount_ID(drAcc);
+		DR.save();
+		FactLine lineDR = fact.createLine(docLine, DR, acctSchema.getC_Currency_ID(), pettyCash.getAmount().negate());
 		lineDR.save();
 
-		MAccount accountCR = new MAccount(Env.getCtx(), crAcc, get_TrxName());
-		FactLine lineCR = fact.createLine(docLine, accountCR, acctSchema.getC_Currency_ID(), pettyCash.getAmount());
+		// MAccount accountCR = new MAccount(Env.getCtx(), crAcc, get_TrxName());
+		MAccount CR = new MAccount(acctSchema);
+		CR.setAccount_ID(crAcc);
+		CR.save();
+		FactLine lineCR = fact.createLine(docLine, CR, acctSchema.getC_Currency_ID(), pettyCash.getAmount());
 		lineCR.save();
 
 		// update contra -accounts , and other particulars
-		//lineDR.setcontra_account_id(lineCR.getAccount_ID());
-	//	lineDR.setUserCode(user.getName());
-		//lineDR.setChequeNo(chequeNo);
-	//	lineDR.setDescription("Repayment." + MemberNoDescription);
-	//	lineDR.save();
+		// lineDR.setcontra_account_id(lineCR.getAccount_ID());
+		// lineDR.setUserCode(user.getName());
+		// lineDR.setChequeNo(chequeNo);
+		// lineDR.setDescription("Repayment." + MemberNoDescription);
+		// lineDR.save();
 
-	//	lineCR.setcontra_account_id(lineDR.getAccount_ID());
-	//	lineCR.setUserCode(user.getName());
-	//	lineCR.setChequeNo(chequeNo);
-	//	lineCR.setDescription("Repayment." + MemberNoDescription);
-	//	lineCR.save();
+		// lineCR.setcontra_account_id(lineDR.getAccount_ID());
+		// lineCR.setUserCode(user.getName());
+		// lineCR.setChequeNo(chequeNo);
+		// lineCR.setDescription("Repayment." + MemberNoDescription);
+		// lineCR.save();
 
 	}
 
