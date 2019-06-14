@@ -90,7 +90,7 @@ public class SaveReceiptVoucher extends SvrProcess {
 		acctSchema = new MAcctSchema(Env.getCtx(), 101, null);
 		acctSchemaDefault = MAcctSchemaDefault.get(Env.getCtx(), acctSchema.get_ID());
 		fact = new Fact(doc, acctSchema, "A");
-		docLine = new DocLine(po, doc);
+		docLine = new DocLine(po, doc); 
 		postPayment();
 
 	}
