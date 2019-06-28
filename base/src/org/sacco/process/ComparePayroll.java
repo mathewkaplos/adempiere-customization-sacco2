@@ -33,16 +33,48 @@ public class ComparePayroll extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-		deleteExisting();// 
+		deleteExisting();//
 
-		getList();// 
-   
-		getCSVList();//  
+		// getList();//
+		// getCSVList();//
 
-		for (Payroll_csv csv : csv_list) {
-			// getTransactionByPayrollNoAndType(csv.getpayroll_no(),
-			// csv.getTransactionType(), csv.getAmount());
+		String sql = "select s_member_id,payroll_code,item,item_code,amount,list_amount,"
+				+ "s_membershares_id , s_loans_id from adempiere.comparepayroll(" + getRecord_ID() + ")";
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				int s_member_id = rs.getInt(1);
+				String payroll_code = rs.getString(2);
+				String item = rs.getString(3);
+				String item_code = rs.getString(4);
+				BigDecimal amount = rs.getBigDecimal(5);
+				BigDecimal list_amount = rs.getBigDecimal(6);
+				int s_membershares_id = rs.getInt(7);
+				int s_loans_id = rs.getInt(8);
+
+				Payroll_compare_csv compare_csv = new Payroll_compare_csv(getCtx(), 0, get_TrxName());
+
+				compare_csv.sets_payrol_interface_ID(payroll_Interface.get_ID());
+
+				compare_csv.sets_member_ID(s_member_id);
+				// compare_csv.setmember_no(member.getDocumentNo());
+				compare_csv.setpayroll_no(payroll_code);
+				compare_csv.setlist_amount(list_amount);
+				compare_csv.setimport_amount(amount);
+				compare_csv.setTransactionType(item);
+				compare_csv.sets_loans_ID(s_loans_id);
+				compare_csv.sets_membershares_ID(s_membershares_id);
+
+				compare_csv.save();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 		payroll_Interface.setcompared(true);
 		payroll_Interface.save();
 		return null;
@@ -51,111 +83,6 @@ public class ComparePayroll extends SvrProcess {
 	private void deleteExisting() {
 		String sql = "DELETE FROM adempiere.s_payroll_compare_csv WHERE s_payrol_interface_ID =" + getRecord_ID();
 		DB.executeUpdate(sql, get_TrxName());
-	}
-
-	private STransactions getTransactionByPayrollNoAndType(String payrollNo, String TransactionType,
-			BigDecimal amount) {
-		SMember member = getMember(payrollNo);
-		STransactions oneTrans = null;
-		try {
-			oneTrans = transactions_list.stream().filter(x -> x != null)
-
-					.filter(trans -> member.gets_member_ID() == trans.gets_member_ID())
-					.filter(trans -> trans.getTransactionType().contains(TransactionType)).findAny().orElse(null);
-		} catch (Exception e) {
-
-		}
-		if (oneTrans != null) {
-			Payroll_compare_csv compare_csv = new Payroll_compare_csv(getCtx(), 0, get_TrxName());
-
-			compare_csv.sets_payrol_interface_ID(payroll_Interface.get_ID());
-
-			compare_csv.sets_member_ID(member.gets_member_ID());
-			compare_csv.setmember_no(member.getDocumentNo());
-			compare_csv.setpayroll_no(member.getmpayroll());
-			compare_csv.setlist_amount(oneTrans.getAmount());
-			compare_csv.setimport_amount(amount);
-			compare_csv.setTransactionType(oneTrans.getTransactionType());
-			compare_csv.save();
-
-		}
-
-		return oneTrans;
-	}
-
-	private SMember getMember(String payrollNo) {
-		String sql = "SELECT * FROM adempiere.s_member WHERE mpayroll='" + payrollNo + "'";
-		PreparedStatement stm = null;
-		ResultSet rs = null;
-		try {
-			stm = DB.prepareStatement(sql, get_TrxName());
-			rs = stm.executeQuery();
-			if (rs.next()) {
-				return new SMember(getCtx(), rs, get_TrxName());
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-
-	private void getList() {
-		List<STransactions> list = new ArrayList<>();
-		String sql = "SELECT * FROM adempiere.s_transactions WHERE s_payrol_interface_ID=" + getRecord_ID();
-		PreparedStatement stm = null;
-		ResultSet rs = null;
-		try {
-			stm = DB.prepareStatement(sql, get_TrxName());
-			rs = stm.executeQuery();
-			while (rs.next()) {
-				STransactions tran = new STransactions(getCtx(), rs, get_TrxName());
-				list.add(tran);
-
-			}
-
-		} catch (Exception e) {
-
-		} finally {
-			try {
-				stm.close();
-				rs.close();
-				stm = null;
-				rs = null;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		}
-		transactions_list = list;
-	}
-
-	private void getCSVList() {
-		List<Payroll_csv> list = new ArrayList<>();
-		String sql = "SELECT * FROM adempiere.z_payroll_csv WHERE s_payrol_interface_ID=" + getRecord_ID();
-		PreparedStatement stm = null;
-		ResultSet rs = null;
-		try {
-			stm = DB.prepareStatement(sql, get_TrxName());
-			rs = stm.executeQuery();
-			while (rs.next()) {
-				Payroll_csv csv = new Payroll_csv(getCtx(), rs, get_TrxName());
-				list.add(csv);
-			}
-		} catch (Exception e) {
-
-		} finally {
-			try {
-				stm.close();
-				rs.close();
-				stm = null;
-				rs = null;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		csv_list = list;
 	}
 
 }

@@ -496,7 +496,7 @@ public class SLoan extends X_s_loans {
 	public Repayment newRepayment(SLoan _loan) {
 		loan = _loan;
 		BigDecimal PaymentAmount = loan.getloanbalance();
-		
+
 		Repayment r = new Repayment(getCtx(), 0, get_TrxName());
 		r.sets_loans_ID(loan.get_ID());
 		r.setC_Period_ID(Sacco.getSaccco().getsaccoperiod_ID());
@@ -504,22 +504,22 @@ public class SLoan extends X_s_loans {
 		r.sets_loantype_ID(loan.gets_loantype_ID());
 		r.setPaymentDate(DateUtil.newTimestamp());
 		r.setpaymode("CASH PERMIT");
-		
+
 		r.setloan_gl_Acct(loan.getloan_gl_Acct());
 		r.setinterestgl_Acct(gets_loantype().getloantypeinterestgl_Acct());
 		r.setbankgl_Acct(this.getC_Bank().getGLAccount());
 		r.save();
-		
+
 		r.setReceiptNo(r.getDocumentNo());
 		r.setVoucherNo(r.getDocumentNo());
 		r.setPrincipal(PaymentAmount);
-		
-		BigDecimal interest =loan.getLoanInterestToday();
-		BigDecimal penalty =loan.getLoanPenaltyToday();
-		
+
+		BigDecimal interest = loan.getLoanInterestToday();
+		BigDecimal penalty = loan.getLoanPenaltyToday();
+
 		r.setexpectedinterest(interest);
 		r.setpenalty_due(penalty);
-		
+
 		r.setPaymentAmount(PaymentAmount.add(interest).add(penalty));
 		r.setIsComplete(true);
 		r.setis_repayment(true);
@@ -528,6 +528,58 @@ public class SLoan extends X_s_loans {
 		repayment = r;
 		updateLoanRemmittance();
 		reAllocateGuarantors();
+		return r;
+	}
+	////////////////////////////////////////
+	// REPAYMENT///////////
+
+	/**
+	 * new Repayments This will be used when posting payroll transactions
+	 * 
+	 * @param PaymentAmount
+	 * @param bankgl_Acct
+	 * @param Principal
+	 * @param interest
+	 * @param total_oc_due
+	 * @return
+	 */
+	public Repayment newRepayment(BigDecimal PaymentAmount, int bankgl_Acct, BigDecimal Principal, BigDecimal interest,
+			BigDecimal total_oc_due) {
+
+		Repayment r = new Repayment(getCtx(), 0, get_TrxName());
+		r.sets_loans_ID(get_ID());
+		r.setC_Period_ID(Sacco.getSaccco().getsaccoperiod_ID());
+		r.setbankgl_Acct(bankgl_Acct);
+		r.sets_loantype_ID(gets_loantype_ID());
+		r.setPaymentDate(DateUtil.newTimestamp());
+
+		r.setloan_gl_Acct(gets_loantype().getloantypeloangl_Acct());
+		r.setinterestgl_Acct(gets_loantype().getloantypeinterestgl_Acct());
+		r.setbankgl_Acct(getC_Bank().getGLAccount());
+		r.save();
+
+		r.setReceiptNo(r.getDocumentNo());
+		r.setVoucherNo(r.getDocumentNo());
+		r.setPrincipal(Principal);
+		r.setmonthopeningbal(getloanbalance());
+		r.setmonthclosingbal(getloanbalance().subtract(Principal));
+		r.setexpectedinterest(interest);
+		r.settotal_oc_due(total_oc_due);
+		r.setPaymentAmount(PaymentAmount);
+		r.setIsComplete(true);
+		r.setis_repayment(true);
+		r.setComments("Payroll payment");
+		r.save();
+
+		// update the loan balances
+		BigDecimal prev_bal = getloanbalance();
+		setprev_balance(prev_bal);
+		setloanbalance(getloanbalance().subtract(Principal));
+		setmonthopeningbal(getmonthopeningbal().subtract(Principal));
+		setintbalance(getintbalance().subtract(interest));
+		setlast_pay_date(DateUtil.newTimestamp());
+		save();
+
 		return r;
 	}
 
@@ -906,6 +958,7 @@ public class SLoan extends X_s_loans {
 		String sql = "select adempiere.getloaninterest(" + get_ID() + ")";
 		return DB.getSQLValueBD(get_TrxName(), sql);
 	}
+
 	public BigDecimal getLoanPenaltyToday() {
 		String sql = "select adempiere.getloanpenalty(" + get_ID() + ")";
 		return DB.getSQLValueBD(get_TrxName(), sql);

@@ -154,7 +154,7 @@ public class PostLoanRepayment {
 
 	private void postShareRecory(X_s_loan_recovery loan_recovery) {
 		MemberShares memberShares = new MemberShares(Env.getCtx(), loan_recovery.gets_membershares_ID(),null);
-		memberShares.newRemmittance(loan_recovery.getAmount().negate(),true,"Loan Offsetting, for Mbr."+loan.gets_member().getDocumentNo());
+		memberShares.newRemmittance(loan_recovery.getAmount().negate(),true,"Loan Offsetting, for Mbr."+loan.gets_member().getDocumentNo(),9);
 
 	}
 

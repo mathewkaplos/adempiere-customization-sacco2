@@ -83,7 +83,7 @@ public class SavePaymentMode extends SvrProcess {
 	private void updateSavings() {
 		int s_membershares_ID = loan.gets_membershares_ID();
 		MemberShares memberShares = new MemberShares(getCtx(), s_membershares_ID, get_TrxName());
-		memberShares.newRemmittance(loan.getissued_amount(),false,"Loan Transfer, Loan No."+loan.getDocumentNo());
+		memberShares.newRemmittance(loan.getissued_amount(),false,"Loan Transfer, Loan No."+loan.getDocumentNo(),9);
 	}
 
 	private void updateShambaPlot() {

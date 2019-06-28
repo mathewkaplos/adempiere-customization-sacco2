@@ -4,9 +4,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.compiere.model.MemberShares;
 import org.compiere.model.Payroll_Interface;
 import org.compiere.model.Period_remittance;
@@ -31,6 +28,7 @@ public class ListPayrollTransactions extends SvrProcess {
 	int s_member_ID = 0;
 	String payroll_no = null;
 	int C_Period_ID = 0;
+	int x = 0;
 
 	@Override
 	protected void prepare() {
@@ -54,7 +52,7 @@ public class ListPayrollTransactions extends SvrProcess {
 		return null;
 	}
 
-	int x = 0;
+	int i = 0;
 
 	private void setSerialNo() {
 		String sql = "SELECT * FROM s_transactions WHERE s_payrol_interface_ID=" + getRecord_ID()
@@ -66,7 +64,7 @@ public class ListPayrollTransactions extends SvrProcess {
 			rs = stm.executeQuery();
 			while (rs.next()) {
 				STransactions transactions = new STransactions(getCtx(), rs, get_TrxName());
-				transactions.setSerialNo(++x);
+				transactions.setSerialNo(++i);
 				transactions.save();
 			}
 
@@ -113,22 +111,46 @@ public class ListPayrollTransactions extends SvrProcess {
 
 	private void getShares() {
 
-		StringBuilder sb = new StringBuilder();
-		String whereClause = "";
-		sb.append("SELECT * FROM s_membershares ms WHERE ms.contributionrate>0 AND ms.s_payment_mode_ID=10");
-		if (s_sharetype_ID > 0)
-			whereClause = " AND  ms.s_sharetype_ID =" + s_sharetype_ID;
-		filter(sb, whereClause);
+		String sql = "SELECT s_member_id ,s_membershares_id,s_sharetype_id,amount,source"
+				+ ", mpayroll,item,item_code FROM  adempiere.list_payroll_shares(" + getRecord_ID() + ")";
 
-		List<MemberShares> list = new ArrayList<>();
 		PreparedStatement stm = null;
 		ResultSet rs = null;
 		try {
-			stm = DB.prepareStatement(sb.toString(), get_TrxName());
+			stm = DB.prepareStatement(sql, get_TrxName());
 			rs = stm.executeQuery();
 			while (rs.next()) {
-				MemberShares shares = new MemberShares(getCtx(), rs, get_TrxName());
-				list.add(shares);
+				int s_member_id = rs.getInt(1);
+				int s_membershares_id = rs.getInt(2);
+				int s_sharetype_id = rs.getInt(3);
+				BigDecimal amount = rs.getBigDecimal(4);
+				int source = rs.getInt(5);
+				String mpayroll = rs.getString(6);
+				String item = rs.getString(7);
+				String item_code = rs.getString(8);
+				ShareType shareType = new ShareType(getCtx(), s_sharetype_id, get_TrxName());
+				MemberShares memberShares = new MemberShares(getCtx(), s_membershares_id, get_TrxName());
+
+				STransactions transactions = new STransactions(getCtx(), 0, get_TrxName());
+				transactions.sets_payrol_interface_ID(getRecord_ID());
+				transactions.sets_member_ID(s_member_id);
+				transactions.sets_sharetype_ID(s_sharetype_id);
+				transactions.setshare_contribution(amount);
+				transactions.setsharegl_Acct(shareType.getsharegl_Acct());
+				transactions.setbefore_trans_bal(memberShares.getsharestodate());
+				transactions.setafter_trans_bal(memberShares.getsharestodate().add(amount));
+				transactions.setReference(String.valueOf(s_membershares_id));
+				transactions.setTransactionType("SHARES");
+				transactions.setshareloanid(s_membershares_id);
+				
+				transactions.sets_membershares_ID(s_membershares_id);
+				transactions.setmpayroll(mpayroll);
+				transactions.setTransactionType(item);
+				transactions.setItem_Code(item_code);
+				
+				transactions.save();
+				
+				System.out.println(x++);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -146,58 +168,11 @@ public class ListPayrollTransactions extends SvrProcess {
 			}
 		}
 
-		memberShares = list.toArray(new MemberShares[list.size()]);
-
-		for (int i = 0; i < memberShares.length; i++) {
-			MemberShares share = memberShares[i];
-			ShareType type = new ShareType(getCtx(), share.gets_sharetype_ID(), get_TrxName());
-			STransactions transactions = new STransactions(getCtx(), 0, get_TrxName());
-			transactions.sets_payrol_interface_ID(getRecord_ID());
-			transactions.sets_member_ID(share.gets_member_ID());
-			transactions.sets_sharetype_ID(share.gets_sharetype_ID());
-			transactions.setshare_contribution(share.getcontributionrate());
-			transactions.setsharegl_Acct(type.getsharegl_Acct());
-			transactions.setbefore_trans_bal(share.getsharestodate());
-			transactions.setafter_trans_bal(share.getsharestodate().add(share.getcontributionrate()));
-			transactions.setReference(share.getDocumentNo());
-			transactions.setTransactionType("SHARES");
-			transactions.setshareloanid(share.get_ID());
-			transactions.save();
-		}
-	}
-
-	private void filter(StringBuilder sb, String whereClause) {
-		if (repaymode != null) {
-			whereClause = whereClause + " AND paymode = '" + repaymode + "'";
-		}
-		if (s_employers_ID > 0) {
-			whereClause = whereClause
-					+ " AND s_member_ID IN ( SELECT s_member_ID FROM adempiere.s_member  WHERE s_employers_ID = '"
-					+ s_employers_ID + "') ";
-
-		}
-		if (s_station_ID > 0) {
-			whereClause = whereClause
-					+ " AND s_member_ID IN ( SELECT s_member_ID FROM adempiere.s_member  WHERE s_station_ID = '"
-					+ s_station_ID + "') ";
-
-		}
-		if (s_department_ID > 0) {
-			whereClause = whereClause
-					+ " AND s_member_ID IN ( SELECT s_member_ID FROM adempiere.s_member  WHERE s_department_ID = '"
-					+ s_department_ID + "') ";
-
-		}
-		if (s_member_ID > 0) {
-			whereClause = whereClause + " AND s_member_ID= " + s_member_ID;
-
-		}
-		if (whereClause != null)
-			sb.append(whereClause);
 	}
 
 	private void getLoans() {
-		String sql = "SELECT s_member_ID, s_loantype_ID, reference , principal ,interest ,penalty,balance,loan_id FROM adempiere.list_payroll_loans("+getRecord_ID()+ ")";
+		String sql = "SELECT s_member_ID, s_loantype_ID, reference , principal ,interest ,penalty,balance,loan_id, "
+				+ " mpayroll,item,item_code FROM adempiere.list_payroll_loans(" + getRecord_ID() + ")";
 		PreparedStatement stm = null;
 		ResultSet rs = null;
 		try {
@@ -212,6 +187,10 @@ public class ListPayrollTransactions extends SvrProcess {
 				BigDecimal penalty = rs.getBigDecimal(6);
 				BigDecimal balance = rs.getBigDecimal(7);
 				int loan_id = rs.getInt(8);
+				String mpayroll = rs.getString(9);
+				String item = rs.getString(10);
+				String item_code = rs.getString(11);
+
 				STransactions transactions = new STransactions(getCtx(), 0, get_TrxName());
 				transactions.sets_payrol_interface_ID(getRecord_ID());
 				transactions.sets_member_ID(s_member_ID);
@@ -225,6 +204,12 @@ public class ListPayrollTransactions extends SvrProcess {
 				transactions.setReference(reference);
 				transactions.setTransactionType("LOANS");
 				transactions.setshareloanid(loan_id);
+
+				transactions.sets_loans_ID(loan_id);
+				transactions.setmpayroll(mpayroll);
+				transactions.setTransactionType(item);
+				transactions.setItem_Code(item_code);
+
 				transactions.save();
 
 			}

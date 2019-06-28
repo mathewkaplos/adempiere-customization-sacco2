@@ -33,7 +33,7 @@ public class X_s_shareremittance extends PO implements I_s_shareremittance, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190602L;
+	private static final long serialVersionUID = 20190628L;
 
     /** Standard Constructor */
     public X_s_shareremittance (Properties ctx, int s_shareremittance_ID, String trxName)

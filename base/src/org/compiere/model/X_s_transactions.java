@@ -31,7 +31,7 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190610L;
+	private static final long serialVersionUID = 20190627L;
 
     /** Standard Constructor */
     public X_s_transactions (Properties ctx, int s_transactions_ID, String trxName)
@@ -181,6 +181,20 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		return ii.intValue();
 	}
 
+	/** Set Item_Code.
+		@param Item_Code Item_Code	  */
+	public void setItem_Code (String Item_Code)
+	{
+		set_Value (COLUMNNAME_Item_Code, Item_Code);
+	}
+
+	/** Get Item_Code.
+		@return Item_Code	  */
+	public String getItem_Code () 
+	{
+		return (String)get_Value(COLUMNNAME_Item_Code);
+	}
+
 	public I_C_ValidCombination getloan_gl_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
@@ -201,6 +215,20 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Payroll #.
+		@param mpayroll Payroll #	  */
+	public void setmpayroll (String mpayroll)
+	{
+		set_Value (COLUMNNAME_mpayroll, mpayroll);
+	}
+
+	/** Get Payroll #.
+		@return Payroll #	  */
+	public String getmpayroll () 
+	{
+		return (String)get_Value(COLUMNNAME_mpayroll);
 	}
 
 	/** Set Other Charges.
@@ -353,6 +381,31 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 		return ii.intValue();
 	}
 
+	public I_s_loans gets_loans() throws RuntimeException
+    {
+		return (I_s_loans)MTable.get(getCtx(), I_s_loans.Table_Name)
+			.getPO(gets_loans_ID(), get_TrxName());	}
+
+	/** Set Loan Ref.
+		@param s_loans_ID Loan Ref	  */
+	public void sets_loans_ID (int s_loans_ID)
+	{
+		if (s_loans_ID < 1) 
+			set_Value (COLUMNNAME_s_loans_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_loans_ID, Integer.valueOf(s_loans_ID));
+	}
+
+	/** Get Loan Ref.
+		@return Loan Ref	  */
+	public int gets_loans_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_loans_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Loan Type.
 		@param s_loantype_ID Loan Type	  */
 	public void sets_loantype_ID (int s_loantype_ID)
@@ -393,6 +446,31 @@ public class X_s_transactions extends PO implements I_s_transactions, I_Persiste
 	public int gets_member_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_s_member_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_s_membershares gets_membershares() throws RuntimeException
+    {
+		return (I_s_membershares)MTable.get(getCtx(), I_s_membershares.Table_Name)
+			.getPO(gets_membershares_ID(), get_TrxName());	}
+
+	/** Set Member Shares.
+		@param s_membershares_ID Member Shares	  */
+	public void sets_membershares_ID (int s_membershares_ID)
+	{
+		if (s_membershares_ID < 1) 
+			set_Value (COLUMNNAME_s_membershares_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_membershares_ID, Integer.valueOf(s_membershares_ID));
+	}
+
+	/** Get Member Shares.
+		@return Member Shares	  */
+	public int gets_membershares_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_membershares_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

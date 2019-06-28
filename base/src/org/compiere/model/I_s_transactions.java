@@ -151,6 +151,15 @@ public interface I_s_transactions
 	  */
 	public boolean isActive();
 
+    /** Column name Item_Code */
+    public static final String COLUMNNAME_Item_Code = "Item_Code";
+
+	/** Set Item_Code	  */
+	public void setItem_Code (String Item_Code);
+
+	/** Get Item_Code	  */
+	public String getItem_Code();
+
     /** Column name loan_gl_Acct */
     public static final String COLUMNNAME_loan_gl_Acct = "loan_gl_Acct";
 
@@ -161,6 +170,15 @@ public interface I_s_transactions
 	public int getloan_gl_Acct();
 
 	public I_C_ValidCombination getloan_gl_A() throws RuntimeException;
+
+    /** Column name mpayroll */
+    public static final String COLUMNNAME_mpayroll = "mpayroll";
+
+	/** Set Payroll #	  */
+	public void setmpayroll (String mpayroll);
+
+	/** Get Payroll #	  */
+	public String getmpayroll();
 
     /** Column name othercharges */
     public static final String COLUMNNAME_othercharges = "othercharges";
@@ -242,6 +260,17 @@ public interface I_s_transactions
 	/** Get shareloanid	  */
 	public int getshareloanid();
 
+    /** Column name s_loans_ID */
+    public static final String COLUMNNAME_s_loans_ID = "s_loans_ID";
+
+	/** Set Loan Ref	  */
+	public void sets_loans_ID (int s_loans_ID);
+
+	/** Get Loan Ref	  */
+	public int gets_loans_ID();
+
+	public I_s_loans gets_loans() throws RuntimeException;
+
     /** Column name s_loantype_ID */
     public static final String COLUMNNAME_s_loantype_ID = "s_loantype_ID";
 
@@ -261,6 +290,17 @@ public interface I_s_transactions
 	public int gets_member_ID();
 
 	public I_s_member gets_member() throws RuntimeException;
+
+    /** Column name s_membershares_ID */
+    public static final String COLUMNNAME_s_membershares_ID = "s_membershares_ID";
+
+	/** Set Member Shares	  */
+	public void sets_membershares_ID (int s_membershares_ID);
+
+	/** Get Member Shares	  */
+	public int gets_membershares_ID();
+
+	public I_s_membershares gets_membershares() throws RuntimeException;
 
     /** Column name s_payrol_interface_ID */
     public static final String COLUMNNAME_s_payrol_interface_ID = "s_payrol_interface_ID";

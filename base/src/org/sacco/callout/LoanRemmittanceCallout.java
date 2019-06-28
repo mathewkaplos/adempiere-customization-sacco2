@@ -155,6 +155,16 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		// P=Gross- I
 		double P = gross - (interest + extraInterest + otherCharges + penalty_due);
 		if (P > 0) {
+			BigDecimal loanbalance = (BigDecimal) mTab.getValue("monthopeningbal");
+			if (P > loanbalance.doubleValue()) {
+			
+				JOptionPane.showMessageDialog(null,
+						"The amount is in excess of " + (P - loanbalance.doubleValue()) + ". You cannot overpay!. The balance is:"+loanbalance.doubleValue());
+				mTab.setValue("PaymentAmount", null);
+				mTab.getField("PaymentAmount").isMandatory(true);
+				return "";
+			}
+
 			mTab.setValue("Principal", BigDecimal.valueOf(P));
 		} else {
 			mTab.setValue("Principal", Env.ZERO);
@@ -373,14 +383,14 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 		Object record = mTab.getValue("l_repayments_ID");
 		if (record == null)
 			return "";
-		boolean val = (boolean) value; 
-		
+		boolean val = (boolean) value;
+
 		Timestamp time = (Timestamp) mTab.getValue("created");
 		String created = time.toString();
 		int s_member_ID = (int) mTab.getValue("s_member_ID");
 
-		String sql = "SELECT COUNT(*) FROM adempiere.l_repayments WHERE s_member_ID =" + s_member_ID
-				+ " AND created >'" + created + "'";
+		String sql = "SELECT COUNT(*) FROM adempiere.l_repayments WHERE s_member_ID =" + s_member_ID + " AND created >'"
+				+ created + "'";
 		int count = DB.getSQLValue(null, sql);
 		if (count > 0) {
 			JOptionPane.showMessageDialog(null,
@@ -388,8 +398,7 @@ public class LoanRemmittanceCallout extends CalloutEngine {
 			mTab.setValue("isActive", !val);
 			return "";
 		}
-		
-	
+
 		String msg = "";
 		if (val) {
 			msg = "activate ";

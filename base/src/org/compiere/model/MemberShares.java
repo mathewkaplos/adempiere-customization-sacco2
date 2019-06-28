@@ -26,7 +26,8 @@ public class MemberShares extends X_s_membershares {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void newRemmittance(BigDecimal appliedamount, boolean is_withdrawal,String remittanceremarks) {
+	public void newRemmittance(BigDecimal appliedamount, boolean is_withdrawal, String remittanceremarks,
+			int s_payment_mode_ID) {
 		SMember member = new SMember(getCtx(), gets_member_ID(), get_TrxName());
 		ShareType shareType = new ShareType(getCtx(), gets_sharetype_ID(), get_TrxName());
 
@@ -34,8 +35,10 @@ public class MemberShares extends X_s_membershares {
 		shareRemittance.setmcode(member.getDocumentNo());
 		shareRemittance.setpayroll_no(member.getmpayroll());
 		shareRemittance.sets_member_ID(member.get_ID());
-		shareRemittance.setpaymode("9");
-		shareRemittance.sets_payment_mode_remittance_ID(9);
+		if (is_withdrawal)
+			shareRemittance.sets_payment_mode_ID(s_payment_mode_ID);
+		else
+			shareRemittance.sets_payment_mode_remittance_ID(s_payment_mode_ID);
 		shareRemittance.setremittancedate(DateUtil.newTimestamp());
 		shareRemittance.sets_membershares_ID(gets_membershares_ID());
 		shareRemittance.sets_sharetype_ID(gets_sharetype_ID());
@@ -53,7 +56,7 @@ public class MemberShares extends X_s_membershares {
 		save();
 
 	}
- 
+
 	public void transfer(BigDecimal amount) {
 		setsharestodate(getsharestodate().add(amount));
 		setfreeshares(getfreeshares().add(amount));
