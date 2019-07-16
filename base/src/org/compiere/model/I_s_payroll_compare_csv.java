@@ -189,6 +189,15 @@ public interface I_s_payroll_compare_csv
 	/** Get s_payroll_compare_csv ID	  */
 	public int gets_payroll_compare_csv_ID();
 
+    /** Column name s_transactions_ID */
+    public static final String COLUMNNAME_s_transactions_ID = "s_transactions_ID";
+
+	/** Set s_transactions ID	  */
+	public void sets_transactions_ID (int s_transactions_ID);
+
+	/** Get s_transactions ID	  */
+	public int gets_transactions_ID();
+
     /** Column name TransactionType */
     public static final String COLUMNNAME_TransactionType = "TransactionType";
 

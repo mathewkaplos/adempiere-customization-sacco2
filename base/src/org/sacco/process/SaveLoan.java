@@ -2,22 +2,14 @@ package org.sacco.process;
 
 import java.awt.Container;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Calendar;
-
 import org.compiere.apps.ADialog;
-import org.compiere.model.I_s_employers;
 import org.compiere.model.I_s_loantype;
-import org.compiere.model.I_s_member;
+import org.compiere.model.LoanGuarantorDetails;
+import org.compiere.model.MemberShares;
 import org.compiere.model.SLoan;
 import org.compiere.model.SMember;
-import org.compiere.model.Sacco;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Env;
-
-import z.mathew.Finance;
-import zenith.util.DateUtil;
-import zenith.util.Util;
+import org.compiere.util.DB;
 
 public class SaveLoan extends SvrProcess {
 
@@ -54,35 +46,71 @@ public class SaveLoan extends SvrProcess {
 	private void saveIt() {
 		// 1. Guaranteers- fully guaranteed
 		if (type.isshould_be_guaranteed()) {
-			if (loan.getCollateralValue().compareTo(loan.getloanamount()) == -1) {
-				if (!type.isallow_zero_value_guarantors()) {
-					if (!loan.fullyGuaranteed()) {
-						// loan not fully guaranteed
-						if (!hasRights) {
-							ADialog.error(WindowNo, c, "This loan is not fully guaranteed!", "You cannot proceed");
-							return;
-						}
-						boolean val = ADialog.ask(WindowNo, c, "This loan is not fully guaranteed!",
-								"Do you want to proceed with saving the loan?");
-						if (!val) {
-							return;
+			if (loan.gets_loantype_ID() == 3) { // self guaranteed ...tie shares automatically
+				String sql = "SELECT COALESCE(MIN(s_membershares_ID),0) FROM adempiere.s_membershares WHERE s_sharetype_ID=1 AND s_member_ID="
+						+ loan.gets_member_ID();
+				int s_membershares_ID = DB.getSQLValue(get_TrxName(), sql);
+				if (s_membershares_ID > 0) {
+					// delete existing guarantor details records
+					String sql2 = "DELETE FROM adempiere.s_loanguantordetails WHERE s_loans_ID=" + loan.get_ID();
+					DB.executeUpdate(sql2, get_TrxName());
+					MemberShares shares = new MemberShares(getCtx(), s_membershares_ID, get_TrxName());
+					BigDecimal freeShares = shares.getfreeshares();
+					if (loan.getloanamount().compareTo(freeShares) == 1) {
+						ADialog.error(WindowNo, c,
+								"This member's free shares is not enough to fully guarantee this loan!",
+								"You cannot proceed");
+						return;
+					} else {
+						LoanGuarantorDetails details = new LoanGuarantorDetails(getCtx(), 0, get_TrxName());
+						details.sets_loans_ID(getRecord_ID());
+						details.sets_member_ID(loan.gets_member_ID());
+						details.sets_membershares_ID(s_membershares_ID);
+						details.settiedshares(loan.getloanamount());
+						details.setamountguaranteed(loan.getamountqualified());
+						details.setproportion(BigDecimal.ONE);
+						details.setid(0);
+						details.save();
+					}
+					String sql3 = "SELECT updatetiedshares(" + s_membershares_ID + ")";
+					DB.executeUpdate(sql3, get_TrxName());
+
+				} else {
+					ADialog.error(WindowNo, c, "This member does not have shares account!", "You cannot proceed");
+					return;
+				}
+
+			} else {
+				if (loan.getCollateralValue().compareTo(loan.getloanamount()) == -1) {
+					if (!type.isallow_zero_value_guarantors()) {
+						if (!loan.fullyGuaranteed()) {
+							// loan not fully guaranteed
+							if (!hasRights || loan.gets_loantype_ID() == 1) {
+								ADialog.error(WindowNo, c, "This loan is not fully guaranteed!", "You cannot proceed");
+								return;
+							}
+							boolean val = ADialog.ask(WindowNo, c, "This loan is not fully guaranteed!",
+									"Do you want to proceed with saving the loan?");
+							if (!val) {
+								return;
+							}
 						}
 					}
-				}
-				// 2. Guarantees -Check the minimum number
-				int minGuar = type.getloantypeminguarantors();
-				if (minGuar > 0) { // has minimum guarantor
-									// number
-					if (!loan.hasEnoughGuarantors()) {
-						// loan has no enough guarantors
-						if (!hasRights) {
-							ADialog.error(WindowNo, c, "This loan has no enough guarantors!", "You cannot proceed");
-							return;
-						}
-						boolean val = ADialog.ask(WindowNo, c, "This loan has no enough guarantors!",
-								"Do you want to proceed with saving the loan?");
-						if (!val) {
-							return;
+					// 2. Guarantees -Check the minimum number
+					int minGuar = type.getloantypeminguarantors();
+					if (minGuar > 0) { // has minimum guarantor
+										// number
+						if (!loan.hasEnoughGuarantors()) {
+							// loan has no enough guarantors
+							if (!hasRights) {
+								ADialog.error(WindowNo, c, "This loan has no enough guarantors!", "You cannot proceed");
+								return;
+							}
+							boolean val = ADialog.ask(WindowNo, c, "This loan has no enough guarantors!",
+									"Do you want to proceed with saving the loan?");
+							if (!val) {
+								return;
+							}
 						}
 					}
 				}
@@ -90,7 +118,9 @@ public class SaveLoan extends SvrProcess {
 		}
 		// 3. Income factor
 		// check Income factor ---move to loan schedule
-		if (!loan.incomeFactorOk()) {
+		if (!loan.incomeFactorOk())
+
+		{
 			// loan income factor not okay
 			if (!hasRights) {
 				ADialog.error(WindowNo, c, "The loan income factor is not okay!", "You cannot proceed");

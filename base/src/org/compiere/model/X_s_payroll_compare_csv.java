@@ -31,7 +31,7 @@ public class X_s_payroll_compare_csv extends PO implements I_s_payroll_compare_c
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190626L;
+	private static final long serialVersionUID = 20190628L;
 
     /** Standard Constructor */
     public X_s_payroll_compare_csv (Properties ctx, int s_payroll_compare_csv_ID, String trxName)
@@ -260,10 +260,37 @@ public class X_s_payroll_compare_csv extends PO implements I_s_payroll_compare_c
 		return ii.intValue();
 	}
 
+	/** Set s_transactions ID.
+		@param s_transactions_ID s_transactions ID	  */
+	public void sets_transactions_ID (int s_transactions_ID)
+	{
+		if (s_transactions_ID < 1) 
+			set_Value (COLUMNNAME_s_transactions_ID, null);
+		else 
+			set_Value (COLUMNNAME_s_transactions_ID, Integer.valueOf(s_transactions_ID));
+	}
+
+	/** Get s_transactions ID.
+		@return s_transactions ID	  */
+	public int gets_transactions_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_transactions_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** TransactionType AD_Reference_ID=1000023 */
+	public static final int TRANSACTIONTYPE_AD_Reference_ID=1000023;
+	/** LOANS = LOANS */
+	public static final String TRANSACTIONTYPE_LOANS = "LOANS";
+	/** SHARES = SHARES */
+	public static final String TRANSACTIONTYPE_SHARES = "SHARES";
 	/** Set Transaction Type.
 		@param TransactionType Transaction Type	  */
 	public void setTransactionType (String TransactionType)
 	{
+
 		set_Value (COLUMNNAME_TransactionType, TransactionType);
 	}
 

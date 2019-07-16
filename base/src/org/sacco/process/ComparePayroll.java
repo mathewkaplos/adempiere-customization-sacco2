@@ -39,7 +39,7 @@ public class ComparePayroll extends SvrProcess {
 		// getCSVList();//
 
 		String sql = "select s_member_id,payroll_code,item,item_code,amount,list_amount,"
-				+ "s_membershares_id , s_loans_id from adempiere.comparepayroll(" + getRecord_ID() + ")";
+				+ "s_membershares_id , s_loans_id,trans_id from adempiere.comparepayroll(" + getRecord_ID() + ")";
 		PreparedStatement stm = null;
 		ResultSet rs = null;
 		try {
@@ -54,6 +54,7 @@ public class ComparePayroll extends SvrProcess {
 				BigDecimal list_amount = rs.getBigDecimal(6);
 				int s_membershares_id = rs.getInt(7);
 				int s_loans_id = rs.getInt(8);
+				int s_transactions_id =rs.getInt(9);
 
 				Payroll_compare_csv compare_csv = new Payroll_compare_csv(getCtx(), 0, get_TrxName());
 
@@ -67,7 +68,7 @@ public class ComparePayroll extends SvrProcess {
 				compare_csv.setTransactionType(item);
 				compare_csv.sets_loans_ID(s_loans_id);
 				compare_csv.sets_membershares_ID(s_membershares_id);
-
+				compare_csv.sets_transactions_ID(s_transactions_id);
 				compare_csv.save();
 			}
 
