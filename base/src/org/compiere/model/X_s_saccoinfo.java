@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.compiere.model;
@@ -25,14 +25,14 @@ import org.compiere.util.Env;
 
 /** Generated Model for s_saccoinfo
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0 - $Id$ */
+ *  @version Release 3.9.2 - $Id$ */
 public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190327L;
+	private static final long serialVersionUID = 20190724L;
 
     /** Standard Constructor */
     public X_s_saccoinfo (Properties ctx, int s_saccoinfo_ID, String trxName)
@@ -42,10 +42,14 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
         {
 			setcashonly (false);
 // N
-			sets_saccoinfo_ID (0);
 			setsacconame (null);
 			setsaccoperiod_ID (0);
 			setsaccoroundcurrency (Env.ZERO);
+			setshow_interest_balance (false);
+// N
+			sets_saccoinfo_ID (0);
+			setstatement_remittance_schedule (0);
+// 1
         } */
     }
 
@@ -79,16 +83,19 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 
 	/** Set AGM Shares.
 		@param agmshares AGM Shares	  */
-	public void setagmshares (String agmshares)
+	public void setagmshares (BigDecimal agmshares)
 	{
 		set_Value (COLUMNNAME_agmshares, agmshares);
 	}
 
 	/** Get AGM Shares.
 		@return AGM Shares	  */
-	public String getagmshares () 
+	public BigDecimal getagmshares () 
 	{
-		return (String)get_Value(COLUMNNAME_agmshares);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_agmshares);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set AGM Share Type.
@@ -105,15 +112,40 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_agmsharetype);
 	}
 
-	/** Set Allow Zero Guarantors.
-		@param allowzeroguarantors Allow Zero Guarantors	  */
+	public I_s_sharetype getagm_sharetype() throws RuntimeException
+    {
+		return (I_s_sharetype)MTable.get(getCtx(), I_s_sharetype.Table_Name)
+			.getPO(getagm_sharetype_ID(), get_TrxName());	}
+
+	/** Set AGM Share Type.
+		@param agm_sharetype_ID AGM Share Type	  */
+	public void setagm_sharetype_ID (int agm_sharetype_ID)
+	{
+		if (agm_sharetype_ID < 1) 
+			set_Value (COLUMNNAME_agm_sharetype_ID, null);
+		else 
+			set_Value (COLUMNNAME_agm_sharetype_ID, Integer.valueOf(agm_sharetype_ID));
+	}
+
+	/** Get AGM Share Type.
+		@return AGM Share Type	  */
+	public int getagm_sharetype_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_agm_sharetype_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Allow Zero Value Guarantors.
+		@param allowzeroguarantors Allow Zero Value Guarantors	  */
 	public void setallowzeroguarantors (boolean allowzeroguarantors)
 	{
 		set_Value (COLUMNNAME_allowzeroguarantors, Boolean.valueOf(allowzeroguarantors));
 	}
 
-	/** Get Allow Zero Guarantors.
-		@return Allow Zero Guarantors	  */
+	/** Get Allow Zero Value Guarantors.
+		@return Allow Zero Value Guarantors	  */
 	public boolean isallowzeroguarantors () 
 	{
 		Object oo = get_Value(COLUMNNAME_allowzeroguarantors);
@@ -140,23 +172,23 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_backuppath);
 	}
 
-	public I_C_ValidCombination getbaddebts() throws RuntimeException
+	public I_C_ValidCombination getbaddebts_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-			.getPO(getbaddebtsacc(), get_TrxName());	}
+			.getPO(getbaddebts_Acct(), get_TrxName());	}
 
 	/** Set Bad Debts Account.
-		@param baddebtsacc Bad Debts Account	  */
-	public void setbaddebtsacc (int baddebtsacc)
+		@param baddebts_Acct Bad Debts Account	  */
+	public void setbaddebts_Acct (int baddebts_Acct)
 	{
-		set_Value (COLUMNNAME_baddebtsacc, Integer.valueOf(baddebtsacc));
+		set_Value (COLUMNNAME_baddebts_Acct, Integer.valueOf(baddebts_Acct));
 	}
 
 	/** Get Bad Debts Account.
 		@return Bad Debts Account	  */
-	public int getbaddebtsacc () 
+	public int getbaddebts_Acct () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_baddebtsacc);
+		Integer ii = (Integer)get_Value(COLUMNNAME_baddebts_Acct);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -183,15 +215,15 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return false;
 	}
 
-	/** Set Recovery Period: Begin With Shares.
-		@param beginwithshares Recovery Period: Begin With Shares	  */
+	/** Set Recovery Priority: Begin With Shares.
+		@param beginwithshares Recovery Priority: Begin With Shares	  */
 	public void setbeginwithshares (boolean beginwithshares)
 	{
 		set_Value (COLUMNNAME_beginwithshares, Boolean.valueOf(beginwithshares));
 	}
 
-	/** Get Recovery Period: Begin With Shares.
-		@return Recovery Period: Begin With Shares	  */
+	/** Get Recovery Priority: Begin With Shares.
+		@return Recovery Priority: Begin With Shares	  */
 	public boolean isbeginwithshares () 
 	{
 		Object oo = get_Value(COLUMNNAME_beginwithshares);
@@ -291,6 +323,27 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return false;
 	}
 
+	/** Set disp001.
+		@param disp001 disp001	  */
+	public void setdisp001 (boolean disp001)
+	{
+		set_Value (COLUMNNAME_disp001, Boolean.valueOf(disp001));
+	}
+
+	/** Get disp001.
+		@return disp001	  */
+	public boolean isdisp001 () 
+	{
+		Object oo = get_Value(COLUMNNAME_disp001);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	public I_C_ValidCombination getdivglcr() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
@@ -313,23 +366,23 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_C_ValidCombination getdivgldr() throws RuntimeException
+	public I_C_ValidCombination getdivgldr_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-			.getPO(getdivgldracc(), get_TrxName());	}
+			.getPO(getdivgldr_Acct(), get_TrxName());	}
 
-	/** Set Dividend GL Drebit Account.
-		@param divgldracc Dividend GL Drebit Account	  */
-	public void setdivgldracc (int divgldracc)
+	/** Set Dividend GL Debit Account.
+		@param divgldr_Acct Dividend GL Debit Account	  */
+	public void setdivgldr_Acct (int divgldr_Acct)
 	{
-		set_Value (COLUMNNAME_divgldracc, Integer.valueOf(divgldracc));
+		set_Value (COLUMNNAME_divgldr_Acct, Integer.valueOf(divgldr_Acct));
 	}
 
-	/** Get Dividend GL Drebit Account.
-		@return Dividend GL Drebit Account	  */
-	public int getdivgldracc () 
+	/** Get Dividend GL Debit Account.
+		@return Dividend GL Debit Account	  */
+	public int getdivgldr_Acct () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_divgldracc);
+		Integer ii = (Integer)get_Value(COLUMNNAME_divgldr_Acct);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -363,23 +416,23 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_emailtext);
 	}
 
-	public I_C_ValidCombination getendyearbalancin() throws RuntimeException
+	public I_C_ValidCombination getendyearbalancing_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-			.getPO(getendyearbalancingac(), get_TrxName());	}
+			.getPO(getendyearbalancing_Acct(), get_TrxName());	}
 
 	/** Set End Year Balancing Account.
-		@param endyearbalancingac End Year Balancing Account	  */
-	public void setendyearbalancingac (int endyearbalancingac)
+		@param endyearbalancing_Acct End Year Balancing Account	  */
+	public void setendyearbalancing_Acct (int endyearbalancing_Acct)
 	{
-		set_Value (COLUMNNAME_endyearbalancingac, Integer.valueOf(endyearbalancingac));
+		set_Value (COLUMNNAME_endyearbalancing_Acct, Integer.valueOf(endyearbalancing_Acct));
 	}
 
 	/** Get End Year Balancing Account.
 		@return End Year Balancing Account	  */
-	public int getendyearbalancingac () 
+	public int getendyearbalancing_Acct () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_endyearbalancingac);
+		Integer ii = (Integer)get_Value(COLUMNNAME_endyearbalancing_Acct);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -722,23 +775,42 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_overdue_penalty_formula);
 	}
 
-	public I_C_ValidCombination getprovision() throws RuntimeException
+	public I_C_ValidCombination getprovisionacc_A() throws RuntimeException
     {
 		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-			.getPO(getprovisionacc(), get_TrxName());	}
+			.getPO(getprovisionacc_Acct(), get_TrxName());	}
 
-	/** Set Provision Account.
-		@param provisionacc Provision Account	  */
-	public void setprovisionacc (int provisionacc)
+	/** Set Provision of Bad debt Account.
+		@param provisionacc_Acct Provision of Bad debt Account	  */
+	public void setprovisionacc_Acct (int provisionacc_Acct)
 	{
-		set_Value (COLUMNNAME_provisionacc, Integer.valueOf(provisionacc));
+		set_Value (COLUMNNAME_provisionacc_Acct, Integer.valueOf(provisionacc_Acct));
 	}
 
-	/** Get Provision Account.
-		@return Provision Account	  */
-	public int getprovisionacc () 
+	/** Get Provision of Bad debt Account.
+		@return Provision of Bad debt Account	  */
+	public int getprovisionacc_Acct () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_provisionacc);
+		Integer ii = (Integer)get_Value(COLUMNNAME_provisionacc_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Record ID.
+		@param Record_ID 
+		Direct internal record ID
+	  */
+	public void setRecord_ID (int Record_ID)
+	{
+		throw new IllegalArgumentException ("Record_ID is virtual column");	}
+
+	/** Get Record ID.
+		@return Direct internal record ID
+	  */
+	public int getRecord_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Record_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -759,6 +831,28 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	public I_C_ValidCombination getregFee_gl_A() throws RuntimeException
+    {
+		return (I_C_ValidCombination)MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
+			.getPO(getregFee_gl_Acct(), get_TrxName());	}
+
+	/** Set Registration Fee GL Account.
+		@param regFee_gl_Acct Registration Fee GL Account	  */
+	public void setregFee_gl_Acct (int regFee_gl_Acct)
+	{
+		set_Value (COLUMNNAME_regFee_gl_Acct, Integer.valueOf(regFee_gl_Acct));
+	}
+
+	/** Get Registration Fee GL Account.
+		@return Registration Fee GL Account	  */
+	public int getregFee_gl_Acct () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_regFee_gl_Acct);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set regglcode.
@@ -787,26 +881,6 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 	public String getreportsorttype () 
 	{
 		return (String)get_Value(COLUMNNAME_reportsorttype);
-	}
-
-	/** Set s_saccoinfo ID.
-		@param s_saccoinfo_ID s_saccoinfo ID	  */
-	public void sets_saccoinfo_ID (int s_saccoinfo_ID)
-	{
-		if (s_saccoinfo_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_s_saccoinfo_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_s_saccoinfo_ID, Integer.valueOf(s_saccoinfo_ID));
-	}
-
-	/** Get s_saccoinfo ID.
-		@return s_saccoinfo ID	  */
-	public int gets_saccoinfo_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_s_saccoinfo_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 
 	/** Set saccoactivatedebit.
@@ -1149,15 +1223,6 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		set_Value (COLUMNNAME_saccoperiod, Integer.valueOf(saccoperiod));
 	}
 
-	/** Get saccoperiod.
-		@return saccoperiod	  */
-	public int getsaccoperiod () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_saccoperiod);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
 
 
 	/** Set Current Period.
@@ -1470,6 +1535,64 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_sharesposted);
 	}
 
+	/** Set Show Loan Interest Balance In Statement.
+		@param show_interest_balance Show Loan Interest Balance In Statement	  */
+	public void setshow_interest_balance (boolean show_interest_balance)
+	{
+		set_Value (COLUMNNAME_show_interest_balance, Boolean.valueOf(show_interest_balance));
+	}
+
+	/** Get Show Loan Interest Balance In Statement.
+		@return Show Loan Interest Balance In Statement	  */
+	public boolean isshow_interest_balance () 
+	{
+		Object oo = get_Value(COLUMNNAME_show_interest_balance);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set s_saccoinfo ID.
+		@param s_saccoinfo_ID s_saccoinfo ID	  */
+	public void sets_saccoinfo_ID (int s_saccoinfo_ID)
+	{
+		if (s_saccoinfo_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_s_saccoinfo_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_s_saccoinfo_ID, Integer.valueOf(s_saccoinfo_ID));
+	}
+
+	/** Get s_saccoinfo ID.
+		@return s_saccoinfo ID	  */
+	public int gets_saccoinfo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_s_saccoinfo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Statement Remittance Schedule.
+		@param statement_remittance_schedule Statement Remittance Schedule	  */
+	public void setstatement_remittance_schedule (int statement_remittance_schedule)
+	{
+		set_Value (COLUMNNAME_statement_remittance_schedule, Integer.valueOf(statement_remittance_schedule));
+	}
+
+	/** Get Statement Remittance Schedule.
+		@return Statement Remittance Schedule	  */
+	public int getstatement_remittance_schedule () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_statement_remittance_schedule);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set System Idle Time.
 		@param systemidletime System Idle Time	  */
 	public void setsystemidletime (int systemidletime)
@@ -1606,18 +1729,21 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		return false;
 	}
 
-	/** Set uuid.
-		@param uuid uuid	  */
-	public void setuuid (String uuid)
+	/** Set Immutable Universally Unique Identifier.
+		@param UUID 
+		Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID)
 	{
-		set_Value (COLUMNNAME_uuid, uuid);
+		set_Value (COLUMNNAME_UUID, UUID);
 	}
 
-	/** Get uuid.
-		@return uuid	  */
-	public String getuuid () 
+	/** Get Immutable Universally Unique Identifier.
+		@return Immutable Universally Unique Identifier
+	  */
+	public String getUUID () 
 	{
-		return (String)get_Value(COLUMNNAME_uuid);
+		return (String)get_Value(COLUMNNAME_UUID);
 	}
 
 	/** Set Withdrawal Notice.
@@ -1635,5 +1761,11 @@ public class X_s_saccoinfo extends PO implements I_s_saccoinfo, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	@Override
+	public I_C_Period getsaccoperiod() throws RuntimeException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

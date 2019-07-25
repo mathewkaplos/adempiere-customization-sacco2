@@ -1,8 +1,9 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -11,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.compiere.model;
 
@@ -22,7 +22,7 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for s_saccoinfo
  *  @author Adempiere (generated) 
- *  @version Release 3.8.0
+ *  @version Release 3.9.2
  */
 public interface I_s_saccoinfo 
 {
@@ -66,10 +66,10 @@ public interface I_s_saccoinfo
     public static final String COLUMNNAME_agmshares = "agmshares";
 
 	/** Set AGM Shares	  */
-	public void setagmshares (String agmshares);
+	public void setagmshares (BigDecimal agmshares);
 
 	/** Get AGM Shares	  */
-	public String getagmshares();
+	public BigDecimal getagmshares();
 
     /** Column name agmsharetype */
     public static final String COLUMNNAME_agmsharetype = "agmsharetype";
@@ -80,13 +80,24 @@ public interface I_s_saccoinfo
 	/** Get AGM Share Type	  */
 	public String getagmsharetype();
 
+    /** Column name agm_sharetype_ID */
+    public static final String COLUMNNAME_agm_sharetype_ID = "agm_sharetype_ID";
+
+	/** Set AGM Share Type	  */
+	public void setagm_sharetype_ID (int agm_sharetype_ID);
+
+	/** Get AGM Share Type	  */
+	public int getagm_sharetype_ID();
+
+	public I_s_sharetype getagm_sharetype() throws RuntimeException;
+
     /** Column name allowzeroguarantors */
     public static final String COLUMNNAME_allowzeroguarantors = "allowzeroguarantors";
 
-	/** Set Allow Zero Guarantors	  */
+	/** Set Allow Zero Value Guarantors	  */
 	public void setallowzeroguarantors (boolean allowzeroguarantors);
 
-	/** Get Allow Zero Guarantors	  */
+	/** Get Allow Zero Value Guarantors	  */
 	public boolean isallowzeroguarantors();
 
     /** Column name backuppath */
@@ -98,16 +109,16 @@ public interface I_s_saccoinfo
 	/** Get backuppath	  */
 	public String getbackuppath();
 
-    /** Column name baddebtsacc */
-    public static final String COLUMNNAME_baddebtsacc = "baddebtsacc";
+    /** Column name baddebts_Acct */
+    public static final String COLUMNNAME_baddebts_Acct = "baddebts_Acct";
 
 	/** Set Bad Debts Account	  */
-	public void setbaddebtsacc (int baddebtsacc);
+	public void setbaddebts_Acct (int baddebts_Acct);
 
 	/** Get Bad Debts Account	  */
-	public int getbaddebtsacc();
+	public int getbaddebts_Acct();
 
-	public I_C_ValidCombination getbaddebts() throws RuntimeException;
+	public I_C_ValidCombination getbaddebts_A() throws RuntimeException;
 
     /** Column name balanceroutinerun */
     public static final String COLUMNNAME_balanceroutinerun = "balanceroutinerun";
@@ -121,10 +132,10 @@ public interface I_s_saccoinfo
     /** Column name beginwithshares */
     public static final String COLUMNNAME_beginwithshares = "beginwithshares";
 
-	/** Set Recovery Period: Begin With Shares	  */
+	/** Set Recovery Priority: Begin With Shares	  */
 	public void setbeginwithshares (boolean beginwithshares);
 
-	/** Get Recovery Period: Begin With Shares	  */
+	/** Get Recovery Priority: Begin With Shares	  */
 	public boolean isbeginwithshares();
 
     /** Column name cashonly */
@@ -188,6 +199,15 @@ public interface I_s_saccoinfo
 	/** Get departmentsort	  */
 	public boolean isdepartmentsort();
 
+    /** Column name disp001 */
+    public static final String COLUMNNAME_disp001 = "disp001";
+
+	/** Set disp001	  */
+	public void setdisp001 (boolean disp001);
+
+	/** Get disp001	  */
+	public boolean isdisp001();
+
     /** Column name divglcracc */
     public static final String COLUMNNAME_divglcracc = "divglcracc";
 
@@ -199,16 +219,16 @@ public interface I_s_saccoinfo
 
 	public I_C_ValidCombination getdivglcr() throws RuntimeException;
 
-    /** Column name divgldracc */
-    public static final String COLUMNNAME_divgldracc = "divgldracc";
+    /** Column name divgldr_Acct */
+    public static final String COLUMNNAME_divgldr_Acct = "divgldr_Acct";
 
-	/** Set Dividend GL Drebit Account	  */
-	public void setdivgldracc (int divgldracc);
+	/** Set Dividend GL Debit Account	  */
+	public void setdivgldr_Acct (int divgldr_Acct);
 
-	/** Get Dividend GL Drebit Account	  */
-	public int getdivgldracc();
+	/** Get Dividend GL Debit Account	  */
+	public int getdivgldr_Acct();
 
-	public I_C_ValidCombination getdivgldr() throws RuntimeException;
+	public I_C_ValidCombination getdivgldr_A() throws RuntimeException;
 
     /** Column name emailsubject */
     public static final String COLUMNNAME_emailsubject = "emailsubject";
@@ -228,16 +248,16 @@ public interface I_s_saccoinfo
 	/** Get emailtext	  */
 	public String getemailtext();
 
-    /** Column name endyearbalancingac */
-    public static final String COLUMNNAME_endyearbalancingac = "endyearbalancingac";
+    /** Column name endyearbalancing_Acct */
+    public static final String COLUMNNAME_endyearbalancing_Acct = "endyearbalancing_Acct";
 
 	/** Set End Year Balancing Account	  */
-	public void setendyearbalancingac (int endyearbalancingac);
+	public void setendyearbalancing_Acct (int endyearbalancing_Acct);
 
 	/** Get End Year Balancing Account	  */
-	public int getendyearbalancingac();
+	public int getendyearbalancing_Acct();
 
-	public I_C_ValidCombination getendyearbalancin() throws RuntimeException;
+	public I_C_ValidCombination getendyearbalancing_A() throws RuntimeException;
 
     /** Column name endyearmonth */
     public static final String COLUMNNAME_endyearmonth = "endyearmonth";
@@ -438,16 +458,29 @@ public interface I_s_saccoinfo
 	/** Get Overdue Penalty Fomula	  */
 	public String getoverdue_penalty_formula();
 
-    /** Column name provisionacc */
-    public static final String COLUMNNAME_provisionacc = "provisionacc";
+    /** Column name provisionacc_Acct */
+    public static final String COLUMNNAME_provisionacc_Acct = "provisionacc_Acct";
 
-	/** Set Provision Account	  */
-	public void setprovisionacc (int provisionacc);
+	/** Set Provision of Bad debt Account	  */
+	public void setprovisionacc_Acct (int provisionacc_Acct);
 
-	/** Get Provision Account	  */
-	public int getprovisionacc();
+	/** Get Provision of Bad debt Account	  */
+	public int getprovisionacc_Acct();
 
-	public I_C_ValidCombination getprovision() throws RuntimeException;
+	public I_C_ValidCombination getprovisionacc_A() throws RuntimeException;
+
+    /** Column name Record_ID */
+    public static final String COLUMNNAME_Record_ID = "Record_ID";
+
+	/** Set Record ID.
+	  * Direct internal record ID
+	  */
+	public void setRecord_ID (int Record_ID);
+
+	/** Get Record ID.
+	  * Direct internal record ID
+	  */
+	public int getRecord_ID();
 
     /** Column name regfee */
     public static final String COLUMNNAME_regfee = "regfee";
@@ -457,6 +490,17 @@ public interface I_s_saccoinfo
 
 	/** Get Registration Fee	  */
 	public BigDecimal getregfee();
+
+    /** Column name regFee_gl_Acct */
+    public static final String COLUMNNAME_regFee_gl_Acct = "regFee_gl_Acct";
+
+	/** Set Registration Fee GL Account	  */
+	public void setregFee_gl_Acct (int regFee_gl_Acct);
+
+	/** Get Registration Fee GL Account	  */
+	public int getregFee_gl_Acct();
+
+	public I_C_ValidCombination getregFee_gl_A() throws RuntimeException;
 
     /** Column name regglcode */
     public static final String COLUMNNAME_regglcode = "regglcode";
@@ -475,15 +519,6 @@ public interface I_s_saccoinfo
 
 	/** Get reportsorttype	  */
 	public String getreportsorttype();
-
-    /** Column name s_saccoinfo_ID */
-    public static final String COLUMNNAME_s_saccoinfo_ID = "s_saccoinfo_ID";
-
-	/** Set s_saccoinfo ID	  */
-	public void sets_saccoinfo_ID (int s_saccoinfo_ID);
-
-	/** Get s_saccoinfo ID	  */
-	public int gets_saccoinfo_ID();
 
     /** Column name saccoactivatedebit */
     public static final String COLUMNNAME_saccoactivatedebit = "saccoactivatedebit";
@@ -681,7 +716,6 @@ public interface I_s_saccoinfo
 	public void setsaccoperiod (int saccoperiod);
 
 	/** Get saccoperiod	  */
-	public int getsaccoperiod();
 
     /** Column name saccoperiod_ID */
     public static final String COLUMNNAME_saccoperiod_ID = "saccoperiod_ID";
@@ -692,6 +726,7 @@ public interface I_s_saccoinfo
 	/** Get Current Period	  */
 	public int getsaccoperiod_ID();
 
+	public org.compiere.model.I_C_Period getsaccoperiod() throws RuntimeException;
 
     /** Column name saccopobox */
     public static final String COLUMNNAME_saccopobox = "saccopobox";
@@ -864,6 +899,33 @@ public interface I_s_saccoinfo
 	/** Get sharesposted	  */
 	public String getsharesposted();
 
+    /** Column name show_interest_balance */
+    public static final String COLUMNNAME_show_interest_balance = "show_interest_balance";
+
+	/** Set Show Loan Interest Balance In Statement	  */
+	public void setshow_interest_balance (boolean show_interest_balance);
+
+	/** Get Show Loan Interest Balance In Statement	  */
+	public boolean isshow_interest_balance();
+
+    /** Column name s_saccoinfo_ID */
+    public static final String COLUMNNAME_s_saccoinfo_ID = "s_saccoinfo_ID";
+
+	/** Set s_saccoinfo ID	  */
+	public void sets_saccoinfo_ID (int s_saccoinfo_ID);
+
+	/** Get s_saccoinfo ID	  */
+	public int gets_saccoinfo_ID();
+
+    /** Column name statement_remittance_schedule */
+    public static final String COLUMNNAME_statement_remittance_schedule = "statement_remittance_schedule";
+
+	/** Set Statement Remittance Schedule	  */
+	public void setstatement_remittance_schedule (int statement_remittance_schedule);
+
+	/** Get Statement Remittance Schedule	  */
+	public int getstatement_remittance_schedule();
+
     /** Column name systemidletime */
     public static final String COLUMNNAME_systemidletime = "systemidletime";
 
@@ -949,14 +1011,18 @@ public interface I_s_saccoinfo
 	/** Get Use Sum Of All Savings/Shares	  */
 	public boolean isusesum();
 
-    /** Column name uuid */
-    public static final String COLUMNNAME_uuid = "uuid";
+    /** Column name UUID */
+    public static final String COLUMNNAME_UUID = "UUID";
 
-	/** Set uuid	  */
-	public void setuuid (String uuid);
+	/** Set Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID);
 
-	/** Get uuid	  */
-	public String getuuid();
+	/** Get Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public String getUUID();
 
     /** Column name withdrawalnotice */
     public static final String COLUMNNAME_withdrawalnotice = "withdrawalnotice";

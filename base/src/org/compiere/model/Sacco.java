@@ -303,4 +303,49 @@ public class Sacco extends X_s_saccoinfo {
 		int y = (int) x;
 		return y;
 	}
+
+	public BigDecimal getAGMShares(int s_member_ID, String whereClause) {
+		BigDecimal shares = Env.ZERO;
+		String sql = "SELECT COALESCE(SUM(sharestodate),0) FROM adempiere.s_membershares ms WHERE s_member_ID="
+				+ s_member_ID + " " + whereClause;
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		try {
+			stm = DB.prepareStatement(sql, get_TrxName());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				shares = rs.getBigDecimal(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return shares;
+	}
+
+	public AgmInvitation AGMValidated(int s_AgmValidation_ID, int s_member_ID) {
+		String sql = "SELECT COALESCE(MAX(s_AgmInvitation_ID),0) FROM adempiere.s_AgmInvitation WHERE s_AgmValidation_ID="
+				+ s_AgmValidation_ID + " AND s_member_ID=" + s_member_ID;
+
+		int s_AgmInvitation_ID = DB.getSQLValue(null, sql);
+		if (s_AgmInvitation_ID > 0)
+			return new AgmInvitation(getCtx(), s_AgmInvitation_ID, null);
+		return null;
+	}
+
+	public AgmInvitation AGMValidated(int s_member_ID) {
+		String sql = "SELECT COALESCE(MAX(s_AgmInvitation_ID),0) FROM adempiere.s_AgmInvitation WHERE isActive='Y' AND s_member_ID="
+				+ s_member_ID;
+
+		int s_AgmInvitation_ID = DB.getSQLValue(null, sql);
+		if (s_AgmInvitation_ID > 0)
+			return new AgmInvitation(getCtx(), s_AgmInvitation_ID, null);
+		return null;
+	}
+
 }
