@@ -73,7 +73,5 @@ public class MemberShares extends X_s_membershares {
 		double rate = gets_sharetype().getintrate().doubleValue() / 100;
 		double interest = rate * freqMonths * getsharestodate().doubleValue();
 		return BigDecimal.valueOf(interest);
-
 	}
-
 }

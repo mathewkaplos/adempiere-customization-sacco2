@@ -67,6 +67,12 @@ public class SMember extends X_s_member {
 		return DB.getSQLValueBD(get_TrxName(), sql);
 	}
 
+	public BigDecimal getSharesBal(int s_sharetype_ID) {
+		String sql = "SELECT COALESCE(SUM(sharestodate),0) " + " FROM adempiere.s_membershares  WHERE s_sharetype_ID="
+				+ s_sharetype_ID + " AND s_member_ID =" + get_ID();
+		return DB.getSQLValueBD(get_TrxName(), sql);
+	}
+
 	public BigDecimal getFreeSavingsBal() {
 		String sql = "SELECT COALESCE(SUM(freeshares),0) " + " FROM adempiere.s_membershares  WHERE s_member_ID ="
 				+ get_ID();

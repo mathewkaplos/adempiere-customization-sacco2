@@ -11,7 +11,7 @@
         <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
     </listAttribute>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.adempiere.util.GenerateModel"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="/home/mat/380_sacco/adempiere-customization-sacco2/base/src/org/compiere/model&#13;&#10;org.compiere.model&#13;&quot;'U'&quot;&#13;&#10;&quot;'s_AgmValidation'&quot;"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="/home/mat/380_sacco/adempiere-customization-sacco2/base/src/org/compiere/model&#13;&#10;org.compiere.model&#13;&quot;'U'&quot;&#13;&#10;&quot;'s_dividends'&quot;"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="adempiere"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DPropertyFile=&quot;/home/mat/380_sacco/adempiere/ADempiere.properties&quot;&#13;&#10;-Xms1024m&#13;&#10;-Xmx1024m&#13;&#10;-Dorg.adempiere.server.embedded=true &#13;&#10;-DADEMPIERE_HOME=&quot;/home/mat/380_sacco/adempiere\adempiere-master&quot;"/>
 </launchConfiguration>
