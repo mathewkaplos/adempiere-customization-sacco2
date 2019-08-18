@@ -63,7 +63,7 @@ public class PostDividendsToMembers extends SvrProcess {
 		shareRemittance.sets_sharetype_ID(2);
 		shareRemittance.setreceiptamount(appliedamount);
 		shareRemittance.setIsComplete(true);
-		shareRemittance.setothercharges(Env.ZERO);
+		shareRemittance.setothercharges(Env.ZERO); 
 		shareRemittance.setis_withdrawal(false);
 		shareRemittance.setremittanceremarks("2018 Dividend @4% shares");
 		shareRemittance.save();
