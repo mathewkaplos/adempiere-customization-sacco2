@@ -10,7 +10,7 @@ import org.compiere.process.SvrProcess;
 public class NewBalanceAccount extends SvrProcess {
 	
 	private int C_ElementValue_ID = 0;
-
+ 
 	@Override
 	protected void prepare() {
 		ProcessInfoParameter[] para = getParameter();
