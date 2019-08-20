@@ -3,12 +3,11 @@ package org.sacco.process;
 import java.util.logging.Level;
 
 import org.compiere.model.BS_accounts;
-import org.compiere.model.X_s_income_accounts;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 
-public class NewBalanceAccount extends SvrProcess {
-	
+public class NewIncomeAccount extends SvrProcess {
+
 	private int C_ElementValue_ID = 0;
 
 	@Override
@@ -28,8 +27,8 @@ public class NewBalanceAccount extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {
-		X_s_income_accounts accounts = new X_s_income_accounts(getCtx(), 0, get_TrxName());
-		accounts.sets_income_ID(getRecord_ID());
+		BS_accounts accounts = new BS_accounts(getCtx(), 0, get_TrxName());
+		accounts.sets_balancesheet_ID(getRecord_ID());
 		accounts.setC_ElementValue_ID(C_ElementValue_ID);
 		accounts.save();
 		return null;
