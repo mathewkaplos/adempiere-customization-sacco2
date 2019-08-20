@@ -30,12 +30,9 @@ import org.compiere.model.ShareRemittance;
 import org.compiere.model.Share_recovery;
 import org.compiere.model.TransactionChargeSetup;
 import org.compiere.process.ProcessInfo;
-import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.util.Trx;
-
 import zenith.util.DateUtil;
 import zenith.util.NumberWordConverter;
 
@@ -310,6 +307,8 @@ public class SaveShareRemittance extends SvrProcess {
 		lineCR.setcontra_account_id(lineDR.getAccount_ID());
 		lineCR.setUserCode(user.getName());
 		lineCR.setChequeNo(chequeNo);
+		lineDR.setDescription(chargeSetup.getDescription() + "Charges." + MemberNoDescription);
+		lineCR.save();
 		lineDR.setDescription(chargeSetup.getDescription() + "Charges." + MemberNoDescription);
 		lineCR.save();
 	}
