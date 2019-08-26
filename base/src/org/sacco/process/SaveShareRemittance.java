@@ -334,7 +334,7 @@ public class SaveShareRemittance extends SvrProcess {
 		MPInstance mpi = new MPInstance(Env.getCtx(), 0, null);
 		mpi.setAD_Process_ID(pr.get_ID()); 
 		mpi.setRecord_ID(0);
-		mpi.save();
+		mpi.save();  
 
 		// Connect the process to the process instance.
 		pi.setAD_PInstance_ID(mpi.get_ID());
